@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="220px" height="220px" viewBox="0 0 220 220" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>illustration-bag</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="illustration-bag" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(22.000000, 18.000000)">
+            <g id="Shape" transform="translate(40.000000, 25.000000)">
+                <polygon id="Stroke" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="11.888 27.9 84.1 27.9 95.1 128.113 0.884 128.113"></polygon>
+                <path d="M28.965,39.036 L28.965,19.709 C29.1158388,9.30385327 37.59376,0.947942023 48,0.947942023 C58.40624,0.947942023 66.8841612,9.30385327 67.035,19.709 L67.035,39.036" id="Stroke-2" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5,113 L91.5,113" id="Stroke-3" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M29,35 C31.7614237,35 34,37.2385763 34,40 C34,42.7614237 31.7614237,45 29,45 C26.2385763,45 24,42.7614237 24,40 C24,37.2385763 26.2385763,35 29,35 Z M67,35 C69.7614237,35 72,37.2385763 72,40 C72,42.7614237 69.7614237,45 67,45 C64.2385763,45 62,42.7614237 62,40 C62,37.2385763 64.2385763,35 67,35 Z" id="Ellipse" fill="#000000" fill-rule="nonzero"></path>
+            </g>
+            <g id="Pattern" opacity="0.34" fill="#142239">
+                <rect id="s" fill-rule="nonzero" x="50" y="2" width="6" height="6"></rect>
+                <polygon id="v" points="93 178 82 178 87.5 184"></polygon>
+                <polygon id="v-2" points="4.343 57 15.657 57 10 62.657"></polygon>
+                <rect id="o" fill-rule="nonzero" x="168" y="130" width="8" height="8" rx="4"></rect>
+                <rect id="o-2" fill-rule="nonzero" x="119" y="0" width="8" height="8" rx="4"></rect>
+                <rect id="o-3" fill-rule="nonzero" x="0" y="134" width="8" height="8" rx="4"></rect>
+                <rect id="s-2" fill-rule="nonzero" x="158" y="64" width="6" height="6"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

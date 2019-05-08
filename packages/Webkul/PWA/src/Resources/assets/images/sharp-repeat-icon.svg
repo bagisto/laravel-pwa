@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>sharp-repeat</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M4,5 L14,5 L14,8 L18,4 L14,0 L14,3 L2,3 L2,9 L4,9 L4,5 Z M14,15 L4,15 L4,12 L0,16 L4,20 L4,17 L16,17 L16,11 L14,11 L14,15 Z" id="path-1"></path>
+    </defs>
+    <g id="sharp-repeat" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="↳-Icon-Color" transform="translate(3.000000, 2.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+            <g id="✱-/-Color-/-Icons-/-Selected-/-On-Surface-/-Active" mask="url(#mask-2)" fill="#000000">
+                <g transform="translate(-3.000000, -2.000000)" id="Rectangle-3">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
