@@ -28,6 +28,20 @@ return [
                 'validation' => 'required',
                 'channel_based' => true,
                 'locale_based' => false
+            ], [
+                'name' => 'theme_color',
+                'title' => 'pwa::app.admin.system.theme-color',
+                'type' => 'text',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'background_color',
+                'title' => 'pwa::app.admin.system.background-color',
+                'type' => 'text',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => false
             ]
         ]
     ], [

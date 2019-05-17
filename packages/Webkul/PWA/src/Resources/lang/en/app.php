@@ -8,6 +8,8 @@ return [
             'general' => 'General',
             'name' => 'Name',
             'short-name' => 'Short Name',
+            'theme-color' => 'Theme Color',
+            'background-color' => 'Background Color',
             'media' => 'Media',
             'small' => 'App Icon (48x48)',
             'medium' => 'App Icon (96x96)',

@@ -60,8 +60,8 @@ class CoreConfig
                 'start_url' => config('app.url'),
                 'display' => 'standalone',
                 'orientation' => 'any',
-                'theme_color' => '#0041ff',
-                'background_color' => '#0041ff',
+                'theme_color' => core()->getConfigData('pwa.settings.general.theme_color') ?? '#0041ff',
+                'background_color' => core()->getConfigData('pwa.settings.general.background_color') ?? '#0041ff',
                 'icons' => $icons
             ];
 
