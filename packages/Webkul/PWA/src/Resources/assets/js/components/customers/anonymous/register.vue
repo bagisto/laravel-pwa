@@ -1,6 +1,14 @@
 <template>
     <div class="content">
-        <custom-header title="Create An Account"></custom-header>
+        <custom-header>
+            <div slot="back-botton" @click="$emit('onPopClose')">
+                <i class="icon sharp-cross-icon"></i>
+            </div>
+
+            <div slot="content">
+                <h2>Create An Account</h2>
+            </div>
+        </custom-header>
 
         <div class="form-container">
             <form action="POST" @submit.prevent="validateBeforeSubmit">
@@ -47,7 +55,7 @@
             </form>
 
             <div class="login-in-text">
-                Already have an account? <router-link :to="'/customer/login'">Sign In</router-link>
+                Already have an account? <span @click="$emit('onOpenPopup', 'login')">Sign In</span>
             </div>
         </div>
     </div>
@@ -73,6 +81,11 @@
                     'password_confirmation': ''
                 }
             }
+        },
+
+        mounted () {
+            if (JSON.parse(localStorage.getItem('currentUser')))
+                this.$router.push({name: 'dashboard'})
         },
 
         methods: {
@@ -101,7 +114,7 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.$router.push({name: 'login'})
+                        this_this.$emit('onOpenPopup', 'login')
                     })
                     .catch(function (error) {
                         var errors = error.response.data.errors;
@@ -137,6 +150,11 @@
                 font-weight: 700;
                 text-transform: uppercase;
                 color: #757575;
+
+                span {
+                    color: #3F60DA;
+                    cursor: pointer;
+                }
             }
         }
     }

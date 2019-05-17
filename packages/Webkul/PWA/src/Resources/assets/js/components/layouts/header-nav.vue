@@ -29,7 +29,7 @@
                     </div>-->
 
                     <router-link class="cart-icon" :to="'/checkout/cart'">
-                        <span class="count" v-if="cart">{{ cart.items.length }}</span>
+                        <span class="count" v-if="cart && cart.items.length">{{ cart.items.length }}</span>
                         <i class="icon cart-icon"></i>
                     </router-link>
                 </slot>

@@ -1,6 +1,14 @@
 <template>
     <div class="content">
-        <custom-header title="Sign In"></custom-header>
+        <custom-header>
+            <div slot="back-botton" @click="$emit('onPopClose')">
+                <i class="icon sharp-cross-icon"></i>
+            </div>
+
+            <div slot="content">
+                <h2>Sign In</h2>
+            </div>
+        </custom-header>
 
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
@@ -17,13 +25,13 @@
                 </div>
 
                 <div class="control-group">
-                    <router-link :to="'/customer/forgot-password'">Forgot Password?</router-link>
+                    <span class="forgot-password" @click="$emit('onOpenPopup', 'forgot_password')">Forgot Password?</span>
                 </div>
 
                 <div class="button-group">
                     <button type="submit" class="btn btn-black btn-lg" :disabled="loading">Sign In</button>
                     
-                    <router-link class="btn btn-outline-black btn-lg" :to="'/customer/register'">Create An Account</router-link>
+                    <button type="button" class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'register')">Create An Account</button>
                 </div>
             </div>
         </form>
@@ -47,6 +55,11 @@
                     'password': ''
                 }
             }
+        },
+
+        mounted () {
+            if (JSON.parse(localStorage.getItem('currentUser')))
+                this.$router.push({name: 'dashboard'})
         },
         
         methods: {
@@ -108,10 +121,11 @@
             margin-top: 55px;
 
             .control-group {
-                a {
+                .forgot-password {
                     font-weight: 600;
                     font-size: 14px;
                     color: #757575;
+                    cursor: pointer;
                 }
             }
         }

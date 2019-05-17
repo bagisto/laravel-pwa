@@ -8,7 +8,7 @@
                 <div class="drawer">
                     
                     <div class="drawer-header">
-                        <router-link :to="'/customer/login'" class="login-info" v-if="! currentUser">
+                        <router-link :to="'/customer/login-register'" class="login-info" v-if="! currentUser">
                             <div class="avatar"></div>
                             <h2>Sign In</h2>
                             <p>to your account</p>

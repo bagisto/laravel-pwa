@@ -22,12 +22,16 @@ Vue.use(VueCurrencyFilter, {
     symbolPosition: 'front',
     symbolSpacing: false
 });
+
 Vue.use(VeeValidate);
+
 Vue.use(Toasted, {
     fullWidth: true,
     fitToScreen: true,
-    duration: 2000
+    closeOnSwipe: false,
+    duration: 1000
 });
+
 Vue.use(require('vue-moment'));
 
 Vue.directive("sticky", require("./directives/sticky"));
@@ -56,7 +60,7 @@ const app = new Vue({
 
                     this.$toasted.show(error.response.data.error, { type: 'error' })
 
-                    this.$router.push({name: 'login'})
+                    this.$router.push({name: 'login-register'})
                 } else {
                     return Promise.reject(error);
                 }

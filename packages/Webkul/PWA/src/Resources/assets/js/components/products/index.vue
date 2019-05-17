@@ -158,7 +158,7 @@
 
                         EventBus.$emit('checkout.cart.changed', response.data.data);
 
-                        // this_this.$router.push({name: 'dashboard'})
+                        // this_this.$router.push({name: 'cart'})
                     })
                     .catch(function (error) {
                     })

@@ -10,8 +10,6 @@ if (mix.inProduction()) {
 mix.setPublicPath(publicPath).mergeManifest();
 mix.disableNotifications();
 
-mix.inProduction()
-
 mix.js(path.resolve('src/Resources/assets/js/app.js'), 'js/app.js')
     .webpackConfig({
         resolve: {

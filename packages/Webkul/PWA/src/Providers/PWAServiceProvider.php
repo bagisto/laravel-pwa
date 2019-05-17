@@ -4,6 +4,7 @@ namespace Webkul\PWA\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Event;
 
 class PWAServiceProvider extends ServiceProvider
 {
@@ -14,13 +15,18 @@ class PWAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        include __DIR__ . '/../Http/routes.php';
+        $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
 
         $this->publishes([
             __DIR__ . '/../../publishable/assets' => public_path('vendor/webkul/pwa/assets'),
+            __DIR__ . '/../../publishable/pwa' => public_path(),
         ], 'public');
 
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'pwa');
+
+        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'pwa');
+
+        Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
     }
 
     /**
@@ -30,5 +36,18 @@ class PWAServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerConfig();
+    }
+    
+    /**
+     * Register package config.
+     *
+     * @return void
+     */
+    protected function registerConfig()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/Config/system.php', 'core'
+        );
     }
 }

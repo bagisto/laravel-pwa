@@ -10,9 +10,7 @@ import Product              from './components/products/index';
 import ProductReviewList    from './components/reviews/index';
 import ProductReviewCreate  from './components/reviews/create';
 import Customer             from './components/customers/index';
-import Register             from './components/customers/anonymous/register';
-import Login                from './components/customers/anonymous/login';
-import ForgotPassword       from './components/customers/anonymous/forgot-password';
+import LoginRegister        from './components/customers/anonymous/login-register';
 import Cart                 from './components/checkout/cart/index';
 import Onepage              from './components/checkout/onepage/index';
 import OrderSuccess         from './components/checkout/onepage/success';
@@ -37,7 +35,7 @@ Vue.use(Router)
 
 export default new Router({
     mode: 'history',
-    base: '/bagisto_pwa/public/mobile',
+    base: window.config.url_path + '/mobile',
     routes: [
         {
             path: '/',
@@ -85,25 +83,13 @@ export default new Router({
             component: Customer,
             children: [
                 {
-                    path: 'register',
-                    name: 'register',
-                    component: Register
-                }, {
-                    path: 'login',
-                    name: 'login',
-                    component: Login
-                }, {
-                    path: 'forgot-password',
-                    name: 'forgot-password',
-                    component: ForgotPassword
+                    path: 'login-register',
+                    name: 'login-register',
+                    component: LoginRegister
                 }, {
                     path: 'account',
                     name: 'account',
                     component: Account,
-                    beforeEnter: (to, from, next) => {
-                        //Check for user logged in or not
-                        next();
-                    },
                     children: [
                         {
                             path: 'dashboard',

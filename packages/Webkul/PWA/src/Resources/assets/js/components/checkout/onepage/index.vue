@@ -41,6 +41,8 @@
                                         <i class="icon sharp-arrow-right-icon"></i>
                                     </label>
 
+                                    <input type="radio" v-validate="'required'" name="billing[address_id]" value="0" data-vv-as="'Billing Address'" style="display: none">
+
                                     <div class="control-group" :class="[errors.has('address-form.billing[address_id]') ? 'has-error' : '']">
                                         <span class="control-error" v-if="errors.has('address-form.billing[address_id]')">
                                             {{ errors.first('address-form.billing[address_id]') }}
@@ -69,54 +71,7 @@
                                 </div>
                             </custom-header>
 
-                            <div class="control-group" :class="[errors.has('address-form.billing[first_name]') ? 'has-error' : '']">
-                                <input type="text" name="billing[first_name]" class="control" v-model="address.billing.first_name" v-validate="'required'" placeholder="First Name" data-vv-as='"First Name"'/>
-                                <label>First Name</label>
-                                <span class="control-error" v-if="errors.has('address-form.billing[first_name]')">{{ errors.first('address-form.billing[first_name]') }}</span>
-                            </div>
-
-                            <div class="control-group" :class="[errors.has('address-form.billing[last_name]') ? 'has-error' : '']">
-                                <input type="text" name="billing[last_name]" class="control" v-model="address.billing.last_name" v-validate="'required'" placeholder="Last Name" data-vv-as='"Last Name"'/>
-                                <label>Last Name</label>
-                                <span class="control-error" v-if="errors.has('address-form.billing[last_name]')">{{ errors.first('address-form.billing[last_name]') }}</span>
-                            </div>
-
-                            <div class="control-group" :class="[errors.has('address-form.billing[email]') ? 'has-error' : '']">
-                                <input type="text" name="billing[email]" class="control" v-model="address.billing.email" v-validate="'required'" placeholder="Email" data-vv-as='"Email"'/>
-                                <label>Email</label>
-                                <span class="control-error" v-if="errors.has('address-form.billing[email]')">{{ errors.first('address-form.billing[email]') }}</span>
-                            </div>
-
-                            <div class="control-group" :class="[errors.has('address-form.billing[address1][]') ? 'has-error' : '']">
-                                <input type="text" name="billing[address1][]" class="control" v-model="address.billing.address1[0]" v-validate="'required'" placeholder="Street Address 1" data-vv-as='"Street Address 1"'/>
-                                <label>Street Address 1</label>
-                                <span class="control-error" v-if="errors.has('address-form.billing[address1][]')">{{ errors.first('address-form.billing[address1][]') }}</span>
-                            </div>
-
-                            <div class="control-group" v-if="streetLines && streetLines > 0" v-for="n in parseInt(streetLines)" style="margin-top: -15px;">
-                                <input type="text" name="address1[]" class="control" v-model="address.billing.address1[n]" :placeholder="'Street Address ' + n + 1">
-                                <label>Street Address {{ n + 1 }}</label>
-                            </div>
-
-                            <checkout-country-state :address="address.billing" type="billing"></checkout-country-state>
-
-                            <div class="control-group" :class="[errors.has('address-form.billing[city]') ? 'has-error' : '']">
-                                <input type="text" name="billing[city]" class="control" v-model="address.billing.city" v-validate="'required'" placeholder="City" data-vv-as='"City"'/>
-                                <label>City</label>
-                                <span class="control-error" v-if="errors.has('address-form.billing[city]')">{{ errors.first('address-form.billing[city]') }}</span>
-                            </div>
-
-                            <div class="control-group" :class="[errors.has('address-form.billing[postcode]') ? 'has-error' : '']">
-                                <input type="text" name="billing[postcode]" class="control" v-model="address.billing.postcode" v-validate="'required'" placeholder="Postal Code" data-vv-as='"City"'/>
-                                <label>Postal Code</label>
-                                <span class="control-error" v-if="errors.has('address-form.billing[postcode]')">{{ errors.first('address-form.billing[postcode]') }}</span>
-                            </div>
-
-                            <div class="control-group" :class="[errors.has('address-form.billing[phone]') ? 'has-error' : '']">
-                                <input type="text" name="billing[phone]" class="control" v-model="address.billing.phone" v-validate="'required'" placeholder="Phone" data-vv-as='"City"'/>
-                                <label>Phone</label>
-                                <span class="control-error" v-if="errors.has('address-form.billing[phone]')">{{ errors.first('address-form.billing[phone]') }}</span>
-                            </div>
+                            <checkout-address :address="address.billing" type="billing"></checkout-address>
 
                             <div class="button-group">
                                 <button type="button" class="btn btn-black btn-lg" @click="validateForm('billing')">Add</button>
@@ -156,6 +111,8 @@
                                             <i class="icon sharp-arrow-right-icon"></i>
                                         </label>
 
+                                        <input type="radio" v-validate="'required'" name="shipping[address_id]" value="0" data-vv-as="'Shipping Address'" style="display: none">
+
                                         <div class="control-group" :class="[errors.has('address-form.shipping[address_id]') ? 'has-error' : '']">
                                             <span class="control-error" v-if="errors.has('address-form.shipping[address_id]')">
                                                 {{ errors.first('address-form.shipping[address_id]') }}
@@ -184,54 +141,7 @@
                                     </div>
                                 </custom-header>
                                 
-                                <div class="control-group" :class="[errors.has('address-form.shipping[first_name]') ? 'has-error' : '']">
-                                    <input type="text" name="shipping[first_name]" class="control" v-model="address.shipping.first_name" v-validate="'required'" placeholder="First Name" data-vv-as='"First Name"'/>
-                                    <label>First Name</label>
-                                    <span class="control-error" v-if="errors.has('address-form.shipping[first_name]')">{{ errors.first('address-form.shipping[first_name]') }}</span>
-                                </div>
-
-                                <div class="control-group" :class="[errors.has('address-form.shipping[last_name]') ? 'has-error' : '']">
-                                    <input type="text" name="shipping[last_name]" class="control" v-model="address.shipping.last_name" v-validate="'required'" placeholder="Last Name" data-vv-as='"Last Name"'/>
-                                    <label>Last Name</label>
-                                    <span class="control-error" v-if="errors.has('address-form.shipping[last_name]')">{{ errors.first('address-form.shipping[last_name]') }}</span>
-                                </div>
-
-                                <div class="control-group" :class="[errors.has('address-form.shipping[email]') ? 'has-error' : '']">
-                                    <input type="text" name="shipping[email]" class="control" v-model="address.shipping.email" v-validate="'required'" placeholder="Email" data-vv-as='"Email"'/>
-                                    <label>Email</label>
-                                    <span class="control-error" v-if="errors.has('address-form.shipping[email]')">{{ errors.first('address-form.shipping[email]') }}</span>
-                                </div>
-
-                                <div class="control-group" :class="[errors.has('address-form.shipping[address1][]') ? 'has-error' : '']">
-                                    <input type="text" name="shipping[address1][]" class="control" v-model="address.shipping.address1[0]" v-validate="'required'" placeholder="Street Address 1" data-vv-as='"Street Address 1"'/>
-                                    <label>Street Address 1</label>
-                                    <span class="control-error" v-if="errors.has('address-form.shipping[address1][]')">{{ errors.first('address-form.shipping[address1][]') }}</span>
-                                </div>
-
-                                <div class="control-group" v-if="streetLines && streetLines > 0" v-for="n in parseInt(streetLines)" style="margin-top: -15px;">
-                                    <input type="text" name="address1[]" class="control" v-model="address.shipping.address1[n]" :placeholder="'Street Address ' + n + 1">
-                                    <label>Street Address {{ n + 1 }}</label>
-                                </div>
-
-                                <checkout-country-state :address="address.shipping" type="shipping"></checkout-country-state>
-
-                                <div class="control-group" :class="[errors.has('address-form.shipping[city]') ? 'has-error' : '']">
-                                    <input type="text" name="shipping[city]" class="control" v-model="address.shipping.city" v-validate="'required'" placeholder="City" data-vv-as='"City"'/>
-                                    <label>City</label>
-                                    <span class="control-error" v-if="errors.has('address-form.shipping[city]')">{{ errors.first('address-form.shipping[city]') }}</span>
-                                </div>
-
-                                <div class="control-group" :class="[errors.has('address-form.shipping[postcode]') ? 'has-error' : '']">
-                                    <input type="text" name="shipping[postcode]" class="control" v-model="address.billing.postcode" v-validate="'required'" placeholder="Postal Code" data-vv-as='"City"'/>
-                                    <label>Postal Code</label>
-                                    <span class="control-error" v-if="errors.has('address-form.shipping[postcode]')">{{ errors.first('address-form.shipping[postcode]') }}</span>
-                                </div>
-
-                                <div class="control-group" :class="[errors.has('address-form.shipping[phone]') ? 'has-error' : '']">
-                                    <input type="text" name="shipping[phone]" class="control" v-model="address.shipping.phone" v-validate="'required'" placeholder="Phone" data-vv-as='"City"'/>
-                                    <label>Phone</label>
-                                    <span class="control-error" v-if="errors.has('address-form.shipping[phone]')">{{ errors.first('address-form.shipping[phone]') }}</span>
-                                </div>
+                                <checkout-address :address="address.shipping" type="shipping"></checkout-address>
 
                                 <div class="button-group">
                                     <button type="button" class="btn btn-black btn-lg" @click="validateForm('shipping')">Add</button>
@@ -414,13 +324,13 @@
 </template>
 
 <script>
-    import CustomHeader         from '../../layouts/custom-header';
-    import CheckoutCountryState from './country-state';
+    import CustomHeader    from '../../layouts/custom-header';
+    import CheckoutAddress from './address';
 
     export default {
         name: 'onepage',
 
-        components: { CustomHeader, CheckoutCountryState },
+        components: { CustomHeader, CheckoutAddress },
 
         data () {
             return {
@@ -442,10 +352,6 @@
                     3: 'Payment',
                     4: 'Review',
                 },
-
-                streetLines: 2,
-
-                countryStates: {},
 
                 address: {
                     billing: {
@@ -535,7 +441,7 @@
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
 
                         if (! this_this.cart)
-                            this_this.$router.push({name: 'cart'})
+                            this_this.$router.go(-2);
                     })
                     .catch(function (error) {});
             },
@@ -648,7 +554,9 @@
                 this.$http.post('/api/checkout/save-order')
                     .then(function(response) {
                         if (response.data.success) {
-                            this_this.$router.push({ name: 'order-success' })
+                            this_this.$router.push({ path: '/checkout/success/' + response.data.order.id })
+
+                            EventBus.$emit('checkout.cart.changed', null);
                         }
                     })
                     .catch(function (error) {

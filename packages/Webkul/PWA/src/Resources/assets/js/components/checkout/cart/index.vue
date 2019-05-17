@@ -2,7 +2,7 @@
     <div class="content">
         <custom-header title="Cart"></custom-header>
 
-        <div class="cart-container" v-if="cart">
+        <div class="cart-container" v-if="cart && cart.items.length">
             <h2 class="item-count">{{ cart.items.length }} Item(s)</h2>
 
             <div class="cart-item-list">
@@ -111,6 +111,8 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.cart = response.data.data;
+
+                        console.log(this_this.cart)
 
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })

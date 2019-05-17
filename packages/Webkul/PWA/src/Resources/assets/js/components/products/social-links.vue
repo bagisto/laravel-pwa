@@ -6,7 +6,7 @@
             <span>Wishlist</span>
         </div>
 
-        <div class="share-link">
+        <div class="share-link" @click="share">
             <i class="icon share-icon"></i>
 
             <span>Share</span>
@@ -38,6 +38,18 @@
                         this_this.$toasted.show(error.response.data.error, { type: 'error' })
                     });
             },
+
+            share () {
+                if (navigator.share) {
+                    navigator.share({
+                        title: this.product.name,
+                        text: 'Check out this awesome product!',
+                        url: window.config.app_base_url + '/products/' + this.product.url_key,
+                    })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+                }
+            }
         }
     }
 </script>
