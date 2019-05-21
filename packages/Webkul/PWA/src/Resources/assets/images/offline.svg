@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="220px" height="220px" viewBox="0 0 220 220" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <title>illustration-offline@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="illustration-offline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="illustration-category" transform="translate(22.000000, 18.000000)" fill="#142239" opacity="0.34">
+            <g id="Pattern">
+                <rect id="s" fill-rule="nonzero" x="50" y="2" width="6" height="6"></rect>
+                <polygon id="v" points="93 178 82 178 87.5 184"></polygon>
+                <polygon id="v-2" points="4.343 57 15.657 57 10 62.657"></polygon>
+                <rect id="o" fill-rule="nonzero" x="168" y="130" width="8" height="8" rx="4"></rect>
+                <rect id="o-2" fill-rule="nonzero" x="119" y="0" width="8" height="8" rx="4"></rect>
+                <rect id="o-3" fill-rule="nonzero" x="0" y="134" width="8" height="8" rx="4"></rect>
+                <rect id="s-2" fill-rule="nonzero" x="158" y="64" width="6" height="6"></rect>
+            </g>
+        </g>
+        <g id="Group" transform="translate(62.000000, 72.000000)">
+            <path d="M0,21.8674828 C12.5266228,8.30732093 29.3903734,0 47.9389375,0 C66.5478477,0 83.4609638,8.36146318 96,22" id="Combined-Shape" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M17,40 C25.714875,31.8778328 36.880704,27 49.0535812,27 C61.1766212,27 72.300842,31.8379736 81,39.9004039" id="Combined-Shape" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M34,58 C38.1800534,54.8601776 43.3736972,53 49.0012051,53 C52.4744587,53 55.7824421,53.7085903 58.7888591,54.9892848" id="Combined-Shape" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle id="Oval" fill="#000000" fill-rule="nonzero" cx="48.8075689" cy="73.7371873" r="3.26281272"></circle>
+        </g>
+        <circle id="Oval-10" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" cx="135.325503" cy="139.325503" r="16.3255031"></circle>
+        <path d="M124,128 L146.751374,150.751374" id="Path-20" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+</svg>

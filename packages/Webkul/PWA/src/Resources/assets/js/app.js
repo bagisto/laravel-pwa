@@ -3,6 +3,7 @@ import Toasted           from 'vue-toasted';
 import router            from './router';
 import App               from './components/app';
 import VueCurrencyFilter from 'vue-currency-filter'
+import i18n              from './plugins/i18n';
 
 window.jQuery = window.$ = require('jquery');
 window.axios = require('axios');
@@ -41,9 +42,19 @@ const app = new Vue({
 
     components: { App },
 
-    created () {
+    i18n,
+
+    mounted () {
+        var this_this = this;
+
         axios.interceptors.response.use(
-            response => response,
+            function(response) {
+                if (response.data.offline) {
+                    this_this.$router.push({name: 'offline'})
+                } else {
+                    return response;
+                }
+            },
             this.errorResponseHandler
         );
     },

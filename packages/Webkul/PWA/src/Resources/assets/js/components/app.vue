@@ -10,14 +10,14 @@
                     <div class="drawer-header">
                         <router-link :to="'/customer/login-register'" class="login-info" v-if="! currentUser">
                             <div class="avatar"></div>
-                            <h2>Sign In</h2>
-                            <p>to your account</p>
+                            <h2>{{ $t('Sign In') }}</h2>
+                            <p>{{ $t('to your account') }}</p>
                             <i class="icon arrow-right-icon"></i>
                         </router-link>
 
                         <router-link :to="'/customer/account/dashboard'" class="login-info" v-if="currentUser">
                             <div class="avatar"></div>
-                            <h2>Hello!</h2>
+                            <h2>{{ $t('Hello!') }}</h2>
                             <p>{{ currentUser.name }}</p>
                             <i class="icon arrow-right-icon"></i>
                         </router-link>
@@ -241,11 +241,15 @@
             switchLocale (locale) {
                 this.bottomSheets.locale = false;
 
+                var this_this = this;
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get("/api/switch-locale", { params: { locale: locale.code } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
+
+                        this_this.$i18n.locale = locale.code;
 
                         window.location.reload()
                     })

@@ -8,7 +8,7 @@
         </router-link>
 
         <div class="address-list" v-if="addresses.length">
-            <address-card v-for="address in addresses" :key='address.uid' :address="address"></address-card>
+            <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
         </div>
 
         <empty-address-list v-else></empty-address-list>
@@ -50,6 +50,12 @@
                         this_this.addresses = response.data.data;
                     })
                     .catch(function (error) {});
+            },
+
+            removeAddress (address) {
+                let index = this.addresses.indexOf(address)
+
+                this.addresses.splice(index, 1);
             }
         }
     }

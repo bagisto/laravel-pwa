@@ -29,6 +29,7 @@ import CreateAddress        from './components/customers/account/addresses/creat
 import EditAddress          from './components/customers/account/addresses/edit';
 import CustomerReviewList   from './components/customers/account/reviews/index';
 import CustomerReviewDetail from './components/customers/account/reviews/view';
+import Offline              from './components/offline/index';
 
 
 Vue.use(Router)
@@ -151,6 +152,10 @@ export default new Router({
                     ]
                 }
             ]
+        }, {
+            path: '/offline',
+            name: 'offline',
+            component: Offline
         }
     ],
 });

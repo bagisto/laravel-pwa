@@ -264,6 +264,10 @@ ul {
     &.order-success-img {
         background-image: url("../images/order-success.svg");
     }
+
+    &.offline-img {
+        background-image: url("../images/offline.svg");
+    }
 }
 
 .control-group { 

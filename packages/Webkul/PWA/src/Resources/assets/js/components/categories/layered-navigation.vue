@@ -12,10 +12,10 @@
                     Filter
                 </li>
                 
-                <li>
+                <!--<li>
                     <i class="icon sharp-grid-icon"></i>
                     Grid
-                </li>
+                </li>-->
             </ul>
         </div>
 
@@ -269,7 +269,8 @@
 
             ul {
                 li {
-                    width: 33.33%;
+                    // width: 33.33%;
+                    width: 50%;
                     float: left;
                     padding: 16px;
                     font-size: 14px;

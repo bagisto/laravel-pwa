@@ -20,7 +20,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     li.category-card {
         display: inline-block;
         width: 120px;

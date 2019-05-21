@@ -17,7 +17,7 @@
                 <span>Edit</span>
             </router-link>
 
-            <div class="remove-link">
+            <div class="remove-link" @click="remove">
                 <i class="icon sharp-trash-icon"></i>
 
                 <span>Remove</span>
@@ -30,7 +30,25 @@
     export default {
         name: 'address-list',
 
-        props: ['address']
+        props: ['address'],
+
+        methods: {
+            remove () {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.delete('/api/addresses/' + this.address.id)
+                    .then(function(response) {
+                        this_this.$toasted.show(response.data.message, { type: 'success' })
+                        
+                        EventBus.$emit('hide-ajax-loader');
+
+                        this_this.$emit('onRemove')
+                    })
+                    .catch(function (error) {});
+            }
+        }
     }
 </script>
 
