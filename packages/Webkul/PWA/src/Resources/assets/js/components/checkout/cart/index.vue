@@ -1,9 +1,11 @@
 <template>
     <div class="content">
-        <custom-header title="Cart"></custom-header>
+        <custom-header :title="$t('Cart')"></custom-header>
 
         <div class="cart-container" v-if="cart && cart.items.length">
-            <h2 class="item-count">{{ cart.items.length }} Item(s)</h2>
+            <h2 class="item-count">
+                {{ $t('1 Item(s)', { num: cart.items.length }) }}
+            </h2>
 
             <div class="cart-item-list">
                 <cart-item 
