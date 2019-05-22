@@ -21,7 +21,7 @@ class SinglePageController extends Controller
     {
         $agent = new Agent();
 
-        if ($agent->isMobile())
+        if ($agent->isMobile() || $agent->isTablet())
             return redirect('/mobile');
 
         $currentChannel = core()->getCurrentChannel();
