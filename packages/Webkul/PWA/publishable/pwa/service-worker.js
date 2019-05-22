@@ -1,4 +1,4 @@
-var version = 'v1';
+var version = 'v2';
 var staticCache = 'bagisto-pwa-static-' + version;
 var serverCache = 'bagisto-pwa-server-' + version;
 var outSideCache = 'bagisto-pwa-outside-' + version;
