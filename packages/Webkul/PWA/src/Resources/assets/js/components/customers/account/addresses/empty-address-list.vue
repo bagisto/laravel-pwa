@@ -2,11 +2,11 @@
     <div class="no-result-found">
         <div class="illustration empty-addresses-img"></div>
 
-        <h2>No Addresses</h2>
+        <h2>{{ $t('No Addresses') }}</h2>
 
-        <p>You didn’t add any of your addresses yet.</p>
+        <p>{{ $t('You didn’t add any of your addresses yet.') }}</p>
 
-        <router-link class="btn btn-black" :to="'/customer/account/addresses/create'">Add New Address</router-link>
+        <router-link class="btn btn-black" :to="'/customer/account/addresses/create'">{{ $t('Add New Address') }}</router-link>
     </div>
 </template>
 

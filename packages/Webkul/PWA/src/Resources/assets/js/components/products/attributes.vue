@@ -1,6 +1,6 @@
 <template>
     <div class="product-additional-information" v-if="viewableAttributes.length">
-        <accordian :title="'More Information'" :active="true">
+        <accordian :title="$t('More Information')" :active="true">
             <div slot="body">
 
                 <table>

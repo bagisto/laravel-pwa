@@ -14,7 +14,7 @@
         <div class="products panel" v-if="product.new.length">
 
             <div class="panel-heading">
-                New Products
+                {{ $t('New Products') }}
             </div>
 
             <div class="panel-content product-list product-grid-2">
@@ -28,7 +28,7 @@
         <div class="products panel" v-if="product.featured.length">
 
             <div class="panel-heading">
-                Featured Products
+                {{ $t('Featured Products') }}
             </div>
 
             <div class="panel-content product-list product-grid-2">

@@ -25,7 +25,7 @@
 
                     </div>
 
-                    <pagination label="Load More Products" v-bind="productPagination" @onPaginate="paginate($event)"></pagination>
+                    <pagination :label="$t('Load More Products')" v-bind="productPagination" @onPaginate="paginate($event)"></pagination>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
 
         <div class="panel" v-if="childCategories.length">
             <div class="panel-heading">
-                Explore {{ category.name }}
+                {{ $t('Explore') }} {{ category.name }}
             </div>
 
             <div class="panel-content">

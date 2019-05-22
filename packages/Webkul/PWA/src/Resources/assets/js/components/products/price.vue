@@ -1,7 +1,7 @@
 <template>
     <div class="product-price">
         <span v-if="product.type == 'configurable'">
-            <span class="price-label">As low as</span>
+            <span class="price-label">{{ $t('As low as') }}</span>
 
             <span class="final-price">{{ product.formated_price }}</span>
         </span>

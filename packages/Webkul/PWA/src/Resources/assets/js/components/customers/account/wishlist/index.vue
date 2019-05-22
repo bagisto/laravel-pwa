@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <custom-header title="Wishlist"></custom-header>
+        <custom-header :title="$t('Wishlist')"></custom-header>
 
         <div class="panel" v-if="wishlist.length">
             <div class="panel-content">

@@ -2,11 +2,11 @@
     <div class="no-result-found">
         <div class="illustration empty-search-img"></div>
 
-        <h2>Umm..</h2>
+        <h2>{{ $t('Umm..') }}</h2>
 
-        <p>No search results found.</p>
+        <p>{{ $t('No search results found.') }}</p>
 
-        <router-link class="btn btn-black" :to="'/search'">Search Again</router-link>
+        <router-link class="btn btn-black" :to="'/search'">{{ $t('Search Again') }}</router-link>
     </div>
 </template>
 

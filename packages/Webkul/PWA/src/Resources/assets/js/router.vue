@@ -42,7 +42,7 @@ export default new Router({
             path: '/',
             name: 'home',
             component: Homepage
-        }, {
+        } , {
             path: '/search',
             name: 'search',
             component: Search

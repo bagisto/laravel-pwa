@@ -1,6 +1,6 @@
 <template>
     <div class="product-reviews" v-if="reviews.length">
-        <accordian :title="'Reviews'" :active="true" padding="0">
+        <accordian :title="$t('Reviews')" :active="true" padding="0">
             <div slot="body">
 
                 <div class="review-summary">
@@ -23,15 +23,15 @@
                         </span>
 
                         <span class="based-on">
-                            Based On
+                            {{ $t('Based On') }}
                         </span>
 
                         <span class="total-review">
-                            {{ product.reviews.total }} Reviews
+                            {{ $t('number Reviews', {number: product.reviews.total}) }}
                         </span>
 
                         <router-link :to="'/reviews/' + product.id + '/create'">
-                            Add Your Review
+                            {{ $t('Add Your Review') }}
                         </router-link>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
 
                         <div class="info">
                             <div class="review-by">
-                                <span class="by">Review by - </span>
+                                <span class="by">{{ $t('Review by -') }} </span>
 
                                 <span class="name">{{ review.name }}</span>
                             </div>
@@ -67,7 +67,7 @@
 
                 <div class="view-more-btn" v-if="pagination.last_page > 1">
                     <router-link :to="'/reviews/' + product.id">
-                        View All Product Reviews
+                        {{ $t('View All Product Reviews') }}
                     </router-link>
                 </div>
 

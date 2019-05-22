@@ -23,7 +23,7 @@
         </router-link>
 
         <div class="wishlist-action" @click="moveToCart">
-            Move To Cart
+            {{ $t('Move To Cart') }}
         </div>
     </div>
 </template>

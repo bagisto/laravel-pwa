@@ -11,13 +11,13 @@
 
                     <ul>
                         <li :class="[active == 'order' ? 'active': '']">
-                            <router-link :to="'/customer/account/orders/' + orderId">Order Details</router-link>
+                            <router-link :to="'/customer/account/orders/' + orderId">{{ $t('Order Details') }}</router-link>
                         </li>
                         <li :class="[active == 'invoice' ? 'active': '']">
-                            <router-link :to="'/customer/account/' + orderId + '/invoices'">Order Invoices</router-link>
+                            <router-link :to="'/customer/account/' + orderId + '/invoices'">{{ $t('Order Invoices') }}</router-link>
                         </li>
                         <li :class="[active == 'shipment' ? 'active': '']">
-                            <router-link :to="'/customer/account/' + orderId + '/shipments'">Order Shipments</router-link>
+                            <router-link :to="'/customer/account/' + orderId + '/shipments'">{{ $t('Order Shipments') }}</router-link>
                         </li>
                     </ul>
                 </div>

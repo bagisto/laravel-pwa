@@ -9,6 +9,7 @@
                         </div>
 
                         <div class="shop-title">
+                            {{ app_name }}
                         </div>
                     </div>
 
@@ -60,6 +61,12 @@
             this.getCart();
         },
 
+        computed: {
+            app_name () {
+                return window.config.app_short_name ? window.config.app_short_name : 'Bagisto';
+            }
+        },
+
         methods: {
             handleMaskClick () {
                 this.$emit('toggleDrawer')
@@ -106,8 +113,16 @@
             .navbar-left {
                 float: left;
 
-                .search-icon {
-                    cursor: pointer;
+                .drawer-icon {
+                    float: left;
+                }
+
+                .shop-title {
+                    display: inline-block;
+                    margin-left: 20px;
+                    font-size: 18px;
+                    font-weight: 700;
+                    margin-top: 1px;
                 }
 
                 .back-icon {

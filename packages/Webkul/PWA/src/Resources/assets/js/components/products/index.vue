@@ -28,7 +28,7 @@
                 </configurable-options>
 
                 <div class="quantity-container">
-                    <label>Quantity</label>
+                    <label>{{ $t('Quantity') }}</label>
                     
                     <div class="quantity">
                         <button type="button" class="btn btn-black decrease-qty"
@@ -37,7 +37,7 @@
                         </button>
 
                         <div class="quantity-label">
-                            {{ formData.quantity }} Units
+                            {{ $t('number Units', {number: formData.quantity}) }}
                         </div>
 
                         <button type="button" class="btn btn-black increase-qty" @click="formData.quantity++">
@@ -48,9 +48,9 @@
             </div>
 
             <div class="add-to-buttons">
-                <button type="submit" class="add-to-cart-btn">Add To Cart</button>
+                <button type="submit" class="add-to-cart-btn">{{ $t('Add To Cart') }}</button>
 
-                <button class="btn btn-black buy-now-btn">Buy Now</button>
+                <button class="btn btn-black buy-now-btn">{{ $t('Buy Now') }}</button>
             </div>
 
             <div class="product-description">

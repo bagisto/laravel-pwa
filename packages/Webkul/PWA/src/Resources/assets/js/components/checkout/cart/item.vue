@@ -17,12 +17,12 @@
                     </div>
 
                     <div class="cart-item-price">
-                        <label>Price : </label>
+                        <label>{{ $t('Price :') }} </label>
                         <span>{{ cartItem.formated_price }}</span>
                     </div>
 
                     <div class="cart-item-subtotal">
-                        <label>Subtotal : </label>
+                        <label>{{ $t('Subtotal :') }} </label>
                         <span>{{ cartItem.formated_total }}</span>
                     </div>
                 </div>
@@ -50,13 +50,13 @@
             <div class="wishlist-link" @click="moveToWishlist">
                 <i class="icon wishlist-icon"></i>
 
-                <span>Move To Wishlist</span>
+                <span>{{ $t('Move To Wishlist') }}</span>
             </div>
 
             <div class="remove-link" @click="removeItem">
                 <i class="icon sharp-trash-icon"></i>
 
-                <span>Remove Item</span>
+                <span>{{ $t('Remove Item') }}</span>
             </div>
         </div>
     </div>

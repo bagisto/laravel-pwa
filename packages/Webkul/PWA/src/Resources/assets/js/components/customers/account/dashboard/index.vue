@@ -3,7 +3,7 @@
         <custom-header>
             <div slot="content">
                 <div class="account-information">
-                    <h2>Dashboard</h2>
+                    <h2>{{ $t('Dashboard') }}</h2>
 
                     <div class="avatar"></div>
 
@@ -11,28 +11,28 @@
 
                     <div class="email">{{ customer.email }}</div>
 
-                    <router-link class="edit-info-btn" :to="'/customer/account/profile'">Edit Info</router-link>
+                    <router-link class="edit-info-btn" :to="'/customer/account/profile'">{{ $t('Edit Info') }}</router-link>
                 </div>
             </div>
         </custom-header>
 
         <div class="account-content">
             <tabs>
-                <tab name="Recent Orders" :selected="true">
+                <tab :name="$t('Recent Orders')" :selected="true">
                     <div v-if="orders.length">
                         <div :class="['order-list', haveMoreOrders ? 'have-more-orders' : '']">
                             <order-card v-for="order in orders" :key='order.uid' :order="order"></order-card>
                         </div>
 
                         <div class="load-more" v-if="haveMoreOrders">
-                            <router-link class="btn btn-black" :to="'/customer/account/orders'">View All Orders</router-link>
+                            <router-link class="btn btn-black" :to="'/customer/account/orders'">{{ $t('View All Orders') }}</router-link>
                         </div>
                     </div>
 
                     <empty-order-list v-else></empty-order-list>
                 </tab>
 
-                <tab name="Address">
+                <tab :name="$t('Address')">
                     <div class="address-list" v-if="addresses.length">
                         <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
                     </div>
@@ -40,14 +40,14 @@
                     <empty-address-list v-else></empty-address-list>
                 </tab>
 
-                <tab name="Reviews">
+                <tab :name="$t('Reviews')">
                     <div v-if="reviews.length">
                         <div class="review-list">
                             <review-card v-for="review in reviews" :key='review.uid' :review="review"></review-card>
                         </div>
 
                         <div class="load-more" v-if="haveMoreReviews">
-                            <router-link class="btn btn-black" :to="'/customer/account/reviews'">View All Reviews</router-link>
+                            <router-link class="btn btn-black" :to="'/customer/account/reviews'">{{ $t('View All Reviews') }}</router-link>
                         </div>
                     </div>
 

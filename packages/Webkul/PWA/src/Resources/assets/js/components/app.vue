@@ -26,7 +26,7 @@
                     <div class="drawer-content">
 
                         <div class="drawer-box categories">
-                            <h2>Categories</h2>
+                            <h2>{{ $t('Categories') }}</h2>
 
                             <ul>
                                 <li v-for="category in categories">
@@ -39,40 +39,40 @@
                         </div>
 
                         <div class="drawer-box account" v-if="currentUser">
-                            <h2>Account</h2>
+                            <h2>{{ $t('Account') }}</h2>
 
                             <ul>
                                 <li>
                                     <router-link :to="'/customer/account/dashboard'">
-                                        Dashboard
+                                        {{ $t('Dashboard') }}
                                         <i class="icon sharp-arrow-right-icon"></i>
                                     </router-link>
                                 </li>
 
                                 <li>
                                     <router-link :to="'/customer/account/wishlist'">
-                                        Wishlist
+                                        {{ $t('Wishlist') }}
                                         <i class="icon sharp-arrow-right-icon"></i>
                                     </router-link>
                                 </li>
 
                                 <li>
                                     <router-link :to="'/customer/account/orders'">
-                                        Orders
+                                        {{ $t('Orders') }}
                                         <i class="icon sharp-arrow-right-icon"></i>
                                     </router-link>
                                 </li>
 
                                 <li>
                                     <router-link :to="'/customer/account/addresses'">
-                                        Address Book
+                                        {{ $t('Address Book') }}
                                         <i class="icon sharp-arrow-right-icon"></i>
                                     </router-link>
                                 </li>
 
                                 <li>
                                     <router-link :to="'/customer/account/reviews'">
-                                        Product Reviews
+                                        {{ $t('Product Reviews') }}
                                         <i class="icon sharp-arrow-right-icon"></i>
                                     </router-link>
                                 </li>
@@ -80,23 +80,23 @@
                         </div>
 
                         <div class="drawer-box preference" v-if="currencies.length > 1 || locales.length > 1">
-                            <h2>Preference</h2>
+                            <h2>{{ $t('Preference') }}</h2>
 
                             <ul>
                                 <li v-if="currencies.length > 1" @click="handleToggleDrawer(); bottomSheets.currency = true">
-                                    Currency - {{ currentCurrency.name }} ({{ currentCurrency.code }})
+                                    {{ $t('Currency -') }} {{ currentCurrency.name }} ({{ currentCurrency.code }})
                                     <i class="icon sharp-arrow-right-icon"></i>
                                 </li>
 
                                 <li v-if="locales.length > 1" @click="handleToggleDrawer(); bottomSheets.locale = true">
-                                    Language - {{ currentLocale.name }} ({{ currentLocale.code }})
+                                    {{ $t('Language -') }} {{ currentLocale.name }} ({{ currentLocale.code }})
                                     <i class="icon sharp-arrow-right-icon"></i>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="drawer-box logout" v-if="currentUser">
-                            <button class="logout-btn" @click="logout">Log Out</button>
+                            <button class="logout-btn" @click="logout">{{ $t('Log Out') }}</button>
                         </div>
 
                     </div>
@@ -106,7 +106,7 @@
 
             <bottom-sheet v-if="currencies.length > 1" :show="bottomSheets.currency" @onBottomSheetClose="bottomSheets.currency = false; ">
                 <div slot="header">
-                    Currency
+                   {{ $t('Currency') }}
                 </div>
 
                 <div slot="content">
@@ -124,7 +124,7 @@
 
             <bottom-sheet v-if="locales.length > 1" :show="bottomSheets.locale" @onBottomSheetClose="bottomSheets.locale = false; ">
                 <div slot="header">
-                    Languages
+                    {{ $t('Languages') }}
                 </div>
 
                 <div slot="content">

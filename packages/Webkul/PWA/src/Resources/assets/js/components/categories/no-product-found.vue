@@ -2,9 +2,9 @@
     <div class="no-result-found">
         <div class="illustration empty-category-img"></div>
 
-        <h2>Oops!</h2>
+        <h2>{{ $t('Oops!') }}</h2>
 
-        <p>No products found here</p>
+        <p>{{ $t('No products found here') }}</p>
     </div>
 </template>
 

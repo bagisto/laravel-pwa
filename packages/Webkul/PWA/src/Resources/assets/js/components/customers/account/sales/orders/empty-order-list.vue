@@ -2,11 +2,11 @@
     <div class="no-result-found">
         <div class="illustration empty-orders-img"></div>
 
-        <h2>No Orders</h2>
+        <h2>{{ $t('No Orders') }}</h2>
 
-        <p>You have not placed ay order with us yet.</p>
+        <p>{{ $t('You have not placed ay order with us yet.') }}</p>
 
-        <router-link class="btn btn-black" :to="'/'">Stat Shopping</router-link>
+        <router-link class="btn btn-black" :to="'/'">{{ $t('Start Shopping') }}</router-link>
     </div>
 </template>
 

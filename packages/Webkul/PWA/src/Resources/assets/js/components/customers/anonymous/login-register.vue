@@ -6,19 +6,19 @@
             </div>
 
             <div slot="content">
-                <h2>Sign In or Register</h2>
+                <h2>{{ $t('Sign In or Register') }}</h2>
             </div>
         </custom-header>
 
         <div class="form-container">
-            <img :src="channel.logo_url">
+            <div class="shop-title">{{ app_name }}</div>
 
-            <h3>Sign In or Register</h3>
+            <h3>{{ $t('Sign In or Register') }}</h3>
 
             <div class="button-group">
-                <button class="btn btn-outline-black" @click="popups.login = true">Sign In</button>
+                <button class="btn btn-outline-black" @click="popups.login = true">{{ $t('Sign In') }}</button>
 
-                <button class="btn btn-outline-black" @click="popups.register = true">Create An Account</button>
+                <button class="btn btn-outline-black" @click="popups.register = true">{{ $t('Create An Account') }}</button>
             </div>
         </div>
 
@@ -65,6 +65,12 @@
             }
         },
 
+        computed: {
+            app_name () {
+                return window.config.app_short_name ? window.config.app_short_name : 'Bagisto';
+            }
+        },
+
         methods: {
             openPopup (value) {
                 this.popups = { login: false, register: false, forgot_password: false };
@@ -94,7 +100,9 @@
             margin-top: 55px;
             text-align: center;
 
-            img {
+            .shop-title {
+                font-size: 32px;
+                font-weight: 700;
                 margin-bottom: 100px;
             }
 

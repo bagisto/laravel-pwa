@@ -1,7 +1,7 @@
 <template>
     <div class="invoice-card">
         <div class="invoice-details">
-            <label>Invoice</label>
+            <label>{{ $t('Invoice') }}</label>
             <div class="invoice-id">#{{ invoice.id }}</div>
 
             <i class="icon sharp-arrow-right-icon"></i>
@@ -11,13 +11,13 @@
             <router-link class="view-link" :to="'/customer/account/' + $route.params.order_id + '/invoices/' + invoice.id">
                 <i class="icon sharp-invoice-icon"></i>
 
-                <span>View Invoice</span>
+                <span>{{ $t('View Invoice') }}</span>
             </router-link>
 
             <router-link class="print-link" :to="'/customer/account/' + $route.params.order_id + '/invoices/' + invoice.id">
                 <i class="icon sharp-save-icon"></i>
 
-                <span>Save Invoice</span>
+                <span>{{ $t('Save Invoice') }}</span>
             </router-link>
         </div>
     </div>

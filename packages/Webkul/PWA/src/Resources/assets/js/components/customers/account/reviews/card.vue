@@ -10,7 +10,7 @@
             <div class="ratings">
                 <i v-for="i in [1, 2, 3, 4, 5]" :class="['icon', review.rating >= i ? 'star-active-icon' : 'star-icon']"></i>
 
-                <span>{{ parseInt(review.rating) }} Stars</span>
+                <span>{{ $t('number Stars', {number: parseInt(review.rating)}) }}</span>
             </div>
         </div>
 

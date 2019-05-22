@@ -2,11 +2,11 @@
     <div class="no-result-found">
         <div class="illustration empty-reviews-img"></div>
 
-        <h2>No Reviews</h2>
+        <h2>{{ $t('No Reviews') }}</h2>
 
-        <p>You didn’t review any of the items yet.</p>
+        <p>{{ $t('You didn’t review any of the items yet.') }}</p>
 
-        <router-link class="btn btn-black" :to="'/customer/account/orders'">View Order and Review</router-link>
+        <router-link class="btn btn-black" :to="'/customer/account/orders'">{{ $t('View Order and Review') }}</router-link>
     </div>
 </template>
 

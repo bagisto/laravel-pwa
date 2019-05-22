@@ -19,14 +19,14 @@
             <div class="address-section" v-show="step == 1">
                 <form data-vv-scope="address-form">
                     <div class="panel">
-                        <div class="panel-heading">Billing Address</div>
+                        <div class="panel-heading">{{ $t('Billing Address') }}</div>
 
                         <div v-if="! new_address['billing']">
                             <div class="panel-content">
                                 <div class="address-list">
                                     <label class="address-item" v-for="addressTemp in addresses.billing" :for="'billing_address_' + addressTemp.id">
                                         <span class="radio" :class="'billing_address_' + addressTemp.id">
-                                            <input type="radio" v-validate="'required'" :id="'billing_address_' + addressTemp.id" name="billing[address_id]" :value="addressTemp.id" v-model="address.billing.address_id" data-vv-as="'Billing Address'">
+                                            <input type="radio" v-validate="'required'" :id="'billing_address_' + addressTemp.id" name="billing[address_id]" :value="addressTemp.id" v-model="address.billing.address_id" :data-vv-as="$t('Billing Address')">
                                             <label class="radio-view" :for="'billing_address_' + addressTemp.id"></label>
                                         </span>
 
@@ -41,7 +41,7 @@
                                         <i class="icon sharp-arrow-right-icon"></i>
                                     </label>
 
-                                    <input type="radio" v-validate="'required'" name="billing[address_id]" value="0" data-vv-as="'Billing Address'" style="display: none">
+                                    <input type="radio" v-validate="'required'" name="billing[address_id]" value="0" :data-vv-as="$t('Billing Address')" style="display: none">
 
                                     <div class="control-group" :class="[errors.has('address-form.billing[address_id]') ? 'has-error' : '']">
                                         <span class="control-error" v-if="errors.has('address-form.billing[address_id]')">
@@ -55,7 +55,7 @@
                                 <div class="new-address-link" @click="new_address['billing'] = true">
                                     <i class="icon sharp-plus-icon"></i>
 
-                                    <span>New Address</span>
+                                    <span>{{ $t('New Address') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -67,26 +67,26 @@
                                 </div>
 
                                 <div slot="content">
-                                    <h2>Add Billing Address</h2>
+                                    <h2>{{ $t('Add Billing Address') }}</h2>
                                 </div>
                             </custom-header>
 
                             <checkout-address :address="address.billing" type="billing"></checkout-address>
 
                             <div class="button-group">
-                                <button type="button" class="btn btn-black btn-lg" @click="validateForm('billing')">Add</button>
+                                <button type="button" class="btn btn-black btn-lg" @click="validateForm('billing')">{{ $t('Add') }}</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="panel">
-                        <div class="panel-heading">Shipping Address</div>
+                        <div class="panel-heading">{{ $t('Shipping Address') }}</div>
 
                         <div style="padding: 16px">
                             <span class="checkbox" :class="'shipping_address_' + address.id">
                                 <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
                                 <label class="checkbox-view" :for="'shipping_address_' + address.id"></label>
-                                Same as Billing Address
+                                {{ $t('Same as Billing Address') }}
                             </span>
                         </div>
 
@@ -96,7 +96,7 @@
                                     <div class="address-list">
                                         <label class="address-item" v-for="addressTemp in addresses.shipping" :for="'shipping_address_' + addressTemp.id">
                                             <span class="radio" :class="'shipping_address_' + addressTemp.id">
-                                                <input type="radio" v-validate="'required'" :id="'shipping_address_' + addressTemp.id" name="shipping[address_id]" :value="addressTemp.id" v-model="address.shipping.address_id" data-vv-as="'Shipping Address'">
+                                                <input type="radio" v-validate="'required'" :id="'shipping_address_' + addressTemp.id" name="shipping[address_id]" :value="addressTemp.id" v-model="address.shipping.address_id" :data-vv-as="$t('Shipping Address')">
                                                 <label class="radio-view" :for="'shipping_address_' + addressTemp.id"></label>
                                             </span>
 
@@ -111,7 +111,7 @@
                                             <i class="icon sharp-arrow-right-icon"></i>
                                         </label>
 
-                                        <input type="radio" v-validate="'required'" name="shipping[address_id]" value="0" data-vv-as="'Shipping Address'" style="display: none">
+                                        <input type="radio" v-validate="'required'" name="shipping[address_id]" value="0" :data-vv-as="$t('Shipping Address')" style="display: none">
 
                                         <div class="control-group" :class="[errors.has('address-form.shipping[address_id]') ? 'has-error' : '']">
                                             <span class="control-error" v-if="errors.has('address-form.shipping[address_id]')">
@@ -125,7 +125,7 @@
                                     <div class="new-address-link" @click="new_address['shipping'] = true">
                                         <i class="icon sharp-plus-icon"></i>
 
-                                        <span>New Address</span>
+                                        <span>{{ $t('New Address') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -137,14 +137,14 @@
                                     </div>
 
                                     <div slot="content">
-                                        <h2>Add Shipping Address</h2>
+                                        <h2>{{ $t('Add Shipping Address') }}</h2>
                                     </div>
                                 </custom-header>
                                 
                                 <checkout-address :address="address.shipping" type="shipping"></checkout-address>
 
                                 <div class="button-group">
-                                    <button type="button" class="btn btn-black btn-lg" @click="validateForm('shipping')">Add</button>
+                                    <button type="button" class="btn btn-black btn-lg" @click="validateForm('shipping')">{{ $t('Add') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
             <div class="shipping-section" v-show="step == 2">
                 <form data-vv-scope="shipping-form">
                     <div class="panel">
-                        <div class="panel-heading">Shipping Methods</div>
+                        <div class="panel-heading">{{ $t('Shipping Methods') }}</div>
 
                         <div class="panel-content">
                             <div class="form-container shipping-methods" :class="[errors.has('shipping-form.shipping_method') ? 'has-error' : '']">
@@ -180,7 +180,7 @@
             <div class="payment-section" v-show="step == 3">
                 <form data-vv-scope="payment-form">
                     <div class="panel">
-                        <div class="panel-heading">Payment Methods</div>
+                        <div class="panel-heading">{{ $t('Payment Methods') }}</div>
 
                         <div class="panel-content">
                             <div class="form-container payment-methods" :class="[errors.has('payment-form.payment_method') ? 'has-error' : '']">
@@ -202,11 +202,11 @@
 
             <div class="review-section" v-show="step == 4">
                 <div class="panel">
-                    <div class="panel-heading">Billing Info</div>
+                    <div class="panel-heading">{{ $t('Billing Info') }}</div>
 
                     <div class="panel-content" style="padding: 16px">
                         <div class="billing-address" v-if="cart.billing_address">
-                            <h2>Billing Address</h2>
+                            <h2>{{ $t('Billing Address') }}</h2>
                             <div class="address-details">
                                 {{ cart.billing_address.address1.join(' ') }}</br>
                                 {{ cart.billing_address.city }}</br>
@@ -217,7 +217,7 @@
                         </div>
 
                         <div class="payment-method" v-if="cart.payment">
-                            <h2>Payment Method</h2>
+                            <h2>{{ $t('Payment Method') }}</h2>
                             <div class="method-title">
                                 {{ cart.payment.method_title }}
                             </div>
@@ -226,11 +226,11 @@
                 </div>
 
                 <div class="panel">
-                    <div class="panel-heading">Shipping Info</div>
+                    <div class="panel-heading">{{ $t('Shipping Info') }}</div>
 
                     <div class="panel-content" style="padding: 16px">
                         <div class="shipping-address" v-if="cart.shipping_address">
-                            <h2>Shipping Address</h2>
+                            <h2>{{ $t('Shipping Address') }}</h2>
                             <div class="address-details">
                                 {{ cart.shipping_address.address1.join(' ') }}</br>
                                 {{ cart.shipping_address.city }}</br>
@@ -241,7 +241,7 @@
                         </div>
 
                         <div class="shipping-method" v-if="cart.selected_shipping_rate">
-                            <h2>Shipping Method</h2>
+                            <h2>{{ $t('Shipping Method') }}</h2>
                             <div class="method-title">
                                 {{ cart.selected_shipping_rate.method_title + ' - ' + cart.selected_shipping_rate.formated_price }}
                             </div>
@@ -250,7 +250,7 @@
                 </div>
 
                 <div class="panel">
-                    <div class="panel-heading">{{ cart.items.length }} Item(s)</div>
+                    <div class="panel-heading">{{ cart.items.length }} {{ $t('Item(s)') }}</div>
 
                     <div class="panel-content" style="padding-left: 16px">
                         <div class="cart-item-list">
@@ -266,12 +266,12 @@
                                     </div>
 
                                     <div class="cart-item-price">
-                                        <label>Price : </label>
+                                        <label>{{ $t('Price :') }} </label>
                                         <span>{{ cartItem.formated_price }}</span>
                                     </div>
 
                                     <div class="cart-item-subtotal">
-                                        <label>Subtotal : </label>
+                                        <label>{{ $t('Subtotal :') }} </label>
                                         <span>{{ cartItem.formated_total }}</span>
                                     </div>
                                 </div>
@@ -285,22 +285,22 @@
                         <table class="total-summary">
                             <tbody>
                                 <tr>
-                                    <td>Subtotal</td>
+                                    <td>{{ $t('Subtotal') }}</td>
                                     <td>{{ cart.formated_sub_total }}</td>
                                 </tr>
 
                                 <tr v-if="cart.selected_shipping_rate">
-                                    <td>Shipping</td>
+                                    <td>{{ $t('Shipping') }}</td>
                                     <td>{{ cart.selected_shipping_rate.formated_price }}</td>
                                 </tr>
 
                                 <tr>
-                                    <td>Tax</td>
+                                    <td>{{ $t('Tax') }}</td>
                                     <td>{{ cart.formated_tax_total }}</td>
                                 </tr>
 
                                 <tr class="last">
-                                    <td>Order Total</td>
+                                    <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
                                 </tr>
                             </tbody>
@@ -311,13 +311,13 @@
 
             <div class="checkout-action">
                 <span class="total-info">
-                    <p>Amt. to be paid</p>
+                    <p>{{ $t('Amt. to be paid') }}</p>
                     <h3>{{ cart.formated_grand_total }}</h3>
                 </span>
 
-                <button type="button" class="btn btn-black" v-if="step != 4" @click="validateForm()" :disabled="disable_button">Proceed</button>
+                <button type="button" class="btn btn-black" v-if="step != 4" @click="validateForm()" :disabled="disable_button">{{ $t('Proceed') }}</button>
 
-                <button type="button" class="btn btn-success" v-if="step == 4" @click="placeOrder()" :disabled="disable_button">Place Order</button>
+                <button type="button" class="btn btn-success" v-if="step == 4" @click="placeOrder()" :disabled="disable_button">{{ $t('Place Order') }}</button>
             </div>
         </div>
     </div>
@@ -347,10 +347,10 @@
                 step: 1,
 
                 stepLabels: {
-                    1: 'Address',
-                    2: 'Shipping',
-                    3: 'Payment',
-                    4: 'Review',
+                    1: this.$t('Address'),
+                    2: this.$t('Shipping'),
+                    3: this.$t('Payment'),
+                    4: this.$t('Review'),
                 },
 
                 address: {

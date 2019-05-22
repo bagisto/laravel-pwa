@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="control-group" :class="[errors.has(errorFieldName('country')) ? 'has-error' : '']">
-            <select type="text" v-validate="'required'" class="control" :id="type + '[country]'" :name="type + '[country]'" v-model="address.country" data-vv-as="'Country'">
+            <select type="text" v-validate="'required'" class="control" :id="type + '[country]'" :name="type + '[country]'" v-model="address.country" :data-vv-as="$t('Country')">
                 <option value=""></option>
 
                 <option v-for="country in countries" :value="country.code">{{ country.name }}</option>
             </select>
 
             <label :for="type + '[country]'" class="required">
-                Country
+                {{ $t('Country') }}
             </label>
 
             <span class="control-error" v-if="errors.has(errorFieldName('country'))">
@@ -17,11 +17,11 @@
         </div>
 
         <div class="control-group" :class="[errors.has(errorFieldName('state')) ? 'has-error' : '']">
-            <input type="text" v-validate="'required'" class="control" :id="type + '[state]'" :name="type + '[state]'" v-model="address.state" v-if="! haveStates(type)" placeholder="State" data-vv-as="'State'"/>
+            <input type="text" v-validate="'required'" class="control" :id="type + '[state]'" :name="type + '[state]'" v-model="address.state" v-if="! haveStates(type)" :placeholder="$t('State')" :data-vv-as="$t('State')"/>
 
-            <select v-validate="'required'" class="control" :id="type + '[state]'" :name="type + '[state]'" v-model="address.state" v-if="haveStates(type)" data-vv-as="'State'">
+            <select v-validate="'required'" class="control" :id="type + '[state]'" :name="type + '[state]'" v-model="address.state" v-if="haveStates(type)" :data-vv-as="$t('State')">
 
-                <option value="">Please Select State</option>
+                <option value="">{{ $t('Please Select State') }}</option>
 
                 <option v-for='(state, index) in countryStates[address.country]' :value="state.code">
                     {{ state.default_name }}
@@ -30,7 +30,7 @@
             </select>
 
             <label :for="type + '[state]'" class="required">
-                State
+                {{ $t('State') }}
             </label>
 
             <span class="control-error" v-if="errors.has(errorFieldName('state'))">

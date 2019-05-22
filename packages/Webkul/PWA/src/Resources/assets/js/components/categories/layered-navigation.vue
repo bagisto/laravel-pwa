@@ -4,12 +4,12 @@
             <ul>
                 <li @click="bottomSheets.sort = true">
                     <i class="icon sharp-sort-icon"></i>
-                    Sort
+                    {{ $t('Sort') }}
                 </li>
 
                 <li @click="bottomSheets.filter = true">
                     <i class="icon sharp-filter-icon"></i>
-                    Filter
+                    {{ $t('Filter') }}
                 </li>
                 
                 <!--<li>
@@ -21,7 +21,7 @@
 
         <bottom-sheet :show="bottomSheets.sort" @onBottomSheetClose="bottomSheets.sort = false;">
             <div slot="header">
-                Sort By
+                {{ $t('Sort By') }}
             </div>
 
             <div slot="content">
@@ -47,9 +47,9 @@
 
         <bottom-sheet :show="bottomSheets.filter" :class-name="'filter-bottom-sheet'" @onBottomSheetClose="bottomSheets.filter = false;">
             <div slot="header">
-                Filters
+                {{ $t('Filters') }}
 
-                <span class="label label-grey" @click="clearFilter">Clear All</span>
+                <span class="label label-grey" @click="clearFilter">{{ $t('Clear All') }}</span>
             </div>
 
             <div slot="content">
@@ -113,9 +113,9 @@
                 </div>
 
                 <div class="filter-action">
-                    <span class="cancel-btn" @click="cancelFilter">Cancel</span>
+                    <span class="cancel-btn" @click="cancelFilter">{{ $t('Cancel') }}</span>
 
-                    <button class="btn btn-black" @click="applyFilter">Apply</button>
+                    <button class="btn btn-black" @click="applyFilter">{{ $t('Apply') }}</button>
                 </div>
             </div>
         </bottom-sheet>
@@ -142,32 +142,32 @@
                 sortOptions: [
                     {
                         'code': 'name_asc',
-                        'label': 'From Z-A',
+                        'label': this.$t('From A-Z'),
                         'sort': 'name',
                         'order': 'asc'
                     }, {
                         'code': 'name_desc',
-                        'label': 'From Z-A',
+                        'label': this.$t('From Z-A'),
                         'sort': 'name',
                         'order': 'desc'
                     }, {
                         'code': 'created_at_desc',
-                        'label': 'Newest First',
+                        'label': this.$t('Newest First'),
                         'sort': 'created_at',
                         'order': 'desc'
                     }, {
                         'code': 'created_at_asc',
-                        'label': 'Oldest First',
+                        'label': this.$t('Oldest First'),
                         'sort': 'created_at',
                         'order': 'asc'
                     }, {
                         'code': 'price_asc',
-                        'label': 'Cheapest First',
+                        'label': this.$t('Cheapest First'),
                         'sort': 'price',
                         'order': 'asc'
                     }, {
                         'code': 'price_desc',
-                        'label': 'Expensive First',
+                        'label': this.$t('Expensive First'),
                         'sort': 'price',
                         'order': 'desc'
                     }

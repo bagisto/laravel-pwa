@@ -1,12 +1,12 @@
 <template>
     <div class="content">
 
-        <custom-header :title="'Invoice - #' + $route.params.id"></custom-header>
+        <custom-header :title="$t('Invoice - #invoice_id', {invoice_id: $route.params.id})"></custom-header>
 
         <div class="invoice-details" v-if="invoice">
 
             <div class="invoice-items-section sale-section">
-                <h2 class="sale-section-title">{{ invoice.items.length }} Item(s)</h2>
+                <h2 class="sale-section-title">{{ $t('numner Item(s)', {number: invoice.items.length}) }}</h2>
 
                 <div class="invoice-item-list sale-section-content">
                     <div class="invoice-item" v-for="invoiceItem in invoice.items">
@@ -23,17 +23,17 @@
                                     </div>
                                 </div>
 
-                                <label>Qty - </label>
+                                <label>{{ $t('Qty -') }} </label>
                                 <span>{{ invoiceItem.qty }}</span>
                             </div>
 
                             <div class="invoice-item-price">
-                                <label>Price - </label>
+                                <label>{{ $t('Price -') }} </label>
                                 <span>{{ invoiceItem.formated_price }}</span>
                             </div>
 
                             <div class="invoice-item-total">
-                                <label>Sub Total - </label>
+                                <label>{{ $t('Sub Total -') }} </label>
                                 <span>{{ invoiceItem.formated_grand_total }}</span>
                             </div>
                         </div>
@@ -42,28 +42,28 @@
             </div>
 
             <div class="total-sale-section sale-section">
-                <h2 class="sale-section-title">Price Details</h2>
+                <h2 class="sale-section-title">{{ $t('Price Details') }}</h2>
 
                 <div class="invoice-totals sale-section-content">
                     <table class="sale-summary">
                         <tbody>
                             <tr>
-                                <td>Subtotal</td>
+                                <td>{{ $t('Subtotal') }}</td>
                                 <td>{{ invoice.formated_sub_total }}</td>
                             </tr>
 
                             <tr>
-                                <td>Shipping and Handling</td>
+                                <td>{{ $t('Shipping and Handling') }}</td>
                                 <td>{{ invoice.formated_shipping_amount }}</td>
                             </tr>
 
                             <tr>
-                                <td>Tax</td>
+                                <td>{{ $t('Tax') }}</td>
                                 <td>{{ invoice.formated_tax_amount }}</td>
                             </tr>
 
                             <tr class="bold last">
-                                <td>Grand Total</td>
+                                <td>{{ $t('Grand Total') }}</td>
                                 <td>{{ invoice.formated_grand_total }}</td>
                             </tr>
                         </tbody>
@@ -75,7 +75,7 @@
                 <router-link class="sale-section-content" :to="'/customer/account/' + $route.params.order_id + '/invoices/' + invoice.id">
                     <i class="icon sharp-save-icon"></i>
 
-                    <span>Save Invoice</span>
+                    <span>{{ $t('Save Invoice') }}</span>
                 </router-link>
             </div>
         </div>

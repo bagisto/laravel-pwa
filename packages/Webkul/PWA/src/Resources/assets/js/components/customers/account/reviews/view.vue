@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <custom-header title="Review Details"></custom-header>
+        <custom-header :title="$t('Review Details')"></custom-header>
 
         <div class="review-details" v-if="review">
             <div class="product-details">
@@ -19,17 +19,17 @@
                             :class="['icon', review.product.reviews.average_rating >= i ? 'star-active-icon' : 'star-icon']"
                         ></i>
 
-                        <span>{{ parseInt(review.product.reviews.average_rating) }} Stars</span>
+                        <span>{{ $t('number Stars', {number: parseInt(review.product.reviews.average_rating)}) }}</span>
                     </div>
 
                     <router-link class="product-total-reviews" :to="'/reviews/' + review.product.id">
-                        {{ review.product.reviews.total }} Reviews
+                        {{ $t('number Reviews', {number: review.product.reviews.total}) }}
                     </router-link>
                 </div>
             </div>
 
             <div class="review-heading">
-                <h3>Your Review</h3>
+                <h3>{{ $t('Your Review') }}</h3>
             </div>
 
             <div class="review-info">
@@ -38,7 +38,7 @@
                 <p class="review-comment">{{ review.comment }}</p>
 
                 <div class="ratings">
-                    <label>Rating</label>
+                    <label>{{ $t('Rating') }}</label>
 
                     <span class="stars">
                         <i
@@ -47,11 +47,11 @@
                         ></i>
                     </span>
 
-                    <span>{{ parseInt(review.rating) }} Stars</span>
+                    <span>{{ $t('number Stars', {number: parseInt(review.rating)}) }}</span>
                 </div>
 
                 <div class="review-date">
-                    <label>Submitted on</label>
+                    <label>{{ $t('Submitted on') }}</label>
                     <span>{{ new Date(review.created_at.date) | moment("MMMM D, YYYY") }}</span>
                 </div>
             </div>

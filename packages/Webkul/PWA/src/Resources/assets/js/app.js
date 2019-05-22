@@ -44,7 +44,7 @@ const app = new Vue({
 
     i18n,
 
-    mounted () {
+    created () {
         var this_this = this;
 
         axios.interceptors.response.use(

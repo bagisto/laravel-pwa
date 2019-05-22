@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <custom-header title="Orders"></custom-header>
+        <custom-header :title="$t('Orders')"></custom-header>
 
         <div class="order-list" v-if="orders.length">
             <order-card v-for="order in orders" :key='order.uid' :order="order"></order-card>
@@ -8,7 +8,7 @@
 
         <empty-order-list v-else></empty-order-list>
 
-        <pagination label="Load More Order" v-bind="pagination" @onPaginate="paginate($event)"></pagination>
+        <pagination :label="$t('Load More Orders')" v-bind="pagination" @onPaginate="paginate($event)"></pagination>
     </div>
 </template>
 

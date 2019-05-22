@@ -1,21 +1,21 @@
 <template>
     <div class="content">
-        <custom-header title="No Internet">
+        <custom-header :title="$t('No Internet')">
             <div slot="back-botton">
                 <i class="icon back-icon" @click="$router.push({name: 'home'})"></i>
             </div>
 
             <div slot="content">
-                <h2>No Internet</h2>
+                <h2>{{ $t('No Internet') }}</h2>
             </div>
         </custom-header>
 
         <div class="offline">
             <div class="illustration offline-img"></div>
 
-            <h2>Opps!</h2>
+            <h2>{{ $t('Opps!') }}</h2>
 
-            <p>You are not connected to the internet, please try again in some time.</p>
+            <p>{{ $t('You are not connected to the internet, please try again in some time.') }}</p>
         </div>
     </div>
 </template>

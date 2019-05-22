@@ -6,22 +6,22 @@
             </div>
 
             <div slot="content">
-                <h2>Forgot Password</h2>
+                <h2>{{ $t('Forgot Password') }}</h2>
             </div>
         </custom-header>
 
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
                 <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
-                    <input type="text" name="email" class="control" v-model="user.email" v-validate="'required|email'" placeholder="Email Address" data-vv-as='"Email Address"'/>
-                    <label>Email Address</label>
+                    <input type="text" name="email" class="control" v-model="user.email" v-validate="'required|email'" :placeholder="$t('Email Address')" :data-vv-as="$t('Email Address')"/>
+                    <label>{{ $t('Email Address') }}</label>
                     <span class="control-error" v-if="errors.has('email')">{{ errors.first('email') }}</span>
                 </div>
 
                 <div class="button-group">
-                    <button class="btn btn-black btn-lg">Submit</button>
+                    <button class="btn btn-black btn-lg">{{ $t('Submit') }}</button>
                     
-                    <button class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'login')">Sign In</button>
+                    <button class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'login')">{{ $t('Sign In') }}</button>
                 </div>
             </div>
         </form>

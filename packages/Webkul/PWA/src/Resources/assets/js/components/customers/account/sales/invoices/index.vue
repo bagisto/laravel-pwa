@@ -1,17 +1,17 @@
 <template>
     <div :class="['content', 'order', isMenuExpanded ? 'expanded' : '']">
 
-        <sales-header title="Invoices" active="invoice" :order-id="$route.params.order_id" @onHeaderToggle="toggleHeader($event)"></sales-header>
+        <sales-header :title="$t('Invoices')" active="invoice" :order-id="$route.params.order_id" @onHeaderToggle="toggleHeader($event)"></sales-header>
 
         <div class="order-details" v-if="order">
             <div class="order-info-section sale-section">
-                <h2 class="sale-section-title">Order #{{ $route.params.order_id }}</h2>
+                <h2 class="sale-section-title">{{ $t('Order #order_id', {order_id: $route.params.order_id}) }}</h2>
 
                 <div class="order-content sale-section-content">
-                    <label>Placed On</label>
+                    <label>{{ $t('Placed On') }}</label>
 
                     <div class="date-status">
-                        <span class="date">December 27, 2018</span>
+                        <span class="date">{{ new Date(order.created_at.date) | moment("D MMMM YYYY") }}</span>
                         <span :class="['status', order.status]">{{ order.status_label }}</span>
                     </div>
                 </div>

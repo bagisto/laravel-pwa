@@ -4,7 +4,7 @@
 
         <div class="cart-container" v-if="cart && cart.items.length">
             <h2 class="item-count">
-                {{ $t('1 Item(s)', { num: cart.items.length }) }}
+                {{ $t('number Item(s)', { number: cart.items.length }) }}
             </h2>
 
             <div class="cart-item-list">
@@ -23,39 +23,39 @@
                     <div class="update-cart-link" @click="updateCart">
                         <i class="icon update-icon"></i>
 
-                        <span>Update Cart</span>
+                        <span>{{ $t('Update Cart') }}</span>
                     </div>
 
                     <div class="empty-cart-link" @click="emptyCart">
                         <i class="icon empty-cart-icon"></i>
 
-                        <span>Empty Cart</span>
+                        <span>{{ $t('Empty Cart') }}</span>
                     </div>
                 </div>
 
                 <div class="panel-content">
-                    <router-link :to="'/'">Continue Shopping</router-link>
+                    <router-link :to="'/'">{{ $t('Continue Shopping') }}</router-link>
                 </div>
             </div>
 
             <div class="total-summary">
-                <accordian :title="'Order Summary'" :active="true">
+                <accordian :title="$t('Order Summary')" :active="true">
                     <div slot="body">
 
                         <table>
                             <tbody>
                                 <tr>
-                                    <td>Subtotal</td>
+                                    <td>{{ $t('Subtotal') }}</td>
                                     <td>{{ cart.formated_sub_total }}</td>
                                 </tr>
 
                                 <tr>
-                                    <td>Tax</td>
+                                    <td>{{ $t('Tax') }}</td>
                                     <td>{{ cart.formated_tax_total }}</td>
                                 </tr>
 
                                 <tr class="last">
-                                    <td>Order Total</td>
+                                    <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
                                 </tr>
                             </tbody>
@@ -67,11 +67,11 @@
 
             <div class="checkout-action">
                 <span class="total-info">
-                    <p>Amt. to be paid</p>
+                    <p>{{ $t('Amt. to be paid') }}</p>
                     <h3>{{ cart.formated_grand_total }}</h3>
                 </span>
 
-                <router-link class="btn btn-black" :to="'onepage'">Proceed</router-link>
+                <router-link class="btn btn-black" :to="'onepage'">{{ $t('Proceed') }}</router-link>
             </div>
         </div>
 
@@ -113,8 +113,6 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.cart = response.data.data;
-
-                        console.log(this_this.cart)
 
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })

@@ -3,7 +3,7 @@
         <custom-header>
             <div slot="content">
                 <form @submit.prevent="search(term)">
-                    <input type="text" class="search-control" v-model="term" placeholder="Search for products"/>
+                    <input type="text" class="search-control" v-model="term" :placeholder="$t('Search for products')"/>
                 </form>
             </div>
         </custom-header>
@@ -11,9 +11,9 @@
         <div class="search-container">
             <div class="panel recent-searches" v-if="recentSearches.length">
                 <div class="panel-heading">
-                    Recent Searches
+                    {{ $t('Recent Searches') }}
 
-                    <span class="label label-grey" @click="removeAllSaveTerm">Clear All</span>
+                    <span class="label label-grey" @click="removeAllSaveTerm">{{ $t('Clear All') }}</span>
                 </div>
 
                 <div class="panel-content">
@@ -29,7 +29,7 @@
 
             <div class="panel categories" v-if="categories.length">
                 <div class="panel-heading">
-                    Categories
+                    {{ $t('Categories') }}
                 </div>
 
                 <div class="panel-content">

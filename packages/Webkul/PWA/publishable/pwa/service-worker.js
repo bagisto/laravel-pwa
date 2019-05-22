@@ -328,20 +328,6 @@ function getCacheData(request, cacheName) {
 
 function fallBackResponse(type) {
     switch (type) {
-        case 'post':
-            var headers = {
-                "Cache-Control": "no-cache",
-                "Connection": "Keep-Alive",
-                "Content-Length": "7960",
-                "Content-Type": "application/json"
-            }
-
-            var body = {
-                success: 'You are offline right now, we stored your data and will sync it as soon as you will get online.'
-            };
-
-            return new Response(JSON.stringify(body), { "headers": headers });
-
         case 'live':
             var headers = {
                 "Cache-Control": "no-cache",

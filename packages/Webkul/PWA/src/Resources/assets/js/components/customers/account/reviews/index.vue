@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <custom-header title="Reviews"></custom-header>
+        <custom-header :title="$t('Reviews')"></custom-header>
 
         <div class="review-list" v-if="reviews.length">
             <review-card v-for="review in reviews" :key='review.uid' :review="review"></review-card>

@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <custom-header title="Review Details"></custom-header>
+        <custom-header :title="$t('Review Details')"></custom-header>
 
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container" v-if="product">
@@ -24,25 +24,25 @@
                     </div>
 
                     <div class="control-group" :class="[errors.has('name') ? 'has-error' : '']">
-                        <input type="text" name="name" class="control" v-model="review.name" v-validate="'required'" placeholder="Name" data-vv-as='"Name"'/>
-                        <label>Name</label>
+                        <input type="text" name="name" class="control" v-model="review.name" v-validate="'required'" :placeholder="$t('Name')" :data-vv-as="$t('Name')"/>
+                        <label>{{ $t('Name') }}</label>
                         <span class="control-error" v-if="errors.has('name')">{{ errors.first('name') }}</span>
                     </div>
                     
                     <div class="control-group" :class="[errors.has('title') ? 'has-error' : '']">
-                        <input type="text" name="title" class="control" v-model="review.title" v-validate="'required'" placeholder="Title" data-vv-as='"Title"'/>
-                        <label>Title</label>
+                        <input type="text" name="title" class="control" v-model="review.title" v-validate="'required'" :placeholder="$t('Title')" :data-vv-as="$t('Title')"/>
+                        <label>{{ $t('Title') }}</label>
                         <span class="control-error" v-if="errors.has('title')">{{ errors.first('title') }}</span>
                     </div>
                     
                     <div class="control-group" :class="[errors.has('comment') ? 'has-error' : '']">
-                        <textarea name="comment" class="control" v-model="review.comment" v-validate="'required'" placeholder="Review" data-vv-as='"Review"'></textarea>
-                        <label>Review</label>
+                        <textarea name="comment" class="control" v-model="review.comment" v-validate="'required'" :placeholder="$t('Review')" :data-vv-as="$t('Review')"></textarea>
+                        <label>{{ $t('Review') }}</label>
                         <span class="control-error" v-if="errors.has('comment')">{{ errors.first('comment') }}</span>
                     </div>
 
                     <div class="button-group">
-                        <button type="submit" class="btn btn-black btn-lg" :disabled="loading">Save</button>
+                        <button type="submit" class="btn btn-black btn-lg" :disabled="loading">{{ $t('Save') }}</button>
                     </div>
                 </div>
             </div>

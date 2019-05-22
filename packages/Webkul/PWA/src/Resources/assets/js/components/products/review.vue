@@ -7,12 +7,12 @@
             </span>
 
             <span class="total-review">
-                {{ product.reviews.total }} Reviews
+                {{ $t('number Reviews', {number: product.reviews.total}) }}
             </span>
         </span>
 
         <router-link :to="'/reviews/' + product.id + '/create'">
-            Add Your Review
+            {{ $t('Add Your Review') }}
         </router-link>
     </div>
 </template>

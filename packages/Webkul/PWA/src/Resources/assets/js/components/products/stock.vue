@@ -2,11 +2,11 @@
     <div class="product-stock">
 
         <span class="active" v-if="product.in_stock">
-            In Stock
+            {{ $t('In Stock') }}
         </span>
 
         <span v-if="! product.in_stock">
-            Out Of Stock
+            {{ $t('Out Of Stock') }}
         </span>
     </div>
 </template>

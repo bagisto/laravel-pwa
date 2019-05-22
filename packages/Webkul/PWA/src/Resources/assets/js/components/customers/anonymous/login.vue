@@ -6,32 +6,32 @@
             </div>
 
             <div slot="content">
-                <h2>Sign In</h2>
+                <h2>{{ $t('Sign In') }}</h2>
             </div>
         </custom-header>
 
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
                 <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
-                    <input type="text" name="email" class="control" v-model="user.email" v-validate="'required|email'" placeholder="Email Address" data-vv-as='"Email Address"'/>
-                    <label>Email Address</label>
+                    <input type="text" name="email" class="control" v-model="user.email" v-validate="'required|email'" :placeholder="$t('Email Address')" :data-vv-as="$t('Email Address')"/>
+                    <label>{{ $t('Email Address') }}</label>
                     <span class="control-error" v-if="errors.has('email')">{{ errors.first('email') }}</span>
                 </div>
 
                 <div class="control-group" :class="[errors.has('password') ? 'has-error' : '']">
-                    <input type="password" name="password" class="control" v-model="user.password" v-validate="'required|min:6'" placeholder="Password" data-vv-as='"Password"'/>
-                    <label>Password</label>
+                    <input type="password" name="password" class="control" v-model="user.password" v-validate="'required|min:6'" :placeholder="$t('Password')" :data-vv-as="$t('Password')"/>
+                    <label>{{ $t('Password') }}</label>
                     <span class="control-error" v-if="errors.has('password')">{{ errors.first('password') }}</span>
                 </div>
 
                 <div class="control-group">
-                    <span class="forgot-password" @click="$emit('onOpenPopup', 'forgot_password')">Forgot Password?</span>
+                    <span class="forgot-password" @click="$emit('onOpenPopup', 'forgot_password')">{{ $t('Forgot Password?') }}</span>
                 </div>
 
                 <div class="button-group">
-                    <button type="submit" class="btn btn-black btn-lg" :disabled="loading">Sign In</button>
+                    <button type="submit" class="btn btn-black btn-lg" :disabled="loading">{{ $t('Sign In') }}</button>
                     
-                    <button type="button" class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'register')">Create An Account</button>
+                    <button type="button" class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'register')">{{ $t('Create An Account') }}</button>
                 </div>
             </div>
         </form>

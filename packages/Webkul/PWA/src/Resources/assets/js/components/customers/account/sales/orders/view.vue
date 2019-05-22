@@ -1,24 +1,24 @@
 <template>
     <div :class="['content', 'order', isMenuExpanded ? 'expanded' : '']">
 
-        <sales-header title="Order Details" active="order" :order-id="$route.params.id" @onHeaderToggle="toggleHeader($event)"></sales-header>
+        <sales-header :title="$t('Order Details')" active="order" :order-id="$route.params.id" @onHeaderToggle="toggleHeader($event)"></sales-header>
 
         <div class="order-details" v-if="order">
             <div class="order-info-section sale-section">
                 <h2 class="sale-section-title">Order #0000123</h2>
 
                 <div class="order-content sale-section-content">
-                    <label>Placed On</label>
+                    <label>{{ $t('Placed On') }}</label>
 
                     <div class="date-status">
-                        <span class="date">December 27, 2018</span>
+                        <span class="date">{{ new Date(order.created_at.date) | moment("D MMMM YYYY") }}</span>
                         <span :class="['status', order.status]">{{ order.status_label }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="order-items-section sale-section">
-                <h2 class="sale-section-title">{{ order.items.length }} Item(s) Ordered</h2>
+                <h2 class="sale-section-title">{{ $t('number Item(s) Ordered', {number: order.items.length}) }}</h2>
 
                 <div class="order-item-list sale-section-content">
                     <div class="order-item" v-for="orderItem in order.items">
@@ -39,34 +39,34 @@
                                     </div>
                                 </div>
 
-                                <label>Qty - </label>
+                                <label>{{ $t('Qty -') }} </label>
                                 <span>{{ orderItem.qty_ordered }}</span>
                             </div>
 
                             <div class="order-item-qty-invoiced" v-if="orderItem.qty_invoiced">
-                                <label>Qty Invoiced - </label>
+                                <label>{{ $t('Qty Invoiced -') }} </label>
                                 <span>{{ orderItem.qty_invoiced }}</span>
                             </div>
 
                             <div class="order-item-qty-shipped" v-if="orderItem.qty_shipped">
-                                <label>Qty Shipped - </label>
+                                <label>{{ $t('Qty Shipped -') }} </label>
                                 <span>{{ orderItem.qty_shipped }}</span>
                             </div>
 
                             <div class="order-item-price">
-                                <label>Price - </label>
+                                <label>{{ $t('Price -') }} </label>
                                 <span>{{ orderItem.formated_price }}</span>
                             </div>
 
                             <div class="order-item-total">
-                                <label>Total - </label>
+                                <label>{{ $t('Total -') }} </label>
                                 <span>{{ orderItem.formated_grant_total }}</span>
                             </div>
 
                             <div class="order-item-review-link">
                                 <router-link class="btn btn-black btn-sm" :to="'/reviews/' + orderItem.product.id + '/create'">
                                     <i class="icon white-post-review-icon"></i>
-                                    Write a Review
+                                    {{ $t('Write a Review') }}
                                 </router-link>
                             </div>
                         </div>
@@ -75,38 +75,38 @@
             </div>
 
             <div class="total-sale-section sale-section">
-                <h2 class="sale-section-title">Price Details</h2>
+                <h2 class="sale-section-title">{{ $t('Price Details') }}</h2>
 
                 <div class="order-totals sale-section-content">
                     <table class="sale-summary">
                         <tbody>
                             <tr>
-                                <td>Subtotal</td>
+                                <td>{{ $t('Subtotal') }}</td>
                                 <td>{{ order.formated_sub_total }}</td>
                             </tr>
 
                             <tr>
-                                <td>Shipping Handling</td>
+                                <td>{{ $t('Shipping Handling') }}</td>
                                 <td>{{ order.formated_shipping_amount }}</td>
                             </tr>
 
                             <tr class="border">
-                                <td>Tax</td>
+                                <td>{{ $t('Tax') }}</td>
                                 <td>{{ order.formated_tax_amount }}</td>
                             </tr>
 
                             <tr class="bold">
-                                <td>Total Paid</td>
+                                <td>{{ $t('Total Paid') }}</td>
                                 <td>{{ order.formated_grand_total_invoiced }}</td>
                             </tr>
 
                             <tr class="bold">
-                                <td>Total Refunded</td>
+                                <td>{{ $t('Total Refunded') }}</td>
                                 <td>{{ order.formated_grand_total_refunded }}</td>
                             </tr>
 
                             <tr class="bold last">
-                                <td>Grand Total</td>
+                                <td>{{ $t('Grand Total') }}</td>
                                 <td>{{ order.formated_grand_total }}</td>
                             </tr>
 
@@ -121,11 +121,11 @@
             </div>
 
             <div class="shipping-payment-section sale-section">
-                <h2 class="sale-section-title">Shipping and Payment Info</h2>
+                <h2 class="sale-section-title">{{ $t('Shipping and Payment Info') }}</h2>
 
                 <div class="shipping-payment sale-section-content">
                     <div class="shipping-address">
-                        <h3>Shipping Address</h3>
+                        <h3>{{ $t('Shipping Address') }}</h3>
                         
                         <div class="address-deatils">
                             {{ order.shipping_address.address1.join(' ') }}</br>
@@ -137,7 +137,7 @@
                     </div>
 
                     <div class="billing-address">
-                        <h3>Billing Address</h3>
+                        <h3>{{ $t('Billing Address') }}</h3>
                         
                         <div class="address-deatils">
                             {{ order.billing_address.address1.join(' ') }}</br>
@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="shipping-method">
-                        <h3>Shipping Method</h3>
+                        <h3>{{ $t('Shipping Method') }}</h3>
                         
                         <div class="shipping-method-deatils">
                             {{ order.shipping_title }}
@@ -157,7 +157,7 @@
                     </div>
 
                     <div class="payment-method">
-                        <h3>Payment Method</h3>
+                        <h3>{{ $t('Payment Method') }}</h3>
                         
                         <div class="payment-method-deatils">
                             {{ order.payment_title }}

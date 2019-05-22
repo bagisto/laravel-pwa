@@ -3,13 +3,13 @@
         <div class="wishlist-link" @click="moveToWishlist">
             <i class="icon wishlist-icon" :class="[product.is_saved ? 'filled-wishlist-icon' : '']"></i>
 
-            <span>Wishlist</span>
+            <span>{{ $t('Wishlist') }}</span>
         </div>
 
         <div class="share-link" @click="share">
             <i class="icon share-icon"></i>
 
-            <span>Share</span>
+            <span>{{ $t('Share') }}</span>
         </div>
     </div>
 </template>

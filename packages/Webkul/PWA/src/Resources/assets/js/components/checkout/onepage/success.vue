@@ -2,13 +2,13 @@
     <div class="order-success">
         <div class="illustration order-success-img"></div>
 
-        <h2>Thanks for Purchase</h2>
+        <h2>{{ $t('Thanks for Purchase') }}</h2>
 
-        <p>Your order number is: <span class="order-id">#{{ orderId }}</span></p>
+        <p v-html="$t('Your order number is: order_id', {order_id: '<span class=\'order-id\' style=\'font-weight: 700; color: rgba(0, 0, 0, 0.86);\'>#' + orderId + '</span>'})"></p>
 
-        <p>We'll email you an order confirmation with details and tracking info.</p>
+        <p>{{ $t('We will email you an order confirmation with details and tracking info.') }}</p>
 
-        <router-link class="btn btn-black" :to="'/'">Continue Shopping</router-link>
+        <router-link class="btn btn-black" :to="'/'">{{ $t('Continue Shopping') }}</router-link>
     </div>
 </template>
 
@@ -38,11 +38,6 @@
         p {
             font-size: 14px;
             color: rgba(0, 0, 0, 0.56);
-
-            .order-id {
-                font-weight: 700;
-                color: rgba(0, 0, 0, 0.86);
-            }
         }
 
         .btn {

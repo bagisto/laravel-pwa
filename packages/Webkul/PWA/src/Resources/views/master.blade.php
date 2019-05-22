@@ -34,20 +34,21 @@
 
     <script>
         if ('serviceWorker' in navigator ) {
-            // window.addEventListener('load', function() {
-            //     navigator.serviceWorker.register("{{ asset('service-worker.js') }}")
-            //         .then(function(registration) {
-            //             console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            //         }, function(err) {
-            //             console.log('ServiceWorker registration failed: ', err);
-            //         });
-            // });
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register("{{ asset('service-worker.js') }}")
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
         }
     </script>
 
     <script type="text/javascript">
         window.channel = @json(new \Webkul\API\Http\Resources\Core\Channel(core()->getCurrentChannel()));
         window.config = {
+            app_short_name: "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
             app_base_url: "{{ config('app.url') }}",
             url_path: "{{ $urlPath }}",
             currencies: @json(core()->getCurrentChannel()->currencies),

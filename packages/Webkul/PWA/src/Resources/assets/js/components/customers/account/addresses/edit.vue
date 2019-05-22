@@ -1,42 +1,42 @@
 <template>
     <div class="content" v-if="address">
-        <custom-header title="Edit Address"></custom-header>
+        <custom-header :title="$t('Edit Address')"></custom-header>
         
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
                 <div class="control-group" :class="[errors.has('address1[]') ? 'has-error' : '']">
-                    <input type="text" name="address1[]" class="control" v-model="address.address1[0]" v-validate="'required'" placeholder="Street Address 1" data-vv-as='"Street Address 1"'/>
-                    <label>Street Address 1</label>
+                    <input type="text" name="address1[]" class="control" v-model="address.address1[0]" v-validate="'required'" :placeholder="$t('Street Address 1')" :data-vv-as="$t('Street Address 1')"/>
+                    <label>{{ $t('Street Address 1') }}</label>
                     <span class="control-error" v-if="errors.has('address1[]')">{{ errors.first('address1[]') }}</span>
                 </div>
 
                 <div class="control-group" v-if="streetLines && streetLines > 0" v-for="n in parseInt(streetLines)" style="margin-top: -15px;">
-                    <input type="text" name="address1[]" class="control" v-model="address.address1[n]" :placeholder="'Street Address ' + n + 1">
-                    <label>Street Address {{ n + 1 }}</label>
+                    <input type="text" name="address1[]" class="control" v-model="address.address1[n]" :placeholder="$t('Street Address number', {number: n + 1})">
+                    <label>{{ $t('Street Address number', {number: n + 1}) }}</label>
                 </div>
 
                 <country-state :address="address"></country-state>
 
                 <div class="control-group" :class="[errors.has('city') ? 'has-error' : '']">
-                    <input type="text" name="city" class="control" v-model="address.city" v-validate="'required'" placeholder="City" data-vv-as='"City"'/>
-                    <label>City</label>
+                    <input type="text" name="city" class="control" v-model="address.city" v-validate="'required'" :placeholder="$t('City')" :data-vv-as="$t('City')"/>
+                    <label>{{ $t('City') }}</label>
                     <span class="control-error" v-if="errors.has('city')">{{ errors.first('city') }}</span>
                 </div>
 
                 <div class="control-group" :class="[errors.has('postcode') ? 'has-error' : '']">
-                    <input type="text" name="postcode" class="control" v-model="address.postcode" v-validate="'required'" placeholder="Postal Code" data-vv-as='"City"'/>
-                    <label>Postal Code</label>
+                    <input type="text" name="postcode" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('Postal Code')"/>
+                    <label>{{ $t('Postal Code') }}</label>
                     <span class="control-error" v-if="errors.has('postcode')">{{ errors.first('postcode') }}</span>
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
-                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required'" placeholder="Phone" data-vv-as='"City"'/>
-                    <label>Phone</label>
+                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
+                    <label>{{ $t('Phone') }}</label>
                     <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
                 </div>
 
                 <div class="button-group">
-                    <button type="submit" class="btn btn-black btn-lg" :disabled="loading">Save</button>
+                    <button type="submit" class="btn btn-black btn-lg" :disabled="loading">{{ $t('Save') }}</button>
                 </div>
             </div>
         </form>

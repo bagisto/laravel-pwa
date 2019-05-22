@@ -77,7 +77,6 @@
             .product-price {
                 color: rgba(0, 0, 0, 1);
                 font-weight: 600;
-                margin-bottom: 8px;
                 display: inline-block;
                 width: 100%;
 

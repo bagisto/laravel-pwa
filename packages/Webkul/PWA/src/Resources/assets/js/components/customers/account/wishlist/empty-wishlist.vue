@@ -2,11 +2,11 @@
     <div class="no-result-found">
         <div class="illustration empty-wishlist-img"></div>
 
-        <h2>No Items</h2>
+        <h2>{{ $t('No Items') }}</h2>
 
-        <p>You didn’t add anything to wishlist yet.</p>
+        <p>{{ $t('You didn’t add anything to wishlist yet.') }}</p>
 
-        <router-link class="btn btn-black" :to="'/'">Start Shopping</router-link>
+        <router-link class="btn btn-black" :to="'/'">{{ $t('Start Shopping') }}</router-link>
     </div>
 </template>
 

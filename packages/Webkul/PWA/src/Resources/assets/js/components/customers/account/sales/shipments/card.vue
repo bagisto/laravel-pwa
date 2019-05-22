@@ -1,7 +1,7 @@
 <template>
     <div class="shipment-card">
         <div class="shipment-details">
-            <label>Shipment</label>
+            <label>{{ $t('Shipment') }}</label>
             <div class="shipment-id">#{{ shipment.id }}</div>
 
             <i class="icon sharp-arrow-right-icon"></i>
@@ -11,7 +11,7 @@
             <router-link class="view-link" :to="'/customer/account/' + $route.params.order_id + '/shipments/' + shipment.id">
                 <i class="icon sharp-arrow-line-icon"></i>
 
-                <span>View Shipment</span>
+                <span>{{ $t('View Shipment') }}</span>
             </router-link>
         </div>
     </div>

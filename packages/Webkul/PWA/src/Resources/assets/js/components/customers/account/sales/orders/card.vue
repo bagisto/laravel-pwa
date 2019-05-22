@@ -15,19 +15,19 @@
             <router-link class="view-link" :to="'/customer/account/orders/' + order.id">
                 <i class="icon sharp-arrow-line-icon"></i>
 
-                <span>Detail</span>
+                <span>{{ $t('Detail') }}</span>
             </router-link>
 
             <div class="review-link" @click="bottomSheetOpen = true">
                 <i class="icon sharp-post-review-icon"></i>
 
-                <span>Review</span>
+                <span>{{ $t('Review') }}</span>
             </div>
         </div>
 
         <bottom-sheet :show="bottomSheetOpen" :class-name="'filter-bottom-sheet'" @onBottomSheetClose="bottomSheetOpen = false;">
             <div slot="header">
-                Choose a product to review
+                {{ $t('Choose a product to review') }}
             </div>
 
             <div slot="content">

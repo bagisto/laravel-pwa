@@ -1,12 +1,12 @@
 <template>
     <div class="content">
 
-        <custom-header :title="'Shipment - #' + $route.params.id"></custom-header>
+        <custom-header :title="$t('Shipment - #', {shipment_id: $route.params.id})"></custom-header>
 
         <div class="shipment-details" v-if="shipment">
 
             <div class="shipment-items-section sale-section">
-                <h2 class="sale-section-title">{{ shipment.items.length }} Item(s)</h2>
+                <h2 class="sale-section-title">{{ $t('number Item(s)', {number: shipment.items.length}) }}</h2>
 
                 <div class="shipment-item-list sale-section-content">
                     <div class="shipment-item" v-for="shipmentItem in shipment.items">
@@ -25,7 +25,7 @@
                             </div>
 
                             <div class="shipment-item-price">
-                                <label>Qty Shipped - </label>
+                                <label>{{ $t('Qty Shipped -') }} </label>
                                 <span>{{ shipmentItem.qty }}</span>
                             </div>
                         </div>

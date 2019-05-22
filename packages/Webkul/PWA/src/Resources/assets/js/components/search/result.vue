@@ -8,7 +8,7 @@
 
                 </div>
 
-                <pagination label="Load More Products" v-bind="pagination" @onPaginate="paginate($event)"></pagination>
+                <pagination :label="$t('Load More Products')" v-bind="pagination" @onPaginate="paginate($event)"></pagination>
             </div>
         </div>
 

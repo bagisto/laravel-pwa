@@ -14,13 +14,13 @@
             <router-link class="edit-link" :to="'/customer/account/addresses/' + address.id">
                 <i class="icon sharp-edit-icon"></i>
 
-                <span>Edit</span>
+                <span>{{ $t('Edit') }}</span>
             </router-link>
 
             <div class="remove-link" @click="remove">
                 <i class="icon sharp-trash-icon"></i>
 
-                <span>Remove</span>
+                <span>{{ $t('Remove') }}</span>
             </div>
         </div>
     </div>

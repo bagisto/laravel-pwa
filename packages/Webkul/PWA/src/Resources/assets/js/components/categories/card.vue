@@ -2,7 +2,7 @@
     <li class="category-card">
         <router-link :to="'/categories/' + category.id">
             <div class="image">
-                <img :src="category.image_url"/>
+                <img :src="category.image_url ? category.image_url : 'vendor/webkul/pwa/assets/images/category-image.png'"/>
             </div>
 
             <div class="name">

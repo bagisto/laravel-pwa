@@ -30,7 +30,7 @@
                 </label>
 
                 <span v-if="! attribute.options.length" class="no-options">
-                    Please Select Above options
+                    {{ $t('Please Select Above options') }}
                 </span>
             </span>
 

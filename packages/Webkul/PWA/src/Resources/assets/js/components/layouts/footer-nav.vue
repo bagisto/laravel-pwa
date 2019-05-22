@@ -2,9 +2,9 @@
     <div class="footer">
         <span class="sepator"></span>
 
-        <p>You have just reached to the bottom of page.</p>
+        <p>{{ $t('You have just reached to the bottom of page.') }}</p>
 
-        <a @click.prevent="backToTop">Back To Top</a>
+        <a @click.prevent="backToTop">{{ $t('Back To Top') }}</a>
     </div>
 </template>
 
