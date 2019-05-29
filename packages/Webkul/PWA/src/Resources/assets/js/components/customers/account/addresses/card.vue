@@ -7,7 +7,7 @@
             {{ address.country_name + ' ' + address.postcode }}</br>
             {{ address.phone }} 
 
-            <i class="icon sharp-arrow-right-icon"></i>
+            <!-- <i class="icon sharp-arrow-right-icon"></i> -->
         </div>
 
         <div class="address-actions">

@@ -21,7 +21,7 @@
                 <div class="panel-content">
                     <div class="product-list product-grid-2">
 
-                        <product-card v-for="product in products" :key='product.uid' :product="product"></product-card>
+                        <product-card v-for="product in products" :key='product.uid' :product="product"></product-card> 
 
                     </div>
 

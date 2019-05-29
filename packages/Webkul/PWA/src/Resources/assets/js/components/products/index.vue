@@ -203,6 +203,10 @@
                 margin-bottom: 16px;
             }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 7b65f36107baf7df572619173ee5786496d82d6c
             .quantity {
                 position: relative;
 

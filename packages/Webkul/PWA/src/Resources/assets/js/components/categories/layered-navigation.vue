@@ -10,12 +10,11 @@
                 <li @click="bottomSheets.filter = true">
                     <i class="icon sharp-filter-icon"></i>
                     {{ $t('Filter') }}
-                </li>
-                
-                <!--<li>
+                </li> 
+                <!-- <li>
                     <i class="icon sharp-grid-icon"></i>
                     Grid
-                </li>-->
+                </li> -->
             </ul>
         </div>
 

@@ -38,7 +38,7 @@
                                             {{ addressTemp.phone }}
                                         </div>
 
-                                        <i class="icon sharp-arrow-right-icon"></i>
+                                        <!--<i class="icon sharp-arrow-right-icon"></i>-->
                                     </label>
 
                                     <input type="radio" v-validate="'required'" name="billing[address_id]" value="0" :data-vv-as="$t('Billing Address')" style="display: none">

@@ -9,7 +9,18 @@
         <div class="product-information">
 
             <div class="product-price">
-                <span>{{ product.formated_price }}</span>
+                <!--if there is any special price of an item--> 
+                <span v-if="product.formated_special_price">
+                    <span class="special-price">{{ product.formated_special_price }}</span>
+                    <span class="regular-price">{{ product.formated_price }}</span>
+                </span>
+                <!--end-->
+                
+                <!--if there is no special price of an item-->
+                <span v-if="! product.formated_special_price">
+                    <span class="special-price">{{ product.formated_price }}</span>
+                </span>
+                <!--end-->
 
                 <i class="icon wishlist-icon" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
             </div>
@@ -52,6 +63,7 @@
 </script>
 
 <style scoped lang="scss">
+
     .product-card {
         width: 100%;
 
@@ -89,6 +101,15 @@
                     float: right;
                     cursor: pointer;
                 }
+            }
+            
+            .regular-price {
+                text-decoration: line-through;
+                opacity: 0.56;
+                font-family: 600;
+                font-size: 14px;
+                color: #000000;
+                margin-left: 8px;
             }
             
             .product-name {

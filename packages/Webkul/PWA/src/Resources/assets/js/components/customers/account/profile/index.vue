@@ -52,7 +52,7 @@
                         <span class="dot"></span>
 
                         <span class="info">
-                            {{ $t('Minimum length of this field must be equal or greater than 8 symbols.') }} 
+                            {{ $t('Minimum length of this field must be equal or greater than 6 symbols.') }} 
                         </span>
                     </div>
                 </div>

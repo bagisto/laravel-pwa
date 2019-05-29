@@ -6,7 +6,7 @@
         <div class="invoice-details" v-if="invoice">
 
             <div class="invoice-items-section sale-section">
-                <h2 class="sale-section-title">{{ $t('numner Item(s)', {number: invoice.items.length}) }}</h2>
+                <h2 class="sale-section-title">{{ $t('number Item(s)', {number: invoice.items.length}) }}</h2>
 
                 <div class="invoice-item-list sale-section-content">
                     <div class="invoice-item" v-for="invoiceItem in invoice.items">
@@ -38,6 +38,7 @@
                             </div>
                         </div>
                     </div>
+                    <br> <!--remove this if not needed -->
                 </div>
             </div>
 
