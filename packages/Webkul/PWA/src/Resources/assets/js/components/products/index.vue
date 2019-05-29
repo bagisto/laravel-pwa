@@ -28,7 +28,7 @@
                 </configurable-options>
 
                 <div class="quantity-container">
-                    <label class="quantity-label-text">{{ $t('Quantity') }}</label>
+                    <label>{{ $t('Quantity') }}</label>
                     
                     <div class="quantity">
                         <button type="button" class="btn btn-black decrease-qty"
@@ -49,15 +49,12 @@
 
             <div class="add-to-buttons">
                 <button type="submit" class="add-to-cart-btn">{{ $t('Add To Cart') }}</button>
-                <!--to redirect to checkout/one page -->
-                <router-link :to="'checkout/onepage/index'">
+
                 <button class="btn btn-black buy-now-btn">{{ $t('Buy Now') }}</button>
-                </router-link>
-                <!--end-->
             </div>
 
             <div class="product-description">
-                <accordian :title="'Details'" :active="true">
+                <accordian :title="'Details'" :active="false">
                     <div slot="body">
 
                         <span v-html="product.description"></span>
@@ -171,10 +168,6 @@
 </script>
 
 <style lang="scss">
-    .quantity-label-text{
-        font-size:20px;
-    }
-
     .product-details {
         margin-bottom: 0;
         padding: 16px;
@@ -210,7 +203,10 @@
                 margin-bottom: 16px;
             }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7b65f36107baf7df572619173ee5786496d82d6c
             .quantity {
                 position: relative;
 
@@ -240,9 +236,6 @@
             }
         }
     }
-
-    
-    
 
     .add-to-buttons {
         padding: 6px;

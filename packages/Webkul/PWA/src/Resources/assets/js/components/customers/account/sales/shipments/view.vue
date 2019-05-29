@@ -8,8 +8,8 @@
             <div class="shipment-items-section sale-section">
                 <h2 class="sale-section-title">{{ $t('number Item(s)', {number: shipment.items.length}) }}</h2>
 
-                <div class="shipment-item-list sale-section-content" v-for="shipmentItem in shipment.items">
-                    <div class="shipment-item">
+                <div class="shipment-item-list sale-section-content">
+                    <div class="shipment-item" v-for="shipmentItem in shipment.items">
                         <div class="shipment-item-info">
                             <div class="shipment-item-name">
                                 {{ shipmentItem.name }}
@@ -29,7 +29,7 @@
                                 <span>{{ shipmentItem.qty }}</span>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>

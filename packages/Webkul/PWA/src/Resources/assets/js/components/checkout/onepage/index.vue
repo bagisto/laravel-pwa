@@ -311,7 +311,7 @@
 
             <div class="checkout-action">
                 <span class="total-info">
-                    <p>{{ $t('Amount to be paid') }}</p>
+                    <p>{{ $t('Amt. to be paid') }}</p>
                     <h3>{{ cart.formated_grand_total }}</h3>
                 </span>
 

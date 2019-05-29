@@ -35,7 +35,7 @@
         <div class="panel" v-if="childCategories.length">
             <div class="panel-heading">
                 {{ $t('Explore') }} {{ category.name }}
-        </div>
+            </div>
 
             <div class="panel-content">
                 <ul class="category-list">

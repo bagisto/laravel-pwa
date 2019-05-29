@@ -21,10 +21,10 @@
     "vee-validate": "2.0.0-rc.26",
     "vue-carousel": "^0.18.0",
     "vue-currency-filter": "^3.4.2",
+    "vue-toasted": "^1.1.27",
     "vue-i18n": "^8.11.2",
     "vue-moment": "^4.0.0",
     "vue-router": "^3.0.2",
-    "vue-slider-component": "^3.0.16",
-    "vue-toasted": "^1.1.27"
+    "vue-slider-component": "^3.0.16"
   }
 }

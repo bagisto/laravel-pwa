@@ -6,10 +6,10 @@
         <div class="invoice-details" v-if="invoice">
 
             <div class="invoice-items-section sale-section">
-                <h2 class="sale-section-title">{{ $t('Number of Item(s)', {number: invoice.items.length}) }}</h2>
+                <h2 class="sale-section-title">{{ $t('number Item(s)', {number: invoice.items.length}) }}</h2>
 
-                <div class="invoice-item-list sale-section-content" v-for="invoiceItem in invoice.items">
-                    <div class="invoice-item" >
+                <div class="invoice-item-list sale-section-content">
+                    <div class="invoice-item" v-for="invoiceItem in invoice.items">
                         <div class="invoice-item-info">
                             <div class="invoice-item-name">
                                 {{ invoiceItem.name }}
