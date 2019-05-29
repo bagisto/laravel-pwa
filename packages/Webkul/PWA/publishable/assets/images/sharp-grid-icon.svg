@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>sharp-view-grid</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M5,11 L11,11 L11,5 L5,5 L5,11 Z M5,19 L11,19 L11,13 L5,13 L5,19 Z M13,19 L19,19 L19,13 L13,13 L13,19 Z M13,11 L19,11 L19,5 L13,5 L13,11 Z" id="path-1"></path>
+    </defs>
+    <g id="sharp-view-grid" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+    </g>
+</svg>

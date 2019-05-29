@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/update</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M13.64,2.35 C12.19,0.9 10.2,0 7.99,0 C3.57,0 0,3.58 0,8 C0,12.42 3.57,16 7.99,16 C11.72,16 14.83,13.45 15.72,10 L13.64,10 C12.82,12.33 10.6,14 7.99,14 C4.68,14 1.99,11.31 1.99,8 C1.99,4.69 4.68,2 7.99,2 C9.65,2 11.13,2.69 12.21,3.78 L8.99,7 L15.99,7 L15.99,0 L13.64,2.35 Z" id="path-1"></path>
+    </defs>
+    <g id="icon/update" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="↳-Icon-Color" transform="translate(4.000000, 4.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+            <g id="✱-/-Color-/-Icons-/-Selected-/-On-Surface-/-Active" mask="url(#mask-2)" fill="#000000">
+                <g transform="translate(-4.000000, -4.000000)" id="Rectangle-3">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
