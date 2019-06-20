@@ -6,7 +6,7 @@
 
         <router-link :to="'/products/' + wishlistItem.product.id">
             <div class="product-image">
-                <img :src="wishlistItem.product.base_image.medium_image_url" />
+                <img alt="product-base-medium-image" :src="wishlistItem.product.base_image.medium_image_url" />
             </div>
 
             <div class="product-information">
@@ -81,7 +81,7 @@
 
         .product-image {
             background: #f2f2f2;
-            
+
             img {
                 width: 100%;
                 height: 100%;
@@ -98,7 +98,7 @@
                 font-weight: 600;
                 margin-bottom: 8px;
             }
-            
+
             .product-name {
                 font-size: 12px;
             }

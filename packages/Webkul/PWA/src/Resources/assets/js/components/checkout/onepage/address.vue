@@ -13,7 +13,7 @@
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[email]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[email]'" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
+            <input type="email" :name="type + '[email]'" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
             <label>{{ $t('Email') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[email]')">{{ errors.first('address-form.' + type + '[email]') }}</span>
         </div>
@@ -38,13 +38,13 @@
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[postcode]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[postcode]'" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('City')"/>
+            <input type="number" :name="type + '[postcode]'" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('City')"/>
             <label>{{ $t('Postal Code') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[postcode]')">{{ errors.first('address-form.' + type + '[postcode]') }}</span>
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[phone]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[phone]'" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
+            <input type="number" :name="type + '[phone]'" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
             <label>{{ $t('Phone') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[phone]')">{{ errors.first('address-form.' + type + '[phone]') }}</span>
         </div>

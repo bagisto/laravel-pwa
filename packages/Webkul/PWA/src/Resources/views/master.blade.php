@@ -2,6 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
+    <meta name="description" content="This is a PWA app" /> <!-- this line is to meet the requirment of lighthouse extension. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +22,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     {!! view_render_event('bagisto.pwa.layout.head') !!}
+    <title>PWA</title>
 
 </head>
 

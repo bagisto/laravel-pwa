@@ -4,13 +4,13 @@
             <label class="required">{{ attribute.label }}</label>
 
             <span class="swatch-container">
-                <label class="swatch" 
+                <label class="swatch"
                     v-for='(option, index) in attribute.options'
                     v-if="option.id"
                     :data-id="option.id"
                     :for="['attribute_' + attribute.id + '_option_' + option.id]">
 
-                    <input type="radio" 
+                    <input type="radio"
                         v-validate="'required'"
                         :name="['super_attribute[' + attribute.id + ']']"
                         :id="['attribute_' + attribute.id + '_option_' + option.id]"
@@ -21,7 +21,7 @@
 
                     <span v-if="attribute.swatch_type == 'color'" :style="{ background: option.swatch_value }"></span>
 
-                    <img v-if="attribute.swatch_type == 'image'" :src="option.swatch_value" />
+                    <img alt="option-switch-value" v-if="attribute.swatch_type == 'image'" :src="option.swatch_value" />
 
                     <span v-if="! attribute.swatch_type || attribute.swatch_type == 'text' || attribute.swatch_type == 'dropdown'">
                         {{ option.label }}
@@ -44,7 +44,7 @@
 <script>
     export default {
         name: 'configurable-options',
-        
+
         props: ['product', 'formData'],
 
         data: () => ({
@@ -123,7 +123,7 @@
                         attribute.nextAttribute.disabled = false;
 
                         this.fillSelect(attribute.nextAttribute);
-                        
+
                         this.resetChildren(attribute.nextAttribute);
                     } else {
                         this.formData['selected_configurable_option'] = attribute.options[attribute.selectedIndex].allowedProducts[0];

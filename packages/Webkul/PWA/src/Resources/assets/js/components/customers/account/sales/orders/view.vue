@@ -23,7 +23,7 @@
                 <div class="order-item-list sale-section-content">
                     <div class="order-item" v-for="orderItem in order.items">
                         <div class="order-item-image">
-                            <img :src="orderItem.product.base_image.small_image_url"/>
+                            <img alt="product-base-small-image" :src="orderItem.product.base_image.small_image_url"/>
                         </div>
 
                         <div class="order-item-info">
@@ -126,31 +126,31 @@
                 <div class="shipping-payment sale-section-content">
                     <div class="shipping-address">
                         <h3>{{ $t('Shipping Address') }}</h3>
-                        
+
                         <div class="address-deatils">
                             {{ order.shipping_address.address1.join(' ') }}</br>
                             {{ order.shipping_address.city }}</br>
                             {{ order.shipping_address.state }}</br>
                             {{ order.shipping_address.country_name + ' ' + order.shipping_address.postcode }}</br>
-                            {{ order.shipping_address.phone }} 
+                            {{ order.shipping_address.phone }}
                         </div>
                     </div>
 
                     <div class="billing-address">
                         <h3>{{ $t('Billing Address') }}</h3>
-                        
+
                         <div class="address-deatils">
                             {{ order.billing_address.address1.join(' ') }}</br>
                             {{ order.billing_address.city }}</br>
                             {{ order.billing_address.state }}</br>
                             {{ order.billing_address.country_name + ' ' + order.billing_address.postcode }}</br>
-                            {{ order.billing_address.phone }} 
+                            {{ order.billing_address.phone }}
                         </div>
                     </div>
 
                     <div class="shipping-method">
                         <h3>{{ $t('Shipping Method') }}</h3>
-                        
+
                         <div class="shipping-method-deatils">
                             {{ order.shipping_title }}
                         </div>
@@ -158,7 +158,7 @@
 
                     <div class="payment-method">
                         <h3>{{ $t('Payment Method') }}</h3>
-                        
+
                         <div class="payment-method-deatils">
                             {{ order.payment_title }}
                         </div>
@@ -336,7 +336,7 @@
                                 }
 
                                 span {
-                                    
+
                                 }
                             }
 
@@ -350,7 +350,7 @@
 
                                     .option {
                                         display: inline-block;
-                                            
+
                                         span {
                                             margin-right: 8px;
                                         }
@@ -378,7 +378,7 @@
                         tr {
                             td {
                                 padding: 8px 0;
-                                    
+
                                 &:first-child {
                                     font-size: 14px;
                                     color: rgba(0, 0, 0, 0.56);
@@ -394,7 +394,7 @@
                                 td {
                                     padding: 12px 0;
                                     border-top: 1px solid rgba(0, 0, 0, 0.12);
-                                    
+
                                     &:first-child {
                                         font-size: 18px;
                                         color: rgba(0, 0, 0, 0.56);
@@ -408,7 +408,7 @@
                                 }
                             }
                         }
-                    }   
+                    }
                 }
             }
 
@@ -423,7 +423,7 @@
                         color: rgba(0, 0, 0, 0.56);
                         padding: 8px 0 8px 0;
                     }
-                    
+
                     .shipping-address, .billing-address, .shipping-method {
                         margin-bottom: 17px;
                     }

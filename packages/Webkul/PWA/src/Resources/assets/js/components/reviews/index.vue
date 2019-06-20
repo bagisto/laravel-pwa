@@ -2,7 +2,7 @@
     <div class="product-reviews" v-if="reviews.length">
         <div class="product-details">
             <div class="product-image">
-                <img :src="product.base_image.small_image_url"/>
+                <img alt="product-small-image" :src="product.base_image.small_image_url"/>
             </div>
 
             <router-link class="product-name" :to="'/products/' + product.id">
@@ -87,7 +87,7 @@
 
     export default {
         name: 'reviews',
-        
+
         components: { DonutChart, Pagination },
 
         data () {

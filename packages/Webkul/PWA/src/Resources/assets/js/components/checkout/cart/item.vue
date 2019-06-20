@@ -2,7 +2,7 @@
     <div class="cart-item">
         <div class="cart-item-content">
             <div class="product-image">
-                <img :src="cartItem.product.base_image.small_image_url"/>
+                <img alt="product-base" :src="cartItem.product.base_image.small_image_url"/>
             </div>
 
             <div class="cart-item-info">
@@ -126,7 +126,7 @@
 
                         .option {
                             display: inline-block;
-                                
+
                             span {
                                 margin-right: 8px;
                             }

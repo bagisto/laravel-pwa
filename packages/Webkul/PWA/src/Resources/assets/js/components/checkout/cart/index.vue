@@ -8,7 +8,7 @@
             </h2>
 
             <div class="cart-item-list">
-                <cart-item 
+                <cart-item
                     v-for="cartItem in cart.items"
                     :key='cartItem.uid'
                     :cart-item="cartItem"
@@ -67,7 +67,7 @@
 
             <div class="checkout-action">
                 <span class="total-info">
-                    <p>{{ $t('Amt. to be paid') }}</p>
+                    <p>{{ $t('Amount to be paid') }}</p>
                     <h3>{{ cart.formated_grand_total }}</h3>
                 </span>
 
@@ -181,7 +181,7 @@
                 this.$http.put('/api/checkout/cart/update', { 'qty': this.quantities })
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
-                        
+
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.cart = response.data.data;
@@ -224,7 +224,7 @@
                     tr {
                         td {
                             padding: 8px 0;
-                                
+
                             &:first-child {
                                 font-size: 14px;
                                 color: rgba(0, 0, 0, 0.56);
@@ -240,7 +240,7 @@
                             td {
                                 padding: 16px 0 0 0;
                                 border-top: 1px solid rgba(0, 0, 0, 0.12);
-                                
+
                                 &:first-child {
                                     font-size: 18px;
                                     color: rgba(0, 0, 0, 0.56);
@@ -254,7 +254,7 @@
                             }
                         }
                     }
-                }   
+                }
             }
 
             .panel.cart-actions {

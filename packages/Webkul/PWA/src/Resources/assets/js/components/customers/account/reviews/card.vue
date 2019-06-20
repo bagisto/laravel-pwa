@@ -1,7 +1,7 @@
 <template>
     <router-link class="review-card" :to="'/customer/account/reviews/' + review.id">
         <div class="product-image">
-            <img :src="review.product.base_image.small_image_url"/>
+            <img alt="product-base-small-image" :src="review.product.base_image.small_image_url"/>
         </div>
 
         <div class="review-info">

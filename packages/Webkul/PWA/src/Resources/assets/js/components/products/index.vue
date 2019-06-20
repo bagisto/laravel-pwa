@@ -29,7 +29,7 @@
 
                 <div class="quantity-container">
                     <label>{{ $t('Quantity') }}</label>
-                    
+
                     <div class="quantity">
                         <button type="button" class="btn btn-black decrease-qty"
                             @click="formData.quantity > 1 ? formData.quantity-- : formData.quantity">
@@ -147,7 +147,7 @@
 
             addToCart () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)

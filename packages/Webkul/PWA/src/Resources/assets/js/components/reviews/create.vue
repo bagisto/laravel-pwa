@@ -6,7 +6,7 @@
             <div class="form-container" v-if="product">
                 <div class="product-details">
                     <div class="product-image">
-                        <img :src="product.base_image.small_image_url"/>
+                        <img alt="product-base-small-image" :src="product.base_image.small_image_url"/>
                     </div>
 
                     <router-link class="product-name" :to="'/products/' + product.id">
@@ -28,13 +28,13 @@
                         <label>{{ $t('Name') }}</label>
                         <span class="control-error" v-if="errors.has('name')">{{ errors.first('name') }}</span>
                     </div>
-                    
+
                     <div class="control-group" :class="[errors.has('title') ? 'has-error' : '']">
                         <input type="text" name="title" class="control" v-model="review.title" v-validate="'required'" :placeholder="$t('Title')" :data-vv-as="$t('Title')"/>
                         <label>{{ $t('Title') }}</label>
                         <span class="control-error" v-if="errors.has('title')">{{ errors.first('title') }}</span>
                     </div>
-                    
+
                     <div class="control-group" :class="[errors.has('comment') ? 'has-error' : '']">
                         <textarea name="comment" class="control" v-model="review.comment" v-validate="'required'" :placeholder="$t('Review')" :data-vv-as="$t('Review')"></textarea>
                         <label>{{ $t('Review') }}</label>
@@ -105,7 +105,7 @@
 
             saveReview () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post('/api/reviews/' + this.$route.params.id + '/create', this.review)

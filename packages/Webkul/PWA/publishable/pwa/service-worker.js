@@ -21,7 +21,7 @@ self.addEventListener('install', function(event) {
             return cache.addAll(cacheFiles);
         }).then(function() {
             self.skipWaiting();
-        })        
+        })
     );
 });
 
@@ -45,7 +45,7 @@ self.addEventListener('activate', function(e) {
 
     return self.clients.claim();
 });
-    
+
 
 self.addEventListener('fetch', function(event) {
     if (event.request.method != 'GET')
@@ -96,7 +96,7 @@ function getCacheData(request, cacheName) {
     var checkResponse = isItServerRequest(pathParams[pathParams.length - 1]);
 
     if (checkResponse) cacheName = serverCache;
-    
+
     return caches.open(cacheName).then(function(cache) {
         if (checkResponse == true) {
             return fetch(request).then(function(networkResponse) {
@@ -162,7 +162,7 @@ function fallBackResponse(type) {
             };
 
             return new Response(JSON.stringify(body), { "headers": headers });
-            
+
         case 'css':
 
         default:
@@ -214,7 +214,7 @@ self.addEventListener('install', function(event) {
             return cache.addAll(cacheFiles);
         }).then(function() {
             self.skipWaiting();
-        })        
+        })
     );
 });
 
@@ -238,7 +238,7 @@ self.addEventListener('activate', function(e) {
 
     return self.clients.claim();
 });
-    
+
 
 self.addEventListener('fetch', function(event) {
     if (event.request.method != 'GET')
@@ -289,7 +289,7 @@ function getCacheData(request, cacheName) {
     var checkResponse = isItServerRequest(pathParams[pathParams.length - 1]);
 
     if (checkResponse) cacheName = serverCache;
-    
+
     return caches.open(cacheName).then(function(cache) {
         if (checkResponse == true) {
             return fetch(request).then(function(networkResponse) {
@@ -341,7 +341,7 @@ function fallBackResponse(type) {
             };
 
             return new Response(JSON.stringify(body), { "headers": headers });
-            
+
         case 'css':
 
         default:

@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <custom-header :title="$t('Create Address')"></custom-header>
-        
+
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
                 <div class="control-group" :class="[errors.has('address1[]') ? 'has-error' : '']">
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
-                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
+                    <input type="number" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
                     <label>{{ $t('Phone') }}</label>
                     <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
                 </div>
@@ -103,7 +103,7 @@
 
             createAddress () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post('/api/addresses/create', this.address)

@@ -32,10 +32,10 @@
 
             <div slot="content">
                 <div class="product-list">
-                    
+
                     <router-link class="product-item" v-for="orderItem in order.items" :key="order.uid" :to="'/reviews/' + orderItem.product.id + '/create'">
                         <div class="product-image">
-                            <img :src="orderItem.product.base_image.small_image_url"/>
+                            <img alt="product-base-small-image" :src="orderItem.product.base_image.small_image_url"/>
                         </div>
 
                         <div class="product-name">
@@ -51,10 +51,10 @@
 
 <script>
     import BottomSheet from '../../../../shared/bottom-sheet';
-    
+
     export default {
         name: 'order-card',
-        
+
         components: { BottomSheet },
 
         props: ['order'],
