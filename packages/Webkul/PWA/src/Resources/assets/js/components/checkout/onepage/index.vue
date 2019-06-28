@@ -140,7 +140,7 @@
                                         <h2>{{ $t('Add Shipping Address') }}</h2>
                                     </div>
                                 </custom-header>
-                                
+
                                 <checkout-address :address="address.shipping" type="shipping"></checkout-address>
 
                                 <div class="button-group">
@@ -311,7 +311,7 @@
 
             <div class="checkout-action">
                 <span class="total-info">
-                    <p>{{ $t('Amt. to be paid') }}</p>
+                    <p>{{ $t('Amount to be paid') }}</p>
                     <h3>{{ cart.formated_grand_total }}</h3>
                 </span>
 
@@ -338,7 +338,7 @@
 
                 addresses: {
                     billing: [],
-                    
+
                     shipping: []
                 },
 
@@ -390,7 +390,7 @@
 
         mounted () {
             this.getAuthCustomer();
-            
+
             this.getCart();
         },
 
@@ -624,7 +624,7 @@
 
                 .panel-heading {
                     border-bottom: 1px solid rgba(0, 0, 0 ,0.12);
-                    color: rgba(0, 0, 0, 0.6);   
+                    color: rgba(0, 0, 0, 0.6);
                 }
 
                 .panel-content {
@@ -818,7 +818,7 @@
 
                                         .option {
                                             display: inline-block;
-                                                
+
                                             span {
                                                 margin-right: 8px;
                                             }
@@ -851,7 +851,7 @@
                             tr {
                                 td {
                                     padding: 8px 0;
-                                        
+
                                     &:first-child {
                                         font-size: 14px;
                                         color: rgba(0, 0, 0, 0.56);
@@ -867,7 +867,7 @@
                                     td {
                                         padding: 16px 0 0 0;
                                         border-top: 1px solid rgba(0, 0, 0, 0.12);
-                                        
+
                                         &:first-child {
                                             font-size: 18px;
                                             color: rgba(0, 0, 0, 0.56);
@@ -881,7 +881,7 @@
                                     }
                                 }
                             }
-                        }   
+                        }
                     }
                 }
             }

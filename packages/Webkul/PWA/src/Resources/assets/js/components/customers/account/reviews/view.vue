@@ -5,7 +5,7 @@
         <div class="review-details" v-if="review">
             <div class="product-details">
                 <div class="product-image">
-                    <img :src="review.product.base_image.small_image_url"/>
+                    <img alt="review-base-small-image" :src="review.product.base_image.small_image_url"/>
                 </div>
 
                 <div class="product-info">
@@ -155,7 +155,7 @@
             .review-heading {
                 padding: 16px;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-                
+
                 h3 {
                     font-weight: 700;
                     font-size: 12px;

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="control-group" :class="[errors.has('country') ? 'has-error' : '']">
-            <select type="text" v-validate="'required'" class="control" id="country" name="country" v-model="address.country" :data-vv-as="$t('Country')">
+            <select name="" type="text" v-validate="'required'" class="control" id="country" name="country" v-model="address.country" :data-vv-as="$t('Country')">
                 <option value=""></option>
                 <option v-for="country in countries" :value="country.code">{{ country.name }}</option>
             </select>
@@ -47,7 +47,7 @@
 
         mounted () {
             this.getCountryStateGroup();
-            
+
             this.getCountries();
         },
 

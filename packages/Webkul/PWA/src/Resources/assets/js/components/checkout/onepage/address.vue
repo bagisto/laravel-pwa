@@ -1,19 +1,21 @@
 <template>
     <div>
         <div class="control-group" :class="[errors.has('address-form.' + type + '[first_name]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[first_name]'" class="control" v-model="address.first_name" v-validate="'required'" :placeholder="$t('First Name')" :data-vv-as="$t('First Name')"/>
+            <input type="text" :name="type + '[first_name]'" class="control" v-model="address.first_name" v-validate="'required'" :placeholder="$t('First Name')" :data-vv-as="$t('First Name')" onkeypress="return (event.charCode > 64 &&
+            event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"/>
             <label>{{ $t('First Name') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[first_name]')">{{ errors.first('address-form.' + type + '[first_name]') }}</span>
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[last_name]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[last_name]'" class="control" v-model="address.last_name" v-validate="'required'" :placeholder="$t('Last Name')" :data-vv-as="$t('Last Name')"/>
+            <input type="text" :name="type + '[last_name]'" class="control" v-model="address.last_name" v-validate="'required'" :placeholder="$t('Last Name')" :data-vv-as="$t('Last Name')" onkeypress="return (event.charCode > 64 &&
+            event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"/>
             <label>{{ $t('Last Name') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[last_name]')">{{ errors.first('address-form.' + type + '[last_name]') }}</span>
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[email]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[email]'" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
+            <input type="email" :name="type + '[email]'" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
             <label>{{ $t('Email') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[email]')">{{ errors.first('address-form.' + type + '[email]') }}</span>
         </div>
@@ -38,13 +40,13 @@
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[postcode]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[postcode]'" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('City')"/>
+            <input type="number" :name="type + '[postcode]'" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('City')"/>
             <label>{{ $t('Postal Code') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[postcode]')">{{ errors.first('address-form.' + type + '[postcode]') }}</span>
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[phone]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[phone]'" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
+            <input type="number" :name="type + '[phone]'" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
             <label>{{ $t('Phone') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[phone]')">{{ errors.first('address-form.' + type + '[phone]') }}</span>
         </div>
@@ -91,6 +93,10 @@
                     })
                     .catch(function (error) {});
             },
+
+            firstNameValidation() {
+
+            }
         }
     };
 </script>

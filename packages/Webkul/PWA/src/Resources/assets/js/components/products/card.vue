@@ -2,20 +2,20 @@
     <div class="product-card">
         <router-link :to="'/products/' + product.id">
             <div class="product-image">
-                <img :src="product.base_image.medium_image_url" />
+                <img alt="product-base-image-medium" :src="product.base_image.medium_image_url" />
             </div>
         </router-link>
 
         <div class="product-information">
 
             <div class="product-price">
-                <!--if there is any special price of an item--> 
+                <!--if there is any special price of an item-->
                 <span v-if="product.formated_special_price">
                     <span class="special-price">{{ product.formated_special_price }}</span>
                     <span class="regular-price">{{ product.formated_price }}</span>
                 </span>
                 <!--end-->
-                
+
                 <!--if there is no special price of an item-->
                 <span v-if="! product.formated_special_price">
                     <span class="special-price">{{ product.formated_price }}</span>
@@ -73,7 +73,7 @@
 
         .product-image {
             background: #f2f2f2;
-            
+
             img {
                 width: 100%;
                 height: 100%;
@@ -102,7 +102,7 @@
                     cursor: pointer;
                 }
             }
-            
+
             .regular-price {
                 text-decoration: line-through;
                 opacity: 0.56;
@@ -111,7 +111,7 @@
                 color: #000000;
                 margin-left: 8px;
             }
-            
+
             .product-name {
                 font-size: 12px;
             }

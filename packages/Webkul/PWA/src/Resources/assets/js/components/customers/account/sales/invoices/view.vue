@@ -153,7 +153,7 @@
 
             .invoice-items-section {
                 margin-top: -1px;
-                    
+
                 .invoice-item-list {
                     padding: 0 16px;
 
@@ -189,7 +189,7 @@
 
                                     .option {
                                         display: inline-block;
-                                            
+
                                         span {
                                             margin-right: 8px;
                                         }
@@ -213,14 +213,14 @@
                 .invoice-totals {
                     padding-top: 0;
                     padding-bottom: 0;
-                
+
                     table {
                         width: 100%;
 
                         tr {
                             td {
                                 padding: 8px 0;
-                                    
+
                                 &:first-child {
                                     font-size: 14px;
                                     color: rgba(0, 0, 0, 0.56);
@@ -236,7 +236,7 @@
                                 td {
                                     padding: 12px 0;
                                     border-top: 1px solid rgba(0, 0, 0, 0.12);
-                                    
+
                                     &:first-child {
                                         font-size: 18px;
                                         color: rgba(0, 0, 0, 0.56);
@@ -250,7 +250,7 @@
                                 }
                             }
                         }
-                    }   
+                    }
                 }
             }
 

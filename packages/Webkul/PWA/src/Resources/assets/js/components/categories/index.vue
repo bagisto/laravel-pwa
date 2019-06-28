@@ -6,10 +6,10 @@
         </layered-navigation>
 
         <div class="category-banner" v-if="category.image_url">
-            <img :src="category.image_url"/>
+            <img alt="category-image" :src="category.image_url"/>
         </div>
 
-        <div 
+        <div
             v-if="category.display_mode == 'description_only' || category.display_mode == 'products_and_description'"
             class="category-description panel">
                 <div class="panel-content" v-html="category.description">
@@ -21,7 +21,7 @@
                 <div class="panel-content">
                     <div class="product-list product-grid-2">
 
-                        <product-card v-for="product in products" :key='product.uid' :product="product"></product-card> 
+                        <product-card v-for="product in products" :key='product.uid' :product="product"></product-card>
 
                     </div>
 
@@ -73,7 +73,7 @@
         data () {
 			return {
 				category: null,
-                
+
 				childCategories: [],
 
                 products: [],

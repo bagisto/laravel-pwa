@@ -29,7 +29,7 @@
 
                 <div class="quantity-container">
                     <label>{{ $t('Quantity') }}</label>
-                    
+
                     <div class="quantity">
                         <button type="button" class="btn btn-black decrease-qty"
                             @click="formData.quantity > 1 ? formData.quantity-- : formData.quantity">
@@ -50,7 +50,7 @@
             <div class="add-to-buttons">
                 <button type="submit" class="add-to-cart-btn">{{ $t('Add To Cart') }}</button>
 
-                <button class="btn btn-black buy-now-btn">{{ $t('Buy Now') }}</button>
+                <button class="btn btn-black buy-now-btn" @click="buyNow()">{{ $t('Buy Now') }}</button>
             </div>
 
             <div class="product-description">
@@ -147,7 +147,7 @@
 
             addToCart () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
@@ -159,6 +159,24 @@
                         EventBus.$emit('checkout.cart.changed', response.data.data);
 
                         // this_this.$router.push({name: 'cart'})
+                    })
+                    .catch(function (error) {
+                    })
+            },
+
+            buyNow () {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
+                    .then(function(response) {
+
+                        EventBus.$emit('hide-ajax-loader');
+
+                        EventBus.$emit('checkout.cart.changed', response.data.data);
+
+                        this_this.$router.push({name: 'cart'})
                     })
                     .catch(function (error) {
                     })

@@ -30,8 +30,9 @@
 
                 <div class="button-group">
                     <button type="submit" class="btn btn-black btn-lg" :disabled="loading">{{ $t('Sign In') }}</button>
-                    
+
                     <button type="button" class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'register')">{{ $t('Create An Account') }}</button>
+                    <span style="color: red;" id="login-error"></span>
                 </div>
             </div>
         </form>
@@ -61,7 +62,7 @@
             if (JSON.parse(localStorage.getItem('currentUser')))
                 this.$router.push({name: 'dashboard'})
         },
-        
+
         methods: {
             validateBeforeSubmit () {
                 this.loading = true;
@@ -77,7 +78,7 @@
 
             loginCustomer () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/customer/login", this.user)
@@ -94,13 +95,14 @@
                     })
                     .catch(function (error) {
                         var errors = error.response.data.errors;
-
+                        // place your error here
+                        document.getElementById("login-error").innerHTML = "Incorrect Credentials";
                         for (name in errors) {
                             if (errors.hasOwnProperty(name)) {
                                 this_this.errors.add(name, errors[name][0])
                             }
                         }
-                        
+
                         this_this.loading = false;
                     })
             }

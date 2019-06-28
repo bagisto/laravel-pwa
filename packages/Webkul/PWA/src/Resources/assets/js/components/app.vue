@@ -1,12 +1,12 @@
 <template>
     <div id="app-inner">
-    
+
         <div slot="content">
             <header-nav @toggleDrawer="handleToggleDrawer"></header-nav>
 
             <drawer-sidebar ref="drawer">
                 <div class="drawer">
-                    
+
                     <div class="drawer-header">
                         <router-link :to="'/customer/login-register'" class="login-info" v-if="! currentUser">
                             <div class="avatar"></div>
@@ -22,7 +22,7 @@
                             <i class="icon arrow-right-icon"></i>
                         </router-link>
                     </div>
-                    
+
                     <div class="drawer-content">
 
                         <div class="drawer-box categories">
@@ -155,7 +155,7 @@
 
     export default {
         name: 'app',
-        
+
         components: { HeaderNav, BottomSheet, AjaxLoader, DrawerSidebar },
 
         data () {
@@ -181,7 +181,7 @@
 
         mounted () {
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            
+
             var this_this = this;
 
             EventBus.$on('user-logged-in', function(user) {
@@ -192,7 +192,7 @@
                 this_this.currentUser = null;
             });
 
-            this.getCategories(); 
+            this.getCategories();
         },
 
         watch: {
@@ -258,7 +258,7 @@
 
             logout () {
                 this.handleToggleDrawer();
-                 
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get("/api/customer/logout")
