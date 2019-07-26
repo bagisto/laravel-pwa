@@ -42,13 +42,13 @@
         <div class="control-group" :class="[errors.has('address-form.' + type + '[postcode]') ? 'has-error' : '']">
             <input type="number" :name="type + '[postcode]'" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('City')"/>
             <label>{{ $t('Postal Code') }}</label>
-            <span class="control-error" v-if="errors.has('address-form.' + type + '[postcode]')">{{ errors.first('address-form.' + type + '[postcode]') }}</span>
+            <span class="control-error" v-if="errors.has('address-form.' + type + '[postcode]')">Postal Code is Required.</span>
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[phone]') ? 'has-error' : '']">
             <input type="number" :name="type + '[phone]'" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
             <label>{{ $t('Phone') }}</label>
-            <span class="control-error" v-if="errors.has('address-form.' + type + '[phone]')">{{ errors.first('address-form.' + type + '[phone]') }}</span>
+            <span class="control-error" v-if="errors.has('address-form.' + type + '[phone]')">Phone Number is required.</span>
         </div>
     </div>
 </template>

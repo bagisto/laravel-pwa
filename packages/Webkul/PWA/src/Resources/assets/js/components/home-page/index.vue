@@ -61,7 +61,7 @@
         data () {
 			return {
 				categories: [],
-                
+
                 product: {
                     'new': [],
                     'featured': []
@@ -111,7 +111,7 @@
 
 <style lang="scss">
     @import '~@/_variables.scss';
-    
+
     .products {
         .list {
             padding: 16px;

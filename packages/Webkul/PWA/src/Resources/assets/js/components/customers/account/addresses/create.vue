@@ -26,13 +26,13 @@
                 <div class="control-group" :class="[errors.has('postcode') ? 'has-error' : '']">
                     <input type="text" name="postcode" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('City')"/>
                     <label>{{ $t('Postal Code') }}</label>
-                    <span class="control-error" v-if="errors.has('postcode')">{{ errors.first('postcode') }}</span>
+                    <span class="control-error" v-if="errors.has('postcode')">Postal code is required.</span>
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
                     <input type="number" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
                     <label>{{ $t('Phone') }}</label>
-                    <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
+                    <span class="control-error" v-if="errors.has('phone')">Phone number is required.</span>
                 </div>
 
                 <div class="button-group">

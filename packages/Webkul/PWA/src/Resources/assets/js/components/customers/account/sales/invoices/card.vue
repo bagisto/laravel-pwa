@@ -26,7 +26,7 @@
 <script>
     export default {
         name: 'invoice-card',
-        
+
         props: ['invoice']
     }
 </script>
@@ -64,7 +64,7 @@
                 opacity: 0.16;
             }
         }
-        
+
         .invoice-actions {
             border: 1px solid rgba(0, 0, 0, 0.12);
             font-weight: 600;

@@ -9,7 +9,7 @@ return [
         'key' => 'pwa.settings',
         'name' => 'pwa::app.admin.system.settings',
         'sort' => 1,
-    ], [
+    ],[
         'key' => 'pwa.settings.general',
         'name' => 'pwa::app.admin.system.general',
         'sort' => 1,
@@ -76,4 +76,5 @@ return [
             ]
         ]
     ]
+
 ];

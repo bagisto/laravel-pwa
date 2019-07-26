@@ -5,7 +5,7 @@
             {{ address.city }}</br>
             {{ address.state }}</br>
             {{ address.country_name + ' ' + address.postcode }}</br>
-            {{ address.phone }} 
+            {{ address.phone }}
 
             <!-- <i class="icon sharp-arrow-right-icon"></i> -->
         </div>
@@ -40,8 +40,8 @@
 
                 this.$http.delete('/api/addresses/' + this.address.id)
                     .then(function(response) {
-                        this_this.$toasted.show(response.data.message, { type: 'success' })
-                        
+                        this_this.$toasted.show('Address Removed Successfully', { type: 'success' })
+
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.$emit('onRemove')
