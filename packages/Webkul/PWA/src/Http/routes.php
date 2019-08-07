@@ -8,12 +8,12 @@
         Route::get('/mobile/{any?}', 'Webkul\PWA\Http\Controllers\SinglePageController@index')->where('any', '.*');
     });
 
-    Route::prefix('admin/pwa')->group(function () {
+    Route::prefix('admin/pwa/pushnotification')->group(function () {
         // PushNotifications routes
-        Route::get('/view','Webkul\PWA\Http\Controllers\PushNotificationController@index')->defaults('_config', ['view' => 'pwa::PushNotification.index'
+        Route::get('/','Webkul\PWA\Http\Controllers\PushNotificationController@index')->defaults('_config', ['view' => 'pwa::PushNotification.index'
         ])->name('pwa.pushnotification.index');
         // create
-        Route::get('/','Webkul\PWA\Http\Controllers\PushNotificationController@create')->defaults('_config', ['view' => 'pwa::PushNotification.create'
+        Route::get('/create','Webkul\PWA\Http\Controllers\PushNotificationController@create')->defaults('_config', ['view' => 'pwa::PushNotification.create'
         ])->name('pwa.pushnotification.create');
         // store
         Route::post('/store','Webkul\PWA\Http\Controllers\PushNotificationController@store')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'

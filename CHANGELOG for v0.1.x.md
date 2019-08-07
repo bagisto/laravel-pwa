@@ -2,6 +2,12 @@
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
+## **v0.1.2(7th of August, 2019)** - *Release*
+
+* [feature] Push Notifications added.
+
+* [Bug] Fixed minor issues.
+
 ## **v0.1.1(26th of July, 2019)** - *Release*
 
 * [Bug] Correct sort by .Update it To A-Z, showing sort by Z-A twice.

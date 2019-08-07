@@ -9,6 +9,7 @@ use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 use FCM;
+use DB;
 
 class PushNotificationController extends Controller
 {
@@ -126,79 +127,56 @@ class PushNotificationController extends Controller
 
     public function pushtofirebase($id) // send push notification to multiple devices
     {
-        // $title = 'aayush';
-        // $body = 'aayush bhatt PWA notification';
-        // $notification = array(
-        //     'title' => $title ,
-        //     'body' => $body,
-        //     'sound' => 'default',
-        //     'badge' => '1'
-        // );
 
-        // $arrayToSend = array('notification' => $notification,'priority'=>'high');
-        // $json = json_encode($arrayToSend);
-        // //api_key in Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key
-        // $server_key = 'AAAAZ5GsN90:APA91bESSlGd3V9a2BFm5lRP4-IM5qd0_pEpYCjAyeK94KqLmjtgWPNY1p7B-9uBdiyb3IPluH26PFgmVVAsBYPTXL6yfAJ5dM7gFYXu8R8QAu_PHDVGQtSaNA35ORhyvndWhkzVpXOP';
-        // $headers = array();
-        // $headers[] = 'Content-Type: application/json';
-        // $headers[] = 'Authorization: key='. $server_key;
+        $pushnotification = \DB::table('push_notifications')->find($id);
+        $title = $pushnotification->title;
+        $body = $pushnotification->description;
+        $badge = $pushnotification->imageurl;
+        $targeturl = $pushnotification->targeturl;
 
-        // //FCM API end-point
-        // $url = 'https://fcm.googleapis.com/fcm/send';
+        $url = 'https://fcm.googleapis.com/fcm/send';
 
-        // //CURL request to route notification to FCM connection server (provided by Google)
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_POST, true);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $headers);
-        // $result = curl_exec($ch);
+            $topic = 'bagisto';
 
-        // if ($result === FALSE) {
-        //     die('Oops! FCM Send Error: ' . curl_error($ch));
-        // }
-        // curl_close($ch);
+            $fields = array(
+                'to' => '/topics/bagisto',
+                'data' => [
+                    'body' => $body,
+                    'title' => $title
+                ]
+            );
 
+            $server_key = "AIzaSyBjbet3YzHEAp-YEkRN50zWx3asw0d07MA";
 
-        // // Brozot/laravel-fcm wala code
-        //     $optionBuilder = new OptionsBuilder();
-        //     $optionBuilder->setTimeToLive(60*20);
+            $headers = array(
+                'Content-Type:application/json',
+                'Authorization:key='.$server_key,
+            );
 
-        //     $notificationBuilder = new PayloadNotificationBuilder('my title');
-        //     $notificationBuilder->setBody('Hello world')
-        //                         ->setSound('default');
+            // Open connection
+            $ch = curl_init();
 
-        //     $dataBuilder = new PayloadDataBuilder();
-        //     $dataBuilder->addData(['a_data' => 'my_data']);
+            curl_setopt( $ch, CURLOPT_URL, $url );
 
-        //     $option = $optionBuilder->build();
-        //     $notification = $notificationBuilder->build();
-        //     $data = $dataBuilder->build();
+            curl_setopt( $ch, CURLOPT_POST, true );
 
-        //     $token = "a_registration_from_your_database";
+            curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 
-        //     $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+            // Disabling SSL Certificate support temporarly
+            curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
 
-        //     $downstreamResponse->numberSuccess();
-        //     $downstreamResponse->numberFailure();
-        //     $downstreamResponse->numberModification();
+            curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $fields ) );
+            // Execute post
+            $result = curl_exec( $ch );
 
-        //     //return Array - you must remove all this tokens in your database
-        //     $downstreamResponse->tokensToDelete();
+            if ( $result === false ) {
+                die('Curl failed: ' . curl_error($ch));
+            }
 
-        //     //return Array (key : oldToken, value : new token - you must change the token in your database )
-        //     $downstreamResponse->tokensToModify();
+            curl_close( $ch );
 
-        //     //return Array - you should try to resend the message to the tokens in the array
-        //     $downstreamResponse->tokensToRetry();
-
-        //     // return Array (key:token, value:errror) - in production you should remove from your database the tokens
-        $pushnotification = $this->PushNotificationRepository->find($id);
-
-        dd(json_encode($pushnotification));
+            // Close connection
+            return redirect()->back();
     }
-
 }

@@ -106,7 +106,7 @@
 
             .shipment-items-section {
                 margin-top: -1px;
-                    
+
                 .shipment-item-list {
                     padding: 0 16px;
 
@@ -142,7 +142,7 @@
 
                                     .option {
                                         display: inline-block;
-                                            
+
                                         span {
                                             margin-right: 8px;
                                         }

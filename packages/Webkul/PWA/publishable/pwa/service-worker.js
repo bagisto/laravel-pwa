@@ -213,22 +213,22 @@ firebase.initializeApp({
 });
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages
-const messaging = firebase.messagingk();
+const messaging = firebase.messaging();
 
 // Add the public key generated from the console here.
 messaging.usePublicVapidKey('BD_Dln12imwjo_BZO3rnwsWOnccsoZLtHJdR6m03Dvge3hDFLF6hiRQIIEtY-6ZQvVh1w1AMq4xfa_o97B-SF6A');
 
-messaging.setBackgroundMessageHandler(function(payload) {
-  console.log('[firebase-messaging-sw.js] Recebackground message' , 'payload');
-  // Customize message here
-  var notificationTitle = 'Background Message Title';
-  var notificationOptions = {
-    body: 'Background Message body.',
-    icon: '/firebase-logo.png'
-  };
+// messaging.setBackgroundMessageHandler(function(payload) {
+//   console.log('[firebase-messaging-sw.js] Recebackground message' , 'payload');
+//   // Customize message here
+//   var notificationTitle = 'Background Message Title';
+//   var notificationOptions = {
+//     body: 'Background Message body.',
+//     icon: '/firebase-logo.png'
+//   };
 
-  return self.registration.showNotification(notificationTitle, notificationOptions);
-});
+//   return self.registration.showNotification(notificationTitle, notificationOptions);
+// });
 
 // messaging.setBackgroundMessageHandler(function(payload) {
 //   console.log('[firebase-messaging-sw.js] Received background message ', payload);

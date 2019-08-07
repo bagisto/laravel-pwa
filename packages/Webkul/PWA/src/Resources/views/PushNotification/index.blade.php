@@ -10,6 +10,11 @@
             <div class="page-title">
                 <h1>{{ __('pwa::app.admin.system.notification') }}</h1>
             </div>
+            <div class="page-action">
+                <a href="{{ route('pwa.pushnotification.create') }}" class="btn btn-lg btn-primary">
+                    Create Push Notifications
+                </a>
+            </div>
         </div>
 
         <div class="page-content">
