@@ -52,7 +52,7 @@
                         <span class="dot"></span>
 
                         <span class="info">
-                            {{ $t('Minimum length of this field must be equal or greater than 6 symbols.') }} 
+                            {{ $t('Minimum length of this field must be equal or greater than 6 characters.') }}
                         </span>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
 
             updateProfile () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.put("/api/customer/profile", this.customer)
@@ -125,6 +125,7 @@
             }
         }
     }
+
 </script>
 
 <style scoped lang="scss">

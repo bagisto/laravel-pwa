@@ -44,7 +44,7 @@
                         <span class="dot"></span>
 
                         <span class="info">
-                            {{ $t('Minimum length of this field must be equal or greater than 6 symbols.') }} 
+                            {{ $t('Minimum length of this field must be equal or greater than 6 characters.') }}
                         </span>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
 
             registerCustomer () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/customer/register", this.user)

@@ -32,7 +32,7 @@
                     <button type="submit" class="btn btn-black btn-lg" :disabled="loading">{{ $t('Sign In') }}</button>
 
                     <button type="button" class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'register')">{{ $t('Create An Account') }}</button>
-                    <span style="color: red;" id="login-error"></span>
+                     <span style="color: red;" id="login-error"></span>
                 </div>
             </div>
         </form>

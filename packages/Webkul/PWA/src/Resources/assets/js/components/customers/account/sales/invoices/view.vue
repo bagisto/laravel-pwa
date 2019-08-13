@@ -9,36 +9,38 @@
                 <h2 class="sale-section-title">{{ $t('number Item(s)', {number: invoice.items.length}) }}</h2>
 
                 <div class="invoice-item-list sale-section-content">
-                    <div class="invoice-item" v-for="invoiceItem in invoice.items">
-                        <div class="invoice-item-info">
-                            <div class="invoice-item-name">
-                                {{ invoiceItem.name }}
-                            </div>
-
-                            <div class="invoice-item-options">
-                                <div class="attributes" v-if="invoiceItem.additional.attributes">
-                                    <div class="option" v-for="attribute in invoiceItem.additional.attributes">
-                                        <label>{{ attribute.attribute_name }} - </label>
-                                        <span>{{ attribute.option_label }}</span>
-                                    </div>
+                    <div class="invoice-item">
+                        <div v-for="invoiceItem in invoice.items">
+                            <div class="invoice-item-info">
+                                <div class="invoice-item-name">
+                                    {{ invoiceItem.name }}
                                 </div>
 
-                                <label>{{ $t('Qty -') }} </label>
-                                <span>{{ invoiceItem.qty }}</span>
-                            </div>
+                                <div class="invoice-item-options">
+                                    <div class="attributes" v-if="invoiceItem.additional.attributes">
+                                        <div class="option" v-for="attribute in invoiceItem.additional.attributes">
+                                            <label>{{ attribute.attribute_name }} - </label>
+                                            <span>{{ attribute.option_label }}</span>
+                                        </div>
+                                    </div>
 
-                            <div class="invoice-item-price">
-                                <label>{{ $t('Price -') }} </label>
-                                <span>{{ invoiceItem.formated_price }}</span>
-                            </div>
+                                    <label>{{ $t('Qty -') }} </label>
+                                    <span>{{ invoiceItem.qty }}</span>
+                                </div>
 
-                            <div class="invoice-item-total">
-                                <label>{{ $t('Sub Total -') }} </label>
-                                <span>{{ invoiceItem.formated_grand_total }}</span>
+                                <div class="invoice-item-price">
+                                    <label>{{ $t('Price -') }} </label>
+                                    <span>{{ invoiceItem.formated_price }}</span>
+                                </div>
+
+                                <div class="invoice-item-total">
+                                    <label>{{ $t('Sub Total -') }} </label>
+                                    <span>{{ invoiceItem.formated_grand_total }}</span>
+                                </div>
+
                             </div>
                         </div>
                     </div>
-                    <br> <!--remove this if not needed -->
                 </div>
             </div>
 

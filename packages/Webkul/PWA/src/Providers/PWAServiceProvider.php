@@ -16,6 +16,7 @@ class PWAServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
+        $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
 
         $this->publishes([
             __DIR__ . '/../../publishable/assets' => public_path('vendor/webkul/pwa/assets'),
@@ -38,7 +39,7 @@ class PWAServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
     }
-    
+
     /**
      * Register package config.
      *
@@ -49,5 +50,13 @@ class PWAServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/system.php', 'core'
         );
+
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
+        );
+
+        // $this->mergeConfigFrom(
+        //     dirname(__DIR__) . '/Config/acl.php', 'acl'
+        //    );
     }
 }

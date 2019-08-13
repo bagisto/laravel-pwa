@@ -2,7 +2,7 @@
     <div class="order-success">
         <div class="illustration order-success-img"></div>
 
-        <h2>{{ $t('Thanks for Purchase') }}</h2>
+        <h2>{{ $t('Thank you for your order') }}</h2>
 
         <p v-html="$t('Your order number is: order_id', {order_id: '<span class=\'order-id\' style=\'font-weight: 700; color: rgba(0, 0, 0, 0.86);\'>#' + orderId + '</span>'})"></p>
 

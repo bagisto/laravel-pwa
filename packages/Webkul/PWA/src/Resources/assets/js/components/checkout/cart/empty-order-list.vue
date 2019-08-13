@@ -4,7 +4,7 @@
 
         <h2>{{ $t('No Orders') }}</h2>
 
-        <p>{{ $t('You have not placed ay order with us yet.') }}</p>
+        <p>{{ $t('You have not placed any order with us yet.') }}</p>
 
         <router-link class="btn btn-black" :to="'/'">{{ $t('Start Shopping') }}</router-link>
     </div>
