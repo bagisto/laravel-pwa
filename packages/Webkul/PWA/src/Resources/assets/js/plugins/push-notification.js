@@ -21,7 +21,6 @@ function retriveCurrentToken()
     // subsequent calls to getToken will return from cache.
     messaging.getToken().then((currentToken) => {
       if (currentToken) {
-        console.log(currentToken);
         sendTokenToServer(currentToken);
         var topic ='bagisto';
         SubscribeToTopic(currentToken, topic);

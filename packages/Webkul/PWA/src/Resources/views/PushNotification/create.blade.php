@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-<form action="{{route('pwa.pushnotification.store')}}" method="POST" @submit.prevent="onSubmit">
+<form action="{{route('pwa.pushnotification.store')}}" method="POST" enctype="multipart/form-data" @submit.prevent="onSubmit">
     <div class="content" style="height: 100%;">
             <div class="page-header">
                 <div class="page-title">

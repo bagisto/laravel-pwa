@@ -69,15 +69,6 @@ class PushNotificationDataGrid extends DataGrid
             'sortable' => false,
             'filterable' => false
         ]);
-
-        $this->addColumn([
-            'index' => 'imageurl',
-            'label' => trans('pwa::app.admin.system.imageurl'),
-            'type' => 'string',
-            'searchable' => false,
-            'sortable' => false,
-            'filterable' => false
-         ]);
     }
 
     public function prepareActions()

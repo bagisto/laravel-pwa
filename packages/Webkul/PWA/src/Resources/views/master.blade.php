@@ -20,6 +20,9 @@
         <link rel="apple-touch-icon" sizes="196x196" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.extra_large')) : asset('vendor/webkul/pwa/assets/images/196x196.png')  }}">
         <meta name="apple-mobile-web-app-capable" content="yes">
 
+        <span class="phpdebugbar-text-muted">
+        <samp data-depth="1" class="sf-dump-compact">
+
         {!! view_render_event('bagisto.pwa.layout.head') !!}
         <title>PWA</title>
 

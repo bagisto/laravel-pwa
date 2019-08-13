@@ -127,7 +127,6 @@ class PushNotificationController extends Controller
 
     public function pushtofirebase($id) // send push notification to multiple devices
     {
-
         $pushnotification = \DB::table('push_notifications')->find($id);
         $title = $pushnotification->title;
         $body = $pushnotification->description;
@@ -142,8 +141,10 @@ class PushNotificationController extends Controller
                 'to' => '/topics/bagisto',
                 'data' => [
                     'body' => $body,
-                    'title' => $title
+                    'title' => $title,
+                    'click_action' => $targeturl
                 ]
+
             );
 
             $server_key = "AIzaSyBjbet3YzHEAp-YEkRN50zWx3asw0d07MA";
@@ -164,7 +165,7 @@ class PushNotificationController extends Controller
 
             curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
             // Disabling SSL Certificate support temporarly
-            curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+            curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
 
             curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $fields ) );
             // Execute post

@@ -58,5 +58,4 @@ class PushNotificationRepository extends Repository
     {
         parent::delete($id);
     }
-
 }

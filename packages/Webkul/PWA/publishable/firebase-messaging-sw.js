@@ -12,10 +12,21 @@ messaging.setBackgroundMessageHandler(function(payload)
 	var notificationTitle = payload.data.title;
 	var notificationOptions = {
 	  body: payload.data.body,
-	  click_action: 'www.google.com',
 	  icon: '/bagisto.png',
+	  data:{
+		  click_action: payload.data.click_action
+	  }
 	};
 
 	return self.registration.showNotification(notificationTitle, notificationOptions);
 });
   // [END background_handler]
+
+  self.addEventListener('notificationclick', function (event) {
+	var action_click = event.notification.data.click_action
+	event.notification.close();
+
+	event.waitUntil(
+		clients.openWindow(action_click)
+	);
+  });
