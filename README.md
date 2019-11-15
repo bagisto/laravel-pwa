@@ -34,7 +34,7 @@ It packs in lots of demanding features that allows your business to scale in no 
 Webkul\PWA\Providers\PWAServiceProvider::class
 ~~~
 
-* Goto config.json file and add following line under 'psr-4'
+* Goto composer.json file and add following line under 'psr-4'
 
 ~~~
 "Webkul\\PWA\\": "packages/Webkul/PWA"
