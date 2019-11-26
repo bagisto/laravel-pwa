@@ -28,6 +28,10 @@ class PWAServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'pwa');
 
         Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/paypal/standard-redirect.blade.php' => resource_path('views/vendor/paypal/standard-redirect.blade.php'),
+        ]);
     }
 
     /**

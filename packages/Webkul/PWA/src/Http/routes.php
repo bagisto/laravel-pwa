@@ -34,9 +34,9 @@
     });
 
     Route::prefix('paypal/standard')->group(function () {
-        Route::get('/success', 'Webkul\PWA\Http\Controllers\StandardController@success')->name('paypal.standard.success');
+        Route::get('/pwa/success', 'Webkul\PWA\Http\Controllers\StandardController@success')->name('pwa.paypal.standard.success');
 
-        Route::get('/cancel', 'Webkul\PWA\Http\Controllers\StandardController@cancel')->name('paypal.standard.cancel');
+        Route::get('/pwa/cancel', 'Webkul\PWA\Http\Controllers\StandardController@cancel')->name('pwa.paypal.standard.cancel');
     });
 
 ?>
