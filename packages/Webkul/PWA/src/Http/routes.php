@@ -33,4 +33,10 @@
         ])->name('pwa.pushnotification.pushtofirebase');
     });
 
+    Route::prefix('paypal/standard')->group(function () {
+        Route::get('/pwa/success', 'Webkul\PWA\Http\Controllers\StandardController@success')->name('pwa.paypal.standard.success');
+
+        Route::get('/pwa/cancel', 'Webkul\PWA\Http\Controllers\StandardController@cancel')->name('pwa.paypal.standard.cancel');
+    });
+
 ?>

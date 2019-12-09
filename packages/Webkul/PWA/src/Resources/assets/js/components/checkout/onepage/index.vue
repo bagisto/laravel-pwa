@@ -554,9 +554,13 @@
                 this.$http.post('/api/checkout/save-order')
                     .then(function(response) {
                         if (response.data.success) {
-                            this_this.$router.push({ path: '/checkout/success/' + response.data.order.id })
+                            if (response.data.redirect_url) {
+                                window.location.href = response.data.redirect_url;
+                            } else {
+                                this_this.$router.push({ path: '/checkout/success/' + response.data.order.id })
 
-                            EventBus.$emit('checkout.cart.changed', null);
+                                EventBus.$emit('checkout.cart.changed', null);
+                            }
                         }
                     })
                     .catch(function (error) {
