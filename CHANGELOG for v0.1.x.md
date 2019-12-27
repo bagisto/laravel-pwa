@@ -2,6 +2,12 @@
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
+## **v0.1.3(26th of December, 2019)** - *Release*
+
+* [Update] Added missing language translations.
+
+* [Update] Added contract for the PushNotificaton Model.
+
 ## **v0.1.2(7th of August, 2019)** - *Release*
 
 * [feature] Push Notifications added.
