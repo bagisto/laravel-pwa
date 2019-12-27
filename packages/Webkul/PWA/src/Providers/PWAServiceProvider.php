@@ -3,9 +3,14 @@
 namespace Webkul\PWA\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 
+/**
+ * PWA service provider
+ *
+ * @author    Vivek Sharma <viveksh047@webkul.com>
+ * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+ */
 class PWAServiceProvider extends ServiceProvider
 {
     /**
@@ -16,6 +21,9 @@ class PWAServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
+
+        $this->app->register(ModuleServiceProvider::class);
+
         $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
 
         $this->publishes([
@@ -58,9 +66,5 @@ class PWAServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
         );
-
-        // $this->mergeConfigFrom(
-        //     dirname(__DIR__) . '/Config/acl.php', 'acl'
-        //    );
     }
 }

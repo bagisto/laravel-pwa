@@ -3,35 +3,31 @@
 namespace Webkul\PWA\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Container\Container as App;
 
 /**
  * Manufacturer Reposotory
  *
  * @author    Aayush Bhatt <aayush.bhatt172@webkul.com>
+ * @author    Vivek Sharma <viveksh047@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class PushNotificationRepository extends Repository
 {
-
-
     /**
      * Specify Model class name
      *
      * @return mixed
      */
-
     function model()
     {
-        return 'Webkul\PWA\Models\PushNotification';
+        return 'Webkul\PWA\Contracts\PushNotification';
     }
 
     /**
      * @param array $data
      * @return mixed
      */
-
     public function __construct(App $app)
     {
         parent::__construct($app);
@@ -42,6 +38,7 @@ class PushNotificationRepository extends Repository
     public function create(array $data)
     {
         $pushnotification = $this->model->create($data);
+        
         return $pushnotification;
     }
 
