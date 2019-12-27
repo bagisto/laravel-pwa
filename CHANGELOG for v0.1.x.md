@@ -8,6 +8,8 @@
 
 * [Update] Added contract for the PushNotificaton Model.
 
+* [Update] composer.json file added.
+
 ## **v0.1.2(7th of August, 2019)** - *Release*
 
 * [feature] Push Notifications added.
