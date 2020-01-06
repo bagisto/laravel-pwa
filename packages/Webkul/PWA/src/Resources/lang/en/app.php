@@ -14,22 +14,29 @@ return [
             'small' => 'App Icon (48x48)',
             'medium' => 'App Icon (96x96)',
             'large' => 'App Icon (144x144)',
-            'extra-large' => 'App Icon (196x196)',
+            'extra-large' => 'App Icon (196x196)'
+        ],
+        'layouts' => [
+            'push-notification' => 'Push Notification'
+        ],
+        'push-notification' => [
+            'title' => 'Push Notification',
+            'title-create' => 'Add Notification',
+            'title-edit' => 'Modity Notification',
+            'create-notification' => 'Create Push Notification',
+            'edit-notification' => 'Edit Push Notification',
             'notification' => 'Notification',
-            'createpushnotification' => 'Create Push Notification',
-            'showpushnotification' => 'Show Push Notification',
-            'send-push-notification' => 'Send Push Notification',
-            'notification-title' => 'Title',
-            'notification-description' => 'Description',
+            'btn-save' => 'Save',
+            'label-title' => 'Title',
+            'description' => 'Description',
             'target-url' => 'Target URL',
-            'notification-icon' => 'Icon',
-            'save' => 'Save',
+            'icon' => 'Icon'
+        ],
+        'datagrid' => [
             'id' => 'ID',
-            'pushnotificationtitle' => 'Title',
-            'pushnotificationdescription' => 'Description',
-            'editpushnotification' => 'Edit',
-            'targeturl' => 'Target URL',
-            'imageurl' => 'Image URL'
+            'title' => 'Title',
+            'description' => 'Description',
+            'target-url' => 'Target URL'
         ]
     ]
 ];

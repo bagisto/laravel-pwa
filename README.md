@@ -34,10 +34,16 @@ It packs in lots of demanding features that allows your business to scale in no 
 Webkul\PWA\Providers\PWAServiceProvider::class
 ~~~
 
+* Goto config/concord.php file and add following line under 'modules'
+
+~~~
+\Webkul\PWA\Providers\ModuleServiceProvider::class
+~~~
+
 * Goto composer.json file and add following line under 'psr-4'
 
 ~~~
-"Webkul\\PWA\\": "packages/Webkul/PWA"
+"Webkul\\PWA\\": "packages/Webkul/PWA/src"
 ~~~
 
 * Install Jenssegers Agent via following command
@@ -62,6 +68,10 @@ Jenssegers\Agent\AgentServiceProvider::class
 
 ~~~
 composer dump-autoload
+~~~
+
+~~~
+php artisan migrate
 ~~~
 
 ~~~

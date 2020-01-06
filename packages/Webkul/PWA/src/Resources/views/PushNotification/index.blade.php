@@ -1,18 +1,18 @@
 @extends('admin::layouts.content')
 
 @section('page_title')
-    View
+    {{ __('pwa::app.admin.push-notification.title') }}
 @stop
 
 @section('content')
     <div class="content" style="height: 100%;">
         <div class="page-header">
             <div class="page-title">
-                <h1>{{ __('pwa::app.admin.system.notification') }}</h1>
+                <h1>{{ __('pwa::app.admin.push-notification.title') }}</h1>
             </div>
             <div class="page-action">
                 <a href="{{ route('pwa.pushnotification.create') }}" class="btn btn-lg btn-primary">
-                    Create Push Notifications
+                    {{ __('pwa::app.admin.push-notification.create-notification') }}
                 </a>
             </div>
         </div>

@@ -9,7 +9,7 @@ return[
     ], [
         'key' => 'PWA.index',
         'route' => 'pwa.pushnotification.index',
-        'name' => 'Push Notification',
+        'name' => 'pwa::app.admin.layouts.push-notification',
         'sort' => 1
     ]
 ];
