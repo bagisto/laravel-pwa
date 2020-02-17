@@ -54,6 +54,11 @@
                                     <td>{{ cart.formated_tax_total }}</td>
                                 </tr>
 
+                                <tr>
+                                    <td>{{ $t('Discount') }}</td>
+                                    <td> - {{ cart.formated_discount }}</td>
+                                </tr>
+
                                 <tr class="last">
                                     <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
@@ -134,7 +139,9 @@
 
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                        this_this.$toasted.show(error.response.data.message, { type: 'error' });
+                    });
             },
 
             removeItem (item) {

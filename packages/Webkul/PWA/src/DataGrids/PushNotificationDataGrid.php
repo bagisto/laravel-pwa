@@ -84,7 +84,7 @@ class PushNotificationDataGrid extends DataGrid
         $this->addAction([
             'type' => 'send',
             'route' => 'pwa.pushnotification.pushtofirebase',
-            'icon' => 'icon angle-right-icon',
+            'icon' => 'icon bell-icon',
             'method' => 'GET'
         ]);
     }

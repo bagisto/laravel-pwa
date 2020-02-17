@@ -10,10 +10,15 @@
 
                 <div class="invoice-item-list sale-section-content">
                     <div class="invoice-item">
+                        
                         <div v-for="invoiceItem in invoice.items">
+                            
                             <div class="invoice-item-info">
                                 <div class="invoice-item-name">
                                     {{ invoiceItem.name }}
+                                </div>
+                                <div class="invoice-item-name">
+                                    <i>{{ invoiceItem.sku }}</i>
                                 </div>
 
                                 <div class="invoice-item-options">
@@ -75,11 +80,11 @@
             </div>
 
             <div class="print-invoice-section sale-section">
-                <router-link class="sale-section-content" :to="'/customer/account/' + $route.params.order_id + '/invoices/' + invoice.id">
+                <div class="sale-section-content" @click="printInvoice(invoice.id)">
                     <i class="icon sharp-save-icon"></i>
 
                     <span>{{ $t('Save Invoice') }}</span>
-                </router-link>
+                </div>
             </div>
         </div>
     </div>
@@ -116,6 +121,23 @@
                         this_this.invoice = response.data.data;
                     })
                     .catch(function (error) {});
+            },
+
+            printInvoice (invoiceId) {
+                var this_this = this;
+
+                this.$http.get('/api/invoices/' + invoiceId + '/download', { responseType: 'blob'})
+                    .then(function(response) {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        
+                        link.href = url;
+
+                        link.setAttribute('download', 'invoice.pdf'); //or any other extension
+                        document.body.appendChild(link);
+                        link.click();
+                    })
+                    .catch(function (error) {});
             }
         }
     }
@@ -150,6 +172,7 @@
 
                 .sale-section-content {
                     padding: 16px;
+                    cursor: pointer;
                 }
             }
 
@@ -171,6 +194,8 @@
                         .invoice-item-info {
                             display: block;
                             overflow: hidden;
+                            margin-bottom: 10px;
+                            border-bottom: 1px dotted #CCC;
 
                             > div {
                                 margin-bottom: 8px;

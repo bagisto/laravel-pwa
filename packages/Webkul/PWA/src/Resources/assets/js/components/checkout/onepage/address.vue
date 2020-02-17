@@ -1,21 +1,21 @@
 <template>
     <div>
         <div class="control-group" :class="[errors.has('address-form.' + type + '[first_name]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[first_name]'" class="control" v-model="address.first_name" v-validate="'required'" :placeholder="$t('First Name')" :data-vv-as="$t('First Name')" onkeypress="return (event.charCode > 64 &&
+            <input type="text" :name="type + '[first_name]'" class="control" v-model="cart.customer_first_name" v-validate="'required'" :placeholder="$t('First Name')" :data-vv-as="$t('First Name')" onkeypress="return (event.charCode > 64 &&
             event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"/>
             <label>{{ $t('First Name') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[first_name]')">{{ errors.first('address-form.' + type + '[first_name]') }}</span>
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[last_name]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[last_name]'" class="control" v-model="address.last_name" v-validate="'required'" :placeholder="$t('Last Name')" :data-vv-as="$t('Last Name')" onkeypress="return (event.charCode > 64 &&
+            <input type="text" :name="type + '[last_name]'" class="control" v-model="cart.customer_last_name" v-validate="'required'" :placeholder="$t('Last Name')" :data-vv-as="$t('Last Name')" onkeypress="return (event.charCode > 64 &&
             event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"/>
             <label>{{ $t('Last Name') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[last_name]')">{{ errors.first('address-form.' + type + '[last_name]') }}</span>
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[email]') ? 'has-error' : '']">
-            <input type="email" :name="type + '[email]'" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
+            <input type="email" :name="type + '[email]'" class="control" v-model="cart.customer_email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
             <label>{{ $t('Email') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[email]')">{{ errors.first('address-form.' + type + '[email]') }}</span>
         </div>
@@ -61,7 +61,7 @@
 
         components: { CheckoutCountryState },
 
-        props: [ 'address', 'type' ],
+        props: [ 'address', 'type', 'cart' ],
 
         data () {
             return {

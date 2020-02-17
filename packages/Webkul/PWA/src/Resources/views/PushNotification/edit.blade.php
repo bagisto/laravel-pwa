@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <form action="{{ route('pwa.pushnotification.update', $pushnotification->id) }}" method="POST" @submit.prevent="onSubmit">
+    <form action="{{ route('pwa.pushnotification.update', $pushnotification->id) }}" method="POST" @submit.prevent="onSubmit" enctype="multipart/form-data" >
         <div class="content" style="height: 100%">
             <div class="page-header">
                 <div class="page-title">
@@ -43,10 +43,17 @@
                             <span class="control-error" v-if="errors.has('targeturl')">@{{ errors.first('targeturl') }}</span>
                         </div>
 
-                        <div class="control-group" :class="[errors.has('icon') ? 'has-error' : '']">
-                            <label for="icon" class="required">{{ __('pwa::app.admin.push-notification.icon') }}</label>
-                            <input type="file" accept="image/*" style="padding-top: 5px;" v-validate="'required'" class="control" id="icon" name="icon" />
-                            <span class="control-error" v-if="errors.has('icon')">@{{ errors.first('icon') }}</span>
+                        <div class="control-group {!! $errors->has('image.*') ? 'has-error' : '' !!}">
+                            <label for="icon">{{ __('pwa::app.admin.push-notification.icon') }}</label>
+
+                            <image-wrapper :button-label="'{{ __('admin::app.catalog.products.add-image-btn-title') }}'" input-name="image" :multiple="false" :images='"{{ $pushnotification->imageurl_url }}"'></image-wrapper>
+
+                            <span class="control-error" v-if="{!! $errors->has('image.*') !!}">
+                                @foreach ($errors->get('image.*') as $key => $message)
+                                    @php echo str_replace($key, 'image', $message[0]); @endphp
+                                @endforeach
+                            </span>
+
                         </div>
                     </div>
                 </accordian>

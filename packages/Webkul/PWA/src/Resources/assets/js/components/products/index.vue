@@ -50,7 +50,7 @@
             <div class="add-to-buttons">
                 <button type="submit" class="add-to-cart-btn">{{ $t('Add To Cart') }}</button>
 
-                <button class="btn btn-black buy-now-btn" @click="buyNow()">{{ $t('Buy Now') }}</button>
+                <button class="btn btn-black buy-now-btn" @click.prevent="buyNow" >{{ $t('Buy Now') }}</button>
             </div>
 
             <div class="product-description">
@@ -166,7 +166,7 @@
 
             buyNow () {
                 var this_this = this;
-
+                
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)

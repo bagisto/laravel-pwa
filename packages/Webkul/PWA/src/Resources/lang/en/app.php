@@ -6,6 +6,7 @@ return [
             'pwa' => 'PWA',
             'settings' => 'Settings',
             'general' => 'General',
+            'push-notification' => 'Push Notification',
             'name' => 'Name',
             'short-name' => 'Short Name',
             'theme-color' => 'Theme Color',
@@ -14,13 +15,15 @@ return [
             'small' => 'App Icon (48x48)',
             'medium' => 'App Icon (96x96)',
             'large' => 'App Icon (144x144)',
-            'extra-large' => 'App Icon (196x196)'
+            'extra-large' => 'App Icon (196x196)',
+            'topic' => 'Topic',
+            'api-key' => 'Server API Key'
         ],
         'layouts' => [
             'push-notification' => 'Push Notification'
         ],
         'push-notification' => [
-            'title' => 'Push Notification',
+            'title' => 'Push Notification List',
             'title-create' => 'Add Notification',
             'title-edit' => 'Modity Notification',
             'create-notification' => 'Create Push Notification',
@@ -30,7 +33,8 @@ return [
             'label-title' => 'Title',
             'description' => 'Description',
             'target-url' => 'Target URL',
-            'icon' => 'Icon'
+            'icon' => 'Icon',
+            'success-notification' => 'Success: Push notification sent successfully.'
         ],
         'datagrid' => [
             'id' => 'ID',

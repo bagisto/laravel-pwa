@@ -206,6 +206,8 @@
             border-top: 1px solid rgba(0, 0, 0, 0.12);
             font-weight: 600;
             font-size: 14px;
+            height: auto;
+            overflow: hidden;
 
             .wishlist-link {
                 float: left;

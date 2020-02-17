@@ -95,6 +95,11 @@
                                 <td>{{ order.formated_tax_amount }}</td>
                             </tr>
 
+                            <tr class="border">
+                                <td>{{ $t('Discount') }}</td>
+                                <td>- {{ order.formated_discount_amount }}</td>
+                            </tr>
+
                             <tr class="bold">
                                 <td>{{ $t('Total Paid') }}</td>
                                 <td>{{ order.formated_grand_total_invoiced }}</td>
@@ -109,12 +114,6 @@
                                 <td>{{ $t('Grand Total') }}</td>
                                 <td>{{ order.formated_grand_total }}</td>
                             </tr>
-
-                            <!--<tr class="bold">
-                                <td>total due</td>
-                                <td>-</td>
-                                <td>{{ order.total_due }}</td>
-                            </tr>-->
                         </tbody>
                     </table>
                 </div>

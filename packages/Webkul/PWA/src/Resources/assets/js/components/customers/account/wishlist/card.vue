@@ -51,7 +51,6 @@
         width: 100%;
         box-shadow: 0 10px 10px 0 rgba(0,0,0,0.04), 0 1px 4px 0 rgba(0,0,0,0.16);
         position: relative;
-        padding-bottom: 40px;
 
         .remove-item {
             position: absolute;
@@ -116,7 +115,7 @@
             cursor: pointer;
             text-transform: uppercase;
             height: 40px;
-            position: absolute;
+            position: relative;
             bottom: 0;
         }
     }

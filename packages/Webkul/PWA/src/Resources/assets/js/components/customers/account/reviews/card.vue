@@ -1,5 +1,5 @@
 <template>
-    <router-link class="review-card" :to="'/customer/account/reviews/' + review.id">
+    <div class="review-card">
         <div class="product-image">
             <img alt="product-base-small-image" :src="review.product.base_image.small_image_url"/>
         </div>
@@ -14,16 +14,41 @@
             </div>
         </div>
 
+        <router-link class="view-review" :to="'/customer/account/reviews/' + review.id">
+            <i class="icon sharp-arrow-right-icon"></i>    
+        </router-link>
 
-        <i class="icon sharp-arrow-right-icon"></i>
-    </router-link>
+        <div class="remove-review" @click="remove">
+            <i class="icon sharp-trash-icon"></i>    
+        </div>
+
+        
+    </div>
 </template>
 
 <script>
     export default {
         name: 'review-item',
 
-        props: ['review']
+        props: ['review'],
+
+        methods: {
+            remove () {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.delete('/api/reviews/' + this.review.id)
+                    .then(function(response) {
+                        this_this.$toasted.show('Success: Customer review removed successfully.', { type: 'success' })
+
+                        EventBus.$emit('hide-ajax-loader');
+
+                        this_this.$emit('onRemove');
+                    })
+                    .catch(function (error) {});
+            }
+        }
     }
 </script>
 
@@ -76,10 +101,18 @@
 
         .sharp-arrow-right-icon {
             position: absolute;
+            right: 40px;
+            top: 50%;
+            margin-top: -12px;
+            opacity: 0.25;
+        }
+
+        .sharp-trash-icon {
+            position: absolute;
             right: 16px;
             top: 50%;
             margin-top: -12px;
-            opacity: 0.16;
+            opacity: 0.25;
         }
     }
 </style>

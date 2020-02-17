@@ -4,6 +4,8 @@ namespace Webkul\PWA\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Foundation\AliasLoader;
+use Webkul\Checkout\Facades\Cart as CartFacade;
 
 /**
  * PWA service provider
@@ -21,6 +23,8 @@ class PWAServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
+
+        $this->app->register(EventServiceProvider::class);
 
         $this->app->register(ModuleServiceProvider::class);
 
@@ -40,6 +44,10 @@ class PWAServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Resources/views/paypal/standard-redirect.blade.php' => resource_path('views/vendor/paypal/standard-redirect.blade.php'),
         ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/shop/customers/account/orders/pdf.blade.php' => resource_path('views/vendor/shop/customers/account/orders/pdf.blade.php'),
+        ]);
     }
 
     /**
@@ -50,6 +58,8 @@ class PWAServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerConfig();
+
+        $this->registerFacades();
     }
 
     /**
@@ -66,5 +76,23 @@ class PWAServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
         );
+    }
+
+    /**
+     * Register Bouncer as a singleton.
+     *
+     * @return void
+     */
+    protected function registerFacades()
+    {
+        $loader = AliasLoader::getInstance();
+
+        $loader->alias('cart', CartFacade::class);
+
+        $this->app->singleton('cart', function () {
+            return new Cart();
+        });
+
+        $this->app->bind('cart', 'Webkul\PWA\Cart');
     }
 }

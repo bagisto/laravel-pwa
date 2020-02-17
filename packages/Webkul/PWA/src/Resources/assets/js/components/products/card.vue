@@ -95,6 +95,9 @@
                 span {
                     float: left;
                     margin-top: 5px;
+                    display: inline;
+                    width: 80%;
+                    margin-left: 0px;
                 }
 
                 .icon {

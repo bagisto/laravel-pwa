@@ -3,6 +3,7 @@
 namespace Webkul\PWA\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Container\Container as App;
 
 /**
@@ -38,6 +39,8 @@ class PushNotificationRepository extends Repository
     public function create(array $data)
     {
         $pushnotification = $this->model->create($data);
+
+        $this->uploadImages($data, $pushnotification);
         
         return $pushnotification;
     }
@@ -48,11 +51,46 @@ class PushNotificationRepository extends Repository
 
         $pushnotification->update($data);
 
+        $this->uploadImages($data, $pushnotification);
+
         return $pushnotification;
     }
 
     public function delete($id)
     {
         parent::delete($id);
+    }
+
+    /**
+     * @param array $data
+     * @param mixed $category
+     * @return void
+     */
+    public function uploadImages($data, $notification, $type = "image")
+    {
+        if (isset($data[$type])) {
+            $request = request();
+
+            foreach ($data[$type] as $imageId => $image) {
+                $file = $type . '.' . $imageId;
+                $dir = 'notification/' . $notification->id;
+
+                if ($request->hasFile($file)) {
+                    if ($notification->imageurl) {
+                        Storage::delete($notification->imageurl);
+                    }
+
+                    $notification->imageurl = $request->file($file)->store($dir);
+                    $notification->save();
+                }
+            }
+        } else {
+            if ($notification->imageurl) {
+                Storage::delete($notification->imageurl);
+            }
+
+            $notification->imageurl = null;
+            $notification->save();
+        }
     }
 }

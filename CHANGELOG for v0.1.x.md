@@ -2,6 +2,60 @@
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
+## **v0.1.5(17th of February, 2020)** - *Release*
+
+- [Bug] Default shipping method and payment method is not selected during checkout.
+
+- [Bug] Review details is blank for configurable product.
+
+- [Bug] Not getting success message on adding configurable product to wishlist.
+
+- [Bug] Sign in customer also not able to make review.
+
+- [Bug] Addresses gets added multiple time in Address Book of customer.
+
+- [Bug] UI issue on cart page.
+
+- [Bug] In Configuration Push Notification fields should not be required field, because of that customer not able to save configuration of pwa.
+
+- [Bug] Wishlisted product is not visible in Customer->Wishlist section.
+
+- [Bug] If from cart guest customer click on move to wishlist, then error message should throw.
+
+- [Bug] Save as address should only available for signed in customer. If guest customer select to checkout with save as address option he is not able to checkout.
+
+- [Bug] Issue with multi-currency. Price of product doesn't get updated in cart according to selected currency.
+
+- [Bug] Layout issue in wishlist grid.
+
+- [Bug] Unable to download Invoice.
+
+- [Bug] Forward icon in shipment is not clickable.
+
+- [Bug] Guest customer is able to make review, if it is not allowed from admin.
+
+- [Bug] UI issue if special price is used for product.
+
+- [Bug] Server Api key should be encrypted and on inspect element it should not visible.
+
+- [Implement] save address option is not coming when logged in customer enters any new address on check out page.
+
+- [Implement] Provide an option to delete review in PWA.
+
+- [Implement] Push Notification Group and Server API key added in PWA configuration.
+
+## **v0.1.4(13th of January, 2020)** - *Release*
+
+- [compatible] Bagisto Version v0.1.9, v0.2.1, v0.2.2.
+
+- [Bug] Filters are not visible.
+
+- [Bug] Discount not applied on product.
+
+- [Bug] After creating configurable product all products get disappear from front-end.
+
+- [Implement] Not getting option to add coupon discount.
+
 ## **v0.1.3(26th of December, 2019)** - *Release*
 
 * [Update] Added missing language translations.

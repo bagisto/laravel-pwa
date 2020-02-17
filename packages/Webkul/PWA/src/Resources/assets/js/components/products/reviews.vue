@@ -30,9 +30,11 @@
                             {{ $t('number Reviews', {number: product.reviews.total}) }}
                         </span>
 
-                        <router-link :to="'/reviews/' + product.id + '/create'">
-                            {{ $t('Add Your Review') }}
-                        </router-link>
+                        <div v-if="customer">
+                            <router-link :to="'/reviews/' + product.id + '/create'">
+                                {{ $t('Add Your Review') }}
+                            </router-link>
+                        </div>
                     </div>
                 </div>
 
@@ -91,12 +93,16 @@
 			return {
                 reviews: [],
 
-                pagination: {}
+                pagination: {},
+
+                customer: null
             }
         },
 
         mounted () {
             this.getReviews(this.product.id);
+
+            this.getAuthCustomer();
         },
 
         computed: {
@@ -110,6 +116,20 @@
                 }
 
                 return ratingFinal;
+            },
+
+            getAuthCustomer () {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/customer/get')
+                    .then(function(response) {
+                        this_this.customer = response.data.data;
+
+                        EventBus.$emit('hide-ajax-loader');
+                    })
+                    .catch(function (error) {});
             }
         },
 

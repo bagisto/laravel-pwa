@@ -11,9 +11,12 @@
             </span>
         </span>
 
-        <router-link :to="'/reviews/' + product.id + '/create'">
-            {{ $t('Add Your Review') }}
-        </router-link>
+        <div v-if="customer">
+            <router-link :to="'/reviews/' + product.id + '/create'">
+                {{ $t('Add Your Review') }}
+            </router-link>
+        </div>
+        
     </div>
 </template>
 
@@ -21,7 +24,33 @@
     export default {
         name: 'price',
 
-        props: ['product']
+        props: ['product'],
+
+        data () {
+            return {
+                customer: null,
+            }
+        },
+
+        mounted () {
+            this.getAuthCustomer();
+        },
+
+        methods: {
+            getAuthCustomer () {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/customer/get')
+                    .then(function(response) {
+                        this_this.customer = response.data.data;
+
+                        EventBus.$emit('hide-ajax-loader');
+                    })
+                    .catch(function (error) {});
+            },
+        }
     }
 </script>
 

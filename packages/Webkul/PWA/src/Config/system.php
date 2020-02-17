@@ -53,25 +53,50 @@ return [
                 'name' => 'small',
                 'title' => 'pwa::app.admin.system.small',
                 'type' => 'image',
+                'validation' => 'ext:jpeg,jpg,png',
                 'channel_based' => false,
                 'locale_based' => false
             ], [
                 'name' => 'medium',
                 'title' => 'pwa::app.admin.system.medium',
                 'type' => 'image',
+                'validation' => 'ext:jpeg,jpg,png',
                 'channel_based' => false,
                 'locale_based' => false
             ], [
                 'name' => 'large',
                 'title' => 'pwa::app.admin.system.large',
                 'type' => 'image',
+                'validation' => 'ext:jpeg,jpg,png',
                 'channel_based' => false,
                 'locale_based' => false
             ], [
                 'name' => 'extra_large',
                 'title' => 'pwa::app.admin.system.extra-large',
                 'type' => 'image',
+                'validation' => 'ext:jpeg,jpg,png',
                 'channel_based' => false,
+                'locale_based' => false
+            ]
+        ]
+    ], [
+        'key' => 'pwa.settings.push-notification',
+        'name' => 'pwa::app.admin.system.push-notification',
+        'sort' => 1,
+        'fields' => [
+            [
+                'name' => 'topic',
+                'title' => 'pwa::app.admin.system.topic',
+                'type' => 'text',
+                'default' => 'bagisto',
+                'validation' => 'alpha_num',
+                'channel_based' => true,
+                'locale_based' => true
+            ],  [
+                'name' => 'api-key',
+                'title' => 'pwa::app.admin.system.api-key',
+                'type' => 'password',
+                'channel_based' => true,
                 'locale_based' => false
             ]
         ]
