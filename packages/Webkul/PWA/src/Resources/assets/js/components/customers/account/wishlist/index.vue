@@ -91,6 +91,8 @@
                         var index = this_this.wishlist.indexOf(item);
 
                         this_this.wishlist.splice(index, 1);
+                        
+                        EventBus.$emit('checkout.cart.changed', response.data.data);
                     })
                     .catch(function (error) {
                         if (error.response.data.data == -1) {

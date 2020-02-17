@@ -3,7 +3,7 @@
         <custom-header :title="$t('Reviews')"></custom-header>
 
         <div class="review-list" v-if="reviews.length">
-            <review-card v-for="review in reviews" :key='review.uid' :review="review"></review-card>
+            <review-card v-for="review in reviews" :key='review.uid' :review="review" @onRemove="removeReview(review)"></review-card>
         </div>
 
         <empty-review-list v-else></empty-review-list>
@@ -45,6 +45,12 @@
                         this_this.reviews = response.data.data;
                     })
                     .catch(function (error) {});
+            },
+
+            removeReview (review) {
+                let index = this.reviews.indexOf(review)
+
+                this.reviews.splice(index, 1);
             }
         }
     }

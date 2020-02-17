@@ -94,12 +94,12 @@
                         this_this.$router.push({name: 'dashboard'})
                     })
                     .catch(function (error) {
-                        var errors = error.response.data.errors;
-                        // place your error here
-                        document.getElementById("login-error").innerHTML = "Incorrect Credentials";
+                        
+                        var errors = error.response.data;
                         for (name in errors) {
                             if (errors.hasOwnProperty(name)) {
-                                this_this.errors.add(name, errors[name][0])
+                                this_this.errors.add(name, errors[name])
+                                this_this.$toasted.show(errors[name], { type: 'error' })
                             }
                         }
 

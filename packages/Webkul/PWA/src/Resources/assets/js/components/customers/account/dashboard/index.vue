@@ -43,7 +43,7 @@
                 <tab :name="$t('Reviews')">
                     <div v-if="reviews.length">
                         <div class="review-list">
-                            <review-card v-for="review in reviews" :key='review.uid' :review="review"></review-card>
+                            <review-card v-for="review in reviews" :key='review.uid' :review="review" @onRemove="removeReview(review)"></review-card>
                         </div>
 
                         <div class="load-more" v-if="haveMoreReviews">
@@ -153,6 +153,12 @@
                         EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
+            },
+
+            removeReview (review) {
+                let index = this.reviews.indexOf(review)
+
+                this.reviews.splice(index, 1);
             }
         }
     }

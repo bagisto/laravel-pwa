@@ -117,6 +117,7 @@
                         for (name in errors) {
                             if (errors.hasOwnProperty(name)) {
                                 this_this.errors.add(name, errors[name][0])
+                                this_this.$toasted.show(errors[name][0], { type: 'error' })
                             }
                         }
 

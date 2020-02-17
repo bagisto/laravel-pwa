@@ -1,7 +1,7 @@
 <template>
     <div class="content">
 
-        <custom-header :title="$t('Shipment - #', {shipment_id: $route.params.id})"></custom-header>
+        <custom-header :title="$t('Shipment - #shipment_id', {shipment_id: $route.params.id})"></custom-header>
 
         <div class="shipment-details" v-if="shipment">
 
@@ -13,6 +13,9 @@
                         <div class="shipment-item-info">
                             <div class="shipment-item-name">
                                 {{ shipmentItem.name }}
+                            </div>
+                            <div class="shipment-item-name">
+                                <i>{{ shipmentItem.sku }}</i>
                             </div>
 
                             <div class="shipment-item-options">
@@ -46,7 +49,7 @@
 
         data () {
 			return {
-				shipment: null,
+                shipment: null,
             }
         },
 
@@ -111,7 +114,7 @@
                     padding: 0 16px;
 
                     .shipment-item {
-                        display: inline-block;
+                        // display: inline-block;
                         padding: 8px 0;
                         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
@@ -122,6 +125,7 @@
                         .shipment-item-info {
                             display: block;
                             overflow: hidden;
+                            margin-bottom: 10px;
 
                             > div {
                                 margin-bottom: 8px;

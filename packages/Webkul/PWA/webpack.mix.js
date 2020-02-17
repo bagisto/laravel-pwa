@@ -19,6 +19,8 @@ mix.js(path.resolve('src/Resources/assets/js/app.js'), 'js/app.js')
         }
     })
     .copy(path.resolve('src/Resources/assets/images'), publicPath + '/images')
+    .copy(path.resolve('src/Resources/assets/firebase'), '../../../public/')
+    .sass(__dirname + "/src/Resources/assets/sass/admin.scss", "css/pwa-admin.css")
     .sass(path.resolve('src/Resources/assets/sass/app.scss'), 'css/pwa.css')
     .options({
         processCssUrls: false

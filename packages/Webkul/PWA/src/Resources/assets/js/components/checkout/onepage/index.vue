@@ -71,7 +71,7 @@
                                 </div>
                             </custom-header>
 
-                            <checkout-address :address="address.billing" type="billing"></checkout-address>
+                            <checkout-address :address="address.billing" :cart="cart" type="billing"></checkout-address>
 
                             <div class="button-group">
                                 <button type="button" class="btn btn-black btn-lg" @click="validateForm('billing')">{{ $t('Add') }}</button>
@@ -87,6 +87,15 @@
                                 <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
                                 <label class="checkbox-view" :for="'shipping_address_' + address.id"></label>
                                 {{ $t('Same as Billing Address') }}
+                            </span>
+                        </div>
+
+                        <div style="padding: 16px" v-if="! new_address['billing'] && customer">
+                            <span class="checkbox" :class="'billing_address_' + address.id">
+                                <input v-if="address.billing.save_as_address" type="checkbox" id="billing[save_as_address]" name="billing[save_as_address]" value="1" @change="changeSaveAddress($event)" :checked="address.billing.save_as_address" />
+                                <input v-if="! address.billing.save_as_address" type="checkbox" id="billing[save_as_address]" name="billing[save_as_address]" value="0" @change="changeSaveAddress($event)" />
+                                <label class="checkbox-view" for="billing[save_as_address]"></label>
+                                {{ $t('Save as Address') }}
                             </span>
                         </div>
 
@@ -141,7 +150,7 @@
                                     </div>
                                 </custom-header>
 
-                                <checkout-address :address="address.shipping" type="shipping"></checkout-address>
+                                <checkout-address :address="address.shipping" :cart="cart" type="shipping"></checkout-address>
 
                                 <div class="button-group">
                                     <button type="button" class="btn btn-black btn-lg" @click="validateForm('shipping')">{{ $t('Add') }}</button>
@@ -299,12 +308,49 @@
                                     <td>{{ cart.formated_tax_total }}</td>
                                 </tr>
 
+                                <tr>
+                                    <td>{{ $t('Discount') }}</td>
+                                    <td> - {{ cart.formated_discount }}</td>
+                                </tr>
+
                                 <tr class="last">
                                     <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
                                 </tr>
+                                
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">{{ $t('Coupon') }}</div>
+
+                    <div class="panel-content" style="padding-left: 16px">
+                        <div class="coupon-container">
+                            <div class="discount-control" style="padding:10px;">
+                                <form data-vv-scope="coupon-form">
+                                    <div class="control-group" :class="[errors.has('coupon-form.code') ? 'has-error' : '']" >
+                                        <input type="text" class="control" v-model="coupon_code" name="code" :placeholder="$t('Enter Coupon Code')" >
+
+                                        <span class="control-error" v-if="errors.has('coupon-form.code')">{{ errors.first('coupon-form.code') }}</span>
+                                    </div>
+
+                                    <button class="btn btn-lg btn-black" style="margin: 0px auto; width: 100%;" :disabled="disable_button" @click="validateForm()">{{ $t('Applied Coupon') }}</button>
+                                </form>
+                            </div>
+
+                            <div class="applied-coupon-details" style="padding: 10px;" v-if="cart.coupon_code">
+                                <label>{{ $t('Applied Coupon :') }}</label>
+
+                                <label class="right" style="display: inline-flex; align-items: center;">
+                                    <b>{{ cart.coupon_code }}</b>
+
+                                    <span class="icon sharp-cross-icon" :title="$t('Remove Coupon')" @click="removeCoupon"></span>
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -358,6 +404,7 @@
                         address1: [''],
 
                         use_for_shipping: true,
+                        save_as_address: false,
                     },
 
                     shipping: {
@@ -374,16 +421,27 @@
 
                 selected_shipping_method: '',
 
+                first_shipping_iteration: true,
+
                 paymentMethods: [],
 
                 selected_payment_method: '',
+                
+                first_payment_iteration: true,
+
+                coupon_code: '',
+
+                error_message: '',
+
+                route_name: "{{ request()->route()->getName() }}",
 
                 disable_button: false,
 
                 formScopes: {
                     1: 'address-form',
                     2: 'shipping-form',
-                    3: 'payment-form'
+                    3: 'payment-form',
+                    4: 'coupon-form'
                 }
             }
         },
@@ -446,6 +504,15 @@
                     .catch(function (error) {});
             },
 
+            changeSaveAddress(event) {
+                var self = this;
+                if (event.target.value == 0) {
+                    self.address.billing.save_as_address = true;
+                } else {
+                    self.address.billing.save_as_address = false;
+                }
+            },
+
             validateForm: function (type = '') {
                 this.$validator.validateAll(this.formScopes[this.step]).then((result) => {
                     if (result) {
@@ -459,6 +526,8 @@
                             this.saveShipping();
                         } else if (this.formScopes[this.step] == 'payment-form') {
                             this.savePayment();
+                        } else if (this.formScopes[this.step] == 'coupon-form') {
+                            this.saveCoupon();
                         }
                     }
                 });
@@ -473,38 +542,54 @@
 
                 this.new_address[type] = false;
 
-                this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping})
+                this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping, save_as_address: this.address.billing.save_as_address})
             },
 
             saveAddress () {
-                var this_this = this;
+                var self = this;
+                var save_as_address = self.address.billing.save_as_address;
 
-                if (! Number.isInteger(this.address.billing.address_id)) {
-                    var newAddress = this.addresses.billing.filter(address => address.id == this.address.billing.address_id);
+                if (! Number.isInteger(self.address.billing.address_id)) {
+                    var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
 
-                    Object.assign(this.address.billing, newAddress[0]);
+                    Object.assign(self.address.billing, newAddress[0]);
+                    
+                    self.address.billing.save_as_address = save_as_address;
                 }
 
-                if (! Number.isInteger(this.address.shipping.address_id)) {
-                    var newAddress = this.addresses.shipping.filter(address => address.id == this.address.shipping.address_id);
+                if (! Number.isInteger(self.address.shipping.address_id)) {
+                    var newAddress = self.addresses.shipping.filter(address => address.id == self.address.shipping.address_id);
 
-                    Object.assign(this.address.shipping, newAddress[0]);
+                    Object.assign(self.address.shipping, newAddress[0]);
                 }
 
-                this.disable_button = true;
-
-                this.$http.post('/api/checkout/save-address', this.address)
+                self.disable_button = true;
+                this.$http.post('/api/checkout/save-address', self.address)
                     .then(function(response) {
-                        this_this.disable_button = false;
+                        self.disable_button = false;
 
-                        this_this.shippingRates = response.data.data.rates;
+                        self.shippingRates = response.data.data.rates;
 
-                        this_this.cart = response.data.data.cart;
+                        self.cart = response.data.data.cart;
 
-                        this_this.step++;
+                        self.step++;
+                        
+                        self.save_as_address = false;
+                        self.address.billing.save_as_address = false;
+
+                        if ( self.shippingRates ) {
+                            $.each(self.shippingRates, (key, method) => {
+                                if ( self.first_shipping_iteration ) {
+                                    $.each(method['rates'], (key, rate) => {
+                                        self.selected_shipping_method = rate['method'];
+                                        self.first_shipping_iteration = false;
+                                    });
+                                }
+                            });
+                        }
                     })
                     .catch(function (error) {
-                        this_this.disable_button = false;
+                        self.disable_button = false;
                     })
             },
 
@@ -522,6 +607,15 @@
                         this_this.cart = response.data.data.cart;
 
                         this_this.step++;
+
+                        if ( this_this.paymentMethods ) {
+                            $.each(this_this.paymentMethods, (key, method) => {
+                                if ( this_this.first_payment_iteration ) {
+                                    this_this.selected_payment_method = method['method'];
+                                    this_this.first_payment_iteration = false;
+                                }
+                            });
+                        }
                     })
                     .catch(function (error) {
                         this_this.disable_button = false;
@@ -544,6 +638,52 @@
                     .catch(function (error) {
                         this_this.disable_button = false;
                     })
+            },
+
+            saveCoupon: function() {
+                var self = this;
+
+                if (! self.coupon_code.length)
+                    return;
+
+                self.disable_button = true;
+
+                this.$http.post('/api/checkout/cart/apply-coupon', { 'code': self.coupon_code })
+                    .then(function(response) {
+                        self.disable_button = false;
+
+                        self.cart = response.data.data.cart;
+                        if (response.data.success == true) {
+                            self.coupon_code = '';
+                            self.$toasted.show(response.data.message, { type: 'success' });
+                        }
+                    })
+                    .catch(function (error) {
+                        self.disable_button = false;
+                        self.$toasted.show(error.response.data.message, { type: 'error' });
+                    });
+            },
+
+            removeCoupon: function () {
+                var self = this;
+
+                self.disable_button = true;
+
+                this.$http.post('/api/checkout/cart/remove-coupon')
+                    .then(function(response) {
+                        self.disable_button = false;
+
+                        self.cart = response.data.data.cart;
+
+                        if (response.data.success == true) {
+                            self.coupon_code = '';
+                            self.$toasted.show(response.data.message, { type: 'success' });
+                        }
+                    })
+                    .catch(function(error) {
+                        self.disable_button = false;
+                        self.$toasted.show(error.response.data.message, { type: 'error' });
+                    });
             },
 
             placeOrder () {
@@ -576,6 +716,13 @@
                         this.$router.push({name: 'home'})
                     }
                 } else {
+                    this.address.billing = {
+                        address1: [''],
+
+                        use_for_shipping: true,
+                        save_as_address: false,
+                    };
+                    this.getAuthCustomer();
                     this.step--;
                 }
             }

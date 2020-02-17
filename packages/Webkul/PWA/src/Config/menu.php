@@ -5,7 +5,7 @@ return[
         'name' => 'Progressive Web App',
         'route' => 'pwa.pushnotification.create',
         'sort' => 9,
-        'icon-class' => 'catalog-icon',
+        'icon-class' => 'pwa-icon',
     ], [
         'key' => 'PWA.index',
         'route' => 'pwa.pushnotification.index',

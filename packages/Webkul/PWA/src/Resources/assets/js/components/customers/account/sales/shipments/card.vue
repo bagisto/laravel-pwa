@@ -4,7 +4,9 @@
             <label>{{ $t('Shipment') }}</label>
             <div class="shipment-id">#{{ shipment.id }}</div>
 
-            <i class="icon sharp-arrow-right-icon"></i>
+            <router-link class="view-link" :to="'/customer/account/' + $route.params.order_id + '/shipments/' + shipment.id">
+                <i class="icon sharp-arrow-right-icon"></i>
+            </router-link>
         </div>
 
         <div class="shipment-actions">
