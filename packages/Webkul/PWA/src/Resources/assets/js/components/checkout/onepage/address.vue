@@ -77,6 +77,7 @@
 
         methods: {
             getConfigData () {
+
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');

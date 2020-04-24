@@ -79,17 +79,21 @@
                         </div>
                     </div>
 
-                    <div class="panel">
+                    <div class="panel" >
+                    <div>
                         <div class="panel-heading">{{ $t('Shipping Address') }}</div>
-
-                        <div style="padding: 16px">
-                            <span class="checkbox" :class="'shipping_address_' + address.id">
-                                <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
-                                <label class="checkbox-view" :for="'shipping_address_' + address.id"></label>
-                                {{ $t('Same as Billing Address') }}
-                            </span>
+                    </div>
+                        <div v-for="cartItem in cart.items">
+                            <div v-if="cartItem.product.type != 'virtual'">
+                                <div style="padding: 16px">
+                                    <span class="checkbox" :class="'shipping_address_' + address.id">
+                                        <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
+                                        <label class="checkbox-view" :for="'shipping_address_' + address.id"></label>
+                                        {{ $t('Same as Billing Address') }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-
                         <div style="padding: 16px" v-if="! new_address['billing'] && customer">
                             <span class="checkbox" :class="'billing_address_' + address.id">
                                 <input v-if="address.billing.save_as_address" type="checkbox" id="billing[save_as_address]" name="billing[save_as_address]" value="1" @change="changeSaveAddress($event)" :checked="address.billing.save_as_address" />
@@ -99,61 +103,65 @@
                             </span>
                         </div>
 
-                        <div v-if="! address.billing.use_for_shipping">
-                            <div v-if="! new_address['shipping']">
-                                <div class="panel-content">
-                                    <div class="address-list">
-                                        <label class="address-item" v-for="addressTemp in addresses.shipping" :for="'shipping_address_' + addressTemp.id">
-                                            <span class="radio" :class="'shipping_address_' + addressTemp.id">
-                                                <input type="radio" v-validate="'required'" :id="'shipping_address_' + addressTemp.id" name="shipping[address_id]" :value="addressTemp.id" v-model="address.shipping.address_id" :data-vv-as="$t('Shipping Address')">
-                                                <label class="radio-view" :for="'shipping_address_' + addressTemp.id"></label>
-                                            </span>
+                    <div v-for="cartItem in cart.items">
+                        <div v-if="cartItem.product.type != 'virtual'">
+                            <div v-if="address.billing.use_for_shipping">
+                                <div v-if="! new_address['shipping']">
+                                    <div class="panel-content">
+                                        <div class="address-list">
+                                            <label class="address-item" v-for="addressTemp in addresses.shipping" :for="'shipping_address_' + addressTemp.id">
+                                                <span class="radio" :class="'shipping_address_' + addressTemp.id">
+                                                    <input type="radio" v-validate="'required'" :id="'shipping_address_' + addressTemp.id" name="shipping[address_id]" :value="addressTemp.id" v-model="address.shipping.address_id" :data-vv-as="$t('Shipping Address')">
+                                                    <label class="radio-view" :for="'shipping_address_' + addressTemp.id"></label>
+                                                </span>
 
-                                            <div class="address_details">
-                                                {{ addressTemp.address1.join(' ') }}</br>
-                                                {{ addressTemp.city }}</br>
-                                                {{ addressTemp.state }}</br>
-                                                {{ addressTemp.country_name + ' ' + addressTemp.postcode }}</br>
-                                                {{ addressTemp.phone }}
+                                                <div class="address_details">
+                                                    {{ addressTemp.address1.join(' ') }}</br>
+                                                    {{ addressTemp.city }}</br>
+                                                    {{ addressTemp.state }}</br>
+                                                    {{ addressTemp.country_name + ' ' + addressTemp.postcode }}</br>
+                                                    {{ addressTemp.phone }}
+                                                </div>
+
+                                                <i class="icon sharp-arrow-right-icon"></i>
+                                            </label>
+
+                                            <input type="radio" v-validate="'required'" name="shipping[address_id]" value="0" :data-vv-as="$t('Shipping Address')" style="display: none">
+
+                                            <div class="control-group" :class="[errors.has('address-form.shipping[address_id]') ? 'has-error' : '']">
+                                                <span class="control-error" v-if="errors.has('address-form.shipping[address_id]')">
+                                                    {{ errors.first('address-form.shipping[address_id]') }}
+                                                </span>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <i class="icon sharp-arrow-right-icon"></i>
-                                        </label>
+                                    <div class="address-actions">
+                                        <div class="new-address-link" @click="new_address['shipping'] = true">
+                                            <i class="icon sharp-plus-icon"></i>
 
-                                        <input type="radio" v-validate="'required'" name="shipping[address_id]" value="0" :data-vv-as="$t('Shipping Address')" style="display: none">
-
-                                        <div class="control-group" :class="[errors.has('address-form.shipping[address_id]') ? 'has-error' : '']">
-                                            <span class="control-error" v-if="errors.has('address-form.shipping[address_id]')">
-                                                {{ errors.first('address-form.shipping[address_id]') }}
-                                            </span>
+                                            <span>{{ $t('New Address') }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="address-actions">
-                                    <div class="new-address-link" @click="new_address['shipping'] = true">
-                                        <i class="icon sharp-plus-icon"></i>
+                                    <div class="form-container address" v-else>
+                                        <custom-header>
+                                            <div slot="back-botton">
+                                                <i class="icon sharp-cross-icon" @click="new_address['shipping'] = false"></i>
+                                            </div>
 
-                                        <span>{{ $t('New Address') }}</span>
+                                            <div slot="content">
+                                                <h2>{{ $t('Add Shipping Address') }}</h2>
+                                            </div>
+                                        </custom-header>
+
+                                        <checkout-address :address="address.shipping" :cart="cart" type="shipping"></checkout-address>
+
+                                        <div class="button-group">
+                                            <button type="button" class="btn btn-black btn-lg" @click="validateForm('shipping')">{{ $t('Add') }}</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="form-container address" v-else>
-                                <custom-header>
-                                    <div slot="back-botton">
-                                        <i class="icon sharp-cross-icon" @click="new_address['shipping'] = false"></i>
-                                    </div>
-
-                                    <div slot="content">
-                                        <h2>{{ $t('Add Shipping Address') }}</h2>
-                                    </div>
-                                </custom-header>
-
-                                <checkout-address :address="address.shipping" :cart="cart" type="shipping"></checkout-address>
-
-                                <div class="button-group">
-                                    <button type="button" class="btn btn-black btn-lg" @click="validateForm('shipping')">{{ $t('Add') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -161,31 +169,34 @@
                 </form>
             </div>
 
-            <div class="shipping-section" v-show="step == 2">
-                <form data-vv-scope="shipping-form">
-                    <div class="panel">
-                        <div class="panel-heading">{{ $t('Shipping Methods') }}</div>
+            <div v-for="cartItem in cart.items">
+                <div v-if="cartItem.product.type != 'virtual'">
+                    <div class="shipping-section" v-show="step == 2">
+                        <form data-vv-scope="shipping-form">
+                            <div class="panel">
+                                <div class="panel-heading">{{ $t('Shipping Methods') }}</div>
 
-                        <div class="panel-content">
-                            <div class="form-container shipping-methods" :class="[errors.has('shipping-form.shipping_method') ? 'has-error' : '']">
+                                <div class="panel-content">
+                                    <div class="form-container shipping-methods" :class="[errors.has('shipping-form.shipping_method') ? 'has-error' : '']">
 
-                                <div class="method" v-for="method in shippingRates">
-                                    <h2>{{ method['carrier_title'] }}</h2>
+                                        <div class="method" v-for="method in shippingRates">
+                                            <h2>{{ method['carrier_title'] }}</h2>
 
-                                    <label class="radio" v-for="rate in method['rates']" :for="rate.method">
-                                        <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
-                                        <label class="radio-view" :for="rate.method"></label>
+                                            <label class="radio" v-for="rate in method['rates']" :for="rate.method">
+                                                <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
+                                                <label class="radio-view" :for="rate.method"></label>
 
-                                        {{ rate.method_title + ' - ' + rate.formated_price }}
-                                    </label>
+                                                {{ rate.method_title + ' - ' + rate.formated_price }}
+                                            </label>
+                                        </div>
+
+                                    </div>
                                 </div>
-
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
-
             <div class="payment-section" v-show="step == 3">
                 <form data-vv-scope="payment-form">
                     <div class="panel">
@@ -233,6 +244,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <div class="panel">
                     <div class="panel-heading">{{ $t('Shipping Info') }}</div>
@@ -317,7 +329,7 @@
                                     <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -426,7 +438,7 @@
                 paymentMethods: [],
 
                 selected_payment_method: '',
-                
+
                 first_payment_iteration: true,
 
                 coupon_code: '',
@@ -553,7 +565,7 @@
                     var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
 
                     Object.assign(self.address.billing, newAddress[0]);
-                    
+
                     self.address.billing.save_as_address = save_as_address;
                 }
 
@@ -566,6 +578,7 @@
                 self.disable_button = true;
                 this.$http.post('/api/checkout/save-address', self.address)
                     .then(function(response) {
+
                         self.disable_button = false;
 
                         self.shippingRates = response.data.data.rates;
@@ -573,7 +586,7 @@
                         self.cart = response.data.data.cart;
 
                         self.step++;
-                        
+
                         self.save_as_address = false;
                         self.address.billing.save_as_address = false;
 

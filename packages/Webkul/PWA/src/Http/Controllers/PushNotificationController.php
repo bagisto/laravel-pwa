@@ -8,7 +8,7 @@ use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationReposi
 /**
  * Push Notification controller
  *
- * @author    Vivek Sharma <viveksh047@webkul.com>@vivek-webkul
+ * @author    Aayush Bhatt <aayush.bhatt172@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class PushNotificationController extends Controller
@@ -74,7 +74,7 @@ class PushNotificationController extends Controller
             'targeturl' => 'required',
             'image.*' => 'mimes:jpeg,jpg,bmp,png'
         ]);
-        
+
         // call the repository
         $this->pushNotificationRepository->create(request()->all());
 
@@ -138,7 +138,7 @@ class PushNotificationController extends Controller
         $this->pushNotificationRepository->delete($id);
 
         session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Push Notification']));
-        
+
         return redirect()->back();
     }
 
@@ -149,7 +149,7 @@ class PushNotificationController extends Controller
 
         if ( $topic && $server_key ) {
             $pushnotification = $this->pushNotificationRepository->findOrFail($id);
-            
+
             $title = $pushnotification->title;
             $body = $pushnotification->description;
             $icon = asset('/storage/' . $pushnotification->imageurl);
@@ -200,5 +200,13 @@ class PushNotificationController extends Controller
             // Close connection
             return redirect()->back();
         }
+    }
+
+    /**
+     * downloadable links
+     */
+    public function downloadabledata()
+    {
+        dd('hello world');
     }
 }

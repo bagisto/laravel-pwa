@@ -27,6 +27,20 @@
                     :form-data="formData">
                 </configurable-options>
 
+                <div v-if="product.type == 'downloadable'">
+                    <form>
+
+                    </form>
+                </div>
+
+                <div v-if="product.type == 'bundled'">
+
+                </div>
+
+                <div v-if="product.type == 'grouped'">
+
+                </div>
+
                 <div class="quantity-container">
                     <label>{{ $t('Quantity') }}</label>
 
@@ -80,10 +94,8 @@
     import ConfigurableOptions from './configurable-options';
     import Reviews             from './reviews';
     import Attributes          from './attributes';
-
     export default {
         name: 'product',
-
         components: {
             Accordian,
             GalleryImages,
@@ -95,46 +107,44 @@
             Reviews,
             Attributes
         },
-
         data () {
 			return {
 				product: null,
-
                 formData: {
                     product: this.$route.params.id,
-
                     quantity: 1,
-
                     super_attribute: {},
-
                     selected_configurable_option: 0
                 }
             }
         },
-
         watch: {
             '$route.params.id': function (id) {
                 this.getProduct(id);
+                this.getdownloadablelinks(id);
             }
         },
-
         mounted () {
             this.getProduct(this.$route.params.id);
+            // this.getdownloadablelinks(this.$route.param.id);
         },
-
         methods: {
             getProduct (productId) {
                 var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
-
                 this.$http.get('/api/products/' + productId)
                     .then(function(response) {
+
                         this_this.product = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
+            },
+
+            getdownloadablelinks(productId) {
+                this.$http.get('pwa/downloadable-links')
+
             },
 
             validateBeforeSubmit () {
@@ -144,38 +154,26 @@
                     }
                 });
             },
-
             addToCart () {
                 var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
-
                 this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
-
                         EventBus.$emit('hide-ajax-loader');
-
                         EventBus.$emit('checkout.cart.changed', response.data.data);
-
-                        // this_this.$router.push({name: 'cart'})
                     })
                     .catch(function (error) {
                     })
             },
-
             buyNow () {
                 var this_this = this;
-                
-                EventBus.$emit('show-ajax-loader');
 
+                EventBus.$emit('show-ajax-loader');
                 this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
                     .then(function(response) {
-
                         EventBus.$emit('hide-ajax-loader');
-
                         EventBus.$emit('checkout.cart.changed', response.data.data);
-
                         this_this.$router.push({name: 'cart'})
                     })
                     .catch(function (error) {
@@ -184,7 +182,6 @@
         }
     }
 </script>
-
 <style lang="scss">
     .product-details {
         margin-bottom: 0;
