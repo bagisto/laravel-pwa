@@ -25,10 +25,6 @@
                     //push to firebase
                     Route::get('pushnotification/push/{id}','Webkul\PWA\Http\Controllers\PushNotificationController@pushtofirebase')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'
                     ])->name('pwa.pushnotification.pushtofirebase');
-
-                    //push downloadable
-                    Route::get('downloadable-links/{id}','Webkul\PWA\Http\Controllers\PushNotification Controller@downloadableData')->name('pwa.downloadablelinks');
-
                 });
             });
         });
@@ -43,10 +39,6 @@
             Route::get('products/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@get');
 
             Route::get('product-configurable-config/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@configurableConfig');
-
-            // onepage
-            Route::post('/checkout/save-address', 'Webkul\
-            PWA\Http\Controllers\Shop\OnepageController@saveAddress')->name('shop.pwa.checkout.save-address');
 
             //Order routes
             Route::get('orders', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [

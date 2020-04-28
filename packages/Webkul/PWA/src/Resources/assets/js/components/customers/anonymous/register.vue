@@ -102,12 +102,14 @@
             },
 
             registerCustomer () {
+
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/customer/register", this.user)
                     .then(function(response) {
+
                         this_this.loading = false;
 
                         this_this.$toasted.show(response.data.message, { type: 'success' })
