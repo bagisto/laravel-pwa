@@ -72,7 +72,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bundleOption($id)
+    public function bundleConfig($id)
     {
         return response()->json([
             'data' => app('Webkul\PWA\Helpers\PwaBundleOption')->getBundleConfig($this->productRepository->findOrFail($id)),

@@ -80,14 +80,20 @@
                     </div>
 
                     <div class="panel">
-                        <div class="panel-heading">{{ $t('Shipping Address') }}</div>
+                    <div v-for="cartItem in cart.items">
+                        <div v-if = "!cartItem.product.type == 'booking' &&
+                                     !cartItem.product.type == 'downloadable' &&
+                                     !cartItem.product.type == 'virtual'">
+                                <div class="panel-heading">{{ $t('Shipping Address') }}</div>
 
-                        <div style="padding: 16px">
-                            <span class="checkbox" :class="'shipping_address_' + address.id">
-                                <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
-                                <label class="checkbox-view" :for="'shipping_address_' + address.id"></label>
-                                {{ $t('Same as Billing Address') }}
-                            </span>
+                                <div style="padding: 16px">
+                                    <span class="checkbox" :class="'shipping_address_' + address.id">
+                                        <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
+
+                                        {{ $t('Same as Billing Address') }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <div style="padding: 16px" v-if="! new_address['billing'] && customer">
@@ -317,7 +323,7 @@
                                     <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -426,7 +432,7 @@
                 paymentMethods: [],
 
                 selected_payment_method: '',
-                
+
                 first_payment_iteration: true,
 
                 coupon_code: '',
@@ -553,7 +559,7 @@
                     var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
 
                     Object.assign(self.address.billing, newAddress[0]);
-                    
+
                     self.address.billing.save_as_address = save_as_address;
                 }
 
@@ -573,7 +579,7 @@
                         self.cart = response.data.data.cart;
 
                         self.step++;
-                        
+
                         self.save_as_address = false;
                         self.address.billing.save_as_address = false;
 

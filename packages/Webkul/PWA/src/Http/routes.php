@@ -40,6 +40,8 @@
 
             Route::get('product-configurable-config/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@configurableConfig');
 
+            Route::get('product-bundle-config/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@bundleConfig');
+
             //Order routes
             Route::get('orders', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
                 'repository' => 'Webkul\Sales\Repositories\OrderRepository',

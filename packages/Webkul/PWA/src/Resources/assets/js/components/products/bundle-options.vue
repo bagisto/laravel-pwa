@@ -25,14 +25,14 @@
 
         methods: {
             getbundleConfig (productId) {
+                console.log('aayush');
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/product-bundle-config/' + productId)
                 .then(function(response) {
-                    console.log(response);
-                    return false;
+
                    this_this.config = response.data.data;
 
                     this_this.prepareData();

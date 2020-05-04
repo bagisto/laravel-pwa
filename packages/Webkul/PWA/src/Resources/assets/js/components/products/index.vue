@@ -27,11 +27,6 @@
                     :form-data="formData">
                 </configurable-options>
 
-                <bundle-options
-                    v-if="product.type == 'bundle'"
-                    :product="product"
-                    :form-data="formData">
-                </bundle-options>
 
                 <div class="quantity-container">
                     <label>{{ $t('Quantity') }}</label>
@@ -138,7 +133,15 @@
 
                 this.$http.get('/api/products/' + productId)
                     .then(function(response) {
+
                         this_this.product = response.data.data;
+
+                        if (this_this.product.type == 'bundle') {
+                            this,$http.get('/api/products')
+                                .then(function(response) {
+                                    console.log('aayush');
+                                })
+                        }
 
                         EventBus.$emit('hide-ajax-loader');
                     })
