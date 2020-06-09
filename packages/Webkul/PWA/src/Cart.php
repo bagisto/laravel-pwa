@@ -1199,14 +1199,22 @@ class Cart
                 } else {
                     if (isset($billingAddressData['use_for_shipping']) && $billingAddressData['use_for_shipping']) {
                         $this->cartAddressRepository->create(array_merge($billingAddressData,
+<<<<<<< HEAD
                             ['address_type' => 'shipping']));
                     } else {
                         $this->cartAddressRepository->create(array_merge($shippingAddressData,
                             ['address_type' => 'shipping']));
+=======
+                            ['address_type' => CartAddress::ADDRESS_TYPE_SHIPPING]));
+                    } else {
+                        $this->cartAddressRepository->create(array_merge($shippingAddressData,
+                            ['address_type' => CartAddress::ADDRESS_TYPE_SHIPPING]));
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     }
                 }
             }
         } else {
+<<<<<<< HEAD
             $this->cartAddressRepository->create(array_merge($billingAddressData, ['address_type' => 'billing']));
 
             if ($cart->haveStockableItems()) {
@@ -1214,6 +1222,15 @@ class Cart
                     $this->cartAddressRepository->create(array_merge($billingAddressData, ['address_type' => 'shipping']));
                 } else {
                     $this->cartAddressRepository->create(array_merge($shippingAddressData, ['address_type' => 'shipping']));
+=======
+            $this->cartAddressRepository->create(array_merge($billingAddressData, ['address_type' => CartAddress::ADDRESS_TYPE_BILLING]));
+
+            if ($cart->haveStockableItems()) {
+                if (isset($billingAddressData['use_for_shipping']) && $billingAddressData['use_for_shipping']) {
+                    $this->cartAddressRepository->create(array_merge($billingAddressData, ['address_type' => CartAddress::ADDRESS_TYPE_SHIPPING]));
+                } else {
+                    $this->cartAddressRepository->create(array_merge($shippingAddressData, ['address_type' => CartAddress::ADDRESS_TYPE_SHIPPING]));
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 }
             }
         }

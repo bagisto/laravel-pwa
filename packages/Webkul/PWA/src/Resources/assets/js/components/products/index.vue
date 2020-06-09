@@ -139,7 +139,11 @@
                         if (this_this.product.type == 'bundle') {
                             this,$http.get('/api/products')
                                 .then(function(response) {
+<<<<<<< HEAD
 
+=======
+                                    console.log('aayush');
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                 })
                         }
 
