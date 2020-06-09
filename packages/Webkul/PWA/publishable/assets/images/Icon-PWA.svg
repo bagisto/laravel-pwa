@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon-PWA</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Icon-PWA" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(16.000000, 21.000000)" stroke="#8E8E8E" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <polyline id="Path-42" points="5 4.50107594 6.03282989 6 7.86037698 1.23567823e-13 9.75313015 6 12 0"></polyline>
+            <path d="M15,0 L17,6" id="Path-43"></path>
+            <path d="M14,3.33333333 L16,3.33333333" id="Path-44"></path>
+            <path d="M0,6 L0,0 L2.59195873,3.6998675e-16 L2.59195873,2.22044605e-16 C3.51083239,0.0435738849 4.22040305,0.823791775 4.17682917,1.74266543 C4.14033298,2.51228663 3.58074956,3.15642964 2.82378932,3.30016539 L2.7995934,3.30475984 L0.134903015,3.30475984" id="Path-41"></path>
+        </g>
+        <rect id="Rectangle-2" stroke="#8E8E8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x="13" y="6" width="23" height="37"></rect>
+        <path d="M13,36 L35.0115508,36" id="Path-40" stroke="#8E8E8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M14,11 L36,11" id="Path-40" stroke="#8E8E8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        <circle id="Oval-18" fill="#8E8E8E" cx="24.5" cy="39.5" r="1.5"></circle>
+    </g>
+</svg>

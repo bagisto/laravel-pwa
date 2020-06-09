@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>sharp-invoice</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="sharp-invoice" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M3,3 L3,19.134745 L4.5,20.6014116 L7,18.1569672 L9.5,20.6014116 L12,18.1569672 L14.5,20.6014116 L17,18.1569672 L19.5,20.6014116 L21,19.134745 L21,3 L3,3 Z M6,8 L11,8 L11,13 L6,13 L6,8 Z" id="Combined-Shape" stroke="#000000" stroke-width="2"></path>
+        <path d="M13,8 L18.6340332,8" id="Path-16" stroke="#000000" stroke-width="2"></path>
+        <path d="M13,11 L16,11" id="Path-16-Copy" stroke="#000000" stroke-width="2"></path>
+    </g>
+</svg>

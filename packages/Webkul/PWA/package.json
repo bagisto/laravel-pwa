@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "devDependencies": {
+    "axios": "^0.18",
+    "cross-env": "^5.1.4",
+    "jquery": "^3.2",
+    "laravel-mix": "^2.1",
+    "laravel-mix-merge-manifest": "^0.1.1",
+    "vue": "^2.1.10"
+  },
+  "dependencies": {
+    "ajv": "^6.9.1",
+    "firebase": "^6.3.0",
+    "imagemin": "^5.0.0",
+    "vee-validate": "2.0.0-rc.26",
+    "vue-carousel": "^0.18.0",
+    "vue-currency-filter": "^3.4.2",
+    "vue-i18n": "^8.11.2",
+    "vue-moment": "^4.0.0",
+    "vue-router": "^3.0.2",
+    "vue-slider-component": "^3.0.16",
+    "vue-toasted": "^1.1.27"
+  },
+  "name": "pwa",
+  "version": "1.0.0",
+  "main": "webpack.mix.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

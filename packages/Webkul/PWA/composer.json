@@ -1,0 +1,26 @@
+{
+    "name": "Bagisto/Laravel-Progressive-Web-App",
+    "description": "Progressive Web Application transform your website like Mobile Application",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "viveksharma-webkul",
+            "email": "viveksh047@webkul.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Pos\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\PWA\\Providers\\PWAServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

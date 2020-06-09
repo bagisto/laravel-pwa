@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>sharp-arrow-bottom</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0.59 10.59 5.17 6 0.59 1.41 2 0 8 6 2 12"></polygon>
+    </defs>
+    <g id="sharp-arrow-bottom" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="sharp-arrow-right" transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000) translate(8.000000, 6.000000)">
+            <g id="↳-Icon-Color">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+                <g id="✱-/-Color-/-Icons-/-Selected-/-On-Surface-/-Active" mask="url(#mask-2)" fill="#000000">
+                    <g transform="translate(-8.000000, -6.000000)" id="Rectangle-3">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

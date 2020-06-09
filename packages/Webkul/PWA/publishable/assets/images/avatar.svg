@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96px" height="96px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>generic-image</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="96" height="96" rx="48"></rect>
+        <linearGradient x1="-1%" y1="0%" x2="100%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#2D1A8C" offset="0%"></stop>
+            <stop stop-color="#B9C3F0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="generic-image" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Combined-Shape">
+            <g id="blur-bg">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#FFFFFF" xlink:href="#path-1"></use>
+            </g>
+            <path d="M48,50 C65.1208272,50 79,63.8791728 79,81 L79,118 L17,118 L17,81 C17,63.8791728 30.8791728,50 48,50 Z M47,46 C38.163444,46 31,38.6126984 31,29.5 C31,20.3873016 38.163444,13 47,13 C55.836556,13 63,20.3873016 63,29.5 C63,38.6126984 55.836556,46 47,46 Z" fill="url(#linearGradient-3)"></path>
+        </g>
+    </g>
+</svg>

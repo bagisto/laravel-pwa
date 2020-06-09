@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>sharp-post-revie-bright</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M18,0 L2,0 C0.9,0 0.01,0.9 0.01,2 L0,20 L4,16 L18,16 C19.1,16 20,15.1 20,14 L20,2 C20,0.9 19.1,0 18,0 Z M18,14 L3.17,14 L2.58,14.59 L2,15.17 L2,2 L18,2 L18,14 Z M8.5,12 L16,12 L16,10 L10.5,10 L8.5,12 Z M12.36,6.13 C12.56,5.93 12.56,5.62 12.36,5.42 L10.59,3.65 C10.39,3.45 10.08,3.45 9.88,3.65 L4,9.53 L4,12 L6.47,12 L12.36,6.13 Z" id="path-1"></path>
+    </defs>
+    <g id="sharp-post-revie-bright" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="↳-Icon-Color" transform="translate(2.000000, 2.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+            <g id="✱-/-Color-/-Icons-/-Selected-/-On-Surface-/-Light" mask="url(#mask-2)" fill="#FFFFFF">
+                <g transform="translate(-2.000000, -2.000000)" id="Rectangle-3">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

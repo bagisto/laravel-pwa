@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="220px" height="220px" viewBox="0 0 220 220" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>illustration-heart</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="illustration-heart" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="illustration-bag" transform="translate(22.000000, 18.000000)">
+            <g id="Shape" transform="translate(38.000000, 45.000000)" stroke="#111111" stroke-linecap="round" stroke-linejoin="round" stroke-width="5">
+                <path d="M24.892,0.174 C3.129,0.174 -27.539,44.374 49.882,93.826 C127.67,44.376 96.857,0.175 74.991,0.175 C52.955,0.175 49.882,20.04 49.882,20.04 C49.882,20.04 49.743,0.174 24.892,0.174 Z" id="Shape-2"></path>
+            </g>
+            <g id="Pattern" opacity="0.34" fill="#142239">
+                <rect id="s" fill-rule="nonzero" x="50" y="2" width="6" height="6"></rect>
+                <polygon id="v" points="93 178 82 178 87.5 184"></polygon>
+                <polygon id="v-2" points="4.343 57 15.657 57 10 62.657"></polygon>
+                <rect id="o" fill-rule="nonzero" x="168" y="130" width="8" height="8" rx="4"></rect>
+                <rect id="o-2" fill-rule="nonzero" x="119" y="0" width="8" height="8" rx="4"></rect>
+                <rect id="o-3" fill-rule="nonzero" x="0" y="134" width="8" height="8" rx="4"></rect>
+                <rect id="s-2" fill-rule="nonzero" x="158" y="64" width="6" height="6"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
