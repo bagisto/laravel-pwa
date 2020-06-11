@@ -17,7 +17,11 @@
 <script>
     export default {
         name: 'social-links',
+<<<<<<< HEAD
+
+=======
         
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
         props: ['product'],
 
         methods: {
@@ -40,11 +44,20 @@
             },
 
             share () {
+<<<<<<< HEAD
+              //window.config.app_base_url + '/mobile/products/' + this.product.id
+                console.log('yes');
+=======
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 if (navigator.share) {
                     navigator.share({
                         title: this.product.name,
                         text: 'Check out this awesome product!',
+<<<<<<< HEAD
+                        url: 'hisham',
+=======
                         url: window.config.app_base_url + '/products/' + this.product.url_key,
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     })
                     .then(() => console.log('Successful share'))
                     .catch((error) => console.log('Error sharing', error));

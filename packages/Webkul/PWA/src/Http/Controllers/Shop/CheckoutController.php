@@ -61,9 +61,9 @@ class CheckoutController extends Controller
 
         auth()->setDefaultDriver($this->guard);
 
-        
+
         // $this->middleware('auth:' . $this->guard);
-        
+
         $this->_config = request('_config');
 
         $this->cartRepository = $cartRepository;
@@ -201,8 +201,15 @@ class CheckoutController extends Controller
     {
         $cart = Cart::getCart();
 
+        foreach($cart->items as $cartItems)
+        {
+            $type = $cartItems->type;
+        }
+
         if (! $cart->shipping_address) {
-            throw new \Exception(trans('Please check shipping address.'));
+            if ($type != 'virtual' && $type != 'booking' && $type != 'downloadable') {
+                throw new \Exception(trans('Please check shipping address.'));
+            }
         }
 
         if (! $cart->billing_address) {
@@ -210,7 +217,9 @@ class CheckoutController extends Controller
         }
 
         if (! $cart->selected_shipping_rate) {
-            throw new \Exception(trans('Please specify shipping method.'));
+            if ($type != 'virtual' && $type != 'booking' && $type != 'downloadable') {
+                throw new \Exception(trans('Please specify shipping method.'));
+            }
         }
 
         if (! $cart->payment) {

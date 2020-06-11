@@ -1,5 +1,9 @@
 {
-    "/js/app.js": "/js/app.js?id=e0ed52c91f6ed7e53c68",
+<<<<<<< HEAD
+    "/js/app.js": "/js/app.js?id=f4184fb95908a965a145",
+=======
+    "/js/app.js": "/js/app.js?id=ae085a9c205c92e080c6",
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
     "/css/pwa-admin.css": "/css/pwa-admin.css?id=7073d876ccd90f556cb1",
     "/css/pwa.css": "/css/pwa.css?id=9fefbeddf7c821649828"
 }

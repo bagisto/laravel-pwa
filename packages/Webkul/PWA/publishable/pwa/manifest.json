@@ -1,7 +1,11 @@
 {
     "name": "Bagisto PWA App",
     "short_name": "Bagisto",
+<<<<<<< HEAD
+    "start_url": "https://semseem.com",
+=======
     "start_url": "http://localhost",
+>>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
     "display": "standalone",
     "orientation": "any",
     "theme_color": "#0041ff",

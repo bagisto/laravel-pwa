@@ -71,7 +71,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/product-configurable-config/' + productId)
+                this.$http.get(' ' + productId)
                     .then(function(response) {
                         this_this.config = response.data.data;
 

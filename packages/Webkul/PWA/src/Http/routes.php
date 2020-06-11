@@ -21,7 +21,7 @@
                     // delete
                     Route::get('pushnotification/delete/{id}','Webkul\PWA\Http\Controllers\PushNotificationController@destroy')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'
                     ])->name('pwa.pushnotification.delete');
-        
+
                     //push to firebase
                     Route::get('pushnotification/push/{id}','Webkul\PWA\Http\Controllers\PushNotificationController@pushtofirebase')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'
                     ])->name('pwa.pushnotification.pushtofirebase');
@@ -31,7 +31,7 @@
     });
 
     Route::group(['prefix' => 'api'], function ($router) {
-    
+
         Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
             //Product routes
             Route::get('products', 'Webkul\PWA\Http\Controllers\Shop\ProductController@index')->name('api.products');
@@ -39,6 +39,8 @@
             Route::get('products/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@get');
 
             Route::get('product-configurable-config/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@configurableConfig');
+
+            Route::get('product-bundle-config/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@bundleConfig');
 
             //Order routes
             Route::get('orders', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
@@ -80,7 +82,7 @@
             ]);
 
             Route::post('reviews/{id}/create', 'Webkul\PWA\Http\Controllers\Shop\ReviewController@store');
-            
+
             Route::delete('reviews/{id}', 'Webkul\API\Http\Controllers\Shop\ResourceController@destroy')->defaults('_config', [
                 'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
                 'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',

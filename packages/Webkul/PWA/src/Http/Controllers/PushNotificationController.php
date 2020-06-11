@@ -8,7 +8,7 @@ use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationReposi
 /**
  * Push Notification controller
  *
- * @author    Vivek Sharma <viveksh047@webkul.com>@vivek-webkul
+ * @author    Aayush Bhatt <aayush.bhatt172@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class PushNotificationController extends Controller
@@ -74,7 +74,7 @@ class PushNotificationController extends Controller
             'targeturl' => 'required',
             'image.*' => 'mimes:jpeg,jpg,bmp,png'
         ]);
-        
+
         // call the repository
         $this->pushNotificationRepository->create(request()->all());
 
@@ -138,18 +138,18 @@ class PushNotificationController extends Controller
         $this->pushNotificationRepository->delete($id);
 
         session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Push Notification']));
-        
+
         return redirect()->back();
     }
 
     public function pushtofirebase($id) // send push notification to multiple devices
     {
         $topic = core()->getConfigData('pwa.settings.push-notification.topic');
-        $server_key = core()->getConfigData('pwa.settings.push-notification.api-key');
+        $server_key = "AIzaSyBjbet3YzHEAp-YEkRN50zWx3asw0d07MA";
 
         if ( $topic && $server_key ) {
             $pushnotification = $this->pushNotificationRepository->findOrFail($id);
-            
+
             $title = $pushnotification->title;
             $body = $pushnotification->description;
             $icon = asset('/storage/' . $pushnotification->imageurl);
