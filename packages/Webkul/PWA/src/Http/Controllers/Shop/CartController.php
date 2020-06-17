@@ -3,13 +3,19 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Illuminate\Support\Facades\Event;
+use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Checkout\Repositories\CartRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
-use Webkul\API\Http\Resources\Checkout\Cart as CartResource;
+use Webkul\PWA\Http\Resources\Checkout\Cart as CartResource;
 use Cart;
-use Webkul\Customer\Repositories\WishlistRepository;
 
-
+/**
+ * Cart controller
+ *
+ * @author    Jitendra Singh <jitendra@webkul.com>
+ * @author    Vivek Sharma <viveksh047@webkul.com>@vivek-webkul
+ * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+ */
 class CartController extends Controller
 {
     /**
@@ -22,36 +28,28 @@ class CartController extends Controller
     /**
      * CartRepository object
      *
-     * @var \Webkul\Checkout\Repositories\CartRepository
+     * @var Object
      */
     protected $cartRepository;
 
     /**
      * CartItemRepository object
      *
-     * @var \Webkul\Checkout\Repositories\CartItemRepository
+     * @var Object
      */
     protected $cartItemRepository;
 
     /**
-     * WishlistRepository object
-     *
-     * @var \Webkul\Checkout\Repositories\WishlistRepository
-     */
-    protected $wishlistRepository;
-
-    /**
      * Controller instance
      *
-     * @param  \Webkul\Checkout\Repositories\CartRepository  $cartRepository
-     * @param  \Webkul\Checkout\Repositories\CartItemRepository  $cartItemRepository
-     * @param  \Webkul\Checkout\Repositories\WishlistRepository  $wishlistRepository
+     * @param Webkul\Checkout\Repositories\CartRepository     $cartRepository
+     * @param Webkul\Checkout\Repositories\CartItemRepository $cartItemRepository
      */
     public function __construct(
         CartRepository $cartRepository,
-        CartItemRepository $cartItemRepository,
-        WishlistRepository $wishlistRepository
-    ) {
+        CartItemRepository $cartItemRepository
+    )
+    {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
@@ -63,8 +61,6 @@ class CartController extends Controller
         $this->cartRepository = $cartRepository;
 
         $this->cartItemRepository = $cartItemRepository;
-
-        $this->wishlistRepository = $wishlistRepository;
     }
 
     /**
@@ -79,7 +75,7 @@ class CartController extends Controller
         $cart = Cart::getCart();
 
         return response()->json([
-            'data' => $cart ? new CartResource($cart) : null,
+            'data' => $cart ? new CartResource($cart) : null
         ]);
     }
 
@@ -92,36 +88,27 @@ class CartController extends Controller
      */
     public function store($id)
     {
-        if (request()->get('is_buy_now')) {
-            Event::dispatch('shop.item.buy-now', $id);
-        }
+        Event::fire('checkout.cart.item.add.before', $id);
 
-        Event::dispatch('checkout.cart.item.add.before', $id);
-
-        $result = Cart::addProduct($id, request()->except('_token'));
+        $result = Cart::add($id, request()->except('_token'));
 
         if (! $result) {
             $message = session()->get('warning') ?? session()->get('error');
-
             return response()->json([
-                'error' => session()->get('warning'),
-            ], 400);
+                    'error' => session()->get('warning')
+                ], 400);
         }
 
-        if ($customer = auth($this->guard)->user()) {
-            $this->wishlistRepository->deleteWhere(['product_id' => $id, 'customer_id' => $customer->id]);
-        }
-
-        Event::dispatch('checkout.cart.item.add.after', $result);
+        Event::fire('checkout.cart.item.add.after', $result);
 
         Cart::collectTotals();
 
         $cart = Cart::getCart();
 
         return response()->json([
-            'message' => __('shop::app.checkout.cart.item.success'),
-            'data'    => $cart ? new CartResource($cart) : null,
-        ]);
+                'message' => 'Product added to cart successfully.',
+                'data' => $cart ? new CartResource($cart) : null
+            ]);
     }
 
     /**
@@ -131,22 +118,22 @@ class CartController extends Controller
      */
     public function update()
     {
-        foreach (request()->get('qty') as $qty) {
+        foreach (request()->get('qty') as$qty) {
             if ($qty <= 0) {
                 return response()->json([
-                    'message' => trans('shop::app.checkout.cart.quantity.illegal'),
-                ], 401);
+                        'message' => trans('shop::app.checkout.cart.quantity.illegal')
+                    ], 401);
             }
         }
 
         foreach (request()->get('qty') as $itemId => $qty) {
             $item = $this->cartItemRepository->findOneByField('id', $itemId);
 
-            Event::dispatch('checkout.cart.item.update.before', $itemId);
+            Event::fire('checkout.cart.item.update.before', $itemId);
 
-            Cart::updateItems(request()->all());
+            Cart::updateItem($item->product_id, ['quantity' => $qty], $itemId);
 
-            Event::dispatch('checkout.cart.item.update.after', $item);
+            Event::fire('checkout.cart.item.update.after', $item);
         }
 
         Cart::collectTotals();
@@ -154,9 +141,9 @@ class CartController extends Controller
         $cart = Cart::getCart();
 
         return response()->json([
-            'message' => __('shop::app.checkout.cart.quantity.success'),
-            'data'    => $cart ? new CartResource($cart) : null,
-        ]);
+                'message' => 'Cart updated successfully.',
+                'data' => $cart ? new CartResource($cart) : null
+            ]);
     }
 
     /**
@@ -166,18 +153,18 @@ class CartController extends Controller
      */
     public function destroy()
     {
-        Event::dispatch('checkout.cart.delete.before');
+        Event::fire('checkout.cart.delete.before');
 
         Cart::deActivateCart();
 
-        Event::dispatch('checkout.cart.delete.after');
+        Event::fire('checkout.cart.delete.after');
 
         $cart = Cart::getCart();
 
         return response()->json([
-            'message' => __('shop::app.checkout.cart.item.success-remove'),
-            'data'    => $cart ? new CartResource($cart) : null,
-        ]);
+                'message' => 'Cart removed successfully.',
+                'data' => $cart ? new CartResource($cart) : null
+            ]);
     }
 
     /**
@@ -188,42 +175,104 @@ class CartController extends Controller
      */
     public function destroyItem($id)
     {
-        Event::dispatch('checkout.cart.item.delete.before', $id);
+        Event::fire('checkout.cart.item.delete.before', $id);
 
         Cart::removeItem($id);
 
-        Event::dispatch('checkout.cart.item.delete.after', $id);
+        Event::fire('checkout.cart.item.delete.after', $id);
 
         Cart::collectTotals();
 
         $cart = Cart::getCart();
 
         return response()->json([
-            'message' => __('shop::app.checkout.cart.item.success-remove'),
-            'data'    => $cart ? new CartResource($cart) : null,
-        ]);
+                'message' => 'Cart removed successfully.',
+                'data' => $cart ? new CartResource($cart) : null
+            ]);
     }
 
     /**
-     * Function to move a already added product to wishlist will run only on customer authentication.
+     * Function to move a already added product to wishlist
+     * will run only on customer authentication.
      *
-     * @param  \Webkul\Checkout\Repositories\CartItemRepository  $id
+     * @param instance cartItem $id
      */
     public function moveToWishlist($id)
     {
-        Event::dispatch('checkout.cart.item.move-to-wishlist.before', $id);
+        if (auth()->guard('customer')->check()) {
+            Event::fire('checkout.cart.item.move-to-wishlist.before', $id);
 
-        Cart::moveToWishlist($id);
+            Cart::moveToWishlist($id);
 
-        Event::dispatch('checkout.cart.item.move-to-wishlist.after', $id);
+            Event::fire('checkout.cart.item.move-to-wishlist.after', $id);
 
-        Cart::collectTotals();
+            Cart::collectTotals();
 
-        $cart = Cart::getCart();
+            $cart = Cart::getCart();
+
+            return response()->json([
+                    'message' => 'Cart item moved to wishlist successfully.',
+                    'data' => $cart ? new CartResource($cart) : null
+                ]);
+        } else {
+            return response()->json([
+                'message' => 'Warning: You are not authorised user.',
+                'success' => false
+            ], 400);
+        }
+    }
+
+    /**
+     * Apply coupon to the cart
+     *
+     * @return \Illuminate\Http\JsonResponse
+    */
+    public function applyCoupon()
+    {
+        $couponCode = request()->get('code');
+
+        try {
+            if (strlen($couponCode)) {
+                Cart::setCouponCode($couponCode)->collectTotals();
+
+                if (Cart::getCart()->coupon_code == $couponCode) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => trans('shop::app.checkout.total.success-coupon'),
+                        'data' => [
+                            'cart' => new CartResource(Cart::getCart())
+                        ]
+                        ], 200);
+                }
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => trans('shop::app.checkout.total.invalid-coupon')
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => trans('shop::app.checkout.total.coupon-apply-issue')
+            ], 400);
+        }
+    }
+
+    /**
+     * Apply coupon to the cart
+     *
+     * @return \Illuminate\Http\JsonResponse
+    */
+    public function removeCoupon()
+    {
+        Cart::removeCouponCode()->collectTotals();
 
         return response()->json([
-            'message' => __('shop::app.checkout.cart.move-to-wishlist-success'),
-            'data'    => $cart ? new CartResource($cart) : null,
+            'success' => true,
+            'message' => trans('shop::app.checkout.total.remove-coupon'),
+            'data' => [
+                'cart' => new CartResource(Cart::getCart())
+            ]
         ]);
     }
 }

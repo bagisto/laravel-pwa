@@ -80,7 +80,6 @@
                     </div>
 
                     <div class="panel">
-<<<<<<< HEAD
                         <div class="panel-heading">{{ $t('Shipping Address') }}</div>
 
                         <div style="padding: 16px">
@@ -89,22 +88,6 @@
                                 <label class="checkbox-view" :for="'shipping_address_' + address.id"></label>
                                 {{ $t('Same as Billing Address') }}
                             </span>
-=======
-                    <div v-for="cartItem in cart.items">
-                        <div v-if = "!cartItem.product.type == 'booking' &&
-                                     !cartItem.product.type == 'downloadable' &&
-                                     !cartItem.product.type == 'virtual'">
-                                <div class="panel-heading">{{ $t('Shipping Address') }}</div>
-
-                                <div style="padding: 16px">
-                                    <span class="checkbox" :class="'shipping_address_' + address.id">
-                                        <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
-
-                                        {{ $t('Same as Billing Address') }}
-                                    </span>
-                                </div>
-                            </div>
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         </div>
 
                         <div style="padding: 16px" v-if="! new_address['billing'] && customer">
@@ -334,7 +317,7 @@
                                     <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
                                 </tr>
-
+                                
                             </tbody>
                         </table>
                     </div>
@@ -389,20 +372,6 @@
 <script>
     import CustomHeader    from '../../layouts/custom-header';
     import CheckoutAddress from './address';
-<<<<<<< HEAD
-    export default {
-        name: 'onepage',
-        components: { CustomHeader, CheckoutAddress },
-        data () {
-            return {
-                customer: null,
-                addresses: {
-                    billing: [],
-                    shipping: []
-                },
-                cart: null,
-                step: 1,
-=======
 
     export default {
         name: 'onepage',
@@ -423,21 +392,12 @@
 
                 step: 1,
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 stepLabels: {
                     1: this.$t('Address'),
                     2: this.$t('Shipping'),
                     3: this.$t('Payment'),
                     4: this.$t('Review'),
                 },
-<<<<<<< HEAD
-                address: {
-                    billing: {
-                        address1: [''],
-                        use_for_shipping: true,
-                        save_as_address: false,
-                    },
-=======
 
                 address: {
                     billing: {
@@ -447,32 +407,15 @@
                         save_as_address: false,
                     },
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     shipping: {
                         address1: ['']
                     },
                 },
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 new_address: {
                     shipping: false,
                     billing: false,
                 },
-<<<<<<< HEAD
-                shippingRates: [],
-                selected_shipping_method: '',
-                first_shipping_iteration: true,
-                paymentMethods: [],
-                selected_payment_method: '',
-
-                first_payment_iteration: true,
-                coupon_code: '',
-                error_message: '',
-                route_name: "{{ request()->route()->getName() }}",
-                disable_button: false,
-=======
 
                 shippingRates: [],
 
@@ -483,7 +426,7 @@
                 paymentMethods: [],
 
                 selected_payment_method: '',
-
+                
                 first_payment_iteration: true,
 
                 coupon_code: '',
@@ -494,7 +437,6 @@
 
                 disable_button: false,
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 formScopes: {
                     1: 'address-form',
                     2: 'shipping-form',
@@ -503,20 +445,6 @@
                 }
             }
         },
-<<<<<<< HEAD
-        mounted () {
-            this.getAuthCustomer();
-            this.getCart();
-        },
-        methods: {
-            getAuthCustomer () {
-                var this_this = this;
-                EventBus.$emit('show-ajax-loader');
-                this.$http.get('/api/customer/get')
-                    .then(function(response) {
-                        this_this.customer = response.data.data;
-                        EventBus.$emit('hide-ajax-loader');
-=======
 
         mounted () {
             this.getAuthCustomer();
@@ -536,20 +464,10 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         this_this.getCustomerAddresses(this_this.customer.id)
                     })
                     .catch(function (error) {});
             },
-<<<<<<< HEAD
-            getCustomerAddresses (customerId) {
-                var this_this = this;
-                EventBus.$emit('show-ajax-loader');
-                this.$http.get('/api/addresses', { params: { customer_id: customerId, pagination: 0 } })
-                    .then(function(response) {
-                        this_this.$set(this_this.addresses, 'billing', response.data.data.slice(0))
-                        this_this.$set(this_this.addresses, 'shipping', response.data.data.slice(0))
-=======
 
             getCustomerAddresses (customerId) {
                 var this_this = this;
@@ -562,21 +480,10 @@
 
                         this_this.$set(this_this.addresses, 'shipping', response.data.data.slice(0))
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
             },
-<<<<<<< HEAD
-            getCart () {
-                var this_this = this;
-                EventBus.$emit('show-ajax-loader');
-                this.$http.get('/api/checkout/cart')
-                    .then(function(response) {
-                        EventBus.$emit('hide-ajax-loader');
-                        this_this.cart = response.data.data;
-                        EventBus.$emit('checkout.cart.changed', this_this.cart);
-=======
 
             getCart () {
                 var this_this = this;
@@ -591,16 +498,12 @@
 
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         if (! this_this.cart)
                             this_this.$router.go(-2);
                     })
                     .catch(function (error) {});
             },
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
             changeSaveAddress(event) {
                 var self = this;
                 if (event.target.value == 0) {
@@ -609,10 +512,7 @@
                     self.address.billing.save_as_address = false;
                 }
             },
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
             validateForm: function (type = '') {
                 this.$validator.validateAll(this.formScopes[this.step]).then((result) => {
                     if (result) {
@@ -632,20 +532,6 @@
                     }
                 });
             },
-<<<<<<< HEAD
-            addAddress (type) {
-                var addressId = 'address_' + (this.addresses[type].length + 1);
-                this.address[type]['id'] = addressId;
-                this.addresses[type].push(this.address[type]);
-                this.new_address[type] = false;
-                this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping, save_as_address: this.address.billing.save_as_address})
-            },
-            saveAddress () {
-                var self = this;
-                var save_as_address = self.address.billing.save_as_address;
-                if (! Number.isInteger(self.address.billing.address_id)) {
-                    var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
-=======
 
             addAddress (type) {
                 var addressId = 'address_' + (this.addresses[type].length + 1);
@@ -666,17 +552,10 @@
                 if (! Number.isInteger(self.address.billing.address_id)) {
                     var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     Object.assign(self.address.billing, newAddress[0]);
-
+                    
                     self.address.billing.save_as_address = save_as_address;
                 }
-<<<<<<< HEAD
-                if (! Number.isInteger(self.address.shipping.address_id)) {
-                    var newAddress = self.addresses.shipping.filter(address => address.id == self.address.shipping.address_id);
-                    Object.assign(self.address.shipping, newAddress[0]);
-                }
-=======
 
                 if (! Number.isInteger(self.address.shipping.address_id)) {
                     var newAddress = self.addresses.shipping.filter(address => address.id == self.address.shipping.address_id);
@@ -684,29 +563,20 @@
                     Object.assign(self.address.shipping, newAddress[0]);
                 }
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 self.disable_button = true;
                 this.$http.post('/api/checkout/save-address', self.address)
                     .then(function(response) {
                         self.disable_button = false;
-<<<<<<< HEAD
-                        self.shippingRates = response.data.data.rates;
-                        self.cart = response.data.data.cart;
-=======
 
                         self.shippingRates = response.data.data.rates;
 
                         self.cart = response.data.data.cart;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         self.step++;
-
+                        
                         self.save_as_address = false;
                         self.address.billing.save_as_address = false;
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         if ( self.shippingRates ) {
                             $.each(self.shippingRates, (key, method) => {
                                 if ( self.first_shipping_iteration ) {
@@ -722,17 +592,6 @@
                         self.disable_button = false;
                     })
             },
-<<<<<<< HEAD
-            saveShipping () {
-                var this_this = this;
-                this.disable_button = true;
-                this.$http.post('/api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
-                    .then(function(response) {
-                        this_this.disable_button = false;
-                        this_this.paymentMethods = response.data.data.methods;
-                        this_this.cart = response.data.data.cart;
-                        this_this.step++;
-=======
 
             saveShipping () {
                 var this_this = this;
@@ -749,7 +608,6 @@
 
                         this_this.step++;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         if ( this_this.paymentMethods ) {
                             $.each(this_this.paymentMethods, (key, method) => {
                                 if ( this_this.first_payment_iteration ) {
@@ -763,15 +621,6 @@
                         this_this.disable_button = false;
                     })
             },
-<<<<<<< HEAD
-            savePayment () {
-                var this_this = this;
-                this.disable_button = true;
-                this.$http.post('/api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
-                    .then(function(response) {
-                        this_this.disable_button = false;
-                        this_this.cart = response.data.data.cart;
-=======
 
             savePayment () {
                 var this_this = this;
@@ -784,23 +633,12 @@
 
                         this_this.cart = response.data.data.cart;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         this_this.step++;
                     })
                     .catch(function (error) {
                         this_this.disable_button = false;
                     })
             },
-<<<<<<< HEAD
-            saveCoupon: function() {
-                var self = this;
-                if (! self.coupon_code.length)
-                    return;
-                self.disable_button = true;
-                this.$http.post('/api/checkout/cart/apply-coupon', { 'code': self.coupon_code })
-                    .then(function(response) {
-                        self.disable_button = false;
-=======
 
             saveCoupon: function() {
                 var self = this;
@@ -814,7 +652,6 @@
                     .then(function(response) {
                         self.disable_button = false;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         self.cart = response.data.data.cart;
                         if (response.data.success == true) {
                             self.coupon_code = '';
@@ -826,15 +663,6 @@
                         self.$toasted.show(error.response.data.message, { type: 'error' });
                     });
             },
-<<<<<<< HEAD
-            removeCoupon: function () {
-                var self = this;
-                self.disable_button = true;
-                this.$http.post('/api/checkout/cart/remove-coupon')
-                    .then(function(response) {
-                        self.disable_button = false;
-                        self.cart = response.data.data.cart;
-=======
 
             removeCoupon: function () {
                 var self = this;
@@ -847,7 +675,6 @@
 
                         self.cart = response.data.data.cart;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         if (response.data.success == true) {
                             self.coupon_code = '';
                             self.$toasted.show(response.data.message, { type: 'success' });
@@ -858,18 +685,12 @@
                         self.$toasted.show(error.response.data.message, { type: 'error' });
                     });
             },
-<<<<<<< HEAD
-            placeOrder () {
-                var this_this = this;
-                this.disable_button = true;
-=======
 
             placeOrder () {
                 var this_this = this;
 
                 this.disable_button = true;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 this.$http.post('/api/checkout/save-order')
                     .then(function(response) {
                         if (response.data.success) {
@@ -877,10 +698,7 @@
                                 window.location.href = response.data.redirect_url;
                             } else {
                                 this_this.$router.push({ path: '/checkout/success/' + response.data.order.id })
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                 EventBus.$emit('checkout.cart.changed', null);
                             }
                         }
@@ -889,10 +707,7 @@
                         this_this.disable_button = true;
                     })
             },
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
             handleBack () {
                 if (this.step == 1) {
                     if (window.history.length > 2) {
@@ -903,10 +718,7 @@
                 } else {
                     this.address.billing = {
                         address1: [''],
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         use_for_shipping: true,
                         save_as_address: false,
                     };
@@ -924,10 +736,7 @@
         bottom: 0;
         top: 0;
         width: 100%;
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
         .stepper {
             position: absolute;
             height: 4px;
@@ -935,23 +744,12 @@
             left: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.08);
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
             .step {
                 background: #000000;
                 position: absolute;
                 height: 4px;
                 width: 25%;
-<<<<<<< HEAD
-                &.step-2 {
-                    width: 50%;
-                }
-                &.step-3 {
-                    width: 75%;
-                }
-=======
 
                 &.step-2 {
                     width: 50%;
@@ -961,20 +759,11 @@
                     width: 75%;
                 }
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 &.step-4 {
                     width: 100%;
                 }
             }
         }
-<<<<<<< HEAD
-        .checkout-container {
-            margin-top: 80px;
-            padding-bottom: 60px;
-            .panel {
-                display: inline-block;
-                width: 100%;
-=======
 
         .checkout-container {
             margin-top: 80px;
@@ -984,20 +773,14 @@
                 display: inline-block;
                 width: 100%;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 .panel-heading {
                     border-bottom: 1px solid rgba(0, 0, 0 ,0.12);
                     color: rgba(0, 0, 0, 0.6);
                 }
-<<<<<<< HEAD
-                .panel-content {
-                    padding: 0;
-=======
 
                 .panel-content {
                     padding: 0;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     .address-list {
                         .address-item {
                             position: relative;
@@ -1008,10 +791,7 @@
                             width: 100%;
                             display: inline-block;
                             cursor: pointer;
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                             .radio {
                                 position: absolute;
                                 display: inline-block;
@@ -1019,17 +799,11 @@
                                 top: 50%;
                                 margin-top: -10px;
                             }
-<<<<<<< HEAD
-                            .address_details {
-                                padding-left: 36px;
-                            }
-=======
 
                             .address_details {
                                 padding-left: 36px;
                             }
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                             .sharp-arrow-right-icon {
                                 position: absolute;
                                 right: 16px;
@@ -1038,15 +812,10 @@
                                 opacity: 0.16;
                             }
                         }
-<<<<<<< HEAD
-                        .control-group {
-                            display: none;
-=======
 
                         .control-group {
                             display: none;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                             &.has-error {
                                 display: block;
                                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
@@ -1055,17 +824,6 @@
                             }
                         }
                     }
-<<<<<<< HEAD
-                    .shipping-methods, .payment-methods {
-                        padding-left: 16px;
-                        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-                        .method {
-                            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-                            padding: 16px 0;
-                            &:last-child {
-                                border-bottom: 0;
-                            }
-=======
 
                     .shipping-methods, .payment-methods {
                         padding-left: 16px;
@@ -1079,7 +837,6 @@
                                 border-bottom: 0;
                             }
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                             h2 {
                                 font-weight: 700;
                                 font-size: 12px;
@@ -1087,18 +844,12 @@
                                 text-transform: uppercase;
                                 margin-bottom: 15px;
                             }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                             .radio {
                                 font-size: 14px;
                                 color: rgba(0, 0, 0, 0.86);
                                 margin-bottom: 8px;
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                 &:last-child {
                                     margin-bottom: 0;
                                 }
@@ -1106,10 +857,7 @@
                         }
                     }
                 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 .form-container {
                     &.address {
                         padding: 16px;
@@ -1118,10 +866,7 @@
                         z-index: 10;
                         top: 55px;
                         width: 100%;
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         .header {
                             z-index: 10;
                             background: #ffffff;
@@ -1131,10 +876,7 @@
                         }
                     }
                 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 .address-actions {
                     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
                     font-weight: 600;
@@ -1143,45 +885,30 @@
                     width: 100%;
                     float: left;
                     text-align: center;
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     .new-address-link {
                         padding: 16px;
                         cursor: pointer;
                         color: rgba(0, 0, 0, 0.87);
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         .icon {
                             margin-right: 8px;
                             opacity: 0.56;
                             vertical-align: middle;
                         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         span {
                             vertical-align: middle;
                         }
                     }
                 }
             }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
             .review-section {
                 .panel {
                     .panel-content {
                         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         h2 {
                             font-weight: 700;
                             font-size: 12px;
@@ -1189,54 +916,31 @@
                             text-transform: uppercase;
                             margin-bottom: 8px;
                         }
-<<<<<<< HEAD
-                        .billing-address {
-                            margin-bottom: 16px;
-                        }
-=======
 
                         .billing-address {
                             margin-bottom: 16px;
                         }
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         .payment-method {
                             font-size: 14px;
                             color: rgba(0, 0, 0, 0.86);
                         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         .shipping-method {
                             font-size: 14px;
                             color: rgba(0, 0, 0, 0.86);
                         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         .address-details {
                             font-size: 14px;
                             color: rgba(0, 0, 0, 0.86);
                             margin-bottom: 16px;
                         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                         .cart-item-list {
                             .cart-item {
                                 border-bottom: 1px solid rgba(0, 0, 0 ,0.12);
                                 padding: 8px 0;
-<<<<<<< HEAD
-                                &:last-child {
-                                    border-bottom: 0;
-                                }
-                                .product-image {
-                                    margin-right: 16px;
-                                    float: left;
-=======
 
                                 &:last-child {
                                     border-bottom: 0;
@@ -1246,29 +950,18 @@
                                     margin-right: 16px;
                                     float: left;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                     img {
                                         width: 96px;
                                         height: 96px;
                                     }
                                 }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                 .product-name {
                                     font-size: 14px;
                                     margin-bottom: 8px;
                                     color: rgba(0, 0, 0, 0.87);
                                 }
-<<<<<<< HEAD
-                                .cart-item-options {
-                                    .attributes {
-                                        display: inline-block;
-                                        .option {
-                                            display: inline-block;
-=======
 
                                 .cart-item-options {
                                     .attributes {
@@ -1277,23 +970,11 @@
                                         .option {
                                             display: inline-block;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                             span {
                                                 margin-right: 8px;
                                             }
                                         }
                                     }
-<<<<<<< HEAD
-                                    > div {
-                                        margin-bottom: 8px;
-                                        font-size: 14px;
-                                        &:last-child {
-                                            margin-bottom: 0;
-                                        }
-                                        label {
-                                            color: rgba(0, 0, 0, 0.56);
-                                        }
-=======
 
                                     > div {
                                         margin-bottom: 8px;
@@ -1307,7 +988,6 @@
                                             color: rgba(0, 0, 0, 0.56);
                                         }
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                         span {
                                             color: #000000;
                                         }
@@ -1315,13 +995,6 @@
                                 }
                             }
                         }
-<<<<<<< HEAD
-                        table.total-summary {
-                            width: 100%;
-                            tr {
-                                td {
-                                    padding: 8px 0;
-=======
 
                         table.total-summary {
                             width: 100%;
@@ -1330,40 +1003,27 @@
                                 td {
                                     padding: 8px 0;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                     &:first-child {
                                         font-size: 14px;
                                         color: rgba(0, 0, 0, 0.56);
                                     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                     &:last-child {
                                         font-size: 14px;
                                         text-align: right;
                                     }
                                 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                 &.last {
                                     td {
                                         padding: 16px 0 0 0;
                                         border-top: 1px solid rgba(0, 0, 0, 0.12);
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                         &:first-child {
                                             font-size: 18px;
                                             color: rgba(0, 0, 0, 0.56);
                                         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                                         &:last-child {
                                             font-size: 18px;
                                             font-weight: 600;
@@ -1376,10 +1036,7 @@
                     }
                 }
             }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
             .checkout-action {
                 position: fixed;
                 bottom: 0;
@@ -1388,35 +1045,24 @@
                 background: #ffffff;
                 -webkit-box-shadow: 0 -10px 10px 0 rgba(0, 0, 0, 0.04), 0 -1px 4px 0 rgba(0, 0, 0, 0.16);
                 box-shadow: 0 -10px 10px 0 rgba(0, 0, 0, 0.04), 0 -1px 4px 0 rgba(0, 0, 0, 0.16);
-<<<<<<< HEAD
-                .total-info {
-                    float: left;
-=======
 
                 .total-info {
                     float: left;
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     p {
                         font-weight: 600;
                         font-size: 12px;
                         color: rgba(0, 0, 0, 0.56);
                         margin-bottom: 2px;
                     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                     h3 {
                         font-weight: 600;
                         font-size: 18px;
                         color: rgba(0, 0, 0, 0.87);
                     }
                 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 357d53b426de9235e5e2207552184692782d0dcb
                 .btn {
                     float: right;
                 }

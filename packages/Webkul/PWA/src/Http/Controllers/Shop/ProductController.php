@@ -66,16 +66,4 @@ class ProductController extends Controller
                 'data' => app('Webkul\PWA\Helpers\PwaConfigurableOption')->getConfigurationConfig($this->productRepository->findOrFail($id))
             ]);
     }
-
-    /**
-     * Return product options
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function bundleConfig($id)
-    {
-        return response()->json([
-            'data' => app('Webkul\PWA\Helpers\PwaBundleOption')->getBundleConfig($this->productRepository->findOrFail($id)),
-        ]);
-    }
 }

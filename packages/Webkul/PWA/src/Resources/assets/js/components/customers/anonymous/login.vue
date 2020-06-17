@@ -94,7 +94,7 @@
                         this_this.$router.push({name: 'dashboard'})
                     })
                     .catch(function (error) {
-
+                        
                         var errors = error.response.data;
                         for (name in errors) {
                             if (errors.hasOwnProperty(name)) {
