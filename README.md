@@ -33,7 +33,7 @@ It packs with lots of demanding features that allows your business to scale in n
 ### 3. Installation:
 * Install the PWA extension
 ```
-composer require bagisto/laravel-pwa
+composer require bagisto/pwa
 ```
 
 * Run these commands below to complete the setup
