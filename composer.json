@@ -8,7 +8,9 @@
             "email": "viveksh047@webkul.com"
         }
     ],
-    "require": {},
+    "require": {
+        "jenssegers/agent": "^3.0@dev"
+    },
     "autoload": {
         "psr-4": {
             "Webkul\\PWA\\": "src/"
