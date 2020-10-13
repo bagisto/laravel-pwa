@@ -1,8 +1,13 @@
+# Bagisto PWA
+
 ### 1. Introduction:
 
-PWA or Progressive Web Application uses web browser capabilities and provides a mobile app like experience to the users. It develops from a browser tab and makes pages more immersive with a low friction user experience. It is a web technology of making a website which acts and feels like an application. A user can launch Progressive Web Application same like a native application regardless of browser choice.
+PWA or Progressive Web Application uses web browser capabilities and provides a mobile app experience to the users.  
+It develops from a browser tab and makes pages more immersive with a low friction user experience.  
+It is a web technology of making a website which acts and feels like an application.  
+A user can launch the Progressive Web Application same like a native application regardless of browser choice.
 
-It packs in lots of demanding features that allows your business to scale in no time:
+It packs with lots of demanding features that allows your business to scale in no time:
 
 * Separate micro site.
 * More user friendly than a web application.
@@ -26,62 +31,25 @@ It packs in lots of demanding features that allows your business to scale in no 
 
 
 ### 3. Installation:
-
-* Unzip the respective extension zip and then merge "packages" folder into project root directory.
-* Goto config/app.php file and add following line under 'providers'
-
-~~~
-Webkul\PWA\Providers\PWAServiceProvider::class
-~~~
-
-* Goto config/concord.php file and add following line under 'modules'
-
-~~~
-\Webkul\PWA\Providers\ModuleServiceProvider::class
-~~~
-
-* Goto composer.json file and add following line under 'psr-4'
-
-~~~
-"Webkul\\PWA\\": "packages/Webkul/PWA/src"
-~~~
-
-* Install Jenssegers Agent via following command
-
-~~~
-composer require jenssegers/agent
-~~~
-
-* Add the following line under 'providers' in config/app.php
-
-~~~
-Jenssegers\Agent\AgentServiceProvider::class
-~~~
-
-* Add the following line under 'aliases' in config/app.php
-
-~~~
-'Agent' => Jenssegers\Agent\Facades\Agent::class,
-~~~
+* Install the PWA extension
+```
+composer require bagisto/pwa
+```
 
 * Run these commands below to complete the setup
 
-~~~
-composer dump-autoload
-~~~
-
-~~~
+```
 php artisan migrate
-~~~
+```
 
-~~~
+```
 php artisan route:cache
-~~~
+```
 
-~~~
+```
 php artisan vendor:publish
 
 -> Press 0 and then press enter to publish all assets and configurations.
-~~~
+```
 
-> That's it, now just execute the project on your specified domain.
+> That's it, now go to https://yourdomain/pwa
