@@ -1,0 +1,26 @@
+{
+    "name": "bagisto/pwa",
+    "description": "Progressive Web Application transforms your website to a mobile application",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "viveksharma-webkul",
+            "email": "viveksh047@webkul.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Webkul\\PWA\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\PWA\\Providers\\PWAServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}
