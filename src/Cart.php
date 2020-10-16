@@ -11,7 +11,7 @@ use Webkul\Tax\Repositories\TaxCategoryRepository;
 use Webkul\Checkout\Models\CartPayment;
 use Webkul\Customer\Repositories\WishlistRepository;
 use Webkul\Customer\Repositories\CustomerAddressRepository;
-use Webkul\Product\Helpers\Price;
+use Webkul\PWA\Helpers\Price;
 use Webkul\Checkout\Cart as BaseCart;
 
 /**
@@ -118,105 +118,12 @@ class Cart extends BaseCart
             $cart,
             $cartItem,
             $cartAddress,
-            $customer,
             $product,
             $taxCategory,
             $wishlist,
-            $customerAddress,
-            $price
+            $customerAddress
         );
 
         $this->product = $product;
-    }
-
-    /**
-     * Save customer address
-     *
-     * @return Mixed
-     */
-    public function saveCustomerAddress($data)
-    {
-        if (! $cart = $this->getCart())
-            return false;
-
-        $billingAddress = $data['billing'];
-        $shippingAddress = $data['shipping'];
-        $billingAddress['cart_id'] = $shippingAddress['cart_id'] = $cart->id;
-
-        if (isset($data['billing']['address_id']) && $data['billing']['address_id']) {
-            $address = $this->customerAddress->findOneWhere(['id'=> $data['billing']['address_id']])->toArray();
-            $billingAddress['first_name'] = $this->getCurrentCustomer()->user()->first_name;
-            $billingAddress['last_name'] = $this->getCurrentCustomer()->user()->last_name;
-            $billingAddress['email'] = $this->getCurrentCustomer()->user()->email;
-            $billingAddress['address1'] = $address['address1'];
-            $billingAddress['country'] = $address['country'];
-            $billingAddress['state'] = $address['state'];
-            $billingAddress['city'] = $address['city'];
-            $billingAddress['postcode'] = $address['postcode'];
-            $billingAddress['phone'] = $address['phone'];
-        }
-
-        if (isset($data['shipping']['address_id']) && $data['shipping']['address_id']) {
-            $address = $this->customerAddress->findOneWhere(['id'=> $data['shipping']['address_id']])->toArray();
-            $shippingAddress['first_name'] = $this->getCurrentCustomer()->user()->first_name;
-            $shippingAddress['last_name'] = $this->getCurrentCustomer()->user()->last_name;
-            $shippingAddress['email'] = $this->getCurrentCustomer()->user()->email;
-            $shippingAddress['address1'] = $address['address1'];
-            $shippingAddress['country'] = $address['country'];
-            $shippingAddress['state'] = $address['state'];
-            $shippingAddress['city'] = $address['city'];
-            $shippingAddress['postcode'] = $address['postcode'];
-            $shippingAddress['phone'] = $address['phone'];
-        }
-
-        if (isset($data['billing']['save_as_address']) && $data['billing']['save_as_address'] && ! isset($data['billing']['address_id'])) {
-            $billingAddress['customer_id']  = $this->getCurrentCustomer()->user()->id;
-            $this->customerAddress->create($billingAddress);
-        }
-
-        if (isset($data['shipping']['save_as_address']) && $data['shipping']['save_as_address']) {
-            $shippingAddress['customer_id']  = $this->getCurrentCustomer()->user()->id;
-            $this->customerAddress->create($shippingAddress);
-        }
-
-        if ($billingAddressModel = $cart->billing_address) {
-            $this->cartAddress->update($billingAddress, $billingAddressModel->id);
-
-            if ($shippingAddressModel = $cart->shipping_address) {
-                if (isset($billingAddress['use_for_shipping']) && $billingAddress['use_for_shipping']) {
-                    $this->cartAddress->update($billingAddress, $shippingAddressModel->id);
-                } else {
-                    $this->cartAddress->update($shippingAddress, $shippingAddressModel->id);
-                }
-            } else {
-                if (isset($billingAddress['use_for_shipping']) && $billingAddress['use_for_shipping']) {
-                    $this->cartAddress->create(array_merge($billingAddress, ['address_type' => 'shipping']));
-                } else {
-                    $this->cartAddress->create(array_merge($shippingAddress, ['address_type' => 'shipping']));
-                }
-            }
-        } else {
-            $this->cartAddress->create(array_merge($billingAddress, ['address_type' => 'billing']));
-
-            if (isset($billingAddress['use_for_shipping']) && $billingAddress['use_for_shipping']) {
-                $this->cartAddress->create(array_merge($billingAddress, ['address_type' => 'shipping']));
-            } else {
-                $this->cartAddress->create(array_merge($shippingAddress, ['address_type' => 'shipping']));
-            }
-        }
-
-        if ($this->getCurrentCustomer()->check()) {
-            $cart->customer_email = $this->getCurrentCustomer()->user()->email;
-            $cart->customer_first_name = $this->getCurrentCustomer()->user()->first_name;
-            $cart->customer_last_name = $this->getCurrentCustomer()->user()->last_name;
-        } else {
-            $cart->customer_email = $cart->billing_address->email;
-            $cart->customer_first_name = $cart->billing_address->first_name;
-            $cart->customer_last_name = $cart->billing_address->last_name;
-        }
-
-        $cart->save();
-
-        return true;
     }
 }

@@ -101,7 +101,7 @@
 				product: null,
 
                 formData: {
-                    product: this.$route.params.id,
+                    product_id: this.$route.params.id,
 
                     quantity: 1,
 
