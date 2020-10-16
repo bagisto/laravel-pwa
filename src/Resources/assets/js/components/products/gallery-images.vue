@@ -1,5 +1,5 @@
 <template>
-    <div class="gallery-images">
+    <div class="gallery-images" dir="ltr">
         <carousel :per-page="1" pagination-active-color="#979797" pagination-color="#E8E8E8">
             <slide v-if="product.images.length" v-for="image in product.images" :key='image.uid'>
                 <img alt="original-image-url" :src="image.original_image_url"/>
