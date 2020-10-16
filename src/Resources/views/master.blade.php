@@ -28,7 +28,7 @@
 
     </head>
 
-    <body @if (app()->getLocale() == 'ar') class="rtl" @endif style="scroll-behavior: smooth;">
+    <body @if (app()->getLocale() == 'ar') class="rtl" dir="rtl" @endif style="scroll-behavior: smooth;">
 
         {!! view_render_event('bagisto.pwa.layout.body.before') !!}
 

@@ -44,7 +44,7 @@ class Product extends JsonResource
             'short_description' => $this->short_description,
             'description' => $this->description,
             'sku' => $this->sku,
-            'images' => ProductImage::collection($product->images),
+            'images' => $this->productImageHelper->getGalleryImages($product),
             'base_image' => $this->productImageHelper->getProductBaseImage($product),
             'variants' => Self::collection($this->variants),
             'in_stock' => $product->type == 'configurable' ? 1 : $product->haveSufficientQuantity(1),
