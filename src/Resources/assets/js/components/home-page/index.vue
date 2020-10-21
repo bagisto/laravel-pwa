@@ -72,9 +72,9 @@
         mounted () {
             this.getCategories();
 
-            this.getProducts('new', { 'new': 1, limit: 4 });
+            this.getProducts('new', { 'new': 1, limit: 9 });
 
-            this.getProducts('featured', { 'featured': 1, limit: 4 });
+            this.getProducts('featured', { 'featured': 1, limit: 9 });
         },
 
         methods: {

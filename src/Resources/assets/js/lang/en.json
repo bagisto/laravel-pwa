@@ -187,5 +187,15 @@
     "More Information": "More Information",
     "Load More Reviews": "Load More Reviews",
     "Cart": "Cart",
-    "Search for products": "Search for products"
+    "Search for products": "Search for products",
+    "starting_at": "Starting At",
+    "downloadable": {
+        "sample": "Sample",
+        "links" : "Links"
+    },
+    "bundle": {
+        "customize_options": "Customize Options",
+        "your_customization": "Your Customization",
+        "total_amount": "Total Amount"
+    }
 }

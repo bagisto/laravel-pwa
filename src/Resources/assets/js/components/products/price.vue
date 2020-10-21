@@ -1,12 +1,15 @@
 <template>
     <div class="product-price">
-        <span v-if="product.type == 'configurable'">
-            <span class="price-label">{{ $t('As low as') }}</span>
-
-            <span class="final-price">{{ product.formated_price }}</span>
+        <span v-if="
+            product.type == 'grouped'
+            || product.type == 'bundle'
+            || product.type == 'configurable'
+            || product.type == 'downloadable'
+        ">
+            <span class="final-price" v-html="product.formated_price"></span>
         </span>
 
-        <span v-if="product.type != 'configurable'">
+        <span v-else>
             <span v-if="product.special_price">
                 <span class="special-price">{{ product.formated_special_price }}</span>
 

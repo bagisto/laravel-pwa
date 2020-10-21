@@ -27,7 +27,25 @@
                     :form-data="formData">
                 </configurable-options>
 
-                <div class="quantity-container">
+                <grouped-products-options
+                    v-if="product.type == 'grouped'"
+                    :product="product"
+                    :form-data="formData">
+                </grouped-products-options>
+
+                <bundle-options
+                    v-if="product.type == 'bundle'"
+                    :product="product"
+                    :form-data="formData">
+                </bundle-options>
+
+                <downloadable-options
+                    v-if="product.type == 'downloadable'"
+                    :product="product"
+                    :form-data="formData">
+                </downloadable-options>
+
+                <div class="quantity-container" v-if="product.show_quantity_changer">
                     <label>{{ $t('Quantity') }}</label>
 
                     <div class="quantity">
@@ -71,15 +89,18 @@
 </template>
 
 <script>
-    import Accordian           from '../shared/accordian';
-    import GalleryImages       from './gallery-images';
-    import Price               from './price';
-    import Review              from './review';
-    import Stock               from './stock';
-    import SocialLinks         from './social-links';
-    import ConfigurableOptions from './configurable-options';
-    import Reviews             from './reviews';
-    import Attributes          from './attributes';
+    import Accordian                from '../shared/accordian';
+    import GalleryImages            from './gallery-images';
+    import Price                    from './price';
+    import Review                   from './review';
+    import Stock                    from './stock';
+    import SocialLinks              from './social-links';
+    import ConfigurableOptions      from './configurable-options';
+    import DownloadableOptions      from './downloadable-options';
+    import BundleOptions            from './bundle-options';
+    import Reviews                  from './reviews';
+    import Attributes               from './attributes';
+    import GroupedProductsOptions   from './grouped-products-options';
 
     export default {
         name: 'product',
@@ -92,6 +113,9 @@
             Stock,
             SocialLinks,
             ConfigurableOptions,
+            GroupedProductsOptions,
+            DownloadableOptions,
+            BundleOptions,
             Reviews,
             Attributes
         },
@@ -124,13 +148,29 @@
 
         methods: {
             getProduct (productId) {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/products/' + productId)
-                    .then(function(response) {
-                        this_this.product = response.data.data;
+                    .then(response => {
+                        this.product = response.data.data;
+
+                        if (this.product.type == "grouped") {
+                            this.formData.qty = {};
+                            delete(this.formData['quantity']);
+
+                            this.product.grouped_products.forEach(product => {
+                                this.$set(this.formData.qty, product.id, 1);
+                            });
+                        }
+
+                        if (this.product.type == "downloadable") {
+                            this.formData.links = {};
+                        }
+
+                        if (this.product.type == "bundle") {
+                            this.formData.bundle_options = {};
+                            this.formData.bundle_option_qty = {};
+                        }
 
                         EventBus.$emit('hide-ajax-loader');
                     })

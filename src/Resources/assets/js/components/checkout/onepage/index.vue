@@ -566,26 +566,46 @@
                 self.disable_button = true;
                 this.$http.post('/api/checkout/save-address', self.address)
                     .then(function(response) {
-                        self.disable_button = false;
+                        if (response.data.data.nextStep == "payment") {
+                            self.disable_button = false;
 
-                        self.shippingRates = response.data.data.rates;
+                            self.paymentMethods = response.data.data.methods;
 
-                        self.cart = response.data.data.cart;
+                            self.cart = response.data.data.cart;
 
-                        self.step++;
-                        
-                        self.save_as_address = false;
-                        self.address.billing.save_as_address = false;
+                            self.step++;
+                            self.step++;
 
-                        if ( self.shippingRates ) {
-                            $.each(self.shippingRates, (key, method) => {
-                                if ( self.first_shipping_iteration ) {
-                                    $.each(method['rates'], (key, rate) => {
-                                        self.selected_shipping_method = rate['method'];
-                                        self.first_shipping_iteration = false;
-                                    });
-                                }
-                            });
+                            if ( self.paymentMethods ) {
+                                $.each(self.paymentMethods, (key, method) => {
+                                    if ( self.first_payment_iteration ) {
+                                        self.selected_payment_method = method['method'];
+                                        self.first_payment_iteration = false;
+                                    }
+                                });
+                            }
+                        } else {
+                            self.disable_button = false;
+
+                            self.shippingRates = response.data.data.rates;
+
+                            self.cart = response.data.data.cart;
+
+                            self.step++;
+                            
+                            self.save_as_address = false;
+                            self.address.billing.save_as_address = false;
+
+                            if ( self.shippingRates ) {
+                                $.each(self.shippingRates, (key, method) => {
+                                    if ( self.first_shipping_iteration ) {
+                                        $.each(method['rates'], (key, rate) => {
+                                            self.selected_shipping_method = rate['method'];
+                                            self.first_shipping_iteration = false;
+                                        });
+                                    }
+                                });
+                            }
                         }
                     })
                     .catch(function (error) {

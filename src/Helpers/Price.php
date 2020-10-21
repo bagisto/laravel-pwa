@@ -78,9 +78,6 @@ class Price extends AbstractProduct
 
         $finalPrice = [];
 
-        if (array_key_exists($product->id, $price))
-            return $price[$product->id];
-
         if ($product instanceof ProductFlat) {
             $productId = $product->product_id;
         } else {

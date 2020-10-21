@@ -18,7 +18,7 @@
 
                 <!--if there is no special price of an item-->
                 <span v-if="! product.formated_special_price">
-                    <span class="special-price">{{ product.formated_price }}</span>
+                    <span class="special-price" v-html="product.formated_price"></span>
                 </span>
                 <!--end-->
 

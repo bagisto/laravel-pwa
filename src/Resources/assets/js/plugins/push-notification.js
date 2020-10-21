@@ -14,7 +14,7 @@ if (! isSafari()) {
         } else {
             console.log('Unable to get permission to notify.');
         }
-    }); 
+    });
 
     messaging.onMessage(function(payload){
         console.log('onMessage:', payload);

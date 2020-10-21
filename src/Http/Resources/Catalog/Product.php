@@ -33,41 +33,148 @@ class Product extends JsonResource
     public function toArray($request)
     {
         $product = $this->product ? $this->product : $this;
+        $productPrice = $this->calculatePrice($product);
 
-        return [
-            'id' => $product->id,
-            'type' => $product->type,
-            'name' => $this->name,
-            'url_key' => $this->url_key,
-            'price' => $product->type == 'configurable' ? $this->productPriceHelper->getVariantMinPrice($product) : $this->price,
-            'formated_price' => $product->type == 'configurable' ? core()->currency($this->productPriceHelper->getVariantMinPrice($product)) : core()->currency($this->price),
+        $data = [];
+
+        switch ($product->type) {
+            case 'grouped':
+                $data['grouped_products'] = [];
+                $groupedProducts = $product->grouped_products;
+
+                foreach ($groupedProducts as $index => $groupedProduct) {
+                    $associatedProduct = $groupedProduct->associated_product;
+
+                    $data['grouped_products'][$index] = $associatedProduct->toArray();
+
+                    $data['grouped_products'][$index] += [
+                        'formated_price'        => core()->currency($data['grouped_products'][$index]['price']),
+                        'isSaleable'            => $associatedProduct->getTypeInstance()->isSaleable(),
+                        'show_quantity_changer' => $associatedProduct->getTypeInstance()->showQuantityBox()
+                    ];
+                }
+            break;
+
+            case 'downloadable':
+                $data['downloadable_links'] = [];
+                $data['downloadable_samples'] = [];
+
+                $downloadableLinks = $product->downloadable_links;
+                $downloadableSamples = $product->downloadable_samples;
+                
+                foreach ($downloadableSamples as $index => $downloadableSample) {
+                    $sample = $downloadableSample->toArray();
+                    $data['downloadable_samples'][$index] = $sample;
+                    $data['downloadable_samples'][$index]['download_url'] = route('shop.downloadable.download_sample', ['type' => 'sample', 'id' => $sample['id']]);
+                }
+
+                foreach ($downloadableLinks as $index => $downloadableLink) {
+                    $data['downloadable_links'][$index] = $downloadableLink->toArray();
+
+                    if (isset($downloadableLink['sample_file'])) {
+                        $data['downloadable_links'][$index]['price'] = core()->currency($downloadableLink->price);
+                        $data['downloadable_links'][$index]['sample_download_url'] = route('shop.downloadable.download_sample', ['type' => 'link', 'id' => $downloadableLink['id']]);
+                        
+                    }
+                }
+            break;
+
+            case 'bundle':
+                $data['currency_options'] = core()->getAccountJsSymbols();
+                $data['bundle_options'] = app('Webkul\Product\Helpers\BundleOption')->getBundleConfig($product);
+            break;
+
+            default:
+            break;
+        }
+
+        $data += [
+            'id'                => $product->id,
+            'type'              => $product->type,
+            'name'              => $this->name,
+            'url_key'           => $this->url_key,
+            'price'             => $productPrice,
+            'formated_price'    => $productPrice,
             'short_description' => $this->short_description,
-            'description' => $this->description,
-            'sku' => $this->sku,
-            'images' => $this->productImageHelper->getGalleryImages($product),
-            'base_image' => $this->productImageHelper->getProductBaseImage($product),
-            'variants' => Self::collection($this->variants),
-            'in_stock' => $product->type == 'configurable' ? 1 : $product->haveSufficientQuantity(1),
-            $this->mergeWhen($product->type == 'configurable', [
-                'super_attributes' => Attribute::collection($product->super_attributes),
-            ]),
-            'special_price' => $this->when(
-                    $this->productPriceHelper->haveSpecialPrice($product),
-                    $this->productPriceHelper->getSpecialPrice($product)
-                ),
+            'description'       => $this->description,
+            'sku'               => $this->sku,
+            'images'            => $this->productImageHelper->getGalleryImages($product),
+            'base_image'        => $this->productImageHelper->getProductBaseImage($product),
+            'variants'          => Self::collection($this->variants),
+            'in_stock'          => $this->haveSufficientQuantity($product),
+            'special_price'     => $this->when(
+                $this->productPriceHelper->haveSpecialPrice($product),
+                $this->productPriceHelper->getSpecialPrice($product)
+            ),
             'formated_special_price' => $this->when(
-                    $this->productPriceHelper->haveSpecialPrice($product),
-                    core()->currency($this->productPriceHelper->getSpecialPrice($product))
-                ),
+                $this->productPriceHelper->haveSpecialPrice($product),
+                core()->currency($this->productPriceHelper->getSpecialPrice($product))
+            ),
             'reviews' => [
                 'total' => $total = $this->productReviewHelper->getTotalReviews($product),
                 'total_rating' => $total ? $this->productReviewHelper->getTotalRating($product) : 0,
                 'average_rating' => $total ? $this->productReviewHelper->getAverageRating($product) : 0,
                 'percentage' => $total ? json_encode($this->productReviewHelper->getPercentageRating($product)) : [],
             ],
-            'is_saved' => false,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'is_saved'              => false,
+            'created_at'            => $this->created_at,
+            'updated_at'            => $this->updated_at,
         ];
+
+        if ($product->type != "grouped") {
+            $data['show_quantity_changer'] = $product->getTypeInstance()->showQuantityBox();
+        }
+
+        if ($product->type != "configurable") {
+            $data['super_attributes'] = Attribute::collection($product->super_attributes);
+        }
+
+        return $data;
+    }
+
+    public function calculatePrice($product)
+    {
+        switch ($product->type) {
+            case 'sample':
+            case 'virtual':
+                $price = $this->price;
+                break;
+
+            case 'configurable':
+            case 'downloadable':
+            case 'bundle':
+            case 'booking':
+                $price = $product->getTypeInstance()->getPriceHtml();
+                break;
+
+            default:
+                $price = $this->price;
+                break;
+        }
+
+        return $price;
+    }
+
+    public function haveSufficientQuantity($product)
+    {
+        switch ($product->type) {
+            case 'sample':
+                $stock = $product->haveSufficientQuantity(1);
+                break;
+
+            case 'grouped':
+            case 'configurable':
+            case 'downloadable':
+            case 'bundle':
+            case 'booking':
+                $stock = 1;
+                break;
+
+            default:
+                $stock = 1;
+                break;
+        }
+
+        return $stock;
     }
 }

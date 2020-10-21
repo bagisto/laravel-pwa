@@ -108,13 +108,25 @@ class CheckoutController extends Controller
             ];
         }
 
-        Cart::collectTotals();
+        $cart = Cart::getCart();
+
+        if ($cart->haveStockableItems()) {
+            $data = [
+                'rates'     => $rates,
+                'nextStep'  => "shipping",
+            ];
+        } else {
+            $data = [
+                'nextStep'  => "payment",
+                'methods'   => Payment::getPaymentMethods(),
+            ];
+        }
+
+        $data['cart'] = new CartResource(Cart::getCart());
+
 
         return response()->json([
-            'data' => [
-                'rates' => $rates,
-                'cart' => new CartResource(Cart::getCart())
-            ]
+            'data' => $data
         ]);
     }
 
@@ -201,7 +213,7 @@ class CheckoutController extends Controller
     {
         $cart = Cart::getCart();
 
-        if (! $cart->shipping_address) {
+        if ($cart->haveStockableItems() && ! $cart->shipping_address) {
             throw new \Exception(trans('Please check shipping address.'));
         }
 
@@ -209,7 +221,7 @@ class CheckoutController extends Controller
             throw new \Exception(trans('Please check billing address.'));
         }
 
-        if (! $cart->selected_shipping_rate) {
+        if ($cart->haveStockableItems() && ! $cart->selected_shipping_rate) {
             throw new \Exception(trans('Please specify shipping method.'));
         }
 
