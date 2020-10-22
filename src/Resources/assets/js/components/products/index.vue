@@ -168,8 +168,16 @@
                         }
 
                         if (this.product.type == "bundle") {
+                            delete(this.formData['super_attribute']);
+                            delete(this.formData['selected_configurable_option']);
+
                             this.formData.bundle_options = {};
                             this.formData.bundle_option_qty = {};
+
+                            this.product.bundle_options.options.forEach(option => {
+                                this.formData.bundle_options[option.id] = [0];
+                                this.formData.bundle_option_qty[option.id] = 1;
+                            })
                         }
 
                         EventBus.$emit('hide-ajax-loader');

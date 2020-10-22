@@ -500,3 +500,74 @@ ul {
         margin-top: 5px;
     }
 }
+
+.bundle-options-wrapper {
+    .bundle-option-item {
+        .option_label {
+            padding: 10px;
+            position: static;
+        }
+
+        .radio {
+            padding: 10px;
+
+            .radio-view {
+                top: 0;
+                left: 0;
+                position: relative;
+    
+                ~ div {
+                    display: inline-block;
+                }
+            }
+        }
+
+        .quantity-container {
+            z-index: 10;
+        }
+    }
+
+    .bundle-summary,
+    .bundle-option-item {
+        .quantity-container {
+            top: 0px;
+            position: relative;
+            padding: 0px 15px 15px 15px;
+
+            .quantity {
+                position: static;
+
+                .btn {
+                    padding: 4px 10px;
+                }
+
+                .quantity-label {
+                    top: 50px;
+                }
+            }
+        }
+    }
+
+    .bundle-summary {
+        left: 0;
+        padding-top: 45px;
+        padding-left: 15px;
+        position: relative;
+
+        .quantity-container {
+            padding-left: 0;
+            padding-bottom: 50px;
+
+            ~ .control-group {
+                label {
+                    position: static;
+                }
+            }
+        }
+
+        .bundle-price {
+            color: #ff6472;
+            font-size: 20px;
+        }
+    }
+}
