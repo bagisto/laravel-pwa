@@ -84,6 +84,40 @@ class Product extends JsonResource
                 $data['bundle_options'] = app('Webkul\Product\Helpers\BundleOption')->getBundleConfig($product);
             break;
 
+            case 'booking':
+                $bookingProduct = app('\Webkul\BookingProduct\Repositories\BookingProductRepository')->findOneByField('product_id', $product->product_id);
+
+                $data['booking_product'] = $bookingProduct;
+                $data['booking_product']['slot_index_route'] = route('booking_product.slots.index', $data['booking_product']->id);
+
+                if ($data['booking_product']->type == "appointment") {
+                    $bookingSlotHelper = app('\Webkul\BookingProduct\Helpers\AppointmentSlot');
+
+                    $data['booking_product']['today_slots_html'] = $bookingSlotHelper->getTodaySlotsHtml($bookingProduct);
+                    $data['booking_product']['week_slot_durations'] = $bookingSlotHelper->getWeekSlotDurations($bookingProduct);
+                    $data['booking_product']['appointment_slot'] = $bookingProduct->appointment_slot;
+                }
+
+                if ($data['booking_product']->type == "event") {
+                    $bookingSlotHelper = app('\Webkul\BookingProduct\Helpers\EventTicket');
+
+                    $data['booking_product']['tickets'] = $bookingSlotHelper->getTickets($bookingProduct);
+                    $data['booking_product']['event_date'] = $bookingSlotHelper->getEventDate($bookingProduct);
+                }
+
+                if ($data['booking_product']->type == "rental") {
+                    $data['booking_product']['renting_type'] = $bookingProduct->rental_slot->renting_type;
+                }
+
+                if ($data['booking_product']->type == "table") {
+                    $bookingSlotHelper = app('\Webkul\BookingProduct\Helpers\TableSlot');
+
+                    $data['booking_product']['today_slots_html'] = $bookingSlotHelper->getTodaySlotsHtml($bookingProduct);
+                    $data['booking_product']['week_slot_durations'] = $bookingSlotHelper->getWeekSlotDurations($bookingProduct);
+                    $data['booking_product']['table_slot'] = $bookingProduct->table_slot;
+                }
+            break;
+
             default:
             break;
         }
@@ -142,6 +176,7 @@ class Product extends JsonResource
 
             case 'configurable':
             case 'downloadable':
+            case 'grouped':
             case 'bundle':
             case 'booking':
                 $price = $product->getTypeInstance()->getPriceHtml();

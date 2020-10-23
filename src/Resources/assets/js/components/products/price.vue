@@ -3,6 +3,7 @@
         <span v-if="
             product.type == 'grouped'
             || product.type == 'bundle'
+            || product.type == 'booking'
             || product.type == 'configurable'
             || product.type == 'downloadable'
         ">

@@ -197,5 +197,29 @@
         "customize_options": "Customize Options",
         "your_customization": "Your Customization",
         "total_amount": "Total Amount"
+    },
+    "booking": {
+        "to"                        : "to",
+        "from"                      : "from",
+        "slot"                      : "slot",
+        "date"                      : "date",
+        "closed"                    : "closed",
+        "event_on"                  : "Event on",
+        "location"                  : "Location",
+        "daily_basis"               : "daily_basis",
+        "view_on_map"               : "View on Map",
+        "select_date"               : "select_date",
+        "select_slot"               : "select_slot",
+        "rent_an_item"              : "rent_an_item",
+        "slot_duration"             : "Slot Duration",
+        "hourly_basis"              : "hourly_basis",
+        "select_rent_time"          : "select_rent_time",
+        "select_time_slot"          : "select_time_slot",
+        "choose_rent_option"        : "choose_rent_option",
+        "book_your_ticket"          : "Book your ticket",
+        "slots_for_all_days"        : "Show for all days",
+        "slot_duration_in_minutes"  : "{minutes} Minutes",
+        "today_availability"        : "Today availability",
+        "book_an_appointment"       : "Book an appointment"
     }
 }

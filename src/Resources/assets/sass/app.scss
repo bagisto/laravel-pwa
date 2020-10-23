@@ -571,3 +571,23 @@ ul {
         }
     }
 }
+
+.booking-product {
+    .quantity-container {
+        top: 0px;
+        position: relative;
+        padding: 0px 15px 15px 15px;
+
+        .quantity {
+            position: static;
+
+            .btn {
+                padding: 4px 10px !important;
+            }
+
+            .quantity-label {
+                top: 50px;
+            }
+        }
+    }
+}

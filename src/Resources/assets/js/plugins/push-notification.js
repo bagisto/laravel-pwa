@@ -10,7 +10,7 @@ if (! isSafari()) {
         if (permission === 'granted') {
             console.log('Notification permission granted.');
             // TODO(developer): Retrieve an Instance ID token for use with FCM.
-            retriveCurrentToken();
+            retriveCurrentToken(messaging);
         } else {
             console.log('Unable to get permission to notify.');
         }
@@ -31,7 +31,7 @@ function isSafari() {
     return false;
 }
 
-function retriveCurrentToken() {
+function retriveCurrentToken(messaging) {
     // Get Instance ID token. Initially this makes a network call, once retrieved
     // subsequent calls to getToken will return from cache.
     messaging.getToken().then((currentToken) => {

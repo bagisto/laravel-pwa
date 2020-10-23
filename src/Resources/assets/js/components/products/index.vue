@@ -45,6 +45,12 @@
                     :form-data="formData">
                 </downloadable-options>
 
+                <booking-options
+                    v-if="product.type == 'booking'"
+                    :product="product"
+                    :form-data="formData">
+                </booking-options>
+
                 <div class="quantity-container" v-if="product.show_quantity_changer">
                     <label>{{ $t('Quantity') }}</label>
 
@@ -89,35 +95,37 @@
 </template>
 
 <script>
-    import Accordian                from '../shared/accordian';
-    import GalleryImages            from './gallery-images';
+    import Stock                    from './stock';
     import Price                    from './price';
     import Review                   from './review';
-    import Stock                    from './stock';
-    import SocialLinks              from './social-links';
-    import ConfigurableOptions      from './configurable-options';
-    import DownloadableOptions      from './downloadable-options';
-    import BundleOptions            from './bundle-options';
     import Reviews                  from './reviews';
     import Attributes               from './attributes';
+    import SocialLinks              from './social-links';
+    import GalleryImages            from './gallery-images';
+    import BundleOptions            from './bundle-options';
+    import BookingOptions           from './booking-options';
+    import Accordian                from '../shared/accordian';
+    import ConfigurableOptions      from './configurable-options';
+    import DownloadableOptions      from './downloadable-options';
     import GroupedProductsOptions   from './grouped-products-options';
 
     export default {
         name: 'product',
 
         components: {
-            Accordian,
-            GalleryImages,
             Price,
-            Review,
             Stock,
-            SocialLinks,
-            ConfigurableOptions,
-            GroupedProductsOptions,
-            DownloadableOptions,
-            BundleOptions,
+            Review,
             Reviews,
-            Attributes
+            Accordian,
+            Attributes,
+            SocialLinks,
+            BundleOptions,
+            GalleryImages,
+            BookingOptions,
+            DownloadableOptions,
+            ConfigurableOptions,
+            GroupedProductsOptions
         },
 
         data () {
@@ -178,6 +186,27 @@
                                 this.formData.bundle_options[option.id] = [0];
                                 this.formData.bundle_option_qty[option.id] = 1;
                             })
+                        }
+
+                        if (this.product.type == "booking") {
+                            delete(this.formData['super_attribute']);
+                            delete(this.formData['selected_configurable_option']);
+
+                            if (this.product.booking_product.type == "event") {
+                                this.formData.booking = {
+                                    qty: {}
+                                };
+
+                                this.product.booking_product.tickets.forEach(ticket => {
+                                    this.formData.booking.qty[ticket.id] = 0;
+                                });
+
+                            } else {
+                                this.formData.booking = {
+                                    'slot': '',
+                                    'date': '',
+                                };
+                            }
                         }
 
                         EventBus.$emit('hide-ajax-loader');

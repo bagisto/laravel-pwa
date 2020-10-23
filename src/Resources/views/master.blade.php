@@ -29,7 +29,6 @@
     </head>
 
     <body @if (app()->getLocale() == 'ar') class="rtl" dir="rtl" @endif style="scroll-behavior: smooth;">
-
         {!! view_render_event('bagisto.pwa.layout.body.before') !!}
 
         <div id="app">
@@ -51,6 +50,11 @@
         </script>
 
         <script type="text/javascript" src="{{ asset('vendor/webkul/pwa/assets/js/app.js') }}"></script>
+
+        <script
+            type="text/javascript"
+            src="{{ asset('vendor/webkul/ui/assets/js/ui.js') }}">
+        </script>
 
         @stack('scripts')
 

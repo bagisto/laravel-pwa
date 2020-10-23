@@ -20,6 +20,7 @@
   "dependencies": {
     "ajv": "^6.9.1",
     "firebase": "^6.3.0",
+    "flatpickr": "^4.6.6",
     "imagemin": "^5.0.0",
     "vee-validate": "2.0.0-rc.26",
     "vue-carousel": "^0.18.0",
