@@ -2,7 +2,6 @@
     <div class="book-slots">
         <h3>{{ $t('booking.rent_an_item') }}</h3>
 
-fdsdfs
         <div v-if="renting_type == 'daily_hourly'">
             
         </div>
@@ -13,25 +12,7 @@ fdsdfs
         </div>
 
         <div v-else>
-            <label>{{ $t('booking.select_date') }}</label>
-
-            <div class="control-group-container">
-                <div class="form-group date" :class="[errors.has('booking[date_from]') ? 'has-error' : '']">
-                    <date @onChange="dateSelected($event)">
-                        <input type="text" v-validate="'required'" name="booking[date_from]" v-model="date_from" class="form-style" :data-vv-as="$t('booking.from')" :placeholder="{{ $t('booking.from') }}" ref="date_from" data-min-date="today" />
-                    </date>
-
-                    <span class="control-error" v-if="errors.has('booking[date_from]')">{{ errors.first('booking[date_from]') }}</span>
-                </div>
-
-                <div class="form-group date" :class="[errors.has('booking[date_to]') ? 'has-error' : '']">
-                    <date @onChange="dateSelected($event)">
-                        <input type="text" v-validate="'required'" name="booking[date_to]" v-model="date_to" class="form-style" :data-vv-as="$t('booking.to')" placeholder="{{ $t('booking.to') }}" ref="date_to" data-min-date="today"/>
-                    </date>
-
-                    <span class="control-error" v-if="errors.has('booking[date_to]')">{{ errors.first('booking[date_to]') }}</span>
-                </div>
-            </div>
+            
         </div>
     </div>
 </template>
