@@ -3,16 +3,104 @@
         <h3>{{ $t('booking.rent_an_item') }}</h3>
 
         <div v-if="renting_type == 'daily_hourly'">
-            
+            <div class="form-group">
+                <label>{{ $t('booking.choose_rent_option') }}</label>
+
+                <span class="radio">
+                    <input type="radio" id="daily-renting-type" name="booking[renting_type]" value="daily" v-model="sub_renting_type">
+                    <label class="radio-view" for="daily-renting-type"></label>
+                    {{ $t('booking.daily_basis') }}
+                </span>
+
+                <span class="radio">
+                    <input type="radio" id="hourly-renting-type" name="booking[renting_type]" value="hourly" v-model="sub_renting_type">
+                    <label class="radio-view" for="hourly-renting-type"></label>
+                    {{ $t('booking.hourly_basis') }}
+                </span>
+                
+            </div>
         </div>
         
         <div v-if="renting_type != 'daily' && sub_renting_type == 'hourly'">
-            
+            <div>
+                <label>{{ $t('booking.select_slot') }}</label>
+
+                <div class="control-group-container">
+                    <div class="form-group date" :class="[errors.has('booking[date]') ? 'has-error' : '']">
+                        <date @onChange="dateSelected($event)">
+                            <input type="text" v-validate="'required'" name="booking[date]" class="form-style" :data-vv-as="$t('booking.date')" :placeholder="$t('booking.select_date')" data-min-date="today"/>
+                        </date>
+
+                        <span class="control-error" v-if="errors.has('booking[date]')">{{ errors.first('booking[date]') }}</span>
+                    </div>
+
+                    <div class="form-group slots" :class="[errors.has('booking[slot]') ? 'has-error' : '']">
+                        <select v-validate="'required'" name="booking[slot]" v-model="selected_slot" class="form-style" :data-vv-as="$t('booking.slot')">
+                            <option value="">{{ $t('booking.select_time_slot') }}</option>
+                            <option v-for="(slot, index) in slots" :value="index">@{{ slot.time }}</option>
+                        </select>
+
+                        <span class="control-error" v-if="errors.has('booking[slot]')">{{ errors.first('booking[slot]') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="slots[selected_slot] && slots[selected_slot]['slots'].length">
+                <label>{{ $t('booking.select_rent_time') }}</label>
+
+                <div class="control-group-container">
+                    <div class="form-group slots" :class="[errors.has('booking[slot][from]') ? 'has-error' : '']">
+                        <select v-validate="'required'" name="booking[slot][from]" v-model="slot_from" class="form-style" :data-vv-as="$t('booking.slot')">
+                            <option value="">{{ $t('booking.select_time_slot') }}</option>
+
+                            <option v-for="slot in slots[selected_slot]['slots']" :value="slot.from_timestamp">
+                                {{ slot.from }}
+                            </option>
+                        </select>
+
+                        <span class="control-error" v-if="errors.has('booking[slot][from]')">{{ errors.first('booking[slot][from]') }}</span>
+                    </div>
+                    
+                    <div class="form-group slots" :class="[errors.has('booking[slot][to]') ? 'has-error' : '']">
+                        <select v-validate="'required'" name="booking[slot][to]" class="form-style" :data-vv-as="$t('booking.slot')">
+                            <option value="">{{ $t('booking.select_time_slot') }}</option>
+
+                            <option v-for="slot in slots[selected_slot]['slots']" :value="slot.to_timestamp" v-if="slot_from < slot.to_timestamp">
+                                {{ slot.to }}
+                            </option>
+                        </select>
+
+                        <span class="control-error" v-if="errors.has('booking[slot][to]')">{{ errors.first('booking[slot][to]') }}</span>
+                    </div>
+                </div>
+            </div>
             
         </div>
 
         <div v-else>
-            
+            <label>{{ $t('booking.select_date') }}</label>
+
+            <div class="control-group control-group-container">
+                <div class="form-group date" :class="[errors.has('booking[date_from]') ? 'has-error' : '']">
+                    <date @onChange="dateSelected($event)">
+                        <input type="text" v-validate="'required|before_or_equal:date_to'" name="booking[date_from]" v-model="formData.booking.date_from" class="control" :data-vv-as="$t('booking.from')" ref="date_from" data-min-date="today"/>
+                    </date>
+
+                    <span class="control-error calendar-error" v-if="errors.has('booking[date_from]')">
+                        {{ errors.first('booking[date_from]') }}
+                    </span>
+                </div>
+
+                <div class="form-group date" :class="[errors.has('booking[date_to]') ? 'has-error' : '']">
+                    <date @onChange="dateSelected($event)">
+                        <input type="text" v-validate="'required|after_or_equal:date_from'" name="booking[date_to]" v-model="formData.booking.date_to" class="control" :data-vv-as="$t('booking.to')" ref="date_to" data-min-date="today"/>
+                    </date>
+
+                    <span class="control-error calendar-error" v-if="errors.has('booking[date_to]')">
+                        {{ errors.first('booking[date_to]') }}
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -92,15 +180,13 @@
 
             methods: {
                 dateSelected: function(date) {
-                    var this_this = this;
-
                     this.$http.get(this.bookingProduct.slot_index_route, {params: {date: date}})
-                        .then (function(response) {
-                            this_this.selected_slot = '';
+                        .then (response => {
+                            this.selected_slot = '';
                             
-                            this_this.slot_from = '';
+                            this.slot_from = '';
 
-                            this_this.slots = response.data.data;
+                            this.slots = response.data.data;
                         })
                         .catch (function (error) {})
                 }

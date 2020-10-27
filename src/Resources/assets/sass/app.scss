@@ -369,7 +369,6 @@ ul {
     .control-error {
         color: #ff5656;
         margin-top: 5px;
-        display: none;
     }
 
     &.has-error {
@@ -588,6 +587,35 @@ ul {
             .quantity-label {
                 top: 50px;
             }
+        }
+    }
+
+    .calendar-error {
+        top: -5px;
+        left: -20px;
+        position: relative;
+    }
+}
+
+.booking-info-row {
+    .icon {
+        &.bp-slot-icon {
+            background-image: url('/themes/default/assets/images/slot.svg');
+            width: 32px;
+            height: 32px;
+        }
+    
+        ~span {
+            top: -10px;
+            position: relative;
+        }
+    }
+
+    .toggle {
+        padding-bottom: 10px;
+
+        ~.days-availability {
+            padding-bottom: 10px;
         }
     }
 }

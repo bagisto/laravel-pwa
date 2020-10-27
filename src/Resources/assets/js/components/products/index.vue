@@ -201,6 +201,17 @@
                                     this.formData.booking.qty[ticket.id] = 0;
                                 });
 
+                            } else if(this.product.booking_product.type == "rental") {
+                                this.formData.booking = {
+                                    'date_to': '',
+                                    'date_from': '',
+                                };
+                            } else if(this.product.booking_product.type == "table") {
+                                this.formData.booking = {
+                                    "note": "",
+                                    "date": "",
+                                    "slot": "",
+                                };
                             } else {
                                 this.formData.booking = {
                                     'slot': '',
@@ -223,21 +234,20 @@
             },
 
             addToCart () {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
-                    .then(function(response) {
-                        this_this.$toasted.show(response.data.message, { type: 'success' })
+                    .then(response => {
+                        this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
                         EventBus.$emit('checkout.cart.changed', response.data.data);
 
-                        // this_this.$router.push({name: 'cart'})
+                        // this.$router.push({name: 'cart'})
                     })
-                    .catch(function (error) {
+                    .catch(error => {
+                        this.$toasted.show(this.$t("something_went_wrong"), { type: 'error' })
                     })
             },
 

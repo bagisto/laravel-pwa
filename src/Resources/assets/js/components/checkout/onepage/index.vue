@@ -491,15 +491,22 @@
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/checkout/cart')
-                    .then(function(response) {
+                    .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.cart = response.data.data;
+                        this.cart = response.data.data;
 
-                        EventBus.$emit('checkout.cart.changed', this_this.cart);
+                        if (
+                            response.data.redirectToCustomerLogin
+                            && this.$route.name == "onepage"
+                        ) {
+                            this.$router.push({ name: 'login-register' });
+                        }
 
-                        if (! this_this.cart)
-                            this_this.$router.go(-2);
+                        EventBus.$emit('checkout.cart.changed', this.cart);
+
+                        if (! this.cart)
+                            this.$router.go(-2);
                     })
                     .catch(function (error) {});
             },

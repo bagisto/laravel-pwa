@@ -74,8 +74,17 @@ class CartController extends Controller
 
         $cart = Cart::getCart();
 
+        if (
+            ! auth()->guard('customer')->check()
+            && method_exists($cart, 'hasDownloadableItems')
+            && $cart->hasDownloadableItems()
+        ) {
+            $redirectToCustomerLogin = true;
+        }
+
         return response()->json([
-            'data' => $cart ? new CartResource($cart) : null
+            'data'                      => $cart ? new CartResource($cart) : null,
+            'redirectToCustomerLogin'   => $redirectToCustomerLogin ?? false,
         ]);
     }
 
@@ -118,7 +127,7 @@ class CartController extends Controller
      */
     public function update()
     {
-        foreach (request()->get('qty') as$qty) {
+        foreach (request()->get('qty') as $qty) {
             if ($qty <= 0) {
                 return response()->json([
                         'message' => trans('shop::app.checkout.cart.quantity.illegal')
@@ -131,7 +140,7 @@ class CartController extends Controller
 
             Event::dispatch('checkout.cart.item.update.before', $itemId);
 
-            Cart::updateItem($item->product_id, ['quantity' => $qty], $itemId);
+            Cart::updateItems(request()->all());
 
             Event::dispatch('checkout.cart.item.update.after', $item);
         }

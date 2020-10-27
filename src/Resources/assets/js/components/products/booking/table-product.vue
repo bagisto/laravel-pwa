@@ -18,7 +18,7 @@
             <span class="value" v-html="bookingProduct.today_slots_html"></span>
 
             <div class="toggle" @click="showDaysAvailability = ! showDaysAvailability">
-                {{ $t('booking.slots_for-all-days') }}
+                {{ $t('booking.slots_for_all_days') }}
 
                 <i class="icon" :class="[! showDaysAvailability ? 'arrow-down-icon' : 'arrow-up-icon']"></i>
             </div>
@@ -52,7 +52,7 @@
         <slots
             :form-data="formData"
             :booking-product="bookingProduct"
-            :title="$t('booking.book_a-table')"
+            :title="$t('booking.book_a_table')"
         ></slots>
 
         <div class="form-group">
@@ -66,7 +66,7 @@
     import Slots from './slots';
 
     export default {
-        name: 'table',
+        name: 'table-product',
 
         props: ['bookingProduct', 'formData'],
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="booking-information">
+    <div class="booking-product booking-information">
 
         <div class="booking-info-row" v-if="bookingProduct.location != ''">
             <span class="icon bp-location-icon"></span>
@@ -32,23 +32,23 @@
             v-if="bookingProduct.type == 'rental'"
         ></rental>
 
-        <table
+        <table-product
             :form-data="formData"
             :booking-product="bookingProduct"
             v-if="bookingProduct.type == 'table'"
-        ></table>
+        ></table-product>
     </div>
 </template>
 
 <script>
     require('flatpickr/dist/flatpickr.css');
 
-    import Table        from './booking/table';
     import Event        from './booking/event';
     import Rental       from './booking/rental';
     // import Reviews      from './booking/reviews';
     import Appointment  from './booking/appointment';
     import DefaultView  from './booking/default-view';
+    import TableProduct from './booking/table-product';
 
     export default {
         name: 'booking-options',
@@ -57,10 +57,10 @@
 
         components: {
             Event,
-            Table,
             Rental,
             DefaultView,
-            Appointment
+            Appointment,
+            TableProduct
         },
 
         inject: ['$validator'],

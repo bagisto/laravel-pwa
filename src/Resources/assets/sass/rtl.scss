@@ -25,7 +25,7 @@
 
                 .arrow-right-icon {
                     left: 0;
-                    right: unset !important;
+                    right: unset;
                 }
             }
         }
@@ -79,7 +79,46 @@
         &.sidebar {
             &.active {
                 right: 0px;
+                left: unset !important;
             }
+        }
+    }
+
+    .content {
+        .checkout-container {
+            .panel {
+                .panel-content {
+                    .address-list {
+                        .address-item {
+                            .address_details {
+                                padding-left: 0;
+                                padding-right: 36px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .cart-container {
+            .total-summary {
+                table {
+                    tr {
+                        td {
+                            &:last-child {
+                                text-align: left !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .control-group {
+        label {
+            right: 16px;
+            left: unset;
         }
     }
 }

@@ -55,8 +55,7 @@ class CheckoutController extends Controller
         CartRepository $cartRepository,
         CartItemRepository $cartItemRepository,
         OrderRepository $orderRepository
-    )
-    {
+    ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
@@ -178,8 +177,9 @@ class CheckoutController extends Controller
     */
     public function saveOrder()
     {
-        if (Cart::hasError())
-            abort(400);
+        if (Cart::hasError()) {
+            return response()->json(['redirect_url' => route('shop.checkout.cart.index')], 403);
+        }
 
         Cart::collectTotals();
 
@@ -189,19 +189,23 @@ class CheckoutController extends Controller
 
         if ($redirectUrl = Payment::getRedirectUrl($cart)) {
             return response()->json([
-                    'success' => true,
-                    'redirect_url' => $redirectUrl
-                ]);
+                'success'      => true,
+                'redirect_url' => $redirectUrl,
+            ]);
         }
 
         $order = $this->orderRepository->create(Cart::prepareDataForOrder());
 
         Cart::deActivateCart();
 
+        session()->flash('order', $order);
+
         return response()->json([
-                'success' => true,
-                'order' => new OrderResource($order),
-            ]);
+            'success'   => true,
+            'order'     => [
+                "id" => $order->id
+            ],
+        ]);
     }
 
     /**
