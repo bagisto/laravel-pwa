@@ -52,7 +52,7 @@
 
                 <div class="review-date">
                     <label>{{ $t('Submitted on') }}</label>
-                    <span>{{ new Date(review.created_at.date) | moment("MMMM D, YYYY") }}</span>
+                    <span>{{ new Date(review.created_at) | moment("MMMM D, YYYY") }}</span>
                 </div>
             </div>
         </div>

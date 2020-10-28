@@ -190,8 +190,9 @@
     "Search for products": "Search for products",
     "starting_at": "Starting At",
     "downloadable": {
-        "sample": "Sample",
-        "links" : "Links"
+        "sample"                : "Sample",
+        "links"                 : "Links",
+        "downloadable_products" : "Downloadable products"
     },
     "bundle": {
         "customize_options": "Customize Options",

@@ -11,7 +11,7 @@
                     <label>{{ $t('Placed On') }}</label>
 
                     <div class="date-status">
-                        <span class="date">{{ new Date(order.created_at.date) | moment("D MMMM YYYY") }}</span>
+                        <span class="date">{{ new Date(order.created_at) | moment("D MMMM YYYY") }}</span>
                         <span :class="['status', order.status]">{{ order.status_label }}</span>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                     <div class="shipping-address">
                         <h3>{{ $t('Shipping Address') }}</h3>
 
-                        <div class="address-deatils">
+                        <div class="address-deatils" v-if="order.shipping_address">
                             {{ order.shipping_address.address1.join(' ') }}</br>
                             {{ order.shipping_address.city }}</br>
                             {{ order.shipping_address.state }}</br>
@@ -138,7 +138,7 @@
                     <div class="billing-address">
                         <h3>{{ $t('Billing Address') }}</h3>
 
-                        <div class="address-deatils">
+                        <div class="address-deatils" v-if="order.billing_address">
                             {{ order.billing_address.address1.join(' ') }}</br>
                             {{ order.billing_address.city }}</br>
                             {{ order.billing_address.state }}</br>
@@ -226,7 +226,6 @@
             .sale-section {
                 padding: 16px;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-                margin-bottom: 12px;
                 background: #ffffff;
 
                 .sale-section-title {

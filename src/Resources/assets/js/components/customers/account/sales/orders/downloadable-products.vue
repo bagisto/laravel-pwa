@@ -1,63 +1,31 @@
 <template>
     <div class="order-card">
         <div class="order-details">
-            <div class="order-id">#{{ order.id }}</div>
+            <div class="order-id">#{{ downloadableProduct.id }}</div>
             <div class="order-status">
-                <label :class="order.status">{{ order.status_label }}</label>
+                <label :class="downloadableProduct.status">{{ downloadableProduct.status }}</label>
             </div>
-            <div class="order-date">{{ new Date(order.created_at) | moment("D MMMM YYYY") }}</div>
-            <div class="order-price">{{ order.formated_grand_total }}</div>
-
+            <div class="order-date">{{ new Date(downloadableProduct.created_at) | moment("D MMMM YYYY") }}</div>
+            <div class="order-price">{{ downloadableProduct.title }}</div>
+            
             <i class="icon sharp-arrow-right-icon"></i>
         </div>
 
         <div class="order-actions">
-            <router-link class="view-link" :to="'/customer/account/orders/' + order.id">
+            <router-link class="view-link" :to="'/customer/account/orders/' + downloadableProduct.id">
                 <i class="icon sharp-arrow-line-icon"></i>
 
                 <span>{{ $t('Detail') }}</span>
             </router-link>
-
-            <div class="review-link" @click="bottomSheetOpen = true">
-                <i class="icon sharp-post-review-icon"></i>
-
-                <span>{{ $t('Review') }}</span>
-            </div>
         </div>
-
-        <bottom-sheet :show="bottomSheetOpen" :class-name="'filter-bottom-sheet'" @onBottomSheetClose="bottomSheetOpen = false;">
-            <div slot="header">
-                {{ $t('Choose a product to review') }}
-            </div>
-
-            <div slot="content">
-                <div class="product-list">
-
-                    <router-link class="product-item" v-for="orderItem in order.items" :key="order.uid" :to="'/reviews/' + orderItem.product.id + '/create'">
-                        <div class="product-image">
-                            <img alt="product-base-small-image" :src="orderItem.product.base_image.small_image_url"/>
-                        </div>
-
-                        <div class="product-name">
-                            {{ orderItem.product.name }}
-                        </div>
-                    </router-link>
-
-                </div>
-            </div>
-        </bottom-sheet>
     </div>
 </template>
 
 <script>
-    import BottomSheet from '../../../../shared/bottom-sheet';
-
     export default {
-        name: 'order-card',
+        name: 'downloadable-products',
 
-        components: { BottomSheet },
-
-        props: ['order'],
+        props: ['downloadableProduct'],
 
         data () {
 			return {

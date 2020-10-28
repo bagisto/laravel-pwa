@@ -42,8 +42,14 @@
 
             //Order routes
             Route::get('orders', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
-                'repository' => 'Webkul\Sales\Repositories\OrderRepository',
-                'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
+                'repository'    => 'Webkul\Sales\Repositories\OrderRepository',
+                'resource'      => 'Webkul\PWA\Http\Resources\Sales\Order',
+                'authorization_required' => true
+            ]);
+
+            Route::get('downloadable-products', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
+                'resource'      => 'Webkul\PWA\Http\Resources\Sales\DownloadableProduct',
+                'repository'    => 'Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository',
                 'authorization_required' => true
             ]);
 

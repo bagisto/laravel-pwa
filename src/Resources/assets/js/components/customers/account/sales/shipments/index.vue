@@ -11,7 +11,7 @@
                     <label>{{ $t('Placed On') }}</label>
 
                     <div class="date-status">
-                        <span class="date">{{ new Date(order.created_at.date) | moment("D MMMM YYYY") }}</span>
+                        <span class="date">{{ new Date(order.created_at) | moment("D MMMM YYYY") }}</span>
                         <span :class="['status', order.status]">{{ order.status_label }}</span>
                     </div>
                 </div>

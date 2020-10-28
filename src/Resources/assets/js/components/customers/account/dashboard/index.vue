@@ -32,6 +32,20 @@
                     <empty-order-list v-else></empty-order-list>
                 </tab>
 
+                <tab :name="$t('downloadable.downloadable_products')">
+                    <div v-if="orders.length">
+                        <div :class="['downloadable-products', haveMoreOrders ? 'have-more-orders' : '']">
+                            <downloadable-products
+                                :key='downloadable_product.id'
+                                :downloadable-product="downloadable_product"
+                                v-for="downloadable_product in downloadable_products"
+                            ></downloadable-products>
+                        </div>
+                    </div>
+
+                    <empty-order-list v-else></empty-order-list>
+                </tab>
+
                 <tab :name="$t('Address')">
                     <div class="address-list" v-if="addresses.length">
                         <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
@@ -59,24 +73,38 @@
 </template>
 
 <script>
-    import CustomHeader     from '../../../layouts/custom-header';
-    import Tabs             from '../../../shared/tabs';
-    import Tab              from '../../../shared/tab';
-    import OrderCard        from '../sales/orders/card';
-    import AddressCard      from '../addresses/card';
-    import ReviewCard       from '../reviews/card';
-    import EmptyOrderList   from '../sales/orders/empty-order-list';
-    import EmptyAddressList from '../addresses/empty-address-list';
-    import EmptyReviewList  from '../reviews/empty-review-list';
+    import ReviewCard               from '../reviews/card';
+    import AddressCard              from '../addresses/card';
+    import Tab                      from '../../../shared/tab';
+    import Tabs                     from '../../../shared/tabs';
+    import OrderCard                from '../sales/orders/card';
+    import EmptyReviewList          from '../reviews/empty-review-list';
+    import CustomHeader             from '../../../layouts/custom-header';
+    import EmptyOrderList           from '../sales/orders/empty-order-list';
+    import EmptyAddressList         from '../addresses/empty-address-list';
+    import DownloadableProducts     from '../sales/orders/downloadable-products';
 
     export default {
         name: 'dashboard',
 
-        components: { CustomHeader, Tabs, Tab, OrderCard, AddressCard, ReviewCard, EmptyOrderList, EmptyAddressList, EmptyReviewList },
+        components: {
+            CustomHeader,
+            Tabs,
+            Tab,
+            OrderCard,
+            AddressCard,
+            ReviewCard,
+            EmptyOrderList,
+            EmptyAddressList,
+            EmptyReviewList,
+            DownloadableProducts
+        },
 
         data () {
             return {
                 orders: [],
+
+                downloadable_products: [],
                 
                 haveMoreOrders: false,
 
@@ -91,25 +119,25 @@
         props: ['customer'],
 
         mounted () {
-            this.getOrders()
+            this.getOrders();
 
-            this.getAddresses()
+            this.getDownloadableProducts();
 
-            this.getReviews()
+            this.getAddresses();
+
+            this.getReviews();
         },
 
         methods: {
             getOrders () {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/orders', { params: { customer_id: this.customer.id } })
-                    .then(function(response) {
-                        this_this.orders = response.data.data;
+                    .then(response => {
+                        this.orders = response.data.data;
 
                         if (response.data.meta.current_page < response.data.meta.last_page) {
-                            this_this.haveMoreOrders = true;
+                            this.haveMoreOrders = true;
                         }
 
                         EventBus.$emit('hide-ajax-loader');
@@ -159,6 +187,22 @@
                 let index = this.reviews.indexOf(review)
 
                 this.reviews.splice(index, 1);
+            },
+
+            getDownloadableProducts() {
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/downloadable-products', { params: { customer_id: this.customer.id } })
+                    .then(response => {
+                        this.downloadable_products = response.data.data;
+
+                        if (response.data.meta.current_page < response.data.meta.last_page) {
+                            this.haveMoreOrders = true;
+                        }
+
+                        EventBus.$emit('hide-ajax-loader');
+                    })
+                    .catch(function (error) {});
             }
         }
     }

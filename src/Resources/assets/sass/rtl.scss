@@ -121,4 +121,14 @@
             left: unset;
         }
     }
+
+    .icon {
+        &.arrow-right-icon {
+            background-image: url(../images/arrow_left_icon.png);
+        }
+
+        &.sharp-arrow-right-icon {
+            background-image: url(../images/sharp-arrow-left-icon.svg);
+        }
+    }
 }

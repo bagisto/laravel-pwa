@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="date">
-                            {{ new Date(review.created_at.date) | moment("D MMMM YYYY") }}
+                            {{ new Date(review.created_at) | moment("D MMMM YYYY") }}
                         </div>
                     </div>
                 </div>
