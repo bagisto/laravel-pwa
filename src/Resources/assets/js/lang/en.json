@@ -192,6 +192,7 @@
     "downloadable": {
         "sample"                : "Sample",
         "links"                 : "Links",
+        "remaining_downloads"   : "Remaining Downloads",
         "downloadable_products" : "Downloadable products"
     },
     "bundle": {

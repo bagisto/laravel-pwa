@@ -1,22 +1,22 @@
 <template>
     <div class="order-card">
         <div class="order-details">
-            <div class="order-id">#{{ downloadableProduct.id }}</div>
+            <div class="order-id">#{{ downloadableProduct.order_id }}</div>
             <div class="order-status">
                 <label :class="downloadableProduct.status">{{ downloadableProduct.status }}</label>
             </div>
             <div class="order-date">{{ new Date(downloadableProduct.created_at) | moment("D MMMM YYYY") }}</div>
-            <div class="order-price">{{ downloadableProduct.title }}</div>
+            <div class="order-title" v-html="downloadableProduct.title">
+            </div>
+
+            <div>
+                <label>
+                    {{ $t('downloadable.remaining_downloads') }}:
+                    {{ downloadableProduct.remaining_downloads }}
+                </label>
+            </div>
             
             <i class="icon sharp-arrow-right-icon"></i>
-        </div>
-
-        <div class="order-actions">
-            <router-link class="view-link" :to="'/customer/account/orders/' + downloadableProduct.id">
-                <i class="icon sharp-arrow-line-icon"></i>
-
-                <span>{{ $t('Detail') }}</span>
-            </router-link>
         </div>
     </div>
 </template>
@@ -76,7 +76,8 @@
                         background: #59A600;
                     }
 
-                    &.completed {
+                    &.completed,
+                    &.available {
                         background: #59A600;
                     }
 
@@ -101,11 +102,11 @@
                 margin-bottom: 8px;
             }
 
-            .order-price {
-                font-weight: 700;
-                font-size: 16px;
-                color: rgba(0, 0, 0, 0.87);
+            .order-title {
                 display: block;
+                font-size: 16px;
+                font-weight: 700;
+                color: rgba(0, 0, 0, 0.87);
             }
 
             .sharp-arrow-right-icon {
@@ -123,11 +124,10 @@
             font-size: 14px;
 
             .view-link {
-                float: left;
                 width: 50%;
-                display: inline-block;
                 padding: 16px;
                 cursor: pointer;
+                display: inline-block;
                 color: rgba(0, 0, 0, 0.87);
 
                 .icon {

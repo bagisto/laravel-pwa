@@ -20,10 +20,16 @@ class DownloadableProduct extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'            => $this->id,
-            'status'        => $this->status,
-            'created_at'    => $this->created_at,
-            'title'         => $this->product_name,
+            'id'                    => $this->id,
+            'status'                => $this->status,
+            'order_id'              => $this->order_id,
+            'created_at'            => $this->created_at,
+            'invoice_state'         => $this->invoice_state,
+            'remaining_downloads'   => $this->download_bought - $this->download_used,
+            'title'                 => ($this->status == 'pending'
+                                       || $this->status == 'expired')
+                                       ? $this->product_name
+                                       : $this->product_name . ' ' . '<a href="' . route('customer.downloadable_products.download', $this->id) . '" target="_blank" style="display:block;">' . $this->name . '</a>',
         ];
     }
 }
