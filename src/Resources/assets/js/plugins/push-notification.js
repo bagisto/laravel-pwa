@@ -18,6 +18,8 @@ if (! isSafari()) {
 
     messaging.onMessage(function(payload){
         console.log('onMessage:', payload);
+
+        appendMessage(payload);
     });
 }
 
@@ -123,4 +125,23 @@ function SubscribeToTopic(currentToken, topic) {
     .catch((error) => {
         console.log(error);
     });
+}
+
+function appendMessage(payload) {
+    var notificationTitle = payload.data.title;
+
+    var notificationOptions = {
+        body: payload.data.body,
+        icon: payload.data.icon,
+        data:{
+            click_action: payload.data.click_action
+        }
+    };
+
+    var notification = new Notification(notificationTitle, notificationOptions);
+
+    notification.onclick= function(event){
+        notification.close();
+          //handle click event onClick on Web Push Notification
+    };  
 }
