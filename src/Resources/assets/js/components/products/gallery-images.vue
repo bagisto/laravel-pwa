@@ -1,12 +1,26 @@
 <template>
     <div class="gallery-images" dir="ltr">
-        <carousel :per-page="1" pagination-active-color="#979797" pagination-color="#E8E8E8">
-            <slide v-if="product.images.length" v-for="image in product.images" :key='image.uid'>
-                <img alt="original-image-url" :src="image.original_image_url"/>
+        <carousel
+            :per-page="1"
+            pagination-color="#E8E8E8"
+            pagination-active-color="#979797"
+        >
+            <slide
+                :key='image.uid'
+                v-if="product.images.length"
+                v-for="image in product.images"
+            >
+                <img
+                    alt="original-image-url"
+                    :src="image.original_image_url"
+                />
             </slide>
 
             <slide v-if="! product.images.length">
-                <img alt="base-image-original" :src="product.base_image.original_image_url"/>
+                <img
+                    alt="base-image-original"
+                    :src="product.base_image.original_image_url"
+                />
             </slide>
         </carousel>
     </div>

@@ -66,22 +66,28 @@ const app = new Vue({
         errorResponseHandler (error) {
             EventBus.$emit('destroy-ajax-loader');
 
-            if (error.response.status == 401) {
-                if (this.$route.fullPath.includes('/account/')) {
-                    localStorage.removeItem('currentUser');
+            switch (error.response.status) {
+                case 401:
+                    if (this.$route.fullPath.includes('/account/')) {
+                        localStorage.removeItem('currentUser');
+    
+                        EventBus.$emit('user-logged-out');
+    
+                        this.$toasted.show(error.response.data.error, { type: 'error' })
+    
+                        this.$router.push({name: 'login-register'})
+                    } else {
+                        return Promise.reject(error);
+                    }
 
-                    EventBus.$emit('user-logged-out');
+                    break;
 
+                default:
                     this.$toasted.show(error.response.data.error, { type: 'error' })
 
-                    this.$router.push({name: 'login-register'})
-                } else {
                     return Promise.reject(error);
-                }
-            } else {
-                this.$toasted.show(error.response.data.error, { type: 'error' })
-
-                return Promise.reject(error);
+                    
+                    break;
             }
         }
     },

@@ -1,9 +1,9 @@
 <template>
     <div class="content" v-if="product">
 
-        <form action="POST" @submit.prevent="validateBeforeSubmit">
-            <gallery-images :product="product"></gallery-images>
+        <gallery-images :product="product"></gallery-images>
 
+        <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="product-details">
                 <div class="product-name">{{ product.name }}</div>
 
@@ -225,7 +225,7 @@
                     .catch(function (error) {});
             },
 
-            validateBeforeSubmit () {
+            validateBeforeSubmit (event) {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         this.addToCart()
@@ -233,7 +233,7 @@
                 });
             },
 
-            addToCart () {
+            addToCart (event) {
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
@@ -247,7 +247,6 @@
                         // this.$router.push({name: 'cart'})
                     })
                     .catch(error => {
-                        this.$toasted.show(this.$t("something_went_wrong"), { type: 'error' })
                     })
             },
 

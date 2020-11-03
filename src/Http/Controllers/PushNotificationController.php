@@ -141,19 +141,13 @@ class PushNotificationController extends Controller
         
         return redirect()->back();
     }
-    
-    /**
-     * Send Notification.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function pushtofirebase($id) // send push notification to multiple devices
     {
         $topic = core()->getConfigData('pwa.settings.push-notification.topic');
         $server_key = core()->getConfigData('pwa.settings.push-notification.api-key');
 
-        if ($topic && $server_key ) {
+        if ( $topic && $server_key ) {
             $pushnotification = $this->pushNotificationRepository->findOrFail($id);
             
             $title = $pushnotification->title;

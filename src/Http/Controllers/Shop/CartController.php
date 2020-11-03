@@ -99,10 +99,17 @@ class CartController extends Controller
     {
         Event::dispatch('checkout.cart.item.add.before', $id);
 
-        $result = Cart::addProduct($id, request()->except('_token'));
+        try {
+            $result = Cart::addProduct($id, request()->except('_token'));
+        } catch (\Exception $exception) {
+            return response()->json([
+                'error' => $exception->getMessage(),
+            ], 400);
+        }
 
         if (! $result) {
             $message = session()->get('warning') ?? session()->get('error');
+            
             return response()->json([
                     'error' => session()->get('warning')
                 ], 400);
