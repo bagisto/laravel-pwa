@@ -30,24 +30,19 @@ class PWAServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
 
-        $this->publishes([
-            __DIR__ . '/../../publishable/assets' => public_path('vendor/webkul/pwa/assets'),
-            __DIR__ . '/../../publishable/pwa' => public_path(),
-        ], 'public');
-
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'pwa');
 
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'pwa');
 
-        Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
-
         $this->publishes([
             __DIR__ . '/../Resources/views/paypal/standard-redirect.blade.php' => resource_path('views/vendor/paypal/standard-redirect.blade.php'),
+            __DIR__ . '/../Resources/views/shop/customers/account/orders/pdf.blade.php' => resource_path('views/vendor/shop/customers/account/orders/pdf.blade.php'),
         ]);
 
         $this->publishes([
-            __DIR__ . '/../Resources/views/shop/customers/account/orders/pdf.blade.php' => resource_path('views/vendor/shop/customers/account/orders/pdf.blade.php'),
-        ]);
+            __DIR__ . '/../../publishable/assets' => public_path('vendor/webkul/pwa/assets'),
+            __DIR__ . '/../../publishable/pwa' => public_path(),
+        ], 'public');
     }
 
     /**

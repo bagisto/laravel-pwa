@@ -24,5 +24,6 @@ class EventServiceProvider extends ServiceProvider
             $viewRenderEventManager->addTemplate('pwa::admin.layouts.style');
         });
 
+        Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
     }
 }

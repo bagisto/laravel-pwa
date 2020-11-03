@@ -12,6 +12,12 @@
 
         <link rel="stylesheet" href="{{ asset('vendor/webkul/pwa/assets/css/pwa.css') }}">
         <link rel="manifest" href="{{ asset('manifest.json') }}">
+        <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
+
+        <link rel="icon" sizes="48x48" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.small')) : asset('vendor/webkul/pwa/assets/images/48x48.png') }}" />
+        <link rel="icon" sizes="96x96" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.medium')) : asset('vendor/webkul/pwa/assets/images/96x96.png')  }}">
+        <link rel="icon" sizes="144x144" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.large')) : asset('vendor/webkul/pwa/assets/images/144x144.png')  }}">
+        <link rel="icon" sizes="196x196" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.extra_large')) : asset('vendor/webkul/pwa/assets/images/196x196.png')  }}">
 
         {{-- icons for IOS devices --}}
         <link rel="apple-touch-icon" sizes="48x48" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.small')) : asset('vendor/webkul/pwa/assets/images/48x48.png')  }}">
@@ -25,10 +31,10 @@
 
         {!! view_render_event('bagisto.pwa.layout.head') !!}
         <title>PWA</title>
-
     </head>
 
     <body @if (app()->getLocale() == 'ar') class="rtl" dir="rtl" @endif style="scroll-behavior: smooth;">
+
         {!! view_render_event('bagisto.pwa.layout.body.before') !!}
 
         <div id="app">
@@ -61,6 +67,14 @@
                     navigator.serviceWorker.register("{{ asset('service-worker.js') }}")
                         .then(function(registration) {
                             console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
+                            let deferredPrompt;
+
+                            window.addEventListener('beforeinstallprompt', (e) => {
+                                // Stash the event so it can be triggered later.
+                                deferredPrompt = e;
+                                // Update UI to notify the user they can add to home screen
+                            });
                         }, function(err) {
                             console.log('ServiceWorker registration failed: ', err);
                         });

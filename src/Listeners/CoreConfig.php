@@ -65,7 +65,10 @@ class CoreConfig
                 'icons' => $icons
             ];
 
-            File::put(public_path() . '/manifest.json', json_encode($manifest));
+            $encodedFile = json_encode($manifest);
+
+            File::put(public_path() . '/manifest.json', $encodedFile);
+            File::put(public_path() . '/manifest.webmanifest', $encodedFile);
         }
     }
 }
