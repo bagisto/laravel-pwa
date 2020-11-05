@@ -34,6 +34,10 @@
                     })
                     .catch(error => {
                         this.$toasted.show(error.response.data.error, { type: 'error' })
+
+                        if (error.response.status == 401) {
+                            this.$router.push({name: 'login-register'})
+                        }
                     });
             },
 

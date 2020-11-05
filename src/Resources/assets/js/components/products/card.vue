@@ -46,20 +46,18 @@
 
         methods: {
             moveToWishlist () {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/wishlist/add/' + this.product.id)
-                    .then(function(response) {
-                        this_this.$toasted.show(response.data.message, { type: 'success' })
+                    .then(response => {
+                        this.$toasted.show(response.data.message, { type: 'success' })
 
-                        this_this.product.is_saved = response.data.data ? true : false;
+                        this.product.is_saved = response.data.data ? true : false;
 
                         EventBus.$emit('hide-ajax-loader');
                     })
-                    .catch(function (error) {
-                        this_this.$toasted.show(error.response.data.error, { type: 'error' })
+                    .catch(error => {
+                        this.$toasted.show(error.response.data.error, { type: 'error' })
                     });
             },
         }

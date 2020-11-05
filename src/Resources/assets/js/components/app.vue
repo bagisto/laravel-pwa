@@ -215,7 +215,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/categories", { params: { parent_id: window.channel.root_category_id } })
+                this.$http.get("/api/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

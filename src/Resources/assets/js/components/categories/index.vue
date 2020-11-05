@@ -129,7 +129,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/categories', { params: { parent_id: categoryId } })
+                this.$http.get('/api/pwa/categories', { params: { parent_id: categoryId } })
                     .then(function(response) {
                         this_this.childCategories = response.data.data;
 

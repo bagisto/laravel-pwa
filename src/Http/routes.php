@@ -34,7 +34,7 @@
     
         Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
 
-            Route::get('categories', 'Webkul\PWA\Http\Controllers\Shop\CategoryController@index');
+            Route::get('pwa/categories', 'Webkul\PWA\Http\Controllers\Shop\CategoryController@index');
 
             //Product routes
             Route::get('products', 'Webkul\PWA\Http\Controllers\Shop\ProductController@index')->name('api.products');
@@ -61,10 +61,10 @@
                 'authorization_required' => true
             ]);
 
-            Route::get('invoices', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
+            Route::get('invoices', 'Webkul\PWA\Http\Controllers\Shop\InvoiceController@index')->defaults('_config', [
                 'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
                 'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
-                'authorization_required' => false
+                'authorization_required' => true
             ]);
 
             //Wishlist routes
