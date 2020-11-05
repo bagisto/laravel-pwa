@@ -2,7 +2,13 @@
     <li class="category-card">
         <router-link :to="'/categories/' + category.id">
             <div class="image">
-                <img alt="category-image" :src="category.image_url ? category.image_url : '/vendor/webkul/pwa/assets/images/category-image.png'"/>
+                <img
+                    alt="category-image"
+                    onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
+                    :src="category.image_url
+                          ? category.image_url
+                          : '/vendor/webkul/pwa/assets/images/category-image.png'"
+                />
             </div>
 
             <div class="name">
@@ -22,11 +28,12 @@
 
 <style lang="scss" scoped>
     li.category-card {
-        display: inline-block;
         width: 120px;
         height: 152px;
         margin-right: 15px;
         position: relative;
+        vertical-align: top;
+        display: inline-block;
         background: #FFFFFF;
         box-shadow: 0 6px 10px 0 rgba(0,0,0,0.08), 0 1px 18px 0 rgba(0,0,0,0.08), 0 3px 5px -1px rgba(0,0,0,0.08);
 
@@ -44,10 +51,14 @@
         }
 
         .name {
+            width: 7rem;
             height: 32px;
             font-size: 12px;
-            text-align: center;
+            margin: 0 auto;
+            overflow: hidden;
             line-height: 32px;
+            text-align: center;
+            text-overflow: ellipsis;
             color: rgba(0, 0, 0, 0.56);
         }
     }

@@ -39,7 +39,7 @@
 
             <div class="panel-content">
                 <ul class="category-list">
-                    <li v-for="category in childCategories">
+                    <li v-for="category in childCategories" :key="category.id">
                         <router-link :to="'/categories/' + category.id">
                             {{ category.name }}
 
@@ -129,7 +129,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/descendant-categories', { params: { parent_id: categoryId } })
+                this.$http.get('/api/categories', { params: { parent_id: categoryId } })
                     .then(function(response) {
                         this_this.childCategories = response.data.data;
 

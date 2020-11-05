@@ -42,6 +42,18 @@ return [
                 'validation' => 'required',
                 'channel_based' => true,
                 'locale_based' => false
+            ], [
+                'name' => 'enable_new',
+                'title' => 'pwa::app.admin.system.enable_new',
+                'type' => 'boolean',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'enable_featured',
+                'title' => 'pwa::app.admin.system.enable_featured',
+                'type' => 'boolean',
+                'channel_based' => true,
+                'locale_based' => false
             ]
         ]
     ], [

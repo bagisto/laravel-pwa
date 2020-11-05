@@ -33,19 +33,15 @@
     Route::group(['prefix' => 'api'], function ($router) {
     
         Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
+
+            Route::get('categories', 'Webkul\PWA\Http\Controllers\Shop\CategoryController@index');
+
             //Product routes
             Route::get('products', 'Webkul\PWA\Http\Controllers\Shop\ProductController@index')->name('api.products');
 
             Route::get('products/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@get');
 
             Route::get('product-configurable-config/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@configurableConfig');
-
-            //Order routes
-            Route::get('orders', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
-                'repository'    => 'Webkul\Sales\Repositories\OrderRepository',
-                'resource'      => 'Webkul\PWA\Http\Resources\Sales\Order',
-                'authorization_required' => true
-            ]);
 
             Route::get('downloadable-products', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
                 'resource'      => 'Webkul\PWA\Http\Resources\Sales\DownloadableProduct',
@@ -60,9 +56,15 @@
             ]);
 
             Route::get('invoices/{id}/download', 'Webkul\PWA\Http\Controllers\Shop\InvoiceController@print')->defaults('_config', [
-                'repository' => 'Webkul\Sales\Repositories\InvoiceRepository',
-                'resource' => 'Webkul\API\Http\Resources\Sales\Invoice',
+                'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
+                'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
                 'authorization_required' => true
+            ]);
+
+            Route::get('invoices', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
+                'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
+                'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
+                'authorization_required' => false
             ]);
 
             //Wishlist routes

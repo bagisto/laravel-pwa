@@ -25,5 +25,20 @@ class EventServiceProvider extends ServiceProvider
         });
 
         Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
+
+        Event::listen([
+            'bagisto.admin.catalog.category.edit_form_accordian.description_images.controls.after',
+            'bagisto.admin.catalog.category.create_form_accordian.description_images.controls.after',
+        ], function($viewRenderEventManager) {
+                $viewRenderEventManager->addTemplate(
+                    'pwa::admin.catelog.categories.pwa'
+                );
+            }
+        );
+
+        Event::listen([
+            'catalog.category.create.after',
+            'catalog.category.update.after',
+        ], 'Webkul\PWA\Helpers\AdminHelper@storeCategoryIcon');
     }
 }

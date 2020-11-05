@@ -23,7 +23,11 @@
                 <div class="order-item-list sale-section-content">
                     <div class="order-item" v-for="orderItem in order.items">
                         <div class="order-item-image">
-                            <img alt="product-base-small-image" :src="orderItem.product.base_image.small_image_url"/>
+                            <img
+                                alt="product-base-small-image"
+                                :src="orderItem.product.base_image.small_image_url"
+                                onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
+                            />
                         </div>
 
                         <div class="order-item-info">
