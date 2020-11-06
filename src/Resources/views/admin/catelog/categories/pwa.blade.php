@@ -1,5 +1,5 @@
 <div class="control-group boolean">
-    <label for="{{ trans('pwa::admin.system.add_in_pwa') }}">
+    <label for="{{ trans('pwa::app.admin.system.add_in_pwa') }}">
         {{ trans('pwa::app.admin.system.add_in_pwa') }}
     </label>
 

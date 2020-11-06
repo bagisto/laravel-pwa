@@ -18,10 +18,13 @@
 
         methods: {
             handleBack () {
-                if (window.history.length > 2) {
-                    this.$router.back();
+                if (
+                    window.history.length <= 2
+                    || this.$route.name == "dashboard"
+                ) {
+                    this.$router.push({name: 'home'});
                 } else {
-                    this.$router.push({name: 'home'})
+                    this.$router.back();
                 }
             }
         }

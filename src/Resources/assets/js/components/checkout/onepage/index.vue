@@ -380,7 +380,20 @@
 
         data () {
             return {
+                step: 1,
+                cart: null,
                 customer: null,
+                coupon_code: '',
+                error_message: '',
+                shippingRates: [],
+                paymentMethods: [],
+                skipShipping: false,
+                disable_button: false,
+                selected_payment_method: '',
+                selected_shipping_method: '',
+                first_payment_iteration: true,
+                first_shipping_iteration: true,
+                route_name: "{{ request()->route()->getName() }}",
 
                 addresses: {
                     billing: [],
@@ -388,9 +401,12 @@
                     shipping: []
                 },
 
-                cart: null,
-
-                step: 1,
+                formScopes: {
+                    1: 'address-form',
+                    2: 'shipping-form',
+                    3: 'payment-form',
+                    4: 'coupon-form'
+                },
 
                 stepLabels: {
                     1: this.$t('Address'),
@@ -416,33 +432,6 @@
                     shipping: false,
                     billing: false,
                 },
-
-                shippingRates: [],
-
-                selected_shipping_method: '',
-
-                first_shipping_iteration: true,
-
-                paymentMethods: [],
-
-                selected_payment_method: '',
-                
-                first_payment_iteration: true,
-
-                coupon_code: '',
-
-                error_message: '',
-
-                route_name: "{{ request()->route()->getName() }}",
-
-                disable_button: false,
-
-                formScopes: {
-                    1: 'address-form',
-                    2: 'shipping-form',
-                    3: 'payment-form',
-                    4: 'coupon-form'
-                }
             }
         },
 
@@ -574,6 +563,7 @@
                 this.$http.post('/api/checkout/save-address', self.address)
                     .then(function(response) {
                         if (response.data.data.nextStep == "payment") {
+                            self.skipShipping = true;
                             self.disable_button = false;
 
                             self.paymentMethods = response.data.data.methods;
@@ -751,6 +741,10 @@
                     };
                     this.getAuthCustomer();
                     this.step--;
+
+                    if (this.step == 2 && this.skipShipping) {
+                        this.step--;
+                    }
                 }
             }
         }

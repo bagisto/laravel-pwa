@@ -31,7 +31,6 @@ import CustomerReviewList   from './components/customers/account/reviews/index';
 import CustomerReviewDetail from './components/customers/account/reviews/view';
 import Offline              from './components/offline/index';
 
-
 Vue.use(Router)
 
 export default new Router({
