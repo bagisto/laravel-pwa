@@ -7,6 +7,7 @@ return [
             'name'              => 'Name',
             'topic'             => 'Topic',
             'media'             => 'Media',
+            'seo-author'        => 'Author',
             'settings'          => 'Settings',
             'general'           => 'General',
             'short-name'        => 'Short Name',

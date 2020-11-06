@@ -9,7 +9,7 @@ return [
         'key' => 'pwa.settings',
         'name' => 'pwa::app.admin.system.settings',
         'sort' => 1,
-    ],[
+    ], [
         'key' => 'pwa.settings.general',
         'name' => 'pwa::app.admin.system.general',
         'sort' => 1,
@@ -55,6 +55,37 @@ return [
                 'channel_based' => true,
                 'locale_based' => false
             ]
+        ]
+    ], [
+        'key' => 'pwa.settings.seo',
+        'name' => 'admin::app.settings.channels.seo',
+        'sort' => 1,
+        'fields' => [
+            [
+                'name' => 'seo_author',
+                'title' => 'pwa::app.admin.system.seo-author',
+                'type' => 'text',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'seo_title',
+                'title' => 'admin::app.settings.channels.seo-title',
+                'type' => 'textarea',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'seo_description',
+                'title' => 'admin::app.settings.channels.seo-description',
+                'type' => 'textarea',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'seo_keywords',
+                'title' => 'admin::app.settings.channels.seo-keywords',
+                'type' => 'textarea',
+                'channel_based' => true,
+                'locale_based' => false
+            ],
         ]
     ], [
         'key' => 'pwa.settings.media',

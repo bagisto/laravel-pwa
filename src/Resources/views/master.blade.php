@@ -2,13 +2,21 @@
 <html lang="{{ app()->getLocale() }}">
 
     <head>
-        <meta name="description" content="This is a PWA app" /> <!-- this line is to meet the requirment of lighthouse extension. -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="content-language" content="{{ app()->getLocale() }}">
-        <meta name="theme-color" content="{{ core()->getConfigData('pwa.settings.general.theme_color') ?? '#0041ff'  }}"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="{{ core()->getConfigData('pwa.settings.general.theme_color') ?? '#0041ff'  }}">
+        <meta name="description" content="{{ core()->getConfigData('pwa.settings.seo.seo_description') ?? 'This is a PWA app'  }}" > <!-- this line is to meet the requirment of lighthouse extension. -->
+
+        @if (core()->getConfigData('pwa.settings.seo.seo_author'))
+        <meta name="keywords" content="{{ core()->getConfigData('pwa.settings.seo.seo_author')  }}" >
+        @endif
+
+        @if (core()->getConfigData('pwa.settings.seo.seo_keywords'))
+        <meta name="keywords" content="{{ core()->getConfigData('pwa.settings.seo.seo_keywords')  }}" >
+        @endif
 
         <link rel="stylesheet" href="{{ asset('vendor/webkul/pwa/assets/css/pwa.css') }}">
         <link rel="manifest" href="{{ asset('manifest.json') }}">
@@ -30,7 +38,9 @@
         <samp data-depth="1" class="sf-dump-compact">
 
         {!! view_render_event('bagisto.pwa.layout.head') !!}
-        <title>PWA</title>
+        <title>
+            {{ core()->getConfigData('pwa.settings.seo.seo_title') ?? 'PWA'  }}
+        </title>
     </head>
 
     <body @if (app()->getLocale() == 'ar') class="rtl" dir="rtl" @endif style="scroll-behavior: smooth;">
