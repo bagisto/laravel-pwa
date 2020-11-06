@@ -665,7 +665,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/apply-coupon', { 'code': self.coupon_code })
+                this.$http.post('/api/checkout/cart/coupon', { 'code': self.coupon_code })
                     .then(function(response) {
                         self.disable_button = false;
 

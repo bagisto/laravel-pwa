@@ -2,7 +2,11 @@
     <div class="cart-item">
         <div class="cart-item-content">
             <div class="product-image">
-                <img alt="product-base" :src="cartItem.product.base_image.small_image_url"/>
+                <img
+                    alt="product-base"
+                    :src="cartItem.product.base_image.small_image_url"
+                    onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
+                />
             </div>
 
             <div class="cart-item-info">
