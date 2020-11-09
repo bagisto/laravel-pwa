@@ -33,6 +33,9 @@ class Product extends JsonResource
     public function toArray($request)
     {
         $product = $this->product ? $this->product : $this;
+
+        $prices = $product->getTypeInstance()->getProductPrices();
+
         $productPrice = $this->calculatePrice($product);
 
         $data = [];
@@ -122,46 +125,49 @@ class Product extends JsonResource
             break;
         }
 
-        $data += [
-            'id'                => $product->id,
-            'type'              => $product->type,
-            'name'              => $this->name,
-            'url_key'           => $this->url_key,
-            'price'             => $productPrice,
-            'formated_price'    => $productPrice,
-            'short_description' => $this->short_description,
-            'description'       => $this->description,
-            'sku'               => $this->sku,
-            'images'            => $this->productImageHelper->getGalleryImages($product),
-            'base_image'        => $this->productImageHelper->getProductBaseImage($product),
-            'variants'          => Self::collection($this->variants),
-            'in_stock'          => $this->haveSufficientQuantity($product),
-            'special_price'     => $this->when(
-                $this->productPriceHelper->haveSpecialPrice($product),
-                $this->productPriceHelper->getSpecialPrice($product)
+        $data +=  [
+            'id'                     => $product->id,
+            'type'                   => $product->type,
+            'name'                   => $this->name,
+            'url_key'                => $this->url_key,
+            'price'                  => $product->getTypeInstance()->getMinimalPrice(),
+            'formated_price'         => core()->currency($product->getTypeInstance()->getMinimalPrice()),
+            'short_description'      => $this->short_description,
+            'description'            => $this->description,
+            'sku'                    => $this->sku,
+            'images'                 => ProductImage::collection($product->images),
+            'base_image'             => $this->productImageHelper->getProductBaseImage($product),
+            'variants'               => Self::collection($this->variants),
+            'in_stock'               => $product->haveSufficientQuantity(1),
+            $this->mergeWhen($product->getTypeInstance()->isComposite(), [
+                'super_attributes' => Attribute::collection($product->super_attributes),
+            ]),
+            'special_price'          => $this->when(
+                $product->getTypeInstance()->haveSpecialPrice(),
+                $product->getTypeInstance()->getSpecialPrice()
             ),
             'formated_special_price' => $this->when(
-                $this->productPriceHelper->haveSpecialPrice($product),
-                core()->currency($this->productPriceHelper->getSpecialPrice($product))
+                $product->getTypeInstance()->haveSpecialPrice(),
+                core()->currency($product->getTypeInstance()->getSpecialPrice())
             ),
-            'reviews' => [
-                'total' => $total = $this->productReviewHelper->getTotalReviews($product),
-                'total_rating' => $total ? $this->productReviewHelper->getTotalRating($product) : 0,
+            'regular_price'          => $this->when(
+                $product->getTypeInstance()->haveSpecialPrice(),
+                data_get($prices, 'regular_price.price')
+            ),
+            'formated_regular_price' => $this->when(
+                $product->getTypeInstance()->haveSpecialPrice(),
+                data_get($prices, 'regular_price.formated_price')
+            ),
+            'reviews'                => [
+                'total'          => $total = $this->productReviewHelper->getTotalReviews($product),
+                'total_rating'   => $total ? $this->productReviewHelper->getTotalRating($product) : 0,
                 'average_rating' => $total ? $this->productReviewHelper->getAverageRating($product) : 0,
-                'percentage' => $total ? json_encode($this->productReviewHelper->getPercentageRating($product)) : [],
+                'percentage'     => $total ? json_encode($this->productReviewHelper->getPercentageRating($product)) : [],
             ],
-            'is_saved'              => false,
-            'created_at'            => $this->created_at,
-            'updated_at'            => $this->updated_at,
+            'is_saved'               => false,
+            'created_at'             => $this->created_at,
+            'updated_at'             => $this->updated_at,
         ];
-
-        if ($product->type != "grouped") {
-            $data['show_quantity_changer'] = $product->getTypeInstance()->showQuantityBox();
-        }
-
-        if ($product->type != "configurable") {
-            $data['super_attributes'] = Attribute::collection($product->super_attributes);
-        }
 
         return $data;
     }

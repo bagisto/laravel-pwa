@@ -11,7 +11,7 @@
         <meta name="description" content="{{ core()->getConfigData('pwa.settings.seo.seo_description') ?? 'This is a PWA app'  }}" > <!-- this line is to meet the requirment of lighthouse extension. -->
 
         @if (core()->getConfigData('pwa.settings.seo.seo_author'))
-        <meta name="keywords" content="{{ core()->getConfigData('pwa.settings.seo.seo_author')  }}" >
+        <meta name="author" content="{{ core()->getConfigData('pwa.settings.seo.seo_author')  }}" >
         @endif
 
         @if (core()->getConfigData('pwa.settings.seo.seo_keywords'))

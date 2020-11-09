@@ -75,7 +75,7 @@ function skipIfThese(requestUrl) {
         && requestUrl.pathname.indexOf("/large-product-placeholder.png") < 0)
         return true;
 
-    if (['/service-worker.js'].indexOf(requestUrl.pathname.pathname) > -1)
+    if (['./service-worker.js'].indexOf(requestUrl.pathname.pathname) > -1)
         return true;
 
     return false;

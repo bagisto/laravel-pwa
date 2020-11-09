@@ -54,6 +54,12 @@ return [
                 'type' => 'boolean',
                 'channel_based' => true,
                 'locale_based' => false
+            ], [
+                'name' => 'enable_slider',
+                'title' => 'pwa::app.admin.system.enable_slider',
+                'type' => 'boolean',
+                'channel_based' => true,
+                'locale_based' => false
             ]
         ]
     ], [

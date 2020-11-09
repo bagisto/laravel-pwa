@@ -38,7 +38,7 @@ class AdminHelper
             $category = $this->categoryRepository->findOrFail($category);
         }
 
-        $category->category_product_in_pwa = $data['add_in_pwa'] == "1" ? 1 : 0;
+        $category->category_product_in_pwa = ($data['add_in_pwa'] ?? 0) == "1" ? 1 : 0;
         $category->save();
 
         return $category;

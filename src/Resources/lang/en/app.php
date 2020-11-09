@@ -21,6 +21,7 @@ return [
             'push-notification' => 'Push Notification',
             'large'             => 'App Icon (144x144)',
             'extra-large'       => 'App Icon (196x196)',
+            'enable_slider'     => 'Enable Slider',
             'enable_new'        => 'Enable new products',
             'enable_featured'   => 'Enable featured products',
         ],

@@ -1,6 +1,24 @@
 <template>
     <div class="content">
 
+        <carousel
+            :per-page="1"
+            :loop="true"
+            :autoplay="true"
+            pagination-color="#E8E8E8"
+            pagination-active-color="#979797"
+        >
+            <slide
+                :key='slider.id'
+                v-for="slider in sliders"
+            >
+                <img
+                    alt="base-image-original"
+                    :src="slider.image_url"
+                />
+            </slide>
+        </carousel>
+
         <div class="category-container">
 
             <ul class="category-list">
@@ -17,16 +35,17 @@
                 :key='category.category_details.id'
                 v-for="category in product.categories">
 
-                <div class="panel-heading">
-                    {{ category.category_details.name }}
-                </div>
+                <template v-if="category.products.length">
+                    <router-link :to="'/categories/' + category.category_details.id" class="panel-heading">
+                        {{ category.category_details.name }}
+                    </router-link>
 
-                <div class="panel-content product-list product-grid-2">
+                    <div class="panel-content product-list product-grid-2">
 
-                    <product-card v-for="product in category.products" :key='product.uid' :product="product"></product-card>
+                        <product-card v-for="product in category.products" :key='product.uid' :product="product"></product-card>
 
-                </div>
-
+                    </div>
+                </template>
             </div>
         </template>
 
@@ -68,17 +87,19 @@
 </template>
 
 <script>
-    import ProductCard  from '../products/card';
-    import CategoryCard from '../categories/card';
-    import FooterNav    from '../layouts/footer-nav';
+    import { Carousel, Slide }  from 'vue-carousel';
+    import ProductCard          from '../products/card';
+    import CategoryCard         from '../categories/card';
+    import FooterNav            from '../layouts/footer-nav';
 
     export default {
         name: 'home',
 
-        components: { CategoryCard, ProductCard, FooterNav },
+        components: { CategoryCard, ProductCard, FooterNav, Carousel, Slide },
 
         data () {
 			return {
+				sliders: [],
 				categories: [],
 
                 product: {
@@ -90,12 +111,33 @@
 		},
 
         mounted () {
+            this.getSliders();
+
             this.getCategories();
 
             this.getNewFeaturedProducts();
         },
 
         methods: {
+            getSliders () {
+                this.$http.get("/api/config", {
+                    params: {
+                        _config: 'pwa.settings.general.enable_slider'
+                    }
+                }).then(response => {
+                    EventBus.$emit('hide-ajax-loader');
+
+                    if (response.data.data['pwa.settings.general.enable_slider'] == "1") {
+                        this.$http.get("/api/sliders")
+                        .then(response => {
+                            this.sliders = response.data.data;
+                        })
+                        .catch(function (error) {});
+                    }
+                })
+                .catch(function (error) {});
+            },
+
             getNewFeaturedProducts () {
                 EventBus.$emit('show-ajax-loader');
 
@@ -128,6 +170,7 @@
 
                         this.categories.forEach(category => {
                             if (category.show_products) {
+                                // push data here to keep category according to order
                                 this.getProducts(category, { 'category_id': category.id });
                             }
                         });
@@ -143,6 +186,7 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         if (params.category_id) {
+                            // pushing here will depend on ajax time
                             this.product.categories.push({
                                 'category_details'  : details,
                                 'products'          : response.data.data,

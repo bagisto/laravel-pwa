@@ -78,7 +78,7 @@
             </div>
 
             <div class="product-description">
-                <accordian :title="'Details'" :active="false">
+                <accordian :title="'Details'" :active="true">
                     <div slot="body">
 
                         <span v-html="product.description"></span>
