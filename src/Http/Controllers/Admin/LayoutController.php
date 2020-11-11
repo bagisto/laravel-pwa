@@ -1,17 +1,18 @@
 <?php
 
-namespace Webkul\PWA\Http\Controllers;
+namespace Webkul\PWA\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationRepository;
+use Webkul\PWA\Http\Controllers\Controller;
+use Webkul\PWA\Repositories\PWALayoutRepository;
 
 /**
  * Push Notification controller
  *
- * @author    Vivek Sharma <viveksh047@webkul.com>@vivek-webkul
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+ * @author    Shubham Mehrotra <shubhammehrotra.symfony@webkul.com>@shubh-webkul
+ * @copyright 2020 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
-class PushNotificationController extends Controller
+class LayoutController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +22,11 @@ class PushNotificationController extends Controller
     protected $_config;
 
     /**
-     * PushNotificationRepository object
+     * PWALayoutRepository object
      *
      * @var array
      */
-    protected $pushNotificationRepository;
+    protected $pwaLayoutRepository;
 
     /**
      * Create a new controller instance.
@@ -33,11 +34,13 @@ class PushNotificationController extends Controller
      * @param  \Webkul\Core\Repositories\CoreConfigRepository  $coreConfig
      * @return void
      */
-    public function __construct(PushNotificationRepository $pushNotificationRepository)
-    {
-        $this->pushNotificationRepository = $pushNotificationRepository;
-
+    public function __construct(
+        PWALayoutRepository $pwaLayoutRepository
+    ) {
         $this->_config = request('_config');
+
+        $this->pwaLayoutRepository = $pwaLayoutRepository;
+
     }
 
     /**
@@ -47,21 +50,13 @@ class PushNotificationController extends Controller
      */
     public function index()
     {
-        return view($this->_config['view']);
+        return view($this->_config['view'], [
+            'layout' => $this->pwaLayoutRepository->first()
+        ]);
     }
-
+    
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view($this->_config['view']);
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource or update the existing one in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -69,17 +64,23 @@ class PushNotificationController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'title' => 'required',
-            'description' => 'required',
-            'targeturl' => 'required',
-            'image.*' => 'mimes:jpeg,jpg,bmp,png'
+            'home_page_content' => 'required',
         ]);
         
-        // call the repository
-        $this->pushNotificationRepository->create(request()->all());
+        $existing = $this->pwaLayoutRepository->first();
 
+        if ($existing) {
+            $this->pwaLayoutRepository->update([
+                'home_page_content' => trim(request()->get('home_page_content'))
+            ], $existing->id);
+        } else {
+            $this->pwaLayoutRepository->create([
+                'home_page_content' => trim(request()->get('home_page_content'))
+            ]);
+        }
+        
          // flash message
-         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'Push Notification']));
+         session()->flash('success', trans('admin::app.response.update-success', ['name' => trans('pwa::app.admin.layouts.index')]));
 
          return redirect()->route($this->_config['redirect']);
     }

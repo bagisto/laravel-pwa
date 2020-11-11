@@ -7,11 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Container\Container as App;
 
 /**
- * Manufacturer Reposotory
- *
- * @author    Aayush Bhatt <aayush.bhatt172@webkul.com>
- * @author    Vivek Sharma <viveksh047@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+ * PushNotificationRepository Reposotory
  */
 class PushNotificationRepository extends Repository
 {

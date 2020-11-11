@@ -26,7 +26,7 @@
                 </span>
                 <!--end-->
 
-                <i class="icon wishlist-icon" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
+                <i class="icon wishlist-icon" v-if="isCustomer == 'false'" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
             </div>
 
             <router-link :to="'/products/' + product.id">
@@ -42,7 +42,7 @@
     export default {
         name: 'product-card',
 
-        props: ['product'],
+        props: ['product', 'isCustomer'],
 
         methods: {
             moveToWishlist () {

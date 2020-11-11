@@ -3,28 +3,63 @@
         Route::prefix('admin')->group(function () {
             Route::group(['middleware' => ['admin']], function () {
                 Route::prefix('pwa')->group(function () {
-                    // PushNotifications routes
-                    Route::get('pushnotification/','Webkul\PWA\Http\Controllers\PushNotificationController@index')->defaults('_config', ['view' => 'pwa::PushNotification.index'
-                    ])->name('pwa.pushnotification.index');
-                    // create
-                    Route::get('pushnotification/create','Webkul\PWA\Http\Controllers\PushNotificationController@create')->defaults('_config', ['view' => 'pwa::PushNotification.create'
-                    ])->name('pwa.pushnotification.create');
-                    // store
-                    Route::post('pushnotification/store','Webkul\PWA\Http\Controllers\PushNotificationController@store')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'
-                    ])->name('pwa.pushnotification.store');
-                    //edit
-                    Route::get('pushnotification/edit/{id}','Webkul\PWA\Http\Controllers\PushNotificationController@edit')->defaults('_config', ['view' => 'pwa::PushNotification.edit'
-                    ])->name('pwa.pushnotification.edit');
-                    // update
-                    Route::post('pushnotification/update/{id}','Webkul\PWA\Http\Controllers\PushNotificationController@update')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'
-                    ])->name('pwa.pushnotification.update');
-                    // delete
-                    Route::get('pushnotification/delete/{id}','Webkul\PWA\Http\Controllers\PushNotificationController@destroy')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'
-                    ])->name('pwa.pushnotification.delete');
-        
-                    //push to firebase
-                    Route::get('pushnotification/push/{id}','Webkul\PWA\Http\Controllers\PushNotificationController@pushtofirebase')->defaults('_config', ['redirect' => 'pwa.pushnotification.index'
-                    ])->name('pwa.pushnotification.pushtofirebase');
+                    Route::namespace('Webkul\PWA\Http\Controllers\Admin')->group(function () {
+                        // PushNotifications routes
+                        Route::get('pushnotification','PushNotificationController@index')
+                            ->name('pwa.pushnotification.index')
+                            ->defaults('_config', [
+                                'view' => 'pwa::admin.push-notification.index'
+                            ]);
+
+                        Route::get('pushnotification/create','PushNotificationController@create')
+                            ->name('pwa.pushnotification.create')
+                            ->defaults('_config', [
+                                'view' => 'pwa::admin.push-notification.create'
+                            ]);
+
+                        Route::post('pushnotification/store','PushNotificationController@store')
+                            ->name('pwa.pushnotification.store')
+                            ->defaults('_config', [
+                                'redirect' => 'pwa.pushnotification.index'
+                            ]);
+
+                        Route::get('pushnotification/edit/{id}','PushNotificationController@edit')
+                            ->name('pwa.pushnotification.edit')
+                            ->defaults('_config', [
+                                'view' => 'pwa::admin.push-notification.edit'
+                            ]);
+
+                        Route::post('pushnotification/update/{id}','PushNotificationController@update')
+                            ->name('pwa.pushnotification.update')
+                            ->defaults('_config', [
+                                'redirect' => 'pwa.pushnotification.index'
+                            ]);
+
+                        Route::get('pushnotification/delete/{id}','PushNotificationController@destroy')
+                            ->name('pwa.pushnotification.delete')
+                            ->defaults('_config', [
+                                'redirect' => 'pwa.pushnotification.index'
+                            ]);
+
+                        Route::get('pushnotification/push/{id}','PushNotificationController@pushtofirebase')
+                            ->name('pwa.pushnotification.pushtofirebase')
+                            ->defaults('_config', [
+                                'redirect' => 'pwa.pushnotification.index'
+                            ]);
+
+                        // layout routes
+                        Route::get('layout','LayoutController@index')
+                            ->name('pwa.layout')
+                            ->defaults('_config', [
+                                'view' => 'pwa::admin.pwa-layouts.index'
+                            ]);
+
+                        Route::post('layout','LayoutController@store')
+                            ->name('pwa.layout.store')
+                            ->defaults('_config', [
+                                'redirect' => 'pwa.layout'
+                            ]);
+                    });
                 });
             });
         });
@@ -34,68 +69,36 @@
     
         Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
 
-            Route::get('pwa/categories', 'Webkul\PWA\Http\Controllers\Shop\CategoryController@index');
+            Route::namespace('Webkul\PWA\Http\Controllers\Shop')->group(function () {
+                Route::get('pwa/categories', 'CategoryController@index');
 
-            //Product routes
-            Route::get('products', 'Webkul\PWA\Http\Controllers\Shop\ProductController@index')->name('api.products');
+                // Product routes
+                Route::get('products', 'ProductController@index')->name('api.products');
 
-            Route::get('products/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@get');
+                Route::get('products/{id}', 'ProductController@get');
 
-            Route::get('product-configurable-config/{id}', 'Webkul\PWA\Http\Controllers\Shop\ProductController@configurableConfig');
+                Route::get('product-configurable-config/{id}', 'ProductController@configurableConfig');
 
-            Route::get('downloadable-products', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
-                'resource'      => 'Webkul\PWA\Http\Resources\Sales\DownloadableProduct',
-                'repository'    => 'Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository',
-                'authorization_required' => true
-            ]);
+                Route::get('invoices/{id}/download', 'InvoiceController@print')->defaults('_config', [
+                    'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
+                    'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
+                    'authorization_required' => true
+                ]);
 
-            Route::get('orders/{id}', 'Webkul\API\Http\Controllers\Shop\ResourceController@get')->defaults('_config', [
-                'repository' => 'Webkul\Sales\Repositories\OrderRepository',
-                'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
-                'authorization_required' => true
-            ]);
+                Route::get('invoices', 'InvoiceController@index')->defaults('_config', [
+                    'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
+                    'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
+                    'authorization_required' => true
+                ]);
 
-            Route::get('invoices/{id}/download', 'Webkul\PWA\Http\Controllers\Shop\InvoiceController@print')->defaults('_config', [
-                'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
-                'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
-                'authorization_required' => true
-            ]);
+                Route::get('wishlist/add/{id}', 'WishlistController@create');
 
-            Route::get('invoices', 'Webkul\PWA\Http\Controllers\Shop\InvoiceController@index')->defaults('_config', [
-                'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
-                'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
-                'authorization_required' => true
-            ]);
+                Route::post('reviews/{id}/create', 'ReviewController@store');
 
-            //Wishlist routes
-            Route::get('wishlist', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
-                'repository' => 'Webkul\Customer\Repositories\WishlistRepository',
-                'resource' => 'Webkul\PWA\Http\Resources\Customer\Wishlist',
-                'authorization_required' => true
-            ]);
+                Route::get('advertisements', 'API\APIController@fetchAdvertisementImages');
+            });
 
-            Route::get('wishlist/add/{id}', 'Webkul\PWA\Http\Controllers\Shop\WishlistController@create');
-
-            //Product Review routes
-            Route::get('reviews', 'Webkul\API\Http\Controllers\Shop\ResourceController@index')->defaults('_config', [
-                'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
-                'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
-            ]);
-
-            Route::get('reviews/{id}', 'Webkul\API\Http\Controllers\Shop\ResourceController@get')->defaults('_config', [
-                'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
-                'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
-            ]);
-
-            Route::post('reviews/{id}/create', 'Webkul\PWA\Http\Controllers\Shop\ReviewController@store');
-            
-            Route::delete('reviews/{id}', 'Webkul\API\Http\Controllers\Shop\ResourceController@destroy')->defaults('_config', [
-                'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
-                'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
-                'authorization_required' => true
-            ]);
-
-            //Checkout routes
+            // Checkout routes
             Route::group(['namespace' => 'Webkul\PWA\Http\Controllers\Shop', 'prefix' => 'checkout'], function ($router) {
                 Route::post('cart/add/{id}', 'CartController@store');
 
@@ -120,6 +123,48 @@
                 Route::post('cart/remove-coupon', 'CartController@removeCoupon');
 
                 Route::post('save-order', 'CheckoutController@saveOrder');
+            });
+
+
+            Route::namespace('Webkul\API\Http\Controllers\Shop')->group(function () {
+                Route::get('reviews/{id}', 'ResourceController@get')->defaults('_config', [
+                    'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
+                ]);
+
+                Route::delete('reviews/{id}', 'ResourceController@destroy')->defaults('_config', [
+                    'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
+                    'authorization_required' => true
+                ]);
+
+                Route::get('downloadable-products', 'ResourceController@index')->defaults('_config', [
+                    'resource'      => 'Webkul\PWA\Http\Resources\Sales\DownloadableProduct',
+                    'repository'    => 'Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository',
+                    'authorization_required' => true
+                ]);
+
+                Route::get('orders/{id}', 'ResourceController@get')->defaults('_config', [
+                    'repository' => 'Webkul\Sales\Repositories\OrderRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
+                    'authorization_required' => true
+                ]);
+
+                Route::get('wishlist', 'ResourceController@index')->defaults('_config', [
+                    'repository' => 'Webkul\Customer\Repositories\WishlistRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Customer\Wishlist',
+                    'authorization_required' => true
+                ]);
+
+                Route::get('reviews', 'ResourceController@index')->defaults('_config', [
+                    'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
+                ]);
+
+                Route::get('pwa-layout', 'ResourceController@index')->defaults('_config', [
+                    'repository'    => 'Webkul\PWA\Repositories\PWALayoutRepository',
+                    'resource'      => 'Webkul\PWA\Http\Resources\PWA\LayoutResource'
+                ]);
             });
         });
     });

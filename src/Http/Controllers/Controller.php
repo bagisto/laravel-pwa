@@ -9,4 +9,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 class Controller extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
+
+    public function returnView()
+    {
+        return view($this->_config['view']);
+    }
 }

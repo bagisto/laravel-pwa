@@ -2,17 +2,18 @@
     <div class="content">
 
         <carousel
-            :per-page="1"
-            :loop="true"
-            :autoplay="true"
-            pagination-color="#E8E8E8"
-            pagination-active-color="#979797"
-        >
+                :per-page="1"
+                :loop="true"
+                :autoplay="true"
+                pagination-color="#E8E8E8"
+                pagination-active-color="#979797"
+            >
             <slide
                 :key='slider.id'
                 v-for="slider in sliders"
             >
                 <img
+                    class="slider-image"
                     alt="base-image-original"
                     :src="slider.image_url"
                 />
@@ -29,6 +30,52 @@
 
         </div>
 
+        <div :key="index" class="products panel" v-for="(content, index) in homePageContent">
+            <advertisement
+                :first-image-url="homePageContent['advertisement-two'][0]"
+                :second-image-url="homePageContent['advertisement-two'][1]"
+                v-if="index == 'advertisement-two'"
+                >
+            </advertisement>
+
+            <advertisement
+                :first-image-url="homePageContent['advertisement-four'][0]"
+                :second-image-url="homePageContent['advertisement-four'][1]"
+                :third-image-url="homePageContent['advertisement-four'][2]"
+                :fourth-image-url="homePageContent['advertisement-four'][3]"
+                v-else-if="index == 'advertisement-four'"
+                >
+            </advertisement>
+
+            <advertisement
+                :first-image-url="homePageContent['advertisement-three'][0]"
+                :second-image-url="homePageContent['advertisement-three'][1]"
+                :third-image-url="homePageContent['advertisement-three'][2]"
+                v-else-if="index == 'advertisement-three'"
+                >
+            </advertisement>
+            
+            <div class="products panel" v-else>
+                <template v-if="content.products && content.products.length">
+                    <div class="category-title">
+                        <span class="panel-heading">
+                            {{ content.category_details.name }}
+                        </span>
+
+                        <router-link :to="'/categories/' + content.category_details.id" class="panel-heading view-all-btn">
+                            {{ $t('View All Products') }}
+                        </router-link>
+                    </div>
+
+                    <div class="panel-content product-list product-grid-2">
+
+                        <product-card :is-customer="customer" v-for="product in content.products" :key='product.uid' :product="product"></product-card>
+
+                    </div>
+                </template>
+            </div>
+        </div>
+
         <template v-if="product.categories.length">
             <div
                 class="products panel"
@@ -42,7 +89,7 @@
 
                     <div class="panel-content product-list product-grid-2">
 
-                        <product-card v-for="product in category.products" :key='product.uid' :product="product"></product-card>
+                        <product-card :is-customer="customer" v-for="product in category.products" :key='product.uid' :product="product"></product-card>
 
                     </div>
                 </template>
@@ -57,7 +104,7 @@
 
             <div class="panel-content product-list product-grid-2">
 
-                <product-card v-for="product in product.new" :key='product.uid' :product="product"></product-card>
+                <product-card :is-customer="customer" v-for="product in product.new" :key='product.uid' :product="product"></product-card>
 
             </div>
 
@@ -71,7 +118,7 @@
 
             <div class="panel-content product-list product-grid-2">
 
-                <product-card v-for="product in product.featured" :key='product.uid' :product="product"></product-card>
+                <product-card :is-customer="customer" v-for="product in product.featured" :key='product.uid' :product="product"></product-card>
 
             </div>
 
@@ -82,7 +129,6 @@
                 <footer-nav></footer-nav>
             </div>
          </div>
-
     </div>
 </template>
 
@@ -91,16 +137,27 @@
     import ProductCard          from '../products/card';
     import CategoryCard         from '../categories/card';
     import FooterNav            from '../layouts/footer-nav';
+    import Advertisement        from './advertisements/advertisement';
 
     export default {
         name: 'home',
 
-        components: { CategoryCard, ProductCard, FooterNav, Carousel, Slide },
+        components: {
+            Slide,
+            Carousel,
+            FooterNav,
+            ProductCard,
+            CategoryCard,
+            Advertisement,
+        },
 
         data () {
 			return {
-				sliders: [],
+                sliders: [],
 				categories: [],
+                customer: null,
+				advertisements: [],
+                homePageContent: {},
 
                 product: {
                     'new'       : [],
@@ -114,6 +171,8 @@
             this.getSliders();
 
             this.getCategories();
+
+            this.getHomePageContent();
 
             this.getNewFeaturedProducts();
         },
@@ -149,14 +208,66 @@
                     EventBus.$emit('hide-ajax-loader');
 
                     if (response.data.data['pwa.settings.general.enable_new'] == "1") {
-                        this.getProducts('new', { 'new': 1 });
+                        this.getProducts('new', { 'new': 1, limit: 4 });
                     }
 
                     if (response.data.data['pwa.settings.general.enable_featured'] == "1") {
-                        this.getProducts('featured', { 'featured': 1 });
+                        this.getProducts('featured', { 'featured': 1, limit: 4 });
                     }
                 })
                 .catch(function (error) {});
+            },
+
+            getHomePageContent () {
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get("/api/pwa-layout")
+                    .then(response => {
+                        EventBus.$emit('hide-ajax-loader');
+
+                        let homePageContent = response.data.data[0].home_page_content;
+                        let homePageContentArray = homePageContent.split(",");
+
+                        if (homePageContent.includes('velocity-advertisement')) {
+                            this.$http.get("/api/advertisements?locale=en")
+                                .then(response => {
+                                    homePageContentArray.forEach(content => {
+                                        switch (content) {
+                                            case 'velocity-advertisement-two':
+                                                this.homePageContent['advertisement-two'] = Object.values(response.data.data[2]);
+                                                break;
+
+                                            case 'velocity-advertisement-three':
+                                                this.homePageContent['advertisement-three'] = Object.values(response.data.data[3]);
+                                                break;
+
+                                            case 'velocity-advertisement-four':
+                                                this.homePageContent['advertisement-four'] = Object.values(response.data.data[4]);
+                                                break;
+
+                                            default:
+                                                this.homePageContent[content] = {};
+
+                                                if (this.categories) {
+                                                    this.categories.filter(category => {
+                                                        if (category.slug == content) {
+                                                            this.homePageContent[content] = {
+                                                                'products' : [],
+                                                                'category_details' : category,
+                                                            }
+
+                                                            this.getProducts(content, { 'category_id': category.id });
+                                                        }
+                                                    });
+                                                }
+                                                break;
+                                        }
+                                    });
+                                })
+                                .catch(function (error) {});
+                        }
+                    })
+                    .catch(function (error) {});
             },
 
             getCategories () {
@@ -171,11 +282,19 @@
                         this.categories.forEach(category => {
                             if (category.show_products) {
                                 // push data here to keep category according to order
-                                this.getProducts(category, { 'category_id': category.id });
+                                // this.getProducts(category, { 'category_id': category.id });
+                            }
+
+                            if (this.homePageContent[category.slug]) {
+                                this.homePageContent[category.slug] = {
+                                    'category_details' : category,
+                                }
+                                
+                                this.getProducts(category.slug, { 'category_id': category.id });
                             }
                         });
                     })
-                    .catch(function (error) {});
+                    .catch(error => {});
             },
 
             getProducts (details, params) {
@@ -184,20 +303,34 @@
                 this.$http.get("/api/products", { params: params })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
-
+                        
                         if (params.category_id) {
-                            // pushing here will depend on ajax time
-                            this.product.categories.push({
-                                'category_details'  : details,
-                                'products'          : response.data.data,
-                            });
+                            if (this.homePageContent[details]) {
+                                this.$set(this.homePageContent[details], 'products', response.data.data);
+
+                                this.$forceUpdate();
+                            }
                         } else {
                             this.product[details] = response.data.data;
                         }
+                    })
+                    .catch(error => {
+                        debugger
+                        console.log(error)
+                    });
+            },
 
+            getAuthCustomer () {
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/customer/get')
+                    .then(response => {
+                        this.customer = response.data.data;
+
+                        EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
-            }
+            },
         }
     }
 </script>
@@ -208,6 +341,29 @@
     .products {
         .list {
             padding: 16px;
+        }
+    }
+
+    .slider-image {
+        width: 100%;
+    }
+
+    .view-all-btn {
+        color: blue !important;
+    }
+
+    .panel-heading {
+        display: inline-block;
+    }
+
+    .category-title {
+        a,
+        span {
+            display: block;
+        }
+
+        a {
+            text-align: right;
         }
     }
 </style>

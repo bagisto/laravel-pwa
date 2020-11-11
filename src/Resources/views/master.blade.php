@@ -65,7 +65,7 @@
             };
         </script>
 
-        <script type="text/javascript" src="{{ asset('vendor/webkul/pwa/assets/js/app.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('vendor/webkul/pwa/assets/js/app.js?v=' . strtotime("now")) }}"></script>
 
         @stack('scripts')
 

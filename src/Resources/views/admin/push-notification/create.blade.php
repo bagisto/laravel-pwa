@@ -14,7 +14,7 @@
 
                 <div class="page-action">
                     <button class="btn btn-lg btn-primary">
-                        {{ __('pwa::app.admin.push-notification.btn-save') }}
+                        {{ __('pwa::app.admin.system.btn-save') }}
                     </button>
                 </div>
             </div>

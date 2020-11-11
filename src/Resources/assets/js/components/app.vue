@@ -29,11 +29,11 @@
                             <h2>{{ $t('Categories') }}</h2>
 
                             <ul>
-                                <li v-for="category in categories">
+                                <li :key="category.id" v-for="category in categories" class="category-list-item">
                                     <router-link :to="'/categories/' + category.id">
                                         {{ category.name }}
-                                        <i class="icon sharp-arrow-right-icon"></i>
                                     </router-link>
+                                    <i class="icon sharp-arrow-right-icon"  @click="openSubcategories(category.id, $event)"></i>
                                 </li>
                             </ul>
                         </div>
@@ -104,6 +104,22 @@
                 </div>
             </drawer-sidebar>
 
+            <bottom-sheet :show="bottomSheets.subCategory" @onBottomSheetClose="bottomSheets.subCategory = false; ">
+                <div slot="header">
+                   {{ $t('Sub Categories') }}
+                </div>
+
+                <div slot="content">
+                    <ul>
+                        <router-link tag="li" :to="`/categories/${subCategory.id}`" :key="index" v-for="(subCategory, index) in subCategories[parent_id]">
+                            <template v-if="subCategory">
+                                {{ subCategory.name }}
+                            </template>
+                        </router-link>
+                    </ul>
+                </div>
+            </bottom-sheet>
+
             <bottom-sheet v-if="currencies.length > 1" :show="bottomSheets.currency" @onBottomSheetClose="bottomSheets.currency = false; ">
                 <div slot="header">
                    {{ $t('Currency') }}
@@ -111,7 +127,7 @@
 
                 <div slot="content">
                     <ul>
-                        <li v-for="currency in currencies">
+                        <li :key="currency.id" v-for="currency in currencies">
                             <span class="radio" :class="currency.code">
                                 <input type="radio" :id="currency.code" name="currency" :checked="currency.code == currentCurrency.code" @change="switchCurrency(currency)">
                                 <label class="radio-view" :for="currency.code"></label>
@@ -129,7 +145,7 @@
 
                 <div slot="content">
                     <ul>
-                        <li v-for="locale in locales">
+                        <li :key="index" v-for="(locale, index) in locales">
                             <span class="radio" :class="locale.code">
                                 <input type="radio" :id="locale.code" name="locale" :checked="locale.code == currentLocale.code" @change="switchLocale(locale)">
                                 <label class="radio-view" :for="locale.code"></label>
@@ -160,19 +176,18 @@
 
         data () {
 			return {
-				categories: [],
-
+                categories: [],
+                subCategories: {},
+                locales: window.config.locales,
                 currencies: window.config.currencies,
-
+                currentLocale: window.config.currentLocale,
+                parent_id: window.channel.root_category_id,
                 currentCurrency: window.config.currentCurrency,
 
-                locales: window.config.locales,
-
-                currentLocale: window.config.currentLocale,
-
                 bottomSheets: {
+                    locale: false,
                     currency: false,
-                    locale: false
+                    subCategory: false,
                 },
 
                 currentUser: false
@@ -210,18 +225,23 @@
 				}
 			},
 
-            getCategories () {
-                var this_this = this;
-
+            getCategories (parent_id = window.channel.root_category_id) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
-                    .then(function(response) {
+                this.$http.get("/api/pwa/categories", { params: { parent_id } })
+                    .then(response => {
                         EventBus.$emit('hide-ajax-loader');
+                        if (parent_id == window.channel.root_category_id) {
+                            this.categories = response.data.data;
+                        } else {
+                            this.subCategories[parent_id] = response.data.data;
 
-                        this_this.categories = response.data.data;
+                            this.handleToggleDrawer();
+                            this.bottomSheets.subCategory = true;
+                        }
+
                     })
-                    .catch(function (error) {});
+                    .catch(error => {});
             },
 
             switchCurrency (currency) {
@@ -269,7 +289,18 @@
 
                         EventBus.$emit('user-logged-out');
                     });
-            }
+            },
+
+            openSubcategories(parent_id, event) {
+                this.parent_id = parent_id;
+
+                if (! this.subCategories[parent_id]) {
+                    this.getCategories(parent_id);
+                } else {
+                    this.handleToggleDrawer();
+                    this.bottomSheets.subCategory = true;
+                }
+            },
         }
     }
 </script>
@@ -384,6 +415,22 @@
                         width: 100%;
                         background: #ffffff;
                         padding: 15px;
+                    }
+                }
+
+                .category-list-item {
+                    a {
+                        overflow: hidden;
+                        white-space: nowrap;
+                        display: inline-block;
+                        text-overflow: ellipsis;
+                        width: calc(100% - 30px);
+                    }
+
+                    i {
+                        top: 10px;
+                        right: 10px;
+                        position: relative;
                     }
                 }
             }
