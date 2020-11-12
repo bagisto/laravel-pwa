@@ -55,7 +55,6 @@
         watch: {
             'localFormData.qty': {
                 handler: function (val) {
-                    debugger
                     console.log('updated');
                     console.log(val);
                     this.initGraph(this.graphId)

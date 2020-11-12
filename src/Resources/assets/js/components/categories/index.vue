@@ -1,8 +1,10 @@
 <template>
     <div class="content" v-if="category">
         <layered-navigation
+            :category-id="category.id"
+            @onFilterApplied="filterProducts($event)"
             v-show="category.display_mode == 'products_only' || category.display_mode == 'products_and_description'"
-            @onFilterApplied="filterProducts($event)">
+            >
         </layered-navigation>
 
         <div class="category-banner" v-if="category.image_url">

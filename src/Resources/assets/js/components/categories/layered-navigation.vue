@@ -25,7 +25,7 @@
 
             <div slot="content">
                 <ul>
-                    <li v-for="option in sortOptions">
+                    <li :key="index" v-for="(option, index) in sortOptions">
                         <span class="radio" :class="option.code">
                             <input
                                 type="radio"
@@ -53,7 +53,7 @@
 
             <div slot="content">
                 <div class="filter-attributes">
-                    <div class="filter-item" v-for="attribute in attributes">
+                    <div class="filter-item" :key="index" v-for="(attribute, index) in attributes">
 
                         <div class="filter-title">
                             {{ attribute.name }}
@@ -61,7 +61,7 @@
 
                         <div class="filter-content" :class="[attribute.swatch_type, attribute.type]">
                             <ol v-if="attribute.type == 'select' && attribute.swatch_type != 'color'">
-                                <li v-for="option in attribute.options">
+                                <li :key="index" v-for="(option, index) in attribute.options">
                                     <label :for="attribute.code + '_' + option.id"></label>
 
                                     <input type="checkbox"
@@ -78,7 +78,7 @@
                             <div class="swatch-container" v-if="attribute.type == 'select' && attribute.swatch_type == 'color'">
                                 <label
                                     class="swatch"
-                                    v-for="option in attribute.options"
+                                    :key="index" v-for="(option, index) in attribute.options"
                                     :for="attribute.code + '_' + option.id"
                                     :style="{ background: option.swatch_value }">
                                     <input type="checkbox"
@@ -129,6 +129,8 @@
     export default {
         name: 'layered-navigation',
         
+        props: ['categoryId'],
+
         components: { BottomSheet, VueSlider },
 
         data () {
@@ -203,21 +205,24 @@
 
         methods: {
             getFilerableAttributes () {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/attributes', { params: { is_filterable: 1, pagination: 0 } })
-                    .then(function(response) {
-                        this_this.attributes = response.data.data;
+                this.$http.get('/api/pwa/attributes', { params: {
+                        pagination: 0,
+                        is_filterable: 1,
+                        category_id: this.categoryId,
+                    }
+                })
+                .then(response => {
+                    this.attributes = response.data.data;
 
-                        EventBus.$emit('hide-ajax-loader');
+                    EventBus.$emit('hide-ajax-loader');
 
-                        this_this.attributes.forEach(function(attribute) {
-                            this_this.$set(this_this.appliedFilters, attribute.code, attribute.type == 'price' ? [0, 0] : [])
-                        })
-                    })
-                    .catch(function (error) {});
+                    this.attributes.forEach(attribute => {
+                        this.$set(this.appliedFilters, attribute.code, attribute.type == 'price' ? [0, 0] : [])
+                    });
+                })
+                .catch(function (error) {});
             },
 
             cancelFilter () {

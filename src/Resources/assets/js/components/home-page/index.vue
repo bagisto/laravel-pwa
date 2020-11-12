@@ -20,7 +20,7 @@
             </slide>
         </carousel>
 
-        <div class="category-container">
+        <div class="category-container" v-if="showCategories">
 
             <ul class="category-list">
 
@@ -151,13 +151,14 @@
             Advertisement,
         },
 
-        data () {
+        data: function () {
 			return {
                 sliders: [],
 				categories: [],
                 customer: null,
 				advertisements: [],
                 homePageContent: {},
+                showCategories: false,
 
                 product: {
                     'new'       : [],
@@ -174,7 +175,7 @@
 
             this.getHomePageContent();
 
-            this.getNewFeaturedProducts();
+            this.getConfigValues();
         },
 
         methods: {
@@ -197,22 +198,30 @@
                 .catch(function (error) {});
             },
 
-            getNewFeaturedProducts () {
+            getConfigValues () {
                 EventBus.$emit('show-ajax-loader');
 
+                var enable_new_key = 'pwa.settings.general.enable_new';
+                var enable_featured_key = 'pwa.settings.general.enable_featured';
+                var enable_categories_home_page_listing_key = 'pwa.settings.general.enable_categories_home_page_listing';
+                
                 this.$http.get("/api/config", {
                     params: {
-                        _config: 'pwa.settings.general.enable_new,pwa.settings.general.enable_featured'
+                        _config: `${enable_new_key},${enable_featured_key},${enable_categories_home_page_listing_key}`
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');
 
-                    if (response.data.data['pwa.settings.general.enable_new'] == "1") {
+                    if (response.data.data[enable_new_key] == "1") {
                         this.getProducts('new', { 'new': 1, limit: 4 });
                     }
 
-                    if (response.data.data['pwa.settings.general.enable_featured'] == "1") {
+                    if (response.data.data[enable_featured_key] == "1") {
                         this.getProducts('featured', { 'featured': 1, limit: 4 });
+                    }
+
+                    if (response.data.data[enable_categories_home_page_listing_key] == "1") {
+                        this.showCategories = true;
                     }
                 })
                 .catch(function (error) {});
@@ -315,7 +324,6 @@
                         }
                     })
                     .catch(error => {
-                        debugger
                         console.log(error)
                     });
             },

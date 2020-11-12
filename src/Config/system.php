@@ -60,6 +60,12 @@ return [
                 'type' => 'boolean',
                 'channel_based' => true,
                 'locale_based' => false
+            ], [
+                'name' => 'enable_categories_home_page_listing',
+                'title' => 'pwa::app.admin.system.enable_categories_home_page_listing',
+                'type' => 'boolean',
+                'channel_based' => true,
+                'locale_based' => false
             ]
         ]
     ], [

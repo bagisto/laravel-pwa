@@ -105,17 +105,17 @@
             </drawer-sidebar>
 
             <bottom-sheet :show="bottomSheets.subCategory" @onBottomSheetClose="bottomSheets.subCategory = false; ">
-                <div slot="header">
+                <h4 slot="header">
                    {{ $t('Sub Categories') }}
-                </div>
+                </h4>
 
                 <div slot="content">
                     <ul>
-                        <router-link tag="li" :to="`/categories/${subCategory.id}`" :key="index" v-for="(subCategory, index) in subCategories[parent_id]">
+                        <li @click="redirectToCategory(subCategory.id)" :key="index" v-for="(subCategory, index) in subCategories[parent_id]">
                             <template v-if="subCategory">
                                 {{ subCategory.name }}
                             </template>
-                        </router-link>
+                        </li>
                     </ul>
                 </div>
             </bottom-sheet>
@@ -301,6 +301,12 @@
                     this.bottomSheets.subCategory = true;
                 }
             },
+
+            redirectToCategory(categoryId) {
+                this.$router.push({ name: 'category', params: { id: categoryId } })
+                this.bottomSheets.subCategory = false;
+
+            }
         }
     }
 </script>

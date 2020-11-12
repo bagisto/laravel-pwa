@@ -4,8 +4,8 @@ namespace Webkul\PWA\Http\Controllers\Shop\API;
 
 use Illuminate\Http\Request;
 use Webkul\PWA\Http\Controllers\Controller;
+use Webkul\API\Http\Resources\Catalog\Attribute;
 use Webkul\Velocity\Helpers\Helper as VelocityHelper;
-
 /**
  * Push Notification controller
  *
@@ -66,6 +66,16 @@ class APIController extends Controller
 
         return response()->json([
             'data'      => $advertisementImages ?? [],
-        ]);;
+        ]);
+    }
+
+    public function fetchAttributes()
+    {
+        $category = app('\Webkul\Category\Repositories\CategoryRepository')->find(request()->get('category_id'));
+        $attributes = app('\Webkul\Product\Repositories\ProductFlatRepository')->getFilterableAttributes($category, null);
+
+        return response()->json([
+            'data' => Attribute::collection($attributes),
+        ]);
     }
 }

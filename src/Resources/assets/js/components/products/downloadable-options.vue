@@ -82,8 +82,6 @@
             },
 
             selectLink: function ({target}) {
-                debugger
-
                 if (target.checked) {
 
                 } else {

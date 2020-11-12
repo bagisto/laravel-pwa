@@ -96,6 +96,9 @@
                 Route::post('reviews/{id}/create', 'ReviewController@store');
 
                 Route::get('advertisements', 'API\APIController@fetchAdvertisementImages');
+
+                // Attribute routes
+                Route::get('pwa/attributes', 'API\APIController@fetchAttributes');
             });
 
             // Checkout routes
