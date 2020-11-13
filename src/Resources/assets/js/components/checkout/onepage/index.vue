@@ -24,17 +24,17 @@
                         <div v-if="! new_address['billing']">
                             <div class="panel-content">
                                 <div class="address-list">
-                                    <label class="address-item" v-for="addressTemp in addresses.billing" :for="'billing_address_' + addressTemp.id">
+                                    <label class="address-item" :key="index" v-for="(addressTemp, index) in addresses.billing" :for="'billing_address_' + addressTemp.id">
                                         <span class="radio" :class="'billing_address_' + addressTemp.id">
                                             <input type="radio" v-validate="'required'" :id="'billing_address_' + addressTemp.id" name="billing[address_id]" :value="addressTemp.id" v-model="address.billing.address_id" :data-vv-as="$t('Billing Address')">
                                             <label class="radio-view" :for="'billing_address_' + addressTemp.id"></label>
                                         </span>
 
                                         <div class="address_details">
-                                            {{ addressTemp.address1.join(' ') }}</br>
-                                            {{ addressTemp.city }}</br>
-                                            {{ addressTemp.state }}</br>
-                                            {{ addressTemp.country_name ? addressTemp.country_name : addressTemp.country  + ' ' + addressTemp.postcode }}</br>
+                                            {{ addressTemp.address1.join(' ') }}<br/>
+                                            {{ addressTemp.city }}<br/>
+                                            {{ addressTemp.state }}<br/>
+                                            {{ addressTemp.country_name ? addressTemp.country_name : addressTemp.country  + ' ' + addressTemp.postcode }}<br/>
                                             {{ addressTemp.phone }}
                                         </div>
 
@@ -103,17 +103,17 @@
                             <div v-if="! new_address['shipping']">
                                 <div class="panel-content">
                                     <div class="address-list">
-                                        <label class="address-item" v-for="addressTemp in addresses.shipping" :for="'shipping_address_' + addressTemp.id">
+                                        <label class="address-item" :key="index" v-for="(addressTemp, index) in addresses.shipping" :for="'shipping_address_' + addressTemp.id">
                                             <span class="radio" :class="'shipping_address_' + addressTemp.id">
                                                 <input type="radio" v-validate="'required'" :id="'shipping_address_' + addressTemp.id" name="shipping[address_id]" :value="addressTemp.id" v-model="address.shipping.address_id" :data-vv-as="$t('Shipping Address')">
                                                 <label class="radio-view" :for="'shipping_address_' + addressTemp.id"></label>
                                             </span>
 
                                             <div class="address_details">
-                                                {{ addressTemp.address1.join(' ') }}</br>
-                                                {{ addressTemp.city }}</br>
-                                                {{ addressTemp.state }}</br>
-                                                {{ addressTemp.country_name + ' ' + addressTemp.postcode }}</br>
+                                                {{ addressTemp.address1.join(' ') }}<br/>
+                                                {{ addressTemp.city }}<br/>
+                                                {{ addressTemp.state }}<br/>
+                                                {{ addressTemp.country_name + ' ' + addressTemp.postcode }}<br/>
                                                 {{ addressTemp.phone }}
                                             </div>
 
@@ -169,10 +169,10 @@
                         <div class="panel-content">
                             <div class="form-container shipping-methods" :class="[errors.has('shipping-form.shipping_method') ? 'has-error' : '']">
 
-                                <div class="method" v-for="method in shippingRates">
+                                <div class="method" :key="index" v-for="(method, index) in shippingRates">
                                     <h2>{{ method['carrier_title'] }}</h2>
 
-                                    <label class="radio" v-for="rate in method['rates']" :for="rate.method">
+                                    <label class="radio" :key="index" v-for="(rate, index) in method['rates']" :for="rate.method">
                                         <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
                                         <label class="radio-view" :for="rate.method"></label>
 
@@ -194,7 +194,7 @@
                         <div class="panel-content">
                             <div class="form-container payment-methods" :class="[errors.has('payment-form.payment_method') ? 'has-error' : '']">
 
-                                <div class="method" v-for="payment in paymentMethods">
+                                <div class="method" :key="index" v-for="(payment, index) in paymentMethods">
                                     <label class="radio">
                                         <input type="radio" v-validate="'required'" :id="payment.method" name="payment_method" :value="payment.method" v-model="selected_payment_method">
                                         <label class="radio-view" :for="payment.method"></label>
@@ -217,10 +217,10 @@
                         <div class="billing-address" v-if="cart.billing_address">
                             <h2>{{ $t('Billing Address') }}</h2>
                             <div class="address-details">
-                                {{ cart.billing_address.address1.join(' ') }}</br>
-                                {{ cart.billing_address.city }}</br>
-                                {{ cart.billing_address.state }}</br>
-                                {{ cart.billing_address.country_name ? cart.billing_address.country_name : cart.billing_address.country  + ' ' + cart.billing_address.postcode }}</br>
+                                {{ cart.billing_address.address1.join(' ') }}<br/>
+                                {{ cart.billing_address.city }}<br/>
+                                {{ cart.billing_address.state }}<br/>
+                                {{ cart.billing_address.country_name ? cart.billing_address.country_name : cart.billing_address.country  + ' ' + cart.billing_address.postcode }}<br/>
                                 {{ cart.billing_address.phone }}
                             </div>
                         </div>
@@ -241,10 +241,10 @@
                         <div class="shipping-address" v-if="cart.shipping_address">
                             <h2>{{ $t('Shipping Address') }}</h2>
                             <div class="address-details">
-                                {{ cart.shipping_address.address1.join(' ') }}</br>
-                                {{ cart.shipping_address.city }}</br>
-                                {{ cart.shipping_address.state }}</br>
-                                {{ cart.shipping_address.country_name ? cart.shipping_address.country_name : cart.shipping_address.country  + ' ' + cart.shipping_address.postcode }}</br>
+                                {{ cart.shipping_address.address1.join(' ') }}<br/>
+                                {{ cart.shipping_address.city }}<br/>
+                                {{ cart.shipping_address.state }}<br/>
+                                {{ cart.shipping_address.country_name ? cart.shipping_address.country_name : cart.shipping_address.country  + ' ' + cart.shipping_address.postcode }}<br/>
                                 {{ cart.shipping_address.phone }}
                             </div>
                         </div>
@@ -263,12 +263,12 @@
 
                     <div class="panel-content" style="padding-left: 16px">
                         <div class="cart-item-list">
-                            <div class="cart-item" v-for="cartItem in cart.items">
+                            <div class="cart-item" :key="index" v-for="(cartItem, index) in cart.items">
                                 <div class="product-name">{{ cartItem.product.name }}</div>
 
                                 <div class="cart-item-options">
                                     <div class="attributes" v-if="cartItem.additional.attributes">
-                                        <div class="option" v-for="attribute in cartItem.additional.attributes">
+                                        <div class="option" :key="index" v-for="(attribute, index) in cartItem.additional.attributes">
                                             <label>{{ attribute.attribute_name }} : </label>
                                             <span>{{ attribute.option_label }}</span>
                                         </div>
@@ -475,8 +475,6 @@
             },
 
             getCart () {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/checkout/cart')
@@ -491,6 +489,8 @@
                         ) {
                             this.$router.push({ name: 'login-register' });
                         }
+
+                        this.checkMinimumPrice(this.cart.grand_total);
 
                         EventBus.$emit('checkout.cart.changed', this.cart);
 
@@ -746,6 +746,29 @@
                         this.step--;
                     }
                 }
+            },
+
+            checkMinimumPrice (grandTotal) {
+                var minimumPriceKey = 'sales.orderSettings.minimum-order.minimum_order_amount';
+
+                this.$http.get("/api/config", {
+                    params: {
+                        _config: `${minimumPriceKey}`
+                    }
+                }).then(response => {
+                    EventBus.$emit('hide-ajax-loader');
+
+                    let minimumPrice = parseInt(response.data.data[minimumPriceKey]);
+                    if (minimumPrice > 0) {
+                        if (minimumPrice > parseInt(grandTotal)) {
+                            debugger
+                            this.$router.push({ name: 'home' });
+
+                            this.$toasted.show(this.$t('order.minimum_order_message', { amount: this.$options.filters.currency(minimumPrice) }), { type: 'error' })
+                        }
+                    }
+                })
+                .catch(function (error) {});
             }
         }
     }

@@ -1,10 +1,10 @@
 <template>
     <div class="address-card">
         <div class="address-deatils">
-            {{ address.address1.join(' ') }}</br>
-            {{ address.city }}</br>
-            {{ address.state }}</br>
-            {{ address.country_name + ' ' + address.postcode }}</br>
+            {{ address.address1.join(' ') }}<br/>
+            {{ address.city }}<br/>
+            {{ address.state }}<br/>
+            {{ address.country_name + ' ' + address.postcode }}<br/>
             {{ address.phone }}
 
             <!-- <i class="icon sharp-arrow-right-icon"></i> -->

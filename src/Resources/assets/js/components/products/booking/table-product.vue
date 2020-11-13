@@ -36,7 +36,7 @@
                                         {{ slot['from'] + ' - ' + slot['to'] }}
                                     </span>
 
-                                    </br>
+                                    <br/>
                                 </template>
 
                                 <template v-else>

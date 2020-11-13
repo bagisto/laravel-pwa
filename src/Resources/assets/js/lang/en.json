@@ -228,5 +228,8 @@
         "today_availability"        : "Today availability",
         "book_an_appointment"       : "Book an appointment"
     },
+    "order": {
+        "minimum_order_message": "Your order should be greater than {amount}"
+    },
     "something_went_wrong": "Something went wrong ! please try again later."
 }

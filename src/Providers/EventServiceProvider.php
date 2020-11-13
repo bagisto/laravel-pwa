@@ -24,6 +24,8 @@ class EventServiceProvider extends ServiceProvider
             $viewRenderEventManager->addTemplate('pwa::admin.layouts.style');
         });
 
+        Event::listen('bagisto.shop.layout.head', 'Webkul\PWA\Listeners\PWAListeners@redirectToPWA');
+
         Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
 
         Event::listen([

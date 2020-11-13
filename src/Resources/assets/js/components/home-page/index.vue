@@ -169,45 +169,33 @@
 		},
 
         mounted () {
-            this.getSliders();
+            this.getConfigValues();
 
             this.getCategories();
 
             this.getHomePageContent();
-
-            this.getConfigValues();
         },
 
         methods: {
             getSliders () {
-                this.$http.get("/api/config", {
-                    params: {
-                        _config: 'pwa.settings.general.enable_slider'
-                    }
-                }).then(response => {
-                    EventBus.$emit('hide-ajax-loader');
-
-                    if (response.data.data['pwa.settings.general.enable_slider'] == "1") {
-                        this.$http.get("/api/sliders")
-                        .then(response => {
-                            this.sliders = response.data.data;
-                        })
-                        .catch(function (error) {});
-                    }
-                })
-                .catch(function (error) {});
+                this.$http.get("/api/sliders?sort=id&order=asc")
+                    .then(response => {
+                        this.sliders = response.data.data;
+                    })
+                    .catch(function (error) {});
             },
 
             getConfigValues () {
                 EventBus.$emit('show-ajax-loader');
 
                 var enable_new_key = 'pwa.settings.general.enable_new';
+                var enable_slider_key = 'pwa.settings.general.enable_slider';
                 var enable_featured_key = 'pwa.settings.general.enable_featured';
                 var enable_categories_home_page_listing_key = 'pwa.settings.general.enable_categories_home_page_listing';
-                
+
                 this.$http.get("/api/config", {
                     params: {
-                        _config: `${enable_new_key},${enable_featured_key},${enable_categories_home_page_listing_key}`
+                        _config: `${enable_new_key},${enable_slider_key},${enable_featured_key},${enable_categories_home_page_listing_key}`
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');
@@ -218,6 +206,10 @@
 
                     if (response.data.data[enable_featured_key] == "1") {
                         this.getProducts('featured', { 'featured': 1, limit: 4 });
+                    }
+
+                    if (response.data.data[enable_slider_key] == "1") {
+                        this.getSliders();
                     }
 
                     if (response.data.data[enable_categories_home_page_listing_key] == "1") {

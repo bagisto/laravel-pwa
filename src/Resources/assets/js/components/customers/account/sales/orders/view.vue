@@ -131,10 +131,10 @@
                         <h3>{{ $t('Shipping Address') }}</h3>
 
                         <div class="address-deatils" v-if="order.shipping_address">
-                            {{ order.shipping_address.address1.join(' ') }}</br>
-                            {{ order.shipping_address.city }}</br>
-                            {{ order.shipping_address.state }}</br>
-                            {{ order.shipping_address.country_name + ' ' + order.shipping_address.postcode }}</br>
+                            {{ order.shipping_address.address1.join(' ') }}<br/>
+                            {{ order.shipping_address.city }}<br/>
+                            {{ order.shipping_address.state }}<br/>
+                            {{ order.shipping_address.country_name + ' ' + order.shipping_address.postcode }}<br/>
                             {{ order.shipping_address.phone }}
                         </div>
                     </div>
@@ -143,10 +143,10 @@
                         <h3>{{ $t('Billing Address') }}</h3>
 
                         <div class="address-deatils" v-if="order.billing_address">
-                            {{ order.billing_address.address1.join(' ') }}</br>
-                            {{ order.billing_address.city }}</br>
-                            {{ order.billing_address.state }}</br>
-                            {{ order.billing_address.country_name + ' ' + order.billing_address.postcode }}</br>
+                            {{ order.billing_address.address1.join(' ') }}<br/>
+                            {{ order.billing_address.city }}<br/>
+                            {{ order.billing_address.state }}<br/>
+                            {{ order.billing_address.country_name + ' ' + order.billing_address.postcode }}<br/>
                             {{ order.billing_address.phone }}
                         </div>
                     </div>

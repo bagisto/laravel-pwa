@@ -2,9 +2,9 @@
 
 namespace Webkul\PWA\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
 use Webkul\Checkout\Facades\Cart as CartFacade;
 
 /**

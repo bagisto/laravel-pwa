@@ -26,7 +26,8 @@ return [
             'pwa_full_name'                         => 'Progressive Web App',
             'enable_new'                            => 'Enable new products',
             'enable_featured'                       => 'Enable featured products',
-            'enable_categories_home_page_listing'   => 'Enable categories home page listing'
+            'enable_categories_home_page_listing'   => 'Enable categories home page listing',
+            'redirect_to_pwa_if_mobile'             => 'Redirect user to PWA if using mobile device',
         ],
 
         'layouts'           => [

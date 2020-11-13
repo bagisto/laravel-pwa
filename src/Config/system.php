@@ -66,6 +66,12 @@ return [
                 'type' => 'boolean',
                 'channel_based' => true,
                 'locale_based' => false
+            ], [
+                'name' => 'redirect_to_pwa_if_mobile',
+                'title' => 'pwa::app.admin.system.redirect_to_pwa_if_mobile',
+                'type' => 'boolean',
+                'channel_based' => true,
+                'locale_based' => false
             ]
         ]
     ], [

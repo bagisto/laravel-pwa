@@ -6,6 +6,9 @@
         {
             "name": "viveksharma-webkul",
             "email": "viveksh047@webkul.com"
+        }, {
+            "name": "Shubham Mehrotra",
+            "email": "shubhammehrotra.symfony@webkul.com"
         }
     ],
     "require": {
