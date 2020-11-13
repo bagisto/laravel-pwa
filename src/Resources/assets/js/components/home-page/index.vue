@@ -5,6 +5,7 @@
                 :per-page="1"
                 :loop="true"
                 :autoplay="true"
+                :autoplayTimeout="5000"
                 pagination-color="#E8E8E8"
                 pagination-active-color="#979797"
             >

@@ -125,13 +125,17 @@ class Product extends JsonResource
             break;
         }
 
+        if ($product->type != "grouped") {
+            $data['show_quantity_changer'] = $product->getTypeInstance()->showQuantityBox();
+        }
+
         $data +=  [
             'id'                     => $product->id,
             'type'                   => $product->type,
             'name'                   => $this->name,
             'url_key'                => $this->url_key,
             'price'                  => $product->getTypeInstance()->getMinimalPrice(),
-            'formated_price'         => core()->currency($product->getTypeInstance()->getMinimalPrice()),
+            'formated_price'         => $product->getTypeInstance()->getPriceHtml(),
             'short_description'      => $this->short_description,
             'description'            => $this->description,
             'sku'                    => $this->sku,

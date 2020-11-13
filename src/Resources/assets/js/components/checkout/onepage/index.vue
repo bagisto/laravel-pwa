@@ -31,6 +31,7 @@
                                         </span>
 
                                         <div class="address_details">
+                                            {{ addressTemp.first_name + ' ' + addressTemp.last_name }}<br/>
                                             {{ addressTemp.address1.join(' ') }}<br/>
                                             {{ addressTemp.city }}<br/>
                                             {{ addressTemp.state }}<br/>
@@ -110,6 +111,7 @@
                                             </span>
 
                                             <div class="address_details">
+                                                {{ addressTemp.first_name + ' ' + addressTemp.last_name }}<br/>
                                                 {{ addressTemp.address1.join(' ') }}<br/>
                                                 {{ addressTemp.city }}<br/>
                                                 {{ addressTemp.state }}<br/>
@@ -761,10 +763,9 @@
                     let minimumPrice = parseInt(response.data.data[minimumPriceKey]);
                     if (minimumPrice > 0) {
                         if (minimumPrice > parseInt(grandTotal)) {
-                            debugger
                             this.$router.push({ name: 'home' });
 
-                            this.$toasted.show(this.$t('order.minimum_order_message', { amount: this.$options.filters.currency(minimumPrice) }), { type: 'error' })
+                            this.$toasted.show(this.$t('order.minimum_order_message', { amount: this.$options.filters.currency(minimumPrice) }), { type: 'error', duration: 2000 })
                         }
                     }
                 })

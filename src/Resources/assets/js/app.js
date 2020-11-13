@@ -32,8 +32,15 @@ Vue.use(VeeValidate);
 Vue.use(Toasted, {
     fullWidth: true,
     fitToScreen: true,
-    closeOnSwipe: false,
-    duration: 1000
+    closeOnSwipe: true,
+    duration: 2000,
+    // you can pass a single action as below
+    action : {
+        text : 'X',
+        onClick : (e, toastObject) => {
+            toastObject.goAway(0);
+        }
+    },
 });
 
 Vue.use(require('vue-moment'));

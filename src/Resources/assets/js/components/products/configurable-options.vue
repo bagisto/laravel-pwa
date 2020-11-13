@@ -1,32 +1,47 @@
 <template>
     <div class="attributes">
-        <div v-for='(attribute, index) in childAttributes' class="attribute" :class="[attribute.swatch_type, errors.has('super_attribute[' + attribute.id + ']') ? 'has-error' : '']">
+        <div :key="index" v-for='(attribute, index) in childAttributes' class="attribute" :class="[attribute.swatch_type, errors.has('super_attribute[' + attribute.id + ']') ? 'has-error' : '']">
             <label class="required">{{ attribute.label }}</label>
 
             <span class="swatch-container">
                 <label class="swatch"
+                    :key="index"
                     v-for='(option, index) in attribute.options'
-                    v-if="option.id"
+                    
                     :data-id="option.id"
                     :for="['attribute_' + attribute.id + '_option_' + option.id]">
 
-                    <input type="radio"
-                        v-validate="'required'"
-                        :name="['super_attribute[' + attribute.id + ']']"
-                        :id="['attribute_' + attribute.id + '_option_' + option.id]"
-                        :value="option.id"
-                        v-model="formData.super_attribute[attribute.id]"
-                        :data-vv-as="'&quot;' + attribute.label + '&quot;'"
-                        @change="configure(attribute, $event.target.value)"/>
+                    <template v-if="option.id">
+                        <input type="radio"
+                            v-validate="'required'"
+                            :name="['super_attribute[' + attribute.id + ']']"
+                            :id="['attribute_' + attribute.id + '_option_' + option.id]"
+                            :value="option.id"
+                            v-model="formData.super_attribute[attribute.id]"
+                            :data-vv-as="'&quot;' + attribute.label + '&quot;'"
+                            @change="configure(attribute, $event.target.value)" />
 
-                    <span v-if="attribute.swatch_type == 'color'" :style="{ background: option.swatch_value }"></span>
+                        <span
+                            v-if="attribute.swatch_type == 'color'"
+                            :style="{ background: option.swatch_value }"
+                            >
+                        </span>
 
-                    <img alt="option-switch-value" v-if="attribute.swatch_type == 'image'" :src="option.swatch_value" />
+                        <img
+                            alt="option-switch-value"
+                            :src="option.swatch_value"
+                            v-else-if="attribute.swatch_type == 'image'"
+                        />
 
-                    <span v-if="! attribute.swatch_type || attribute.swatch_type == 'text' || attribute.swatch_type == 'dropdown'">
-                        {{ option.label }}
-                    </span>
-
+                        <span
+                            v-else-if="
+                                ! attribute.swatch_type
+                                || attribute.swatch_type == 'text'
+                                || attribute.swatch_type == 'dropdown'
+                            ">
+                            {{ option.label }}
+                        </span>
+                    </template>
                 </label>
 
                 <span v-if="! attribute.options.length" class="no-options">
@@ -127,7 +142,6 @@
                         this.resetChildren(attribute.nextAttribute);
                     } else {
                         this.formData['selected_configurable_option'] = attribute.options[attribute.selectedIndex].allowedProducts[0];
-                        // this.selectedProductId = attribute.options[attribute.selectedIndex].allowedProducts[0];
                     }
                 } else {
                     attribute.selectedIndex = 0;

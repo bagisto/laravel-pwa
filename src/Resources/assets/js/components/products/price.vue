@@ -1,24 +1,6 @@
 <template>
     <div class="product-price">
-        <span v-if="
-            product.type == 'grouped'
-            || product.type == 'bundle'
-            || product.type == 'booking'
-            || product.type == 'configurable'
-            || product.type == 'downloadable'
-        ">
-            <span class="final-price" v-html="product.formated_price"></span>
-        </span>
-
-        <span v-else>
-            <span v-if="product.special_price">
-                <span class="special-price">{{ product.formated_special_price }}</span>
-
-                <span class="regular-price">{{ product.formated_regular_price }}</span>
-            </span>
-
-            <span v-if="! product.special_price">{{ product.formated_price }}</span>
-        </span>
+        <div v-html="product.formated_price"></div>
     </div>
 </template>
 
