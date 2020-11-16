@@ -302,7 +302,7 @@
             getProducts (details, params) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/products", { params: params })
+                this.$http.get("/api/pwa/products", { params: params })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
                         

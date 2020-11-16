@@ -38,7 +38,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .VueCarousel-wrapper {
         img {
             max-width: 275px;

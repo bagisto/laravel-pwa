@@ -18,7 +18,7 @@
         <meta name="keywords" content="{{ core()->getConfigData('pwa.settings.seo.seo_keywords')  }}" >
         @endif
 
-        <link rel="stylesheet" href="{{ asset('vendor/webkul/pwa/assets/css/pwa.css') }}">
+        <link rel="stylesheet" href="{{ asset('vendor/webkul/pwa/assets/css/pwa.css?v=' . strtotime("now")) }}">
         <link rel="manifest" href="{{ asset('manifest.json') }}">
         <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
 

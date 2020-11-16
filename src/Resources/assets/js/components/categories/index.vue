@@ -148,7 +148,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/products", { params: this.params })
+                this.$http.get("/api/pwa/products", { params: this.params })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

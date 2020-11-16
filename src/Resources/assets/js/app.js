@@ -19,7 +19,7 @@ axios.defaults.baseURL = window.config.app_base_url;
 require('./bootstrap');
 
 Vue.use(VueCurrencyFilter, {
-    symbol : window.config.currentCurrency ? window.config.currentCurrency.code : '$',
+    symbol : window.config.currentCurrency ? window.config.currentCurrency.symbol : '$',
     thousandsSeparator: ',',
     fractionCount: 2,
     fractionSeparator: '.',

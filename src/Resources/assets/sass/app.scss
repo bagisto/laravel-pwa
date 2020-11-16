@@ -662,3 +662,29 @@ ul {
 .hidden {
     display: none;
 }
+
+.product-details {
+    .sticker {
+        display: none;
+    }
+
+    .product-price {
+        font-size: 20px;
+        font-weight: 600;
+        color: #000000;
+        margin-bottom: 16px;
+
+        .special-price {
+            float: left;
+        }
+
+        .regular-price {
+            text-decoration: line-through;
+            opacity: 0.56;
+            font-family: 600;
+            font-size: 14px;
+            color: #000000;
+            margin-left: 8px;
+        }
+    }
+}

@@ -216,7 +216,7 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 // Add the public key generated from the console here.
-messaging.usePublicVapidKey('BD_Dln12imwjo_BZO3rnwsWOnccsoZLtHJdR6m03Dvge3hDFLF6hiRQIIEtY-6ZQvVh1w1AMq4xfa_o97B-SF6A');
+// messaging.usePublicVapidKey('BD_Dln12imwjo_BZO3rnwsWOnccsoZLtHJdR6m03Dvge3hDFLF6hiRQIIEtY-6ZQvVh1w1AMq4xfa_o97B-SF6A');
 
 // messaging.setBackgroundMessageHandler(function(payload) {
 //   console.log('[firebase-messaging-sw.js] Recebackground message' , 'payload');

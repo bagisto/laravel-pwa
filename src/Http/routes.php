@@ -73,9 +73,9 @@
                 Route::get('pwa/categories', 'CategoryController@index');
 
                 // Product routes
-                Route::get('products', 'ProductController@index')->name('api.products');
+                Route::get('pwa/products', 'ProductController@index')->name('api.products');
 
-                Route::get('products/{id}', 'ProductController@get');
+                Route::get('pwa/products/{id}', 'ProductController@get');
 
                 Route::get('product-configurable-config/{id}', 'ProductController@configurableConfig');
 

@@ -126,7 +126,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/products/' + productId)
+                this.$http.get('/api/pwa/products/' + productId)
                     .then(function(response) {
                         this_this.product = response.data.data;
 
