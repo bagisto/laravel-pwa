@@ -203,7 +203,7 @@ class CheckoutController extends Controller
         return response()->json([
             'success'   => true,
             'order'     => [
-                "id" => $order->id
+                "id" => $order->increment_id
             ],
         ]);
     }
