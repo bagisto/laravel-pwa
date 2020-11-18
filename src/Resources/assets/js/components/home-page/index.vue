@@ -230,44 +230,42 @@
                         let homePageContent = response.data.data[0].home_page_content;
                         let homePageContentArray = homePageContent.split(",");
 
-                        if (homePageContent.includes('velocity-advertisement')) {
-                            this.$http.get("/api/advertisements?locale=en")
-                                .then(response => {
-                                    homePageContentArray.forEach(content => {
-                                        switch (content) {
-                                            case 'velocity-advertisement-two':
-                                                this.homePageContent['advertisement-two'] = Object.values(response.data.data[2]);
-                                                break;
+                        this.$http.get("/api/advertisements?locale=en")
+                            .then(response => {
+                                homePageContentArray.forEach(content => {
+                                    switch (content) {
+                                        case 'velocity-advertisement-two':
+                                            this.homePageContent['advertisement-two'] = Object.values(response.data.data[2]);
+                                            break;
 
-                                            case 'velocity-advertisement-three':
-                                                this.homePageContent['advertisement-three'] = Object.values(response.data.data[3]);
-                                                break;
+                                        case 'velocity-advertisement-three':
+                                            this.homePageContent['advertisement-three'] = Object.values(response.data.data[3]);
+                                            break;
 
-                                            case 'velocity-advertisement-four':
-                                                this.homePageContent['advertisement-four'] = Object.values(response.data.data[4]);
-                                                break;
+                                        case 'velocity-advertisement-four':
+                                            this.homePageContent['advertisement-four'] = Object.values(response.data.data[4]);
+                                            break;
 
-                                            default:
-                                                this.homePageContent[content] = {};
+                                        default:
+                                            this.homePageContent[content] = {};
 
-                                                if (this.categories) {
-                                                    this.categories.filter(category => {
-                                                        if (category.slug == content) {
-                                                            this.homePageContent[content] = {
-                                                                'products' : [],
-                                                                'category_details' : category,
-                                                            }
-
-                                                            this.getProducts(content, { 'category_id': category.id });
+                                            if (this.categories) {
+                                                this.categories.filter(category => {
+                                                    if (category.slug == content) {
+                                                        this.homePageContent[content] = {
+                                                            'products' : [],
+                                                            'category_details' : category,
                                                         }
-                                                    });
-                                                }
-                                                break;
-                                        }
-                                    });
-                                })
-                                .catch(function (error) {});
-                        }
+
+                                                        this.getProducts(content, { 'category_id': category.id });
+                                                    }
+                                                });
+                                            }
+                                            break;
+                                    }
+                                });
+                            })
+                            .catch(function (error) {});
                     })
                     .catch(function (error) {});
             },

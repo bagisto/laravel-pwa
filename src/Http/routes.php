@@ -115,7 +115,7 @@
 
                 Route::get('cart/move-to-wishlist/{id}', 'CartController@moveToWishlist');
 
-                Route::post('save-address', 'CheckoutController@saveAddress');
+                Route::post('pwa/save-address', 'CheckoutController@saveAddress');
 
                 Route::post('save-shipping', 'CheckoutController@saveShipping');
 

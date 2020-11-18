@@ -457,7 +457,20 @@
 
                         this_this.getCustomerAddresses(this_this.customer.id)
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                        if (
+                            this_this.addresses['billing']
+                            && this_this.addresses['billing'].length == 0
+                        ) {
+                            if (window.localStorage.address) {
+                                let address = JSON.parse(window.localStorage.address);
+                                this_this.address['billing'] = address.billing;
+                                this_this.addAddress('billing');
+                            } else {
+                                this_this.new_address['billing'] = true;
+                            }
+                        }
+                    });
             },
 
             getCustomerAddresses (customerId) {
@@ -516,6 +529,11 @@
                     if (result) {
                         if (this.formScopes[this.step] == 'address-form') {
                             if (type != '') {
+                                let billingAddress = this.address.billing;
+                                window.localStorage.address = JSON.stringify({
+                                    'billing': billingAddress
+                                });
+
                                 this.addAddress(type);
                             } else {
                                 this.saveAddress();
@@ -541,6 +559,10 @@
                 this.new_address[type] = false;
 
                 this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping, save_as_address: this.address.billing.save_as_address})
+
+                if (this.addresses[type].length == 1) {
+                    this.address.billing.address_id = this.addresses.billing[0].id;
+                }
             },
 
             saveAddress () {
@@ -562,7 +584,7 @@
                 }
 
                 self.disable_button = true;
-                this.$http.post('/api/checkout/save-address', self.address)
+                this.$http.post('/api/checkout/pwa/save-address', self.address)
                     .then(function(response) {
                         if (response.data.data.nextStep == "payment") {
                             self.skipShipping = true;

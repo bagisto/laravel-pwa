@@ -14,7 +14,7 @@
 
                 <div class="cart-item-options">
                     <div class="attributes" v-if="cartItem.additional.attributes">
-                        <div class="option" v-for="attribute in cartItem.additional.attributes">
+                        <div class="option" :key="index" v-for="(attribute, index) in cartItem.additional.attributes">
                             <label>{{ attribute.attribute_name }} : </label>
                             <span>{{ attribute.option_label }}</span>
                         </div>
@@ -35,7 +35,7 @@
             <div class="cart-item-qty">
                 <div class="quantity">
                     <button type="button" class="btn btn-black decrease-qty"
-                        @click="quantities[cartItem.id] > 1 ? quantities[cartItem.id]-- : quantities[cartItem.id]">
+                        @click="changeQuantity(quantities[cartItem.id] > 1 ? quantities[cartItem.id]-- : quantities[cartItem.id])">
                         <i class="icon minus-icon"></i>
                     </button>
 
@@ -43,7 +43,7 @@
                         {{ quantities[cartItem.id] }}
                     </div>
 
-                    <button type="button" class="btn btn-black increase-qty" @click="quantities[cartItem.id]++">
+                    <button type="button" class="btn btn-black increase-qty" @click="changeQuantity(quantities[cartItem.id]++)">
                         <i class="icon plus-icon"></i>
                     </button>
                 </div>
@@ -83,6 +83,10 @@
 
             removeItem () {
                 this.$emit('removeItem')
+            },
+
+            changeQuantity () {
+                this.$emit('quantityChanged')
             }
         }
     }

@@ -137,6 +137,8 @@
 
                     quantity: 1,
 
+                    is_buy_now: 0,
+
                     super_attribute: {},
 
                     selected_configurable_option: 0
@@ -228,7 +230,7 @@
             validateBeforeSubmit (event) {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.addToCart()
+                        this.addToCart();
                     }
                 });
             },
@@ -244,28 +246,17 @@
 
                         EventBus.$emit('checkout.cart.changed', response.data.data);
 
-                        // this.$router.push({name: 'cart'})
+                        if (this.is_buy_now) {
+                            this.$router.push({name: 'cart'})
+                        }
                     })
                     .catch(error => {
                     })
             },
 
-            buyNow () {
-                var this_this = this;
-                
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
-                    .then(function(response) {
-
-                        EventBus.$emit('hide-ajax-loader');
-
-                        EventBus.$emit('checkout.cart.changed', response.data.data);
-
-                        this_this.$router.push({name: 'cart'})
-                    })
-                    .catch(function (error) {
-                    })
+            buyNow (event) {
+                this.is_buy_now = 1;
+                this.validateBeforeSubmit();
             }
         }
     }

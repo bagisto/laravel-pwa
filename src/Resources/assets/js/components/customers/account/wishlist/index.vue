@@ -97,6 +97,10 @@
                     .catch(function (error) {
                         if (error.response.data.data == -1) {
                             this_this.$router.push({ path: '/products/' + item.product.id })
+                        } else if (error.response.data.message) {
+                            this_this.$router.push({ path: '/products/' + item.product.id })
+
+                            this_this.$toasted.show(error.response.data.message, { type: 'error' })
                         }
                     });
             }

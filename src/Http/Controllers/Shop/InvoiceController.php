@@ -82,7 +82,7 @@ class InvoiceController extends Controller
 
         $pdf = PDF::loadView('shop::customers.account.orders.pdf', compact('invoice'))->setPaper('a4');
         
-        return $pdf->output();
+        return $pdf->download('invoice-' . $invoice->created_at->format('d-m-Y') . '.pdf');
     }
 
     /**

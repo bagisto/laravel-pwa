@@ -13,6 +13,7 @@
                     :key='cartItem.uid'
                     :cart-item="cartItem"
                     :quantities="quantities"
+                    @quantityChanged="quantityChanged"
                     @moveToWishlist="moveToWishlist(cartItem)"
                     @removeItem="removeItem(cartItem)"
                 ></cart-item>
@@ -98,8 +99,8 @@
         data () {
             return {
                 cart: null,
-
-                quantities: {}
+                quantities: {},
+                debounceTimer: 0,
             }
         },
 
@@ -196,6 +197,13 @@
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
+            },
+
+            quantityChanged: function () {
+                clearTimeout(this.debounceTimer);
+                this.debounceTimer = setTimeout(() => {
+                    this.updateCart();
+                }, 2000); 
             }
         }
     }
