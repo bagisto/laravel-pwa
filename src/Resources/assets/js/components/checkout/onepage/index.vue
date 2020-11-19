@@ -492,7 +492,7 @@
             getCart () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/checkout/pwa/cart')
+                this.$http.get('/api/pwa/checkout/cart')
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -584,7 +584,7 @@
                 }
 
                 self.disable_button = true;
-                this.$http.post('/api/checkout/pwa/save-address', self.address)
+                this.$http.post('/api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
                         if (response.data.data.nextStep == "payment") {
                             self.skipShipping = true;

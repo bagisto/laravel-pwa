@@ -70,13 +70,6 @@
         Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
 
             Route::namespace('Webkul\PWA\Http\Controllers\Shop')->group(function () {
-                Route::get('pwa/categories', 'CategoryController@index');
-
-                // Product routes
-                Route::get('pwa/products', 'ProductController@index')->name('api.products');
-
-                Route::get('pwa/products/{id}', 'ProductController@get');
-
                 Route::get('product-configurable-config/{id}', 'ProductController@configurableConfig');
 
                 Route::get('invoices/{id}/download', 'InvoiceController@print')->defaults('_config', [
@@ -96,16 +89,23 @@
                 Route::post('reviews/{id}/create', 'ReviewController@store');
 
                 Route::get('advertisements', 'API\APIController@fetchAdvertisementImages');
-
-                // Attribute routes
-                Route::get('pwa/attributes', 'API\APIController@fetchAttributes');
             });
 
             // Checkout routes
+            Route::group(['namespace' => 'Webkul\PWA\Http\Controllers\Shop', 'prefix' => 'pwa'], function ($router) {
+                Route::group(['prefix' => 'checkout'], function ($router) {
+                    Route::get('cart', 'CartController@get');
+                });
+
+                Route::get('categories', 'CategoryController@index');
+                Route::get('attributes', 'API\APIController@fetchAttributes');
+
+                Route::get('products', 'ProductController@index')->name('api.products');
+                Route::get('products/{id}', 'ProductController@get');
+            });
+
             Route::group(['namespace' => 'Webkul\PWA\Http\Controllers\Shop', 'prefix' => 'checkout'], function ($router) {
                 Route::post('cart/add/{id}', 'CartController@store');
-
-                Route::get('pwa/cart', 'CartController@get');
 
                 Route::get('cart/empty', 'CartController@destroy');
 
