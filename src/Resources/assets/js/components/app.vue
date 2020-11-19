@@ -4,159 +4,161 @@
         <div slot="content">
             <header-nav @toggleDrawer="handleToggleDrawer"></header-nav>
 
-            <drawer-sidebar ref="drawer">
-                <div class="drawer">
+            <div class="page-view-container">
+                <drawer-sidebar ref="drawer">
+                    <div class="drawer">
 
-                    <div class="drawer-header">
-                        <router-link :to="'/customer/login-register'" class="login-info" v-if="! currentUser">
-                            <div class="avatar"></div>
-                            <h2>{{ $t('Sign In') }}</h2>
-                            <p>{{ $t('to your account') }}</p>
-                            <i class="icon arrow-right-icon"></i>
-                        </router-link>
+                        <div class="drawer-header">
+                            <router-link :to="'/customer/login-register'" class="login-info" v-if="! currentUser">
+                                <div class="avatar"></div>
+                                <h2>{{ $t('Sign In') }}</h2>
+                                <p>{{ $t('to your account') }}</p>
+                                <i class="icon arrow-right-icon"></i>
+                            </router-link>
 
-                        <router-link :to="'/customer/account/dashboard'" class="login-info" v-if="currentUser">
-                            <div class="avatar"></div>
-                            <h2>{{ $t('Hello!') }}</h2>
-                            <p>{{ currentUser.name }}</p>
-                            <i class="icon arrow-right-icon"></i>
-                        </router-link>
+                            <router-link :to="'/customer/account/dashboard'" class="login-info" v-if="currentUser">
+                                <div class="avatar"></div>
+                                <h2>{{ $t('Hello!') }}</h2>
+                                <p>{{ currentUser.name }}</p>
+                                <i class="icon arrow-right-icon"></i>
+                            </router-link>
+                        </div>
+
+                        <div class="drawer-content">
+
+                            <div class="drawer-box categories">
+                                <h2>{{ $t('Categories') }}</h2>
+
+                                <ul>
+                                    <li :key="category.id" v-for="category in categories" class="category-list-item">
+                                        <router-link :to="'/categories/' + category.id">
+                                            {{ category.name }}
+                                        </router-link>
+                                        <i class="icon sharp-arrow-right-icon"  @click="openSubcategories(category.id, $event)"></i>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="drawer-box account" v-if="currentUser">
+                                <h2>{{ $t('Account') }}</h2>
+
+                                <ul>
+                                    <li>
+                                        <router-link :to="'/customer/account/dashboard'">
+                                            {{ $t('Dashboard') }}
+                                            <i class="icon sharp-arrow-right-icon"></i>
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/customer/account/wishlist'">
+                                            {{ $t('Wishlist') }}
+                                            <i class="icon sharp-arrow-right-icon"></i>
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/customer/account/orders'">
+                                            {{ $t('Orders') }}
+                                            <i class="icon sharp-arrow-right-icon"></i>
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/customer/account/addresses'">
+                                            {{ $t('Address Book') }}
+                                            <i class="icon sharp-arrow-right-icon"></i>
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/customer/account/reviews'">
+                                            {{ $t('Product Reviews') }}
+                                            <i class="icon sharp-arrow-right-icon"></i>
+                                        </router-link>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="drawer-box preference" v-if="currencies.length > 1 || locales.length > 1">
+                                <h2>{{ $t('Preference') }}</h2>
+
+                                <ul>
+                                    <li v-if="currencies.length > 1" @click="handleToggleDrawer(); bottomSheets.currency = true">
+                                        {{ $t('Currency -') }} {{ currentCurrency.name }} ({{ currentCurrency.code }})
+                                        <i class="icon sharp-arrow-right-icon"></i>
+                                    </li>
+
+                                    <li v-if="locales.length > 1" @click="handleToggleDrawer(); bottomSheets.locale = true">
+                                        {{ $t('Language -') }} {{ currentLocale.name }} ({{ currentLocale.code }})
+                                        <i class="icon sharp-arrow-right-icon"></i>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="drawer-box logout" v-if="currentUser">
+                                <button class="logout-btn" @click="logout">{{ $t('Log Out') }}</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </drawer-sidebar>
+
+                <bottom-sheet :show="bottomSheets.subCategory" @onBottomSheetClose="bottomSheets.subCategory = false; ">
+                    <h4 slot="header">
+                    {{ $t('Sub Categories') }}
+                    </h4>
+
+                    <div slot="content">
+                        <ul>
+                            <li @click="redirectToCategory(subCategory.id)" :key="index" v-for="(subCategory, index) in subCategories[parent_id]">
+                                <template v-if="subCategory">
+                                    {{ subCategory.name }}
+                                </template>
+                            </li>
+                        </ul>
+                    </div>
+                </bottom-sheet>
+
+                <bottom-sheet v-if="currencies.length > 1" :show="bottomSheets.currency" @onBottomSheetClose="bottomSheets.currency = false; ">
+                    <div slot="header">
+                    {{ $t('Currency') }}
                     </div>
 
-                    <div class="drawer-content">
+                    <div slot="content">
+                        <ul>
+                            <li :key="currency.id" v-for="currency in currencies">
+                                <span class="radio" :class="currency.code">
+                                    <input type="radio" :id="currency.code" name="currency" :checked="currency.code == currentCurrency.code" @change="switchCurrency(currency)">
+                                    <label class="radio-view" :for="currency.code"></label>
+                                    {{ currency.name }}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </bottom-sheet>
 
-                        <div class="drawer-box categories">
-                            <h2>{{ $t('Categories') }}</h2>
-
-                            <ul>
-                                <li :key="category.id" v-for="category in categories" class="category-list-item">
-                                    <router-link :to="'/categories/' + category.id">
-                                        {{ category.name }}
-                                    </router-link>
-                                    <i class="icon sharp-arrow-right-icon"  @click="openSubcategories(category.id, $event)"></i>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="drawer-box account" v-if="currentUser">
-                            <h2>{{ $t('Account') }}</h2>
-
-                            <ul>
-                                <li>
-                                    <router-link :to="'/customer/account/dashboard'">
-                                        {{ $t('Dashboard') }}
-                                        <i class="icon sharp-arrow-right-icon"></i>
-                                    </router-link>
-                                </li>
-
-                                <li>
-                                    <router-link :to="'/customer/account/wishlist'">
-                                        {{ $t('Wishlist') }}
-                                        <i class="icon sharp-arrow-right-icon"></i>
-                                    </router-link>
-                                </li>
-
-                                <li>
-                                    <router-link :to="'/customer/account/orders'">
-                                        {{ $t('Orders') }}
-                                        <i class="icon sharp-arrow-right-icon"></i>
-                                    </router-link>
-                                </li>
-
-                                <li>
-                                    <router-link :to="'/customer/account/addresses'">
-                                        {{ $t('Address Book') }}
-                                        <i class="icon sharp-arrow-right-icon"></i>
-                                    </router-link>
-                                </li>
-
-                                <li>
-                                    <router-link :to="'/customer/account/reviews'">
-                                        {{ $t('Product Reviews') }}
-                                        <i class="icon sharp-arrow-right-icon"></i>
-                                    </router-link>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="drawer-box preference" v-if="currencies.length > 1 || locales.length > 1">
-                            <h2>{{ $t('Preference') }}</h2>
-
-                            <ul>
-                                <li v-if="currencies.length > 1" @click="handleToggleDrawer(); bottomSheets.currency = true">
-                                    {{ $t('Currency -') }} {{ currentCurrency.name }} ({{ currentCurrency.code }})
-                                    <i class="icon sharp-arrow-right-icon"></i>
-                                </li>
-
-                                <li v-if="locales.length > 1" @click="handleToggleDrawer(); bottomSheets.locale = true">
-                                    {{ $t('Language -') }} {{ currentLocale.name }} ({{ currentLocale.code }})
-                                    <i class="icon sharp-arrow-right-icon"></i>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="drawer-box logout" v-if="currentUser">
-                            <button class="logout-btn" @click="logout">{{ $t('Log Out') }}</button>
-                        </div>
-
+                <bottom-sheet v-if="locales.length > 1" :show="bottomSheets.locale" @onBottomSheetClose="bottomSheets.locale = false; ">
+                    <div slot="header">
+                        {{ $t('Languages') }}
                     </div>
 
-                </div>
-            </drawer-sidebar>
+                    <div slot="content">
+                        <ul>
+                            <li :key="index" v-for="(locale, index) in locales">
+                                <span class="radio" :class="locale.code">
+                                    <input type="radio" :id="locale.code" name="locale" :checked="locale.code == currentLocale.code" @change="switchLocale(locale)">
+                                    <label class="radio-view" :for="locale.code"></label>
+                                    {{ locale.name }}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </bottom-sheet>
 
-            <bottom-sheet :show="bottomSheets.subCategory" @onBottomSheetClose="bottomSheets.subCategory = false; ">
-                <h4 slot="header">
-                   {{ $t('Sub Categories') }}
-                </h4>
-
-                <div slot="content">
-                    <ul>
-                        <li @click="redirectToCategory(subCategory.id)" :key="index" v-for="(subCategory, index) in subCategories[parent_id]">
-                            <template v-if="subCategory">
-                                {{ subCategory.name }}
-                            </template>
-                        </li>
-                    </ul>
-                </div>
-            </bottom-sheet>
-
-            <bottom-sheet v-if="currencies.length > 1" :show="bottomSheets.currency" @onBottomSheetClose="bottomSheets.currency = false; ">
-                <div slot="header">
-                   {{ $t('Currency') }}
-                </div>
-
-                <div slot="content">
-                    <ul>
-                        <li :key="currency.id" v-for="currency in currencies">
-                            <span class="radio" :class="currency.code">
-                                <input type="radio" :id="currency.code" name="currency" :checked="currency.code == currentCurrency.code" @change="switchCurrency(currency)">
-                                <label class="radio-view" :for="currency.code"></label>
-                                {{ currency.name }}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </bottom-sheet>
-
-            <bottom-sheet v-if="locales.length > 1" :show="bottomSheets.locale" @onBottomSheetClose="bottomSheets.locale = false; ">
-                <div slot="header">
-                    {{ $t('Languages') }}
-                </div>
-
-                <div slot="content">
-                    <ul>
-                        <li :key="index" v-for="(locale, index) in locales">
-                            <span class="radio" :class="locale.code">
-                                <input type="radio" :id="locale.code" name="locale" :checked="locale.code == currentLocale.code" @change="switchLocale(locale)">
-                                <label class="radio-view" :for="locale.code"></label>
-                                {{ locale.name }}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </bottom-sheet>
-
-            <router-view></router-view>
+                <router-view></router-view>
+            </div>
         </div>
 
         <ajax-loader></ajax-loader>
@@ -441,5 +443,10 @@
                 }
             }
         }
+    }
+
+    .page-view-container {
+        top: 56px;
+        position: relative;
     }
 </style>

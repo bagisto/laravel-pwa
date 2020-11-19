@@ -11,7 +11,7 @@
             </span>
         </span>
 
-        <div v-if="customer">
+        <div v-if="customer || is_guest_checkout">
             <router-link :to="'/reviews/' + product.id + '/create'">
                 {{ $t('Add Your Review') }}
             </router-link>
@@ -29,11 +29,12 @@
         data () {
             return {
                 customer: null,
+                is_guest_checkout: false,
             }
         },
 
         mounted () {
-            this.getAuthCustomer();
+            this.checkGuestReview();
         },
 
         methods: {
@@ -50,6 +51,27 @@
                     })
                     .catch(function (error) {});
             },
+
+            checkGuestReview () {
+                EventBus.$emit('show-ajax-loader');
+
+                var guest_checkout_key = 'catalog.products.review.guest_review';
+
+                this.$http.get("/api/config", {
+                    params: {
+                        _config: `${guest_checkout_key}`
+                    }
+                }).then(response => {
+                    EventBus.$emit('hide-ajax-loader');
+
+                    if (response.data.data[guest_checkout_key] == "1") {
+                        this.is_guest_checkout = 1;
+                    } else {
+                        this.getAuthCustomer();
+                    }
+                })
+                .catch(function (error) {});
+            }
         }
     }
 </script>

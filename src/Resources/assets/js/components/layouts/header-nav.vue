@@ -104,6 +104,9 @@
 
     header.navbar {
         &.navbar-top {
+            width: 100%;
+            z-index: 100;
+            position: fixed;
             height: 56px;
             color: $font-dark-black-color;
             padding: 15px;
