@@ -37,9 +37,10 @@
         padding: 15px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
         position: fixed;
-        z-index: 10;
+        z-index: 101;
         background: #ffffff;
         width: 100%;
+        top: 0;
 
         .icon {
             float: left;

@@ -4,6 +4,7 @@ namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Product\Repositories\ProductRepository;
+use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\PWA\Http\Resources\Catalog\Product as ProductResource;
 
 /**
@@ -40,7 +41,47 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return ProductResource::collection($this->productRepository->getAll(request()->input('category_id')));
+        $data = request()->all();
+
+        if (isset ($data['new'])) {
+            $result = app(ProductFlatRepository::class)->scopeQuery(function($query) {
+                $channel = request()->get('channel') ?: (core()->getCurrentChannelCode() ?: core()->getDefaultChannelCode());
+    
+                $locale = request()->get('locale') ?: app()->getLocale();
+    
+                return $query->distinct()
+                             ->addSelect('product_flat.*')
+                             ->where('product_flat.status', 1)
+                             ->where('product_flat.visible_individually', 1)
+                             ->where('product_flat.new', 1)
+                             ->where('product_flat.channel', $channel)
+                             ->where('product_flat.locale', $locale)
+                             ->orderBy('product_id', 'desc');
+            })->paginate($data['count'] ?? '4');
+    
+            $result;
+        } else if (isset($data['featured'])) {
+            $result = app(ProductFlatRepository::class)->scopeQuery(function($query) {
+                $channel = request()->get('channel') ?: (core()->getCurrentChannelCode() ?: core()->getDefaultChannelCode());
+    
+                $locale = request()->get('locale') ?: app()->getLocale();
+    
+                return $query->distinct()
+                             ->addSelect('product_flat.*')
+                             ->where('product_flat.status', 1)
+                             ->where('product_flat.visible_individually', 1)
+                             ->where('product_flat.featured', 1)
+                             ->where('product_flat.channel', $channel)
+                             ->where('product_flat.locale', $locale)
+                             ->orderBy('product_id', 'desc');
+            })->paginate($data['count'] ?? '4');
+    
+            $result;
+        } else {
+            $result = $this->productRepository->getAll(request()->input('category_id'));
+        }
+
+        return ProductResource::collection($result);
     }
 
     /**
