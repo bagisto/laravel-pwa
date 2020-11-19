@@ -51,9 +51,10 @@ class Product extends JsonResource
                     $data['grouped_products'][$index] = $associatedProduct->toArray();
 
                     $data['grouped_products'][$index] += [
-                        'formated_price'        => core()->currency($data['grouped_products'][$index]['price']),
+                        'qty'                   => $groupedProduct->qty,
                         'isSaleable'            => $associatedProduct->getTypeInstance()->isSaleable(),
-                        'show_quantity_changer' => $associatedProduct->getTypeInstance()->showQuantityBox()
+                        'show_quantity_changer' => $associatedProduct->getTypeInstance()->showQuantityBox(),
+                        'formated_price'        => core()->currency($data['grouped_products'][$index]['price']),
                     ];
                 }
             break;

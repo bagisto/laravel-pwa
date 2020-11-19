@@ -1,30 +1,32 @@
 <template>
     <div class="grouped-products-container">
-        <div v-for='(product, index) in groupedProducts' v-if="product.isSaleable" class="grouped-product">
-            <div class="product-details">
-                <label>{{ product.name }}</label>
-                <label>{{ product.formated_price }}</label>
-            </div>
-
-            <div class="quantity-container" v-if="product.show_quantity_changer">
-                <label>{{ $t('Quantity') }}</label>
-
-                <div class="quantity">
-                    <button type="button" class="btn btn-black decrease-qty"
-                        @click="changeQuantity('decrease', product.id)">
-                        <i class="icon minus-icon"></i>
-                    </button>
-
-                    <div class="quantity-label">
-                        <span :id="`qty-${product.id}`">{{ formData.qty[product.id] }}</span>
-                        {{ $t('number Units', {number: null}) }}
-                    </div>
-
-                    <button type="button" class="btn btn-black increase-qty" @click="changeQuantity('increase', product.id)">
-                        <i class="icon plus-icon"></i>
-                    </button>
+        <div v-for='(product, index) in groupedProducts' :key="index" class="grouped-product">
+            <template v-if="product.isSaleable">
+                <div class="product-details">
+                    <label>{{ product.name }}</label>
+                    <label>{{ product.formated_price }}</label>
                 </div>
-            </div>
+
+                <div class="quantity-container" v-if="product.show_quantity_changer">
+                    <label>{{ $t('Quantity') }}</label>
+
+                    <div class="quantity">
+                        <button type="button" class="btn btn-black decrease-qty"
+                            @click="changeQuantity('decrease', product.id)">
+                            <i class="icon minus-icon"></i>
+                        </button>
+
+                        <div class="quantity-label">
+                            <span :id="`qty-${product.id}`">{{ formData.qty[product.id] }}</span>
+                            {{ $t('number Units', {number: null}) }}
+                        </div>
+
+                        <button type="button" class="btn btn-black increase-qty" @click="changeQuantity('increase', product.id)">
+                            <i class="icon plus-icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -38,6 +40,7 @@
         data: function () {
             return {
                 config: {},
+                
                 localFormData: this.formData,
 
                 groupedProducts: this.product.grouped_products,

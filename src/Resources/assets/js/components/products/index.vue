@@ -169,7 +169,7 @@
                             delete(this.formData['quantity']);
 
                             this.product.grouped_products.forEach(product => {
-                                this.$set(this.formData.qty, product.id, 1);
+                                this.$set(this.formData.qty, product.id, product.qty);
                             });
                         }
 

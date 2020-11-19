@@ -95,7 +95,11 @@
             Route::group(['namespace' => 'Webkul\PWA\Http\Controllers\Shop', 'prefix' => 'pwa'], function ($router) {
                 Route::group(['prefix' => 'checkout'], function ($router) {
                     Route::get('cart', 'CartController@get');
+
+                    Route::post('save-address', 'CheckoutController@saveAddress');
                 });
+                
+                Route::get('move-to-cart/{id}', 'WishlistController@moveToCart');
 
                 Route::get('categories', 'CategoryController@index');
                 Route::get('attributes', 'API\APIController@fetchAttributes');
@@ -114,8 +118,6 @@
                 Route::get('cart/remove-item/{id}', 'CartController@destroyItem');
 
                 Route::get('cart/move-to-wishlist/{id}', 'CartController@moveToWishlist');
-
-                Route::post('pwa/save-address', 'CheckoutController@saveAddress');
 
                 Route::post('save-shipping', 'CheckoutController@saveShipping');
 

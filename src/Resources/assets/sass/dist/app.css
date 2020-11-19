@@ -780,3 +780,16 @@ ul {
   color: #000000;
   margin-left: 8px;
 }
+
+.product-price .sticker {
+  display: none;
+}
+.product-price .regular-price {
+  float: right;
+  text-decoration: line-through;
+  opacity: 0.56;
+  font-family: 600;
+  font-size: 14px;
+  color: #000000;
+  margin-left: 8px;
+}

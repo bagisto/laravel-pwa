@@ -113,7 +113,7 @@ class WishlistController extends Controller
 
                 return response()->json([
                         'data' => 1,
-                        'message' => trans('shop::app.wishlist.moved')
+                        'message' => trans('shop::app.customer.account.wishlist.moved')
                     ]);
             } else {
                 return response()->json([

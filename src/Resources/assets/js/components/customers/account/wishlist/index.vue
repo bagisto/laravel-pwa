@@ -82,7 +82,7 @@
 
                 EventBus.$emit('show-ajax-loader');
                 
-                this.$http.get('/api/move-to-cart/' + item.id)
+                this.$http.get('/api/pwa/move-to-cart/' + item.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
