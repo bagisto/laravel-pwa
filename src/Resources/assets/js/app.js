@@ -80,7 +80,7 @@ const app = new Vue({
     
                         EventBus.$emit('user-logged-out');
     
-                        this.$toasted.show("Please login First", { type: 'error' })
+                        this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
     
                         this.$router.push({name: 'login-register'})
                     } else {

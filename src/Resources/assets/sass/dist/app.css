@@ -784,8 +784,10 @@ ul {
 .product-price .sticker {
   display: none;
 }
+.product-price .special-price {
+  float: left;
+}
 .product-price .regular-price {
-  float: right;
   text-decoration: line-through;
   opacity: 0.56;
   font-family: 600;

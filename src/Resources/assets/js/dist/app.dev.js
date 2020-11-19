@@ -83,7 +83,7 @@ var app = new _vue["default"]({
           if (this.$route.fullPath.includes('/account/')) {
             localStorage.removeItem('currentUser');
             EventBus.$emit('user-logged-out');
-            this.$toasted.show("Please login First", {
+            this.$toasted.show(this.$t('please_login_first'), {
               type: 'error'
             });
             this.$router.push({

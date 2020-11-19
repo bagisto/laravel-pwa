@@ -689,15 +689,16 @@ ul {
     }
 }
 
-
-
 .product-price {
     .sticker {
-        display: none;        
+        display: none;
+    }
+
+    .special-price {
+        float: left;
     }
 
     .regular-price {
-        float: right;
         text-decoration: line-through;
         opacity: 0.56;
         font-family: 600;
