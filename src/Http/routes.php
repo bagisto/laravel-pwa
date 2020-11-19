@@ -105,7 +105,7 @@
             Route::group(['namespace' => 'Webkul\PWA\Http\Controllers\Shop', 'prefix' => 'checkout'], function ($router) {
                 Route::post('cart/add/{id}', 'CartController@store');
 
-                Route::get('cart', 'CartController@get');
+                Route::get('pwa/cart', 'CartController@get');
 
                 Route::get('cart/empty', 'CartController@destroy');
 

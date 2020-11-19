@@ -492,7 +492,7 @@
             getCart () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/checkout/cart')
+                this.$http.get('/api/checkout/pwa/cart')
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 

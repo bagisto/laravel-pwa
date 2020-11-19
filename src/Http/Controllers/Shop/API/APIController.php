@@ -58,9 +58,11 @@ class APIController extends Controller
             $advertisementImages = json_decode($velocityMetaData->advertisement, true);
         }
 
-        foreach ($advertisementImages as $sectionIndex => $advertisementSection) {
-            foreach ($advertisementSection as $imageIndex => $imagePath) {
-                $advertisementImages[$sectionIndex][$imageIndex] = \Storage::url($advertisementImages[$sectionIndex][$imageIndex]);
+        if ($advertisementImages) {
+            foreach ($advertisementImages as $sectionIndex => $advertisementSection) {
+                foreach ($advertisementSection as $imageIndex => $imagePath) {
+                    $advertisementImages[$sectionIndex][$imageIndex] = \Storage::url($advertisementImages[$sectionIndex][$imageIndex]);
+                }
             }
         }
 
