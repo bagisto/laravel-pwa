@@ -45,12 +45,14 @@
             </div>
 
             <ul class="bundle-items">
-                <li v-for="(option, index) in options">
+                <li v-for="(option, index) in options" :key="index">
                     {{ option.label }}
 
                     <div class="selected-products">
-                        <div v-for="(product, index1) in option.products" v-if="product.is_default">
-                            {{ product.qty + ' x ' + product.name }}
+                        <div v-for="(product, index1) in option.products" :key="index1">
+                            <template v-if="product.is_default">
+                                {{ product.qty + ' x ' + product.name }}
+                            </template>
                         </div>
                     </div>
                 </li>
@@ -114,7 +116,11 @@
                     option.products[key].is_default = selectedProductIds.indexOf(option.products[key].id) > -1 ? 1 : 0;
                 }
 
-                this.formData.bundle_options[option.id][0] = value;
+                if (Array.isArray(value)) {
+                    this.formData.bundle_options[option.id] = value;
+                } else {
+                    this.formData.bundle_options[option.id][0] = value;
+                }
             },
 
             changeQuantity: function (type, productId) {

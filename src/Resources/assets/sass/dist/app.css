@@ -561,6 +561,7 @@ ul {
 
 .content.dashboard .header {
   padding: 0;
+  top: -56px;
   position: relative;
 }
 .content.dashboard .header .icon.back-icon {
@@ -635,6 +636,12 @@ ul {
   margin-top: 5px;
 }
 
+.bundle-options-wrapper .bundle-option-item {
+  padding: 15px 0 50px 0;
+}
+.bundle-options-wrapper .bundle-option-item:last-child {
+  padding: 15px 0;
+}
 .bundle-options-wrapper .bundle-option-item .option_label {
   padding: 10px;
   position: static;
@@ -670,6 +677,29 @@ ul {
 .bundle-options-wrapper .bundle-summary .quantity-container .quantity .quantity-label,
 .bundle-options-wrapper .bundle-option-item .quantity-container .quantity .quantity-label {
   top: 50px;
+}
+.bundle-options-wrapper .bundle-summary .bundle-items li,
+.bundle-options-wrapper .bundle-option-item .bundle-items li {
+  margin-bottom: 20px;
+}
+.bundle-options-wrapper .bundle-summary .bundle-items li:last-child,
+.bundle-options-wrapper .bundle-option-item .bundle-items li:last-child {
+  margin-bottom: 0px;
+}
+.bundle-options-wrapper .bundle-summary .product-name-container,
+.bundle-options-wrapper .bundle-option-item .product-name-container {
+  top: 20px;
+  left: 50px;
+  position: relative;
+  display: inline-block;
+}
+.bundle-options-wrapper .bundle-summary div.checkbox,
+.bundle-options-wrapper .bundle-option-item div.checkbox {
+  margin-bottom: 20px;
+}
+.bundle-options-wrapper .bundle-summary div.checkbox:last-child,
+.bundle-options-wrapper .bundle-option-item div.checkbox:last-child {
+  margin-bottom: 0;
 }
 .bundle-options-wrapper .bundle-summary {
   left: 0;

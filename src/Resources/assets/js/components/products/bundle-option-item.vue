@@ -5,22 +5,22 @@
 
             <div v-if="option.type == 'select'">
                 <select class="control" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="option.label + '&quot;'">
-                    <option value="">{{ __('shop::app.products.choose-selection') }}</option>
-                    <option v-for="(product, index2) in option.products" :value="product.id">
+                    <option value="">{{ $t('bundle.choose_a_selection') }}</option>
+                    <option v-for="(product, index2) in option.products" :value="product.id" :key="index2">
                         {{ product.name + ' + ' + product.price.final_price.formated_price }}
                     </option>
                 </select>
             </div>
 
             <div v-if="option.type == 'radio'">
-                <span class="radio" v-if="! option.is_required">
+                <div class="radio" v-if="! option.is_required">
                     <input type="radio" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" value="0" :id="'bundle_options[' + option.id + '][]'">
                     <label class="radio-view" :for="'bundle_options[' + option.id + '][]'"></label>
 
-                    {{ __('shop::app.products.none') }}
-                </span>
+                    <span>{{ $t('bundle.none') }}</span>
+                </div>
 
-                <span class="radio" v-for="(product, index2) in option.products">
+                <div class="radio" v-for="(product, index2) in option.products" :key="index2">
                     <input type="radio" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="'&quot;' + option.label + '&quot;'" :value="product.id" :id="'bundle_options[' + option.id + '][]'">
                     <label class="radio-view" :for="'bundle_options[' + option.id + '][]'"></label>
 
@@ -31,26 +31,30 @@
                             + {{ product.price.final_price.formated_price }}
                         </span>
                     </div>
-                </span>
+                </div>
             </div>
 
-            <div v-if="option.type == 'checkbox'">
-                <span class="checkbox" v-for="(product, index2) in option.products">
-                    <input type="checkbox" :name="'bundle_options[' + option.id + '][]'" :value="product.id" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="'&quot;' + option.label + '&quot;'" :id="'bundle_options[' + option.id + '][]'">
-                    <label class="checkbox-view" :for="'bundle_options[' + option.id + '][]'"></label>
+            <template v-if="option.type == 'checkbox'">
+                <div class="checkbox" v-for="(product, index2) in option.products" :key="index2">
+                    <div class="checkbox-container">
+                        <input type="checkbox" :name="'bundle_options[' + option.id + '][]'" :value="product.id" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="'&quot;' + option.label + '&quot;'" :id="'bundle_options[' + option.id + '][]'">
+                        <label class="checkbox-view" :for="'bundle_options[' + option.id + '][]'"></label>
+                    </div>
 
-                    {{ product.name }}
+                    <div class="product-name-container">
+                        <span>{{ product.name }}</span>
 
-                    <span class="price">
-                        + {{ product.price.final_price.formated_price }}
-                    </span>
-                </span>
-            </div>
+                        <span class="price">
+                            + {{ product.price.final_price.formated_price }}
+                        </span>
+                    </div>
+                </div>
+            </template>
 
             <div v-if="option.type == 'multiselect'">
                 <select class="control" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="'&quot;' + option.label + '&quot;'" multiple>
                     <option value="0" v-if="! option.is_required">{{ __('shop::app.products.none') }}</option>
-                    <option v-for="(product, index2) in option.products" :value="product.id">
+                    <option v-for="(product, index2) in option.products" :value="product.id" :key="index2">
                         {{ product.name + ' + ' + product.price.final_price.formated_price }}
                     </option>
                 </select>
@@ -72,7 +76,7 @@
                     </button>
 
                     <div class="quantity-label">
-                        <span :id="`qty-${option.id}`">{{ formData.bundle_option_qty[option.id] }}</span>
+                        <span :id="`qty-${option.id}`">{{ product_qty }}</span>
                         {{ $t('number Units', {number: null}) }}
                     </div>
 
@@ -103,15 +107,7 @@
 
         computed: {
             product_qty: function() {
-                var self = this;
-                self.qty = 0;
-
-                self.option.products.forEach(function(product, key){
-                    if (self.selected_product == product.id)
-                        self.qty =  self.option.products[key].qty;
-                });
-
-                return self.qty;
+                return this.formData.qty_options[this.option.id][this.selected_product];
             }
         },
 
@@ -146,14 +142,16 @@
 
             changeQuantity: function (type, optionId) {
                 if (type == 'increase') {
-                    this.$set(this.formData.bundle_option_qty, optionId, this.formData.bundle_option_qty[optionId] + 1);
+                    this.$set(this.formData.bundle_option_qty, optionId, this.formData.qty_options[optionId][this.selected_product] + 1);
+                    this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.qty_options[optionId][this.selected_product] + 1);
                 } else if (type == 'decrease') {
-                    if (this.formData.bundle_option_qty[optionId] > 1) {
-                        this.$set(this.formData.bundle_option_qty, optionId, this.formData.bundle_option_qty[optionId] - 1);
+                    if (this.formData.bundle_option_qty[optionId][this.selected_product] > 1) {
+                        this.$set(this.formData.bundle_option_qty, optionId, this.formData.bundle_option_qty[optionId][this.selected_product] - 1);
+                        this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.bundle_option_qty[optionId][this.selected_product] - 1);
                     }
                 }
 
-                document.getElementById(`qty-${optionId}`).innerHTML = this.formData.bundle_option_qty[optionId];
+                document.getElementById(`qty-${optionId}`).innerHTML = this.formData.qty_options[optionId][this.selected_product];
             },
         }
     }

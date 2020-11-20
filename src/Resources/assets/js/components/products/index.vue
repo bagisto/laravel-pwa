@@ -181,13 +181,20 @@
                             delete(this.formData['super_attribute']);
                             delete(this.formData['selected_configurable_option']);
 
+                            this.formData.qty_options = {};
                             this.formData.bundle_options = {};
                             this.formData.bundle_option_qty = {};
 
                             this.product.bundle_options.options.forEach(option => {
+                                this.formData.qty_options[option.id] = {};
+
+                                option.products.forEach((product, key) => {
+                                    this.formData.qty_options[option.id][product.id] = option.products[key].qty;
+                                });
+
                                 this.formData.bundle_options[option.id] = [0];
-                                this.formData.bundle_option_qty[option.id] = 1;
-                            })
+                                this.formData.bundle_option_qty[5] = 7;
+                            });
                         }
 
                         if (this.product.type == "booking") {

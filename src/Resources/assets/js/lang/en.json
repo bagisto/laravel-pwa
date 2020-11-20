@@ -201,7 +201,9 @@
     "bundle": {
         "customize_options": "Customize Options",
         "your_customization": "Your Customization",
-        "total_amount": "Total Amount"
+        "total_amount": "Total Amount",
+        "choose_a_selection": "Choose a selection",
+        "none": "None"
     },
     "booking": {
         "to"                        : "to",

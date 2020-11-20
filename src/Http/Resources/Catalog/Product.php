@@ -84,6 +84,7 @@ class Product extends JsonResource
             break;
 
             case 'bundle':
+                $options = [];
                 $data['currency_options'] = core()->getAccountJsSymbols();
                 $data['bundle_options'] = app('Webkul\Product\Helpers\BundleOption')->getBundleConfig($product);
             break;

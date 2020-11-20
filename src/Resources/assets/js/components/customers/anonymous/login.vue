@@ -27,6 +27,12 @@
                 <div class="control-group">
                     <span class="forgot-password" @click="$emit('onOpenPopup', 'forgot_password')">{{ $t('Forgot Password?') }}</span>
                 </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-black btn-lg" :disabled="loading">{{ $t('Sign In') }}</button>
+
+                    <span style="color: red;" id="login-error"></span>
+                </div>
             </div>
         </form>
     </div>

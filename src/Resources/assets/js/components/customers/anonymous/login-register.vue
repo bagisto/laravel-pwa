@@ -16,7 +16,7 @@
             <h3>{{ $t('Sign In or Register') }}</h3>
 
             <div class="button-group">
-                <button class="btn btn-outline-black" @click="popups.login = true;popups.register = false;">{{ $t('Sign In') }}</button>
+                <button class="btn btn-outline-black" v-if="! popups.login" @click="popups.login = true;popups.register = false;">{{ $t('Sign In') }}</button>
 
                 <button class="btn btn-outline-black" @click="popups.register = true;popups.login = false;">{{ $t('Create An Account') }}</button>
             </div>
