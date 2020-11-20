@@ -97,34 +97,46 @@ class CartController extends Controller
      */
     public function store($id)
     {
+        if (request()->get('is_buy_now')) {
+            Event::dispatch('shop.item.buy-now', $id);
+        }
+
         Event::dispatch('checkout.cart.item.add.before', $id);
 
         try {
             $result = Cart::addProduct($id, request()->except('_token'));
-        } catch (\Exception $exception) {
-            return response()->json([
-                'error' => $exception->getMessage(),
-            ], 400);
-        }
 
-        if (! $result) {
-            $message = session()->get('warning') ?? session()->get('error');
-            
-            return response()->json([
-                    'error' => session()->get('warning')
+            if (is_array($result) && isset($result['warning'])) {
+                return response()->json([
+                    'error' => $result['warning'],
                 ], 400);
-        }
+            }
 
-        Event::dispatch('checkout.cart.item.add.after', $result);
+            if ($customer = auth($this->guard)->user()) {
+                $this->wishlistRepository->deleteWhere(['product_id' => $id, 'customer_id' => $customer->id]);
+            }
 
-        Cart::collectTotals();
+            Event::dispatch('checkout.cart.item.add.after', $result);
 
-        $cart = Cart::getCart();
+            Cart::collectTotals();
 
-        return response()->json([
-                'message' => 'Product added to cart successfully.',
-                'data' => $cart ? new CartResource($cart) : null
+            $cart = Cart::getCart();
+
+            return response()->json([
+                'message' => __('shop::app.checkout.cart.item.success'),
+                'data'    => $cart ? new CartResource($cart) : null,
             ]);
+        } catch (Exception $e) {
+            Log::error('API CartController: ' . $e->getMessage(),
+                ['product_id' => $id, 'cart_id' => cart()->getCart() ?? 0]);
+
+            return response()->json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'code'    => $e->getCode()
+                ]
+            ]);
+        }
     }
 
     /**

@@ -10,7 +10,7 @@
             </div>
         </custom-header>
 
-        <div class="form-container" v-if="! popups.register">
+        <div class="form-container" v-if="! popups.register && ! popups.forgot_password">
             <div class="shop-title">{{ app_name }}</div>
 
             <h3>{{ $t('Sign In or Register') }}</h3>

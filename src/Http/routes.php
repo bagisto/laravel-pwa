@@ -97,6 +97,8 @@
                     Route::get('cart', 'CartController@get');
 
                     Route::post('save-address', 'CheckoutController@saveAddress');
+
+                    Route::post('cart/add/{id}', 'CartController@store');
                 });
                 
                 Route::get('move-to-cart/{id}', 'WishlistController@moveToCart');
@@ -109,7 +111,6 @@
             });
 
             Route::group(['namespace' => 'Webkul\PWA\Http\Controllers\Shop', 'prefix' => 'checkout'], function ($router) {
-                Route::post('cart/add/{id}', 'CartController@store');
 
                 Route::get('cart/empty', 'CartController@destroy');
 

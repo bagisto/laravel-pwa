@@ -245,7 +245,7 @@
             addToCart (event) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post("/api/checkout/cart/add/" + this.$route.params.id, this.formData)
+                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, this.formData)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

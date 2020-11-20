@@ -234,5 +234,9 @@
     "order": {
         "minimum_order_message": "Your order should be greater than {amount}"
     },
-    "something_went_wrong": "Something went wrong ! please try again later."
+    "something_went_wrong": "Something went wrong ! please try again later.",
+    "Enter Coupon Code": "Enter Coupon Code",
+    "Applied Coupon": "Applied Coupon",
+    "Discount": "Discount",
+    "Coupon": "Coupon"
 }

@@ -674,7 +674,9 @@
 
                         this_this.cart = response.data.data.cart;
 
-                        this_this.step++;
+                        if (this_this.step != 4) {
+                            this_this.step++;
+                        }
                     })
                     .catch(function (error) {
                         this_this.disable_button = false;
@@ -693,10 +695,15 @@
                     .then(function(response) {
                         self.disable_button = false;
 
-                        self.cart = response.data.data.cart;
                         if (response.data.success == true) {
+                            self.cart.coupon_code = self.coupon_code;
+
                             self.coupon_code = '';
+                            
+                            self.savePayment();
                             self.$toasted.show(response.data.message, { type: 'success' });
+                        } else {
+                            self.$toasted.show(response.data.message, { type: 'error' });
                         }
                     })
                     .catch(function (error) {
@@ -717,7 +724,9 @@
                         self.cart = response.data.data.cart;
 
                         if (response.data.success == true) {
-                            self.coupon_code = '';
+                            self.cart.coupon_code = self.coupon_code = '';
+
+                            self.savePayment();
                             self.$toasted.show(response.data.message, { type: 'success' });
                         }
                     })
@@ -833,7 +842,6 @@
         }
 
         .checkout-container {
-            margin-top: 80px;
             padding-bottom: 60px;
 
             .panel {
