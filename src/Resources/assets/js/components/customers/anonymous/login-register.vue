@@ -10,15 +10,15 @@
             </div>
         </custom-header>
 
-        <div class="form-container" v-if="! popups.register && ! popups.forgot_password">
+        <div class="form-container" v-if="! popups.login && ! popups.register && ! popups.forgot_password">
             <div class="shop-title">{{ app_name }}</div>
 
             <h3>{{ $t('Sign In or Register') }}</h3>
 
             <div class="button-group">
-                <button class="btn btn-outline-black" v-if="! popups.login" @click="popups.login = true;popups.register = false;">{{ $t('Sign In') }}</button>
+                <button class="btn btn-outline-black" @click="popups.login = true;popups.register = false;">{{ $t('Sign In') }}</button>
 
-                <button class="btn btn-outline-black" @click="popups.register = true;popups.login = false;">{{ $t('Create An Account') }}</button>
+                <button class="btn btn-outline-black" @click="$emit('onOpenPopup', 'login')">{{ $t('Create An Account') }}</button>
             </div>
         </div>
 
@@ -71,6 +71,10 @@
             }
         },
 
+        mounted: function () {
+            this.getAuthCustomer();
+        },
+
         methods: {
             openPopup (value) {
                 this.popups = { login: false, register: false, forgot_password: false };
@@ -80,7 +84,18 @@
 
             handleBack () {
                 this.$router.push({name: 'home'})
-            }
+            },
+
+            getAuthCustomer () {
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/customer/get')
+                    .then(response => {
+                        this.$router.push({name: 'dashboard'})
+                    })
+                    .catch(function (error) {
+                    });
+            },
         }
     }
 </script>

@@ -71,7 +71,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/invoices', { params: { order_id: orderId, pagination: 0 } })
+                this.$http.get('/api/pwa/invoices', { params: { order_id: orderId, pagination: 0 } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

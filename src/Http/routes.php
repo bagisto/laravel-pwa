@@ -78,12 +78,6 @@
                     'authorization_required' => true
                 ]);
 
-                Route::get('invoices', 'InvoiceController@index')->defaults('_config', [
-                    'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
-                    'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
-                    'authorization_required' => true
-                ]);
-
                 Route::get('wishlist/add/{id}', 'WishlistController@create');
 
                 Route::post('reviews/{id}/create', 'ReviewController@store');
@@ -100,6 +94,12 @@
 
                     Route::post('cart/add/{id}', 'CartController@store');
                 });
+
+                Route::get('invoices', 'InvoiceController@index')->defaults('_config', [
+                    'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
+                    'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
+                    'authorization_required' => true
+                ]);
                 
                 Route::get('move-to-cart/{id}', 'WishlistController@moveToCart');
 

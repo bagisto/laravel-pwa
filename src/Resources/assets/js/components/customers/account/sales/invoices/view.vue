@@ -114,7 +114,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/invoices/' + invoiceId)
+                this.$http.get(`/api/invoices/${invoiceId}/download`)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
