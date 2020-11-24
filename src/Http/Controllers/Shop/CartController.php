@@ -2,12 +2,13 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
+use Cart;
 use Illuminate\Support\Facades\Event;
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Checkout\Repositories\CartRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
+use Webkul\Customer\Repositories\WishlistRepository;
 use Webkul\PWA\Http\Resources\Checkout\Cart as CartResource;
-use Cart;
 
 /**
  * Cart controller
@@ -33,6 +34,13 @@ class CartController extends Controller
     protected $cartRepository;
 
     /**
+     * WishlistRepository object
+     *
+     * @var \Webkul\Checkout\Repositories\WishlistRepository
+     */
+    protected $wishlistRepository;
+
+    /**
      * CartItemRepository object
      *
      * @var Object
@@ -47,12 +55,15 @@ class CartController extends Controller
      */
     public function __construct(
         CartRepository $cartRepository,
-        CartItemRepository $cartItemRepository
+        CartItemRepository $cartItemRepository,
+        WishlistRepository $wishlistRepository
     )
     {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
+
+        $this->wishlistRepository = $wishlistRepository;
 
         // $this->middleware('auth:' . $this->guard);
 
