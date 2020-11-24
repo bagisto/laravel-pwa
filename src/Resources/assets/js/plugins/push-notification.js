@@ -1,6 +1,6 @@
 import '@firebase/auth';
 import '@firebase/messaging';
-import firebase from 'firebase/app';
+import firebase from '@firebase/app';
 
 var isSafari = () => {
     return window.navigator.vendor == "Apple Computer, Inc." ? true : false;

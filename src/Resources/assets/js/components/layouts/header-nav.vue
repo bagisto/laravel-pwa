@@ -15,6 +15,10 @@
 
                     <div v-else>
                         <i class="icon back-icon" @click="handleBack"></i>
+
+                        <router-link tag="div" :to="'/'" class="shop-title">
+                            {{ app_name }}
+                        </router-link>
                     </div>
                 </slot>
             </div>
@@ -126,6 +130,7 @@
                     font-size: 18px;
                     font-weight: 700;
                     margin-top: 1px;
+                    vertical-align: top;
                 }
 
                 .back-icon {
