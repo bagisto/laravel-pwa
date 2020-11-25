@@ -5,7 +5,6 @@
                 <img
                     alt="product-base-image-medium"
                     :src="product.base_image.medium_image_url"
-                    onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
                 />
             </div>
         </router-link>

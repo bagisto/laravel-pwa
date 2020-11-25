@@ -93,6 +93,8 @@
                     Route::post('save-address', 'CheckoutController@saveAddress');
 
                     Route::post('cart/add/{id}', 'CartController@store');
+
+                    Route::post('save-order', 'CheckoutController@saveOrder');
                 });
 
                 Route::get('invoices', 'InvoiceController@index')->defaults('_config', [
@@ -127,8 +129,6 @@
                 Route::post('cart/apply-coupon', 'CartController@applyCoupon');
 
                 Route::post('cart/remove-coupon', 'CartController@removeCoupon');
-
-                Route::post('save-order', 'CheckoutController@saveOrder');
             });
 
 

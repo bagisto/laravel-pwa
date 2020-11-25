@@ -33,7 +33,7 @@
 
                     <span style="color: red;" id="login-error"></span>
 
-                    <button class="btn btn-outline-black" @click="popups.register = true;popups.login = false;">{{ $t('Create An Account') }}</button>
+                    <button class="btn btn-outline-black" @click="$emit('onOpenPopup', 'register')">{{ $t('Create An Account') }}</button>
                 </div>
             </div>
         </form>

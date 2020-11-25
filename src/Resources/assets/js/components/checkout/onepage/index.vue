@@ -741,7 +741,7 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-order')
+                this.$http.post('/api/pwa/checkout/save-order')
                     .then(function(response) {
                         if (response.data.success) {
                             if (response.data.redirect_url) {

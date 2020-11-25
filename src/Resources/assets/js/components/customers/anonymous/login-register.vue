@@ -16,9 +16,9 @@
             <h3>{{ $t('Sign In or Register') }}</h3>
 
             <div class="button-group">
-                <button class="btn btn-outline-black" @click="popups.login = true;popups.register = false;">{{ $t('Sign In') }}</button>
+                <button class="btn btn-outline-black" @click="openPopup('login')">{{ $t('Sign In') }}</button>
 
-                <button class="btn btn-outline-black" @click="$emit('onOpenPopup', 'login')">{{ $t('Create An Account') }}</button>
+                <button class="btn btn-outline-black" @click="openPopup('register')">{{ $t('Create An Account') }}</button>
             </div>
         </div>
 
@@ -77,6 +77,7 @@
 
         methods: {
             openPopup (value) {
+                debugger
                 this.popups = { login: false, register: false, forgot_password: false };
 
                 this.popups[value] = true;
