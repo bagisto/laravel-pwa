@@ -90,6 +90,7 @@ var app = new _vue["default"]({
               name: 'login-register'
             });
           } else {
+            localStorage.removeItem('currentUser');
             return Promise.reject(error);
           }
 

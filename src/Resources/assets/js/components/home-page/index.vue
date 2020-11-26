@@ -328,7 +328,8 @@
 
                         EventBus.$emit('hide-ajax-loader');
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                    });
             },
         }
     }

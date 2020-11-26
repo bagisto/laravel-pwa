@@ -84,6 +84,8 @@ const app = new Vue({
     
                         this.$router.push({name: 'login-register'})
                     } else {
+                        localStorage.removeItem('currentUser');
+
                         return Promise.reject(error);
                     }
 
