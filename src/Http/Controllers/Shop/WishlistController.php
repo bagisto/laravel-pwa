@@ -6,6 +6,7 @@ use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Customer\Repositories\WishlistRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\PWA\Http\Resources\Customer\Wishlist as WishlistResource;
+use Webkul\API\Http\Resources\Checkout\Cart as CartResource;
 use Cart;
 
 /**
@@ -100,37 +101,28 @@ class WishlistController extends Controller
     {
         $wishlistItem = $this->wishlistRepository->findOrFail($id);
 
-        if ($wishlistItem->customer_id != auth()->guard($this->guard)->user()->id)
+        if ($wishlistItem->customer_id != auth()->guard($this->guard)->user()->id) {
             return response()->json([
-                    'message' => trans('shop::app.security-warning')
-                ], 400);
+                'message' => trans('shop::app.security-warning'),
+            ], 400);
+        }
 
         $result = Cart::moveToCart($wishlistItem);
 
-        if ($result == 1) {
-            if ($wishlistItem->delete()) {
-                Cart::collectTotals();
+        if ($result) {
+            Cart::collectTotals();
 
-                return response()->json([
-                        'data' => 1,
-                        'message' => trans('shop::app.customer.account.wishlist.moved')
-                    ]);
-            } else {
-                return response()->json([
-                        'data' => 1,
-                        'error' => trans('shop::app.wishlist.move-error')
-                    ], 400);
-            }
-        } else if ($result == 0) {
+            $cart = Cart::getCart();
+
             return response()->json([
-                    'data' => 0,
-                    'error' => trans('shop::app.wishlist.error')
-                ], 400);
-        } else if ($result == -1) {
+                'data' => $cart ? new CartResource($cart) : null,
+                'message' => trans('shop::app.customer.account.wishlist.moved'),
+            ]);
+        } else {
             return response()->json([
-                    'data' => -1,
-                    'error' => trans('shop::app.checkout.cart.add-config-warning')
-                ], 400);
+                'data' => -1,
+                'error' => trans('shop::app.wishlist.option-missing'),
+            ], 400);
         }
     }
 }

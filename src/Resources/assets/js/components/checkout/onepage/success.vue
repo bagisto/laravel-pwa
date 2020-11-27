@@ -17,6 +17,9 @@
         name: 'order-success',
 
         data () {
+            if (! this.$route.params.id) {
+                this.$router.push({name: 'home'});
+            }
 			return {
 				orderId: this.$route.params.id
             }

@@ -44,22 +44,13 @@
 </template>
 
 <script>
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
+
     export default {
         name: 'header-nav',
-
-        data () {
-			return {
-				cart: null
-            }
-        },
-
-        created () {
-            var this_this = this;
-
-            EventBus.$on('checkout.cart.changed', function(cart) {
-                this_this.cart = cart;
-            });
-        },
 
         mounted () {
             this.getCart();
@@ -68,10 +59,18 @@
         computed: {
             app_name () {
                 return window.config.app_short_name ? window.config.app_short_name : 'Bagisto';
-            }
+            },
+
+            ...mapState({
+                cart: state => state.cart,
+            }),
         },
 
         methods: {
+            ...mapActions([
+                'getCart',
+            ]),
+
             handleMaskClick () {
                 this.$emit('toggleDrawer')
             },
@@ -86,22 +85,6 @@
                     this.$router.back();
                 }
             },
-
-            getCart () {
-                var this_this = this;
-
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/checkout/cart')
-                    .then(function(response) {
-                        EventBus.$emit('hide-ajax-loader');
-
-                        this_this.cart = response.data.data;
-
-                        this_this.pagination = response.data.meta;
-                    })
-                    .catch(function (error) {});
-            }
         }
     }
 </script>

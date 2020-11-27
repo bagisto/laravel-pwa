@@ -78,29 +78,27 @@
             },
 
             moveToCart (item) {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
                 
                 this.$http.get('/api/pwa/move-to-cart/' + item.id)
-                    .then(function(response) {
-                        this_this.$toasted.show(response.data.message, { type: 'success' })
+                    .then(response => {
+                        this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        var index = this_this.wishlist.indexOf(item);
+                        var index = this.wishlist.indexOf(item);
 
-                        this_this.wishlist.splice(index, 1);
+                        this.wishlist.splice(index, 1);
                         
                         EventBus.$emit('checkout.cart.changed', response.data.data);
                     })
-                    .catch(function (error) {
+                    .catch(error => {
                         if (error.response.data.data == -1) {
-                            this_this.$router.push({ path: '/products/' + item.product.id })
+                            this.$router.push({ path: '/products/' + item.product.id })
                         } else if (error.response.data.message) {
-                            this_this.$router.push({ path: '/products/' + item.product.id })
+                            this.$router.push({ path: '/products/' + item.product.id })
 
-                            this_this.$toasted.show(error.response.data.message, { type: 'error' })
+                            this.$toasted.show(error.response.data.message, { type: 'error' })
                         }
                     });
             }
@@ -114,9 +112,5 @@
         bottom: 0;
         top: 0;
         width: 100%;
-
-        .panel {
-            margin-top: 82px;
-        }
     }
 </style>

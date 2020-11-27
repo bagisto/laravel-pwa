@@ -10,7 +10,13 @@ var getCustomer = function getCustomer(_ref) {
   commit('GET_CUSTOMER');
 };
 
+var getCart = function getCart(_ref2) {
+  var commit = _ref2.commit;
+  commit('GET_CART');
+};
+
 var _default = {
+  getCart: getCart,
   getCustomer: getCustomer
 };
 exports["default"] = _default;

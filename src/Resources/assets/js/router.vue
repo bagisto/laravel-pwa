@@ -74,7 +74,7 @@ export default new Router({
             name: 'onepage',
             component: Onepage
         }, {
-            path: '/checkout/success/:id',
+            path: '/checkout/success',
             name: 'order-success',
             component: OrderSuccess
         }, {

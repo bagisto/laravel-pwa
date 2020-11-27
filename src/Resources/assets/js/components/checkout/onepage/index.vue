@@ -737,24 +737,22 @@
             },
 
             placeOrder () {
-                var this_this = this;
-
                 this.disable_button = true;
 
                 this.$http.post('/api/pwa/checkout/save-order')
-                    .then(function(response) {
+                    .then(response => {
                         if (response.data.success) {
                             if (response.data.redirect_url) {
                                 window.location.href = response.data.redirect_url;
                             } else {
-                                this_this.$router.push({ path: '/checkout/success/' + response.data.order.id })
+                                this.$router.push({ name: 'order-success', params: {id: response.data.order.id}})
 
                                 EventBus.$emit('checkout.cart.changed', null);
                             }
                         }
                     })
                     .catch(function (error) {
-                        this_this.disable_button = true;
+                        this.disable_button = true;
                     })
             },
 

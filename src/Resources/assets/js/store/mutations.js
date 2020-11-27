@@ -32,6 +32,20 @@ const GET_CUSTOMER = state => {
     EventBus.$emit('hide-ajax-loader');
 };
 
+const GET_CART = state => {
+    EventBus.$emit('show-ajax-loader');
+
+    Vue.prototype.$http.get('/api/pwa/checkout/cart')
+        .then(response => {
+            EventBus.$emit('hide-ajax-loader');
+
+            state.cart = response.data.data;
+            state.pagination = response.data.meta;
+        })
+        .catch(error => {});
+};
+
 export default {
+    GET_CART,
     GET_CUSTOMER
 };

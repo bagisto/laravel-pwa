@@ -41,7 +41,18 @@ var GET_CUSTOMER = function GET_CUSTOMER(state) {
   EventBus.$emit('hide-ajax-loader');
 };
 
+var GET_CART = function GET_CART(state) {
+  EventBus.$emit('show-ajax-loader');
+
+  _vue["default"].prototype.$http.get('/api/pwa/checkout/cart').then(function (response) {
+    EventBus.$emit('hide-ajax-loader');
+    state.cart = response.data.data;
+    state.pagination = response.data.meta;
+  })["catch"](function (error) {});
+};
+
 var _default = {
+  GET_CART: GET_CART,
   GET_CUSTOMER: GET_CUSTOMER
 };
 exports["default"] = _default;
