@@ -5,33 +5,26 @@
 </template>
 
 <script>
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
+    
     export default {
         name: 'account',
-
-        data () {
-            return {
-                customer: null
-            }
-        },
+        
+        computed: mapState({
+            customer: state => state.customer,
+        }),
 
         mounted () {
-            this.getAuthCustomer();
+            this.getCustomer();
         },
 
         methods: {
-            getAuthCustomer () {
-                var this_this = this;
-
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/customer/get')
-                    .then(function(response) {
-                        this_this.customer = response.data.data;
-
-                        EventBus.$emit('hide-ajax-loader');
-                    })
-                    .catch(function (error) {});
-            }
+            ...mapActions([
+                'getCustomer',
+            ]),
         }
     }
 </script>

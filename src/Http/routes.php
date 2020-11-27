@@ -131,7 +131,6 @@
                 Route::post('cart/remove-coupon', 'CartController@removeCoupon');
             });
 
-
             Route::namespace('Webkul\API\Http\Controllers\Shop')->group(function () {
                 Route::get('reviews/{id}', 'ResourceController@get')->defaults('_config', [
                     'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
@@ -150,12 +149,6 @@
                     'authorization_required' => true
                 ]);
 
-                Route::get('orders/{id}', 'ResourceController@get')->defaults('_config', [
-                    'repository' => 'Webkul\Sales\Repositories\OrderRepository',
-                    'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
-                    'authorization_required' => true
-                ]);
-
                 Route::get('wishlist', 'ResourceController@index')->defaults('_config', [
                     'repository' => 'Webkul\Customer\Repositories\WishlistRepository',
                     'resource' => 'Webkul\PWA\Http\Resources\Customer\Wishlist',
@@ -171,6 +164,14 @@
                     'repository'    => 'Webkul\PWA\Repositories\PWALayoutRepository',
                     'resource'      => 'Webkul\PWA\Http\Resources\PWA\LayoutResource'
                 ]);
+
+                Route::group(['prefix' => 'pwa'], function ($router) {
+                    Route::get('orders/{id}', 'ResourceController@get')->defaults('_config', [
+                        'repository' => 'Webkul\Sales\Repositories\OrderRepository',
+                        'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
+                        'authorization_required' => true
+                    ]);
+                });
             });
         });
     });

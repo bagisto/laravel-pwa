@@ -16,7 +16,7 @@
                 <span v-html="product.formated_price"></span>
                 <!--end-->
 
-                <i class="icon wishlist-icon" v-if="isCustomer == 'false'" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
+                <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
             </div>
 
             <router-link :to="'/products/' + product.id">

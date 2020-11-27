@@ -29,8 +29,23 @@
 
         data () {
 			return {
-                bottomSheetOpen: false
+                bottomSheetOpen: false,
+                remaining_downloads: this.downloadableProduct.remaining_downloads,
             }
+        },
+
+        mounted: function () {
+            $('a').click(({ target }) => {
+                if (
+                    this.remaining_downloads == 0
+                    && target.dataset.class == 'download-link'
+                ) {
+                    event.preventDefault();
+                    this.$toasted.show(this.$t('downloadable.download_error'), { type: 'error' })
+                } else {
+                    this.remaining_downloads--;
+                }
+            });
         }
     }
 </script>

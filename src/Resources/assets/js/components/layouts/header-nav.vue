@@ -77,10 +77,13 @@
             },
 
             handleBack () {
-                if (window.history.length > 2) {
-                    this.$router.back();
-                } else {
+                if (
+                    window.history.length <= 2
+                    || this.$route.name == 'order-success'
+                ) {
                     this.$router.push({name: 'home'})
+                } else {
+                    this.$router.back();
                 }
             },
 

@@ -1,17 +1,20 @@
 import Vue               from 'vue';
-import Toasted           from 'vue-toasted';
 import router            from './router';
-import App               from './components/app';
-import VueCurrencyFilter from 'vue-currency-filter'
+import store             from './store';
+import Toasted           from 'vue-toasted';
 import i18n              from './plugins/i18n';
+import App               from './components/app';
+import VueCurrencyFilter from 'vue-currency-filter';
 import './plugins/push-notification';
 // import './../../../../../../../public/firebase-messaging-sw';     // (File from the public folder)
 // import './../../../../publishable/pwa/firebase-messaging-sw';    //  (File from the pwa foder where main service-worker is kept)
 
-window.jQuery = window.$ = require('jquery');
 window.axios = require('axios');
+window.jQuery = window.$ = require('jquery');
 window.VeeValidate = require('vee-validate');
+
 window.EventBus = new Vue();
+
 Vue.prototype.$http = axios;
 
 axios.defaults.baseURL = window.config.app_base_url;
@@ -101,5 +104,7 @@ const app = new Vue({
         }
     },
 
-    router
+    router,
+
+    store
 });

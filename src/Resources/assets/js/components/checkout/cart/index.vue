@@ -217,7 +217,6 @@
         width: 100%;
 
         .cart-container {
-            margin-top: 80px;
             padding-bottom: 60px;
 
             .item-count {

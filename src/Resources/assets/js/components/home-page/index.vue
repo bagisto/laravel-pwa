@@ -70,7 +70,7 @@
 
                     <div class="panel-content product-list product-grid-2">
 
-                        <product-card :is-customer="customer" v-for="product in content.products" :key='product.uid' :product="product"></product-card>
+                        <product-card :is-customer="customer ? true : false" v-for="product in content.products" :key='product.uid' :product="product"></product-card>
 
                     </div>
                 </template>
@@ -90,7 +90,7 @@
 
                     <div class="panel-content product-list product-grid-2">
 
-                        <product-card :is-customer="customer" v-for="product in category.products" :key='product.uid' :product="product"></product-card>
+                        <product-card :is-customer="customer ? true : false" v-for="product in category.products" :key='product.uid' :product="product"></product-card>
 
                     </div>
                 </template>
@@ -105,7 +105,7 @@
 
             <div class="panel-content product-list product-grid-2">
 
-                <product-card :is-customer="customer" v-for="product in product.new" :key='product.uid' :product="product"></product-card>
+                <product-card :is-customer="customer ? true : false" v-for="product in product.new" :key='product.uid' :product="product"></product-card>
 
             </div>
 
@@ -119,7 +119,7 @@
 
             <div class="panel-content product-list product-grid-2">
 
-                <product-card :is-customer="customer" v-for="product in product.featured" :key='product.uid' :product="product"></product-card>
+                <product-card :is-customer="customer ? true : false" v-for="product in product.featured" :key='product.uid' :product="product"></product-card>
 
             </div>
 
@@ -139,6 +139,10 @@
     import CategoryCard         from '../categories/card';
     import FooterNav            from '../layouts/footer-nav';
     import Advertisement        from './advertisements/advertisement';
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
 
     export default {
         name: 'home',
@@ -156,7 +160,6 @@
 			return {
                 sliders: [],
 				categories: [],
-                customer: null,
 				advertisements: [],
                 homePageContent: {},
                 showCategories: false,
@@ -167,7 +170,11 @@
                     'categories': [],
                 }
 			}
-		},
+        },
+        
+        computed: mapState({
+            customer: state => state.customer,
+        }),
 
         mounted () {
             this.getConfigValues();
@@ -175,9 +182,15 @@
             this.getCategories();
 
             this.getHomePageContent();
+
+            this.getCustomer();
         },
 
         methods: {
+            ...mapActions([
+                'getCustomer',
+            ]),
+
             getSliders () {
                 this.$http.get("/api/sliders?sort=id&order=asc")
                     .then(response => {
@@ -316,19 +329,6 @@
                     })
                     .catch(error => {
                         console.log(error)
-                    });
-            },
-
-            getAuthCustomer () {
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/customer/get')
-                    .then(response => {
-                        this.customer = response.data.data;
-
-                        EventBus.$emit('hide-ajax-loader');
-                    })
-                    .catch(function (error) {
                     });
             },
         }

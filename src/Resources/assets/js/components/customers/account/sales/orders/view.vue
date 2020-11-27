@@ -5,7 +5,7 @@
 
         <div class="order-details" v-if="order">
             <div class="order-info-section sale-section">
-                <h2 class="sale-section-title">Order #0000123</h2>
+                <h2 class="sale-section-title">{{ order.increment_id }}</h2>
 
                 <div class="order-content sale-section-content">
                     <label>{{ $t('Placed On') }}</label>
@@ -21,7 +21,7 @@
                 <h2 class="sale-section-title">{{ $t('number Item(s) Ordered', {number: order.items.length}) }}</h2>
 
                 <div class="order-item-list sale-section-content">
-                    <div class="order-item" v-for="orderItem in order.items">
+                    <div class="order-item" v-for="(orderItem, index) in order.items" :key="index">
                         <div class="order-item-image">
                             <img
                                 alt="product-base-small-image"
@@ -37,7 +37,7 @@
 
                             <div class="order-item-options">
                                 <div class="attributes" v-if="orderItem.additional.attributes">
-                                    <div class="option" v-for="attribute in orderItem.additional.attributes">
+                                    <div class="option" v-for="(attribute, index) in orderItem.additional.attributes" :key="index">
                                         <label>{{ attribute.attribute_name }} - </label>
                                         <span>{{ attribute.option_label }}</span>
                                     </div>
@@ -198,7 +198,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/orders/' + orderId)
+                this.$http.get('/api/pwa/orders/' + orderId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

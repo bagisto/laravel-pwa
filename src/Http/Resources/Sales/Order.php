@@ -9,7 +9,6 @@ use Webkul\API\Http\Resources\Sales\Invoice;
 use Webkul\API\Http\Resources\Sales\Shipment;
 use Webkul\API\Http\Resources\Sales\OrderAddress;
 
-
 class Order extends JsonResource
 {
     /**
@@ -25,6 +24,7 @@ class Order extends JsonResource
             'status'                                => $this->status,
             'status_label'                          => $this->status_label,
             'channel_name'                          => $this->channel_name,
+            'increment_id'                          => $this->increment_id,
             'is_guest'                              => $this->is_guest,
             'customer_email'                        => $this->customer_email,
             'customer_first_name'                   => $this->customer_first_name,

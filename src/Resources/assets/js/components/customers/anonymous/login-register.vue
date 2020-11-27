@@ -43,6 +43,9 @@
 </template>
 
 <script>
+    import {
+        mapActions
+    } from 'vuex';
     import CustomHeader   from '../../layouts/custom-header';
     import Login          from './login';
     import Register       from './register';
@@ -68,16 +71,19 @@
         computed: {
             app_name () {
                 return window.config.app_short_name ? window.config.app_short_name : 'Bagisto';
-            }
+            },
         },
 
         mounted: function () {
-            this.getAuthCustomer();
+            this.getCustomer();
         },
 
         methods: {
+            ...mapActions([
+                'getCustomer',
+            ]),
+
             openPopup (value) {
-                debugger
                 this.popups = { login: false, register: false, forgot_password: false };
 
                 this.popups[value] = true;
@@ -85,17 +91,6 @@
 
             handleBack () {
                 this.$router.push({name: 'home'})
-            },
-
-            getAuthCustomer () {
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/customer/get')
-                    .then(response => {
-                        this.$router.push({name: 'dashboard'})
-                    })
-                    .catch(function (error) {
-                    });
             },
         }
     }

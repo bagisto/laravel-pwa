@@ -196,7 +196,8 @@
         "sample"                : "Sample",
         "links"                 : "Links",
         "remaining_downloads"   : "Remaining Downloads",
-        "downloadable_products" : "Downloadable products"
+        "downloadable_products" : "Downloadable products",
+        "download_error"        : "Download link has been expired."
     },
     "bundle": {
         "customize_options": "Customize Options",

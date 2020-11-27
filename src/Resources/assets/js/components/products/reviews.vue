@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="review-list">
-                    <div class="review-item" v-for="review in reviews">
+                    <div class="review-item" v-for="(review, index) in reviews" :key="index">
                         <div class="title">
                             <span class="rating" :class="['star-' + parseInt(review.rating)]">
                                 {{ review.rating }}
@@ -79,6 +79,10 @@
 </template>
 
 <script>
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
     import Accordian  from '../shared/accordian';
     import DonutChart from '../shared/donut-chart';
 
@@ -94,15 +98,13 @@
                 reviews: [],
 
                 pagination: {},
-
-                customer: null
             }
         },
 
         mounted () {
             this.getReviews(this.product.id);
 
-            this.getAuthCustomer();
+            this.getCustomer();
         },
 
         computed: {
@@ -112,42 +114,34 @@
                 var ratingFinal = [];
 
                 for (var key in ratings) {
-                    ratingFinal.push(ratings[key])
+                    ratingFinal.push(ratings[key]);
                 }
 
                 return ratingFinal;
             },
 
-            getAuthCustomer () {
-                var this_this = this;
-
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/customer/get')
-                    .then(function(response) {
-                        this_this.customer = response.data.data;
-
-                        EventBus.$emit('hide-ajax-loader');
-                    })
-                    .catch(function (error) {});
-            }
+            ...mapState({
+                customer: state => state.customer,
+            }),
         },
 
         methods: {
-            getReviews (productId) {
-                var this_this = this;
+            ...mapActions([
+                'getCustomer',
+            ]),
 
+            getReviews (productId) {
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/reviews', { params: { product_id: productId, limit: 5, status: 'approved' } })
-                    .then(function(response) {
-                        this_this.reviews = response.data.data;
+                    .then(response => {
+                        this.reviews = response.data.data;
 
-                        this_this.pagination = response.data.meta;
+                        this.pagination = response.data.meta;
 
                         EventBus.$emit('hide-ajax-loader');
                     })
-                    .catch(function (error) {});
+                    .catch(error => {});
             }
         }
     }

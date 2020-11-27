@@ -328,7 +328,7 @@
                 <div class="panel">
                     <div class="panel-heading">{{ $t('Coupon') }}</div>
 
-                    <div class="panel-content" style="padding-left: 16px">
+                    <div class="panel-content">
                         <div class="coupon-container">
                             <div class="discount-control" style="padding:10px;">
                                 <form data-vv-scope="coupon-form">

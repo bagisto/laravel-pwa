@@ -29,7 +29,8 @@
     "vue-moment": "^4.0.0",
     "vue-router": "^3.0.2",
     "vue-slider-component": "^3.0.16",
-    "vue-toasted": "^1.1.27"
+    "vue-toasted": "^1.1.27",
+    "vuex": "^3.6.0"
   },
   "name": "pwa",
   "version": "1.0.0",

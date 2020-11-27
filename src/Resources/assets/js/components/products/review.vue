@@ -21,6 +21,11 @@
 </template>
 
 <script>
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
+
     export default {
         name: 'price',
 
@@ -28,29 +33,22 @@
 
         data () {
             return {
-                customer: null,
                 is_guest_checkout: false,
             }
         },
+
+        computed: mapState({
+            customer: state => state.customer,
+        }),
 
         mounted () {
             this.checkGuestReview();
         },
 
         methods: {
-            getAuthCustomer () {
-                var this_this = this;
-
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/customer/get')
-                    .then(function(response) {
-                        this_this.customer = response.data.data;
-
-                        EventBus.$emit('hide-ajax-loader');
-                    })
-                    .catch(function (error) {});
-            },
+            ...mapActions([
+                'getCustomer',
+            ]),
 
             checkGuestReview () {
                 EventBus.$emit('show-ajax-loader');
@@ -67,7 +65,7 @@
                     if (response.data.data[guest_checkout_key] == "1") {
                         this.is_guest_checkout = 1;
                     } else {
-                        this.getAuthCustomer();
+                        this.getCustomer();
                     }
                 })
                 .catch(function (error) {});

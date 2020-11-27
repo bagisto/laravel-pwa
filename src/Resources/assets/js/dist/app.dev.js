@@ -2,15 +2,17 @@
 
 var _vue = _interopRequireDefault(require("vue"));
 
+var _router = _interopRequireDefault(require("./router"));
+
+var _store = _interopRequireDefault(require("./store"));
+
 var _vueToasted = _interopRequireDefault(require("vue-toasted"));
 
-var _router = _interopRequireDefault(require("./router"));
+var _i18n = _interopRequireDefault(require("./plugins/i18n"));
 
 var _app = _interopRequireDefault(require("./components/app"));
 
 var _vueCurrencyFilter = _interopRequireDefault(require("vue-currency-filter"));
-
-var _i18n = _interopRequireDefault(require("./plugins/i18n"));
 
 require("./plugins/push-notification");
 
@@ -18,8 +20,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 // import './../../../../../../../public/firebase-messaging-sw';     // (File from the public folder)
 // import './../../../../publishable/pwa/firebase-messaging-sw';    //  (File from the pwa foder where main service-worker is kept)
-window.jQuery = window.$ = require('jquery');
 window.axios = require('axios');
+window.jQuery = window.$ = require('jquery');
 window.VeeValidate = require('vee-validate');
 window.EventBus = new _vue["default"]();
 _vue["default"].prototype.$http = axios;
@@ -105,5 +107,6 @@ var app = new _vue["default"]({
       }
     }
   },
-  router: _router["default"]
+  router: _router["default"],
+  store: _store["default"]
 });
