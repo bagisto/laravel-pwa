@@ -31,11 +31,11 @@ import CustomerReviewList   from './components/customers/account/reviews/index';
 import CustomerReviewDetail from './components/customers/account/reviews/view';
 import Offline              from './components/offline/index';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
     mode: 'history',
-    base: window.config.url_path + '/mobile',
+    base: `${window.config.url_path}/${window.config.prefix}`,
     routes: [
         {
             path: '/',

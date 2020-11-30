@@ -1,0 +1,159 @@
+.icon {
+  display: inline-block;
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+}
+.icon.bar-icon {
+  background-image: url("../images/bar-icon.svg");
+}
+.icon.search-icon {
+  background-image: url("../images/search-icon.svg");
+}
+.icon.home-icon {
+  background-image: url("../images/home-icon.svg");
+}
+.icon.notification-icon {
+  background-image: url("../images/notification-icon.svg");
+}
+.icon.cart-icon {
+  background-image: url("../images/cart-icon.svg");
+}
+.icon.arrow-right-icon {
+  background-image: url("../images/arrow-right-icon.svg");
+  width: 24px;
+  height: 24px;
+}
+.icon.sharp-arrow-right-icon {
+  background-image: url("../images/sharp-arrow-right-icon.svg");
+}
+.icon.sharp-sort-icon {
+  background-image: url("../images/sharp-sort-icon.svg");
+}
+.icon.sharp-filter-icon {
+  background-image: url("../images/sharp-filter-icon.svg");
+}
+.icon.sharp-grid-icon {
+  background-image: url("../images/sharp-grid-icon.svg");
+}
+.icon.sharp-list-icon {
+  background-image: url("../images/sharp-list-icon.svg");
+}
+.icon.sharp-done-green {
+  background-image: url("../images/sharp-done-green.svg");
+}
+.icon.sharp-done-white {
+  background-image: url("../images/sharp-done-white.svg");
+}
+.icon.star-white-icon {
+  background-image: url("../images/star-white-icon.png");
+  width: 12px;
+  height: 12px;
+}
+.icon.wishlist-icon {
+  background-image: url("../images/wishlist-icon.svg");
+}
+.icon.filled-wishlist-icon {
+  background-image: url("../images/filled-wishlist-icon.svg");
+}
+.icon.share-icon {
+  background-image: url("../images/share-icon.svg");
+}
+.icon.minus-icon {
+  background-image: url("../images/minus-icon.svg");
+}
+.icon.plus-icon {
+  background-image: url("../images/plus-icon.svg");
+}
+.icon.sharp-plus-icon {
+  background-image: url("../images/sharp-plus-icon.svg");
+}
+.icon.accordian-up-icon {
+  background-image: url("../images/accordian-up-icon.svg");
+}
+.icon.accordian-down-icon {
+  background-image: url("../images/accordian-down-icon.svg");
+}
+.icon.star-1-icon {
+  background-image: url("../images/1-star-icon.svg");
+  width: 12px;
+  height: 12px;
+}
+.icon.star-2-icon {
+  background-image: url("../images/2-star-icon.svg");
+  width: 12px;
+  height: 12px;
+}
+.icon.star-3-icon {
+  background-image: url("../images/3-star-icon.svg");
+  width: 12px;
+  height: 12px;
+}
+.icon.star-4-icon {
+  background-image: url("../images/4-star-icon.svg");
+  width: 12px;
+  height: 12px;
+}
+.icon.star-5-icon {
+  background-image: url("../images/5-star-icon.svg");
+  width: 12px;
+  height: 12px;
+}
+.icon.back-icon {
+  background-image: url("../images/back-icon.svg");
+}
+.icon.back-white-icon {
+  background-image: url("../images/back-white-icon.svg");
+}
+.icon.sharp-arrow-line-icon {
+  background-image: url("../images/sharp-arrow-line-icon.svg");
+}
+.icon.sharp-repeat-icon {
+  background-image: url("../images/sharp-repeat-icon.svg");
+}
+.icon.sharp-post-review-icon {
+  background-image: url("../images/sharp-post-review-icon.svg");
+}
+.icon.white-post-review-icon {
+  background-image: url("../images/white-post-review-icon.svg");
+}
+.icon.star-icon {
+  background-image: url("../images/star-icon.svg");
+  width: 18px;
+  height: 18px;
+}
+.icon.star-active-icon {
+  background-image: url("../images/star-active-icon.svg");
+  width: 18px;
+  height: 18px;
+}
+.icon.add-new-white-icon {
+  background-image: url("../images/add-new-white-icon.svg");
+}
+.icon.sharp-edit-icon {
+  background-image: url("../images/sharp-edit-icon.svg");
+}
+.icon.sharp-trash-icon {
+  background-image: url("../images/sharp-trash-icon.svg");
+}
+.icon.arrow-bottom-white-icon {
+  background-image: url("../images/arrow-bottom-white-icon.svg");
+}
+.icon.sharp-invoice-icon {
+  background-image: url("../images/sharp-invoice-icon.svg");
+}
+.icon.sharp-save-icon {
+  background-image: url("../images/sharp-save-icon.svg");
+}
+.icon.empty-cart-icon {
+  background-image: url("../images/empty-cart-icon.svg");
+}
+.icon.update-icon {
+  background-image: url("../images/update-icon.svg");
+}
+.icon.sharp-cross-icon {
+  background-image: url("../images/sharp-cross-icon.svg");
+}
+.icon.sharp-remove-icon {
+  background-image: url("../images/sharp-remove-icon.svg");
+}

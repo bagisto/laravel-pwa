@@ -3,7 +3,7 @@
         <custom-header>
             <div slot="content">
                 <div class="account-information">
-                    <h2>{{ $t('Dashboard') }}</h2>
+                    <h2 style="display: block">{{ $t('Dashboard') }}</h2>
 
                     <div class="avatar"></div>
 
@@ -13,6 +13,9 @@
 
                     <router-link class="edit-info-btn" :to="'/customer/account/profile'">{{ $t('Edit Info') }}</router-link>
                 </div>
+            </div>
+
+            <div slot="navbar-right">
             </div>
         </custom-header>
 
@@ -267,6 +270,11 @@
             .btn-black {
                 width: 100%;
             }
+        }
+
+        .account-content {
+            top: -56px;
+            position: relative;
         }
     }
 </style>

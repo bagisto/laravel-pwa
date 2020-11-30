@@ -75,9 +75,5 @@
         bottom: 0;
         top: 0;
         width: 100%;
-
-        .order-list {
-            margin-top: 55px;
-        }
     }
 </style>

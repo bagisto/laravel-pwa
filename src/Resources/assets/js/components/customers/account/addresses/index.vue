@@ -69,7 +69,6 @@
         width: 100%;
 
         .btn.btn-black {
-            margin-top: 55px;
             width: 100%;
 
             .icon {

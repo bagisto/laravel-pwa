@@ -11,6 +11,9 @@
 .icon.search-icon {
   background-image: url("../images/search-icon.svg");
 }
+.icon.home-icon {
+  background-image: url("../images/home-icon.svg");
+}
 .icon.notification-icon {
   background-image: url("../images/notification-icon.svg");
 }
@@ -824,4 +827,13 @@ ul {
   font-size: 14px;
   color: #000000;
   margin-left: 8px;
+}
+
+.header h2,
+.header .header-content {
+  display: inline-block;
+}
+
+.display-in-bl {
+  display: inline-block;
 }

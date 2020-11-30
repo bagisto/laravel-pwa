@@ -177,7 +177,8 @@
     });
 
     Route::group(['middleware' => ['web','locale', 'currency']], function ($router) {
-        Route::get('/mobile/{any?}', 'Webkul\PWA\Http\Controllers\SinglePageController@index')->where('any', '.*');
+        Route::get('/mobile/{any?}', 'Webkul\PWA\Http\Controllers\SinglePageController@index')->where('any', '.*')->name('mobile.home');
+        Route::get('/pwa/{any?}', 'Webkul\PWA\Http\Controllers\SinglePageController@index')->where('any', '.*')->name('pwa.home');
     });
 
     Route::prefix('paypal/standard')->group(function () {

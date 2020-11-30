@@ -5,7 +5,7 @@
                 <i class="icon back-icon" @click="handleBack"></i>
             </div>
 
-            <div slot="content">
+            <div slot="content" class="header-content">
                 <h2>{{ stepLabels[step] }}</h2>
 
                 <div class="stepper">
