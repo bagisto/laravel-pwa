@@ -81,8 +81,8 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepository->findOrFail($id);
 
         $pdf = PDF::loadView('shop::customers.account.orders.pdf', compact('invoice'))->setPaper('a4');
-        
-        return $pdf->download('invoice-' . $invoice->created_at->format('d-m-Y') . '.pdf');
+
+        return $pdf->output();
     }
 
     /**

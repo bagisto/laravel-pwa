@@ -17,11 +17,11 @@
                 <span>{{ $t('View Invoice') }}</span>
             </router-link>
 
-            <router-link class="print-link" :to="'/customer/account/' + $route.params.order_id + '/invoices/' + invoice.id">
+            <div class="print-link" @click="printInvoice(invoice.id)">
                 <i class="icon sharp-save-icon"></i>
 
                 <span>{{ $t('Save Invoice') }}</span>
-            </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -30,7 +30,24 @@
     export default {
         name: 'invoice-card',
 
-        props: ['invoice']
+        props: ['invoice'],
+
+        methods: {
+            printInvoice (invoiceId) {
+                this.$http.get(`/api/invoices/${invoiceId}/download`, { responseType: 'blob'})
+                    .then(response => {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        
+                        link.href = url;
+
+                        link.setAttribute('download', 'invoice.pdf'); //or any other extension
+                        document.body.appendChild(link);
+                        link.click();
+                    })
+                    .catch(error => {});
+            }
+        }
     }
 </script>
 

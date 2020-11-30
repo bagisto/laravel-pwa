@@ -102,6 +102,12 @@
                     'resource'      => 'Webkul\API\Http\Resources\Sales\Invoice',
                     'authorization_required' => true
                 ]);
+
+                Route::get('invoices/{id}', 'InvoiceController@get')->defaults('_config', [
+                    'repository' => 'Webkul\Sales\Repositories\InvoiceRepository',
+                    'resource' => 'Webkul\API\Http\Resources\Sales\Invoice',
+                    'authorization_required' => true
+                ]);
                 
                 Route::get('move-to-cart/{id}', 'WishlistController@moveToCart');
 

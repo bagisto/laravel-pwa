@@ -83,7 +83,6 @@
         width: 100%;
 
         .shipment-details {
-            top: 56px;
             position: absolute;
             width: 100%;
             z-index: 10;

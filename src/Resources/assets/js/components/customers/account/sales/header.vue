@@ -22,6 +22,9 @@
                     </ul>
                 </div>
             </div>
+
+            <div slot="navbar-right">
+            </div>
         </custom-header>
     </div>
 </template>
@@ -58,6 +61,7 @@
         color: #ffffff;
 
         h2 {
+            display: block;
             padding-left: 66px;
         }
 

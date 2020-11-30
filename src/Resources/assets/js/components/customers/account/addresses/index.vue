@@ -2,11 +2,6 @@
     <div class="content">
         <custom-header :title="$t('Address Book')"></custom-header>
 
-        <router-link class="btn btn-black" :to="'/customer/account/addresses/create'">
-            <i class="icon add-new-white-icon"></i>
-            <span>{{ $t('Add New Address') }}</span>
-        </router-link>
-
         <div class="address-list" v-if="addresses.length">
             <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
         </div>

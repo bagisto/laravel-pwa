@@ -1,7 +1,7 @@
 <template>
     <div class="order-card">
         <div class="order-details">
-            <div class="order-id">#{{ order.increment_id }}</div>
+            <div class="order-id">{{ order.increment_id }}</div>
             <div class="order-status">
                 <label :class="order.status">{{ order.status_label }}</label>
             </div>

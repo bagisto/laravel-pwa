@@ -11,7 +11,7 @@
                 <div class="invoice-item-list sale-section-content">
                     <div class="invoice-item">
                         
-                        <div v-for="invoiceItem in invoice.items">
+                        <div v-for="(invoiceItem, index) in invoice.items" :key="index">
                             
                             <div class="invoice-item-info">
                                 <div class="invoice-item-name">
@@ -23,7 +23,7 @@
 
                                 <div class="invoice-item-options">
                                     <div class="attributes" v-if="invoiceItem.additional.attributes">
-                                        <div class="option" v-for="attribute in invoiceItem.additional.attributes">
+                                        <div class="option" v-for="(attribute, attributeIndex) in invoiceItem.additional.attributes" :key="attributeIndex">
                                             <label>{{ attribute.attribute_name }} - </label>
                                             <span>{{ attribute.option_label }}</span>
                                         </div>
@@ -110,24 +110,20 @@
 
         methods: {
             getInvoice (invoiceId) {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get(`/api/invoices/${invoiceId}/download`)
-                    .then(function(response) {
-                        EventBus.$emit('hide-ajax-loader');
+                this.$http.get(`/api/pwa/invoices/${invoiceId}`)
+                    .then(response => {
+                        this.invoice = response.data.data;
 
-                        this_this.invoice = response.data.data;
+                        EventBus.$emit('hide-ajax-loader');
                     })
-                    .catch(function (error) {});
+                    .catch(error => {});
             },
 
             printInvoice (invoiceId) {
-                var this_this = this;
-
-                this.$http.get('/api/invoices/' + invoiceId + '/download', { responseType: 'blob'})
-                    .then(function(response) {
+                this.$http.get(`/api/invoices/${invoiceId}/download`, { responseType: 'blob'})
+                    .then(response => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');
                         
@@ -137,7 +133,7 @@
                         document.body.appendChild(link);
                         link.click();
                     })
-                    .catch(function (error) {});
+                    .catch(error => {});
             }
         }
     }
@@ -151,7 +147,6 @@
         width: 100%;
 
         .invoice-details {
-            top: 56px;
             position: absolute;
             width: 100%;
             z-index: 10;

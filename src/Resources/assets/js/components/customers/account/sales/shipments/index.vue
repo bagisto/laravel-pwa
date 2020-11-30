@@ -95,7 +95,6 @@
         width: 100%;
 
         .order-details {
-            top: 56px;
             position: absolute;
             width: 100%;
             z-index: 10;

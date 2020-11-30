@@ -67,17 +67,15 @@
             },
 
             getInvoices (orderId) {
-                var this_this = this;
-
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/pwa/invoices', { params: { order_id: orderId, pagination: 0 } })
-                    .then(function(response) {
+                    .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.invoices = response.data.data;
+                        this.invoices = response.data.data;
                     })
-                    .catch(function (error) {});
+                    .catch(error => {});
             },
 
             toggleHeader (value) {
@@ -95,7 +93,6 @@
         width: 100%;
 
         .order-details {
-            top: 56px;
             position: absolute;
             width: 100%;
             z-index: 10;
