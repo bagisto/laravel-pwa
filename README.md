@@ -27,7 +27,7 @@ It packs with lots of demanding features that allows your business to scale in n
 
 ### 2. Requirements:
 
-* **Bagisto**: v0.1.x, v0.2.1, v0.2.2.
+* **Bagisto**: v1.2.0.
 
 
 ### 3. Installation:
@@ -37,6 +37,10 @@ composer require bagisto/pwa:dev-master
 ```
 
 * Run these commands below to complete the setup
+
+```
+php artisan config:cache
+```
 
 ```
 php artisan migrate
