@@ -35,7 +35,7 @@ Vue.use(Router);
 
 export default new Router({
     mode: 'history',
-    base: `${window.config.url_path}/${window.config.prefix}`,
+    base: `${window.config.prefix}`,
     routes: [
         {
             path: '/',
