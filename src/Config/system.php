@@ -153,7 +153,14 @@ return [
                 'validation' => 'alpha_num',
                 'channel_based' => true,
                 'locale_based' => true
-            ],  [
+            ], [
+                'name' => 'messaging-id',
+                'title' => 'pwa::app.admin.system.messagingId',
+                'type' => 'text',
+                'validation' => 'numeric',
+                'channel_based' => true,
+                'locale_based' => true
+            ], [
                 'name' => 'api-key',
                 'title' => 'pwa::app.admin.system.api-key',
                 'type' => 'password',

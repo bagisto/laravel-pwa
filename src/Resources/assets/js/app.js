@@ -60,6 +60,10 @@ const app = new Vue({
     created () {
         var this_this = this;
 
+		if (! this.$route.name) {
+			this.$router.push({'name': 'home'});
+		}
+
         axios.interceptors.response.use(
             function(response) {
                 if (response.data.offline) {

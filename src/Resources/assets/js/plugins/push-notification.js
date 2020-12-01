@@ -2,6 +2,14 @@ import '@firebase/auth';
 import '@firebase/messaging';
 import firebase from '@firebase/app';
 
+var topic;
+var serverAPI;
+var messagingId;
+
+var topicKey = "pwa.settings.push-notification.topic";
+var serverAPIKey = "pwa.settings.push-notification.api-key";
+var messagingIdKey = "pwa.settings.push-notification.messaging-id";
+
 var isSafari = () => {
     return window.navigator.vendor == "Apple Computer, Inc." ? true : false;
 }
@@ -15,21 +23,40 @@ var setTokenSentToServer = sent => {
 }
 
 if (! isSafari()) {
-    firebase.initializeApp({messagingSenderId: '444825614301'});
-    const messaging = firebase.messaging();
+    let url = `${window.config.app_base_url}/api/config?_config=${topicKey},${serverAPIKey},${messagingIdKey}`;
 
-    Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            console.log('Notification permission granted.');
-            // TODO(developer): Retrieve an Instance ID token for use with FCM.
-            retriveCurrentToken(messaging);
-        } else {
-            console.log('Unable to get permission to notify.');
-        }
-    });
+    fetch(url, {
+        method: 'GET',
+        headers: new Headers({
+            'Accept'        : 'application/json',
+            'Content-Type'  : 'application/json',
+        }),
+    })
+    .then(response => response.json())
+    .then(response => {
+        topic = response.data[topicKey];
+        serverAPI = response.data[serverAPIKey];
+        messagingId = response.data[messagingIdKey];
 
-    messaging.onMessage(function(payload){
-        console.log('onMessage:', payload);
+        firebase.initializeApp({messagingSenderId: messagingId});
+        const messaging = firebase.messaging();
+
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                // TODO(developer): Retrieve an Instance ID token for use with FCM.
+                retriveCurrentToken(messaging);
+            } else {
+                console.log('Unable to get permission to notify.');
+            }
+        });
+
+        messaging.onMessage(function(payload){
+            console.log('onMessage:', payload);
+        });
+    })
+    .catch((error) => {
+        console.log(error);
     });
 }
 
@@ -87,49 +114,29 @@ function sendTokenToServer(currentToken) {
 }
 
 function subscribeToTopic(currentToken) {
-    var topicKey = 'pwa.settings.push-notification.topic';
-    var serverAPIKey = 'pwa.settings.push-notification.api-key';
-    
-    let url = `${window.location.origin}/api/config?_config=${topicKey},${serverAPIKey}`;
+    let post = {
+        topic,
+        currentToken: currentToken,
+    }
 
-    fetch(url, {
-        method: 'GET',
+    let url = `https://iid.googleapis.com/iid/v1/${currentToken}/rel/topics/${topic}`;
+
+    fetch( url, {
+        method: 'POST',
         headers: new Headers({
-            'Accept'        : 'application/json',
-            'Content-Type'  : 'application/json',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization':`key=${serverAPI}`,
         }),
+        body : JSON.stringify(post)
     })
-    .then(response => response.json())
     .then(response => {
-        var topic = response.data[topicKey];
-
-        let post = {
-            topic,
-            currentToken: currentToken,
+        if (response.status < 200 || response.status >= 400) {
+            throw 'Error subscribing to topic: '+response.status + ' - ' + response.body;
         }
-    
-        let url = 'https://iid.googleapis.com/iid/v1/' + currentToken + '/rel/topics/' + topic;
-    
-        fetch( url, {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization':`key=${response.data[serverAPIKey]}`,
-            }),
-            body : JSON.stringify(post)
-        })
-        .then(response => {
-            if (response.status < 200 || response.status >= 400) {
-                throw 'Error subscribing to topic: '+response.status + ' - ' + response.body;
-            }
-    
-            console.log(response.status);
-            console.log('Subscribed to "'+topic+'"');
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+
+        console.log(response.status);
+        console.log('Subscribed to "'+topic+'"');
     })
     .catch((error) => {
         console.log(error);

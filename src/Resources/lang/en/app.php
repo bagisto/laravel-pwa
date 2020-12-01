@@ -15,6 +15,7 @@ return [
             'theme-color'                           => 'Theme Color',
             'add_in_pwa'                            => 'Add in PWA',
             'add_in_pwa'                            => 'Add in PWA',
+            'messagingId'                           => 'Messaging Id',
             'api-key'                               => 'Server API Key',
             'enable_slider'                         => 'Enable Slider',
             'background-color'                      => 'Background Color',

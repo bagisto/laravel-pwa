@@ -45,7 +45,6 @@ self.addEventListener('activate', function(e) {
     return self.clients.claim();
 });
 
-
 self.addEventListener('fetch', function(event) {
     if (event.request.method != 'GET')
         return;

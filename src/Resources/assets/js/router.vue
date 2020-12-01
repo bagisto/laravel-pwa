@@ -38,10 +38,6 @@ export default new Router({
     base: `${window.config.url_path}/${window.config.prefix}`,
     routes: [
         {
-            path: '',
-            name: 'pwa-home',
-            component: Homepage
-        }, {
             path: '/',
             name: 'home',
             component: Homepage

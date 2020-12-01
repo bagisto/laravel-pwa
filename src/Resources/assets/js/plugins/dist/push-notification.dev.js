@@ -8,6 +8,13 @@ var _app = _interopRequireDefault(require("@firebase/app"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var topic;
+var serverAPI;
+var messagingId;
+var topicKey = "pwa.settings.push-notification.topic";
+var serverAPIKey = "pwa.settings.push-notification.api-key";
+var messagingIdKey = "pwa.settings.push-notification.messaging-id";
+
 var isSafari = function isSafari() {
   return window.navigator.vendor == "Apple Computer, Inc." ? true : false;
 };
@@ -21,23 +28,40 @@ var setTokenSentToServer = function setTokenSentToServer(sent) {
 };
 
 if (!isSafari()) {
-  _app["default"].initializeApp({
-    messagingSenderId: '444825614301'
-  });
+  var url = "".concat(window.config.app_base_url, "/api/config?_config=").concat(topicKey, ",").concat(serverAPIKey, ",").concat(messagingIdKey);
+  fetch(url, {
+    method: 'GET',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (response) {
+    topic = response.data[topicKey];
+    serverAPI = response.data[serverAPIKey];
+    messagingId = response.data[messagingIdKey];
 
-  var messaging = _app["default"].messaging();
+    _app["default"].initializeApp({
+      messagingSenderId: messagingId
+    });
 
-  Notification.requestPermission().then(function (permission) {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.'); // TODO(developer): Retrieve an Instance ID token for use with FCM.
+    var messaging = _app["default"].messaging();
 
-      retriveCurrentToken(messaging);
-    } else {
-      console.log('Unable to get permission to notify.');
-    }
-  });
-  messaging.onMessage(function (payload) {
-    console.log('onMessage:', payload);
+    Notification.requestPermission().then(function (permission) {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.'); // TODO(developer): Retrieve an Instance ID token for use with FCM.
+
+        retriveCurrentToken(messaging);
+      } else {
+        console.log('Unable to get permission to notify.');
+      }
+    });
+    messaging.onMessage(function (payload) {
+      console.log('onMessage:', payload);
+    });
+  })["catch"](function (error) {
+    console.log(error);
   });
 }
 
@@ -88,42 +112,26 @@ function sendTokenToServer(currentToken) {
 }
 
 function subscribeToTopic(currentToken) {
-  var topicKey = 'pwa.settings.push-notification.topic';
-  var serverAPIKey = 'pwa.settings.push-notification.api-key';
-  var url = "".concat(window.location.origin, "/api/config?_config=").concat(topicKey, ",").concat(serverAPIKey);
+  var post = {
+    topic: topic,
+    currentToken: currentToken
+  };
+  var url = "https://iid.googleapis.com/iid/v1/".concat(currentToken, "/rel/topics/").concat(topic);
   fetch(url, {
-    method: 'GET',
+    method: 'POST',
     headers: new Headers({
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    })
+      'Authorization': "key=".concat(serverAPI)
+    }),
+    body: JSON.stringify(post)
   }).then(function (response) {
-    return response.json();
-  }).then(function (response) {
-    var topic = response.data[topicKey];
-    var post = {
-      topic: topic,
-      currentToken: currentToken
-    };
-    var url = 'https://iid.googleapis.com/iid/v1/' + currentToken + '/rel/topics/' + topic;
-    fetch(url, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': "key=".concat(response.data[serverAPIKey])
-      }),
-      body: JSON.stringify(post)
-    }).then(function (response) {
-      if (response.status < 200 || response.status >= 400) {
-        throw 'Error subscribing to topic: ' + response.status + ' - ' + response.body;
-      }
+    if (response.status < 200 || response.status >= 400) {
+      throw 'Error subscribing to topic: ' + response.status + ' - ' + response.body;
+    }
 
-      console.log(response.status);
-      console.log('Subscribed to "' + topic + '"');
-    })["catch"](function (error) {
-      console.log(error);
-    });
+    console.log(response.status);
+    console.log('Subscribed to "' + topic + '"');
   })["catch"](function (error) {
     console.log(error);
   });
