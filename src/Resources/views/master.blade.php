@@ -55,7 +55,7 @@
             window.channel = @json(new \Webkul\API\Http\Resources\Core\Channel(core()->getCurrentChannel()));
             window.config = {
                 app_short_name: "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
-                app_base_url: "{{ config('app.url') }}",
+                app_base_url: window.location.origin,
                 url_path: "{{ $urlPath }}",
                 prefix: "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}",
                 currencies: @json(core()->getCurrentChannel()->currencies),
