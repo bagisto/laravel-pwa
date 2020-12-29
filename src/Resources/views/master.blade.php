@@ -52,12 +52,15 @@
         </div>
 
         <script type="text/javascript">
+            let prefix = "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}";
+            let app_base_url = window.location.href.replace(`/${prefix}`,'');
+
             window.channel = @json(new \Webkul\API\Http\Resources\Core\Channel(core()->getCurrentChannel()));
             window.config = {
                 app_short_name: "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
-                app_base_url: window.location.origin,
+                app_base_url,
                 url_path: "{{ $urlPath }}",
-                prefix: "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}",
+                prefix: prefix,
                 currencies: @json(core()->getCurrentChannel()->currencies),
                 currentCurrency: @json(core()->getCurrentCurrency()),
                 locales: @json(core()->getCurrentChannel()->locales),
