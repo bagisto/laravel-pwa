@@ -57,7 +57,7 @@
                 app_short_name: "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
                 app_base_url: "{{ config('app.url') }}",
                 url_path: "{{ $urlPath }}",
-                prefix: "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}",
+                prefix: "{{ $urlPath }}" + '/' + "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}",
                 currencies: @json(core()->getCurrentChannel()->currencies),
                 currentCurrency: @json(core()->getCurrentCurrency()),
                 locales: @json(core()->getCurrentChannel()->locales),

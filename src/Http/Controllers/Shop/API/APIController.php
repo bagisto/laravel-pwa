@@ -50,6 +50,7 @@ class APIController extends Controller
      */
     public function fetchAdvertisementImages()
     {
+        $advertisementImages = null;
         $locale = request()->get('locale');
 
         $velocityMetaData = $this->velocityHelper->getVelocityMetaData();
