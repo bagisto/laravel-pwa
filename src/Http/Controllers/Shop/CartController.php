@@ -98,7 +98,7 @@ class CartController extends Controller
         return response()->json([
             'data'                      => $cart ? new CartResource($cart) : null,
             'redirectToCustomerLogin'   => $redirectToCustomerLogin ?? false,
-            'isShipping'                => $cart->haveStockableItems() ? true : false,
+            'isShipping'                => ($cart && $cart->haveStockableItems()) ? true : false,
         ]);
     }
 
