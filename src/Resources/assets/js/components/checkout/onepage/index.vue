@@ -81,9 +81,9 @@
                     </div>
 
                     <div class="panel">
-                        <div class="panel-heading">{{ $t('Shipping Address') }}</div>
+                        <div class="panel-heading" v-if="isShipping">{{ $t('Shipping Address') }}</div>
 
-                        <div style="padding: 16px">
+                        <div style="padding: 16px" v-if="isShipping">
                             <span class="checkbox" :class="'shipping_address_' + address.id">
                                 <input type="checkbox" :id="'shipping_address_' + address.id" name="billing[use_for_shipping]" v-model="address.billing.use_for_shipping">
                                 <label class="checkbox-view" :for="'shipping_address_' + address.id"></label>
@@ -386,6 +386,7 @@
                 cart: null,
                 customer: null,
                 coupon_code: '',
+                isShipping: true,
                 error_message: '',
                 shippingRates: [],
                 paymentMethods: [],
@@ -497,6 +498,8 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         this.cart = response.data.data;
+
+                        this.isShipping = response.data.isShipping;
 
                         if (
                             response.data.redirectToCustomerLogin
