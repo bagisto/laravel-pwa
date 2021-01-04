@@ -12,8 +12,7 @@ use Cart;
 /**
  * Wishlist controller
  *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @author    Vivek Sharma <viveksh047@webkul.com>@vivek-webkul
+ * @author Webkul Software Pvt. Ltd. <support@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class WishlistController extends Controller

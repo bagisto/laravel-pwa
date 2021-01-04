@@ -9,8 +9,6 @@ use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationReposi
 /**
  * Push Notification controller
  *
- * @author    Vivek Sharma <viveksh047@webkul.com>@vivek-webkul
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class PushNotificationController extends Controller
 {
@@ -199,6 +197,10 @@ class PushNotificationController extends Controller
             curl_close( $ch );
 
             // Close connection
+            return redirect()->back();
+        } else {
+            session()->flash('error', trans('admin::app.users.users.login-error'));
+            
             return redirect()->back();
         }
     }

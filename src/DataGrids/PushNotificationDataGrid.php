@@ -8,8 +8,7 @@ use DB;
 /**
  * OrderDataGrid Class
  *
- * @author Aayush Bhatt <aayush.bhatt172@webkul.com>
- * @author Vivek Sharma <viveksh047@webkul.com>
+ * @author Webkul Software Pvt. Ltd. <support@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class PushNotificationDataGrid extends DataGrid

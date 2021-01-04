@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Event;
 /**
  * Event service provider
  *
- * @author Vivek Sharma <viveksh047@webkul.com> @vivek-webkul
+ * @author Webkul Software Pvt. Ltd. <support@webkul.com>
  * @copyright 2019 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class EventServiceProvider extends ServiceProvider
