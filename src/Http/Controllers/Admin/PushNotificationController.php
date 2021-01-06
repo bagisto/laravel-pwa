@@ -9,6 +9,8 @@ use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationReposi
 /**
  * Push Notification controller
  *
+ * @author Webkul Software Pvt. Ltd. <support@webkul.com>
+ * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class PushNotificationController extends Controller
 {

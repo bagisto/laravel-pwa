@@ -236,7 +236,7 @@
                     </div>
                 </div>
 
-                <div class="panel">
+                <div class="panel" v-if="isShipping">
                     <div class="panel-heading">{{ $t('Shipping Info') }}</div>
 
                     <div class="panel-content" style="padding: 16px">

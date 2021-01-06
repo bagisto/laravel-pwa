@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <custom-header>
-            <div slot="content">
+            <div slot="content" class="content-section">
                 <form @submit.prevent="search(term)">
                     <input type="text" class="search-control" v-model="term" :placeholder="$t('Search for products')"/>
                 </form>
@@ -18,7 +18,7 @@
 
                 <div class="panel-content">
                     <ol class="search-list">
-                        <li v-for="(recentSearch, index) in recentSearches" @click="search(recentSearch)">
+                        <li v-for="(recentSearch, index) in recentSearches" @click="search(recentSearch)" :key="index">
                             <span>{{ recentSearch }}</span>
 
                             <i class="icon sharp-remove-icon" @click="removeSaveTerm(index, $event)"></i>

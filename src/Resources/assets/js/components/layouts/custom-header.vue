@@ -4,7 +4,7 @@
             <i class="icon back-icon" @click="handleBack"></i>
         </slot>
 
-        <slot name="content">
+        <slot name="content" class="content-section">
             <h2 class="display-in-bl">{{ title }}</h2>
         </slot>
 
@@ -47,6 +47,7 @@
         background: #ffffff;
         width: 100%;
         top: 0;
+        max-height: 56px;
 
         .icon {
             float: left;
@@ -57,6 +58,10 @@
         .home-icon {
             float: right;
             margin-right: 7px;
+        }
+        
+        .content-section {
+            display: inline-block;
         }
     }
 </style>
