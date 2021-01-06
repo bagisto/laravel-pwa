@@ -370,6 +370,10 @@
         }
     }
 
+    .VueCarousel-slide {
+        position: relative;
+    }
+
     .show-content {
         top: 0;
         left: 0;
