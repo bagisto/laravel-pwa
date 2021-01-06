@@ -18,6 +18,9 @@
                     alt="base-image-original"
                     :src="slider.image_url"
                 />
+
+                <div class="show-content" v-html="slider.content">
+                </div>
             </slide>
         </carousel>
 
@@ -364,6 +367,21 @@
 
         a {
             text-align: right;
+        }
+    }
+
+    .show-content {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: table;
+        text-align: center;
+        position: absolute;
+
+        p {
+            display: table-cell;
+            vertical-align: middle;
         }
     }
 </style>
