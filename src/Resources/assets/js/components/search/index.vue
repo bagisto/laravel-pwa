@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <custom-header>
-            <div slot="content" class="content-section">
+            <div slot="content">
                 <form @submit.prevent="search(term)">
                     <input type="text" class="search-control" v-model="term" :placeholder="$t('Search for products')"/>
                 </form>

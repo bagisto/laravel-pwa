@@ -4,7 +4,7 @@
             <i class="icon back-icon" @click="handleBack"></i>
         </slot>
 
-        <slot name="content" class="content-section">
+        <slot name="content">
             <h2 class="display-in-bl">{{ title }}</h2>
         </slot>
 
@@ -39,15 +39,21 @@
 
 <style scoped lang="scss">
     .header {
-        display: block;
-        padding: 15px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        position: fixed;
-        z-index: 101;
-        background: #ffffff;
-        width: 100%;
         top: 0;
+        width: 100%;
+        z-index: 101;
+        padding: 15px;
+        display: block;
+        position: fixed;
         max-height: 56px;
+        background: #ffffff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+        > div,
+        .content-section {
+            vertical-align: top;
+            display: inline-block;
+        }
 
         .icon {
             float: left;
@@ -58,10 +64,6 @@
         .home-icon {
             float: right;
             margin-right: 7px;
-        }
-        
-        .content-section {
-            display: inline-block;
         }
     }
 </style>

@@ -13,7 +13,16 @@
                 :key='slider.id'
                 v-for="slider in sliders"
             >
+                <a :href="slider.slider_path" class="slider-image-container" v-if="slider.slider_path && slider.slider_path != ''">
+                    <img
+                        class="slider-image"
+                        alt="base-image-original"
+                        :src="slider.image_url"
+                    />
+                </a>
+
                 <img
+                    v-else
                     class="slider-image"
                     alt="base-image-original"
                     :src="slider.image_url"
@@ -195,7 +204,7 @@
             ]),
 
             getSliders () {
-                this.$http.get("/api/sliders?sort=id&order=asc")
+                this.$http.get("/api/pwa/sliders?sort=id&order=asc")
                     .then(response => {
                         this.sliders = response.data.data;
                     })
@@ -371,6 +380,11 @@
     }
 
     .VueCarousel-slide {
+        position: relative;
+    }
+
+    .slider-image-container {
+        z-index: 100;
         position: relative;
     }
 

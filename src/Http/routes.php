@@ -177,6 +177,12 @@
                         'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
                         'authorization_required' => true
                     ]);
+                    
+                    // Slider routes
+                    Route::get('sliders', 'ResourceController@index')->defaults('_config', [
+                        'repository' => 'Webkul\Core\Repositories\SliderRepository',
+                        'resource' => 'Webkul\PWA\Http\Resources\Core\Slider'
+                    ]);
                 });
             });
         });
