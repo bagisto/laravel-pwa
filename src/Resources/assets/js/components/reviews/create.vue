@@ -143,8 +143,6 @@
         background: #ffffff;
 
         .form-container {
-            margin-top: 55px;
-
             .product-details {
                 padding: 16px;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);

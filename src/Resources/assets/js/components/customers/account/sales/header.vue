@@ -1,7 +1,7 @@
 <template>
     <div>
         <custom-header>
-            <div slot="content">
+            <div slot="content" class="display-block bg-black">
                 <div class="order-menu">
                     <h2>
                         {{ title }}

@@ -55,6 +55,14 @@
             display: inline-block;
         }
 
+        .display-block {
+            display: block;
+        }
+
+        .bg-black {
+            background: #000000;
+        }
+
         .icon {
             float: left;
             cursor: pointer;

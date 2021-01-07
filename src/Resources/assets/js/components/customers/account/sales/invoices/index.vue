@@ -178,7 +178,7 @@
 
         &.expanded {
             .order-details {
-                top: 207px;
+                top: 158px;
             }
         }
     }

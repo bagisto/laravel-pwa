@@ -1,7 +1,7 @@
 <template>
     <div class="content dashboard">
         <custom-header>
-            <div slot="content">
+            <div slot="content" class="display-block">
                 <div class="account-information">
                     <h2 style="display: block">{{ $t('Dashboard') }}</h2>
 
@@ -273,7 +273,7 @@
         }
 
         .account-content {
-            top: -56px;
+            top: 158px;
             position: relative;
         }
     }

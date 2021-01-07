@@ -156,7 +156,6 @@
 
         .form-container {
             padding: 24px 16px;
-            margin-top: 55px;
         }
     }
 </style>
