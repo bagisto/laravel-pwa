@@ -25,19 +25,28 @@
             <div>
                 <label>{{ $t('booking.select_slot') }}</label>
 
-                <div class="control-group-container">
+                <div class="control-group control-group-container">
                     <div class="form-group date" :class="[errors.has('booking[date]') ? 'has-error' : '']">
                         <date @onChange="dateSelected($event)">
-                            <input type="text" v-validate="'required'" name="booking[date]" class="form-style" :data-vv-as="$t('booking.date')" :placeholder="$t('booking.select_date')" data-min-date="today"/>
+                            <input
+                                type="text"
+                                name="booking[date]"
+                                data-min-date="today"
+                                v-validate="'required'"
+                                class="form-style control"
+                                :data-vv-as="$t('booking.date')"
+                                v-model="formData.booking.date"
+                                :placeholder="$t('booking.select_date')"
+                            />
                         </date>
 
                         <span class="control-error" v-if="errors.has('booking[date]')">{{ errors.first('booking[date]') }}</span>
                     </div>
 
                     <div class="form-group slots" :class="[errors.has('booking[slot]') ? 'has-error' : '']">
-                        <select v-validate="'required'" name="booking[slot]" v-model="selected_slot" class="form-style" :data-vv-as="$t('booking.slot')">
+                        <select v-validate="'required'" name="booking[slot]" v-model="selected_slot" class="form-style control" :data-vv-as="$t('booking.slot')">
                             <option value="">{{ $t('booking.select_time_slot') }}</option>
-                            <option v-for="(slot, index) in slots" :value="index">@{{ slot.time }}</option>
+                            <option v-for="(slot, index) in slots" :value="index" :key="index">{{ slot.time }}</option>
                         </select>
 
                         <span class="control-error" v-if="errors.has('booking[slot]')">{{ errors.first('booking[slot]') }}</span>
@@ -48,12 +57,12 @@
             <div v-if="slots[selected_slot] && slots[selected_slot]['slots'].length">
                 <label>{{ $t('booking.select_rent_time') }}</label>
 
-                <div class="control-group-container">
+                <div class="control-group control-group-container">
                     <div class="form-group slots" :class="[errors.has('booking[slot][from]') ? 'has-error' : '']">
-                        <select v-validate="'required'" name="booking[slot][from]" v-model="slot_from" class="form-style" :data-vv-as="$t('booking.slot')">
+                        <select v-validate="'required'" name="booking[slot][from]" v-model="formData.booking.slot.from" class="form-style control" :data-vv-as="$t('booking.slot')">
                             <option value="">{{ $t('booking.select_time_slot') }}</option>
 
-                            <option v-for="slot in slots[selected_slot]['slots']" :value="slot.from_timestamp">
+                            <option v-for="(slot, index) in slots[selected_slot]['slots']" :value="slot.from_timestamp" :key="index">
                                 {{ slot.from }}
                             </option>
                         </select>
@@ -62,10 +71,10 @@
                     </div>
                     
                     <div class="form-group slots" :class="[errors.has('booking[slot][to]') ? 'has-error' : '']">
-                        <select v-validate="'required'" name="booking[slot][to]" class="form-style" :data-vv-as="$t('booking.slot')">
+                        <select v-validate="'required'" name="booking[slot][to]" class="form-style control" :data-vv-as="$t('booking.slot')" v-model="formData.booking.slot.to">
                             <option value="">{{ $t('booking.select_time_slot') }}</option>
 
-                            <option v-for="slot in slots[selected_slot]['slots']" :value="slot.to_timestamp" v-if="slot_from < slot.to_timestamp">
+                            <option v-for="(slot, index) in slots[selected_slot]['slots']" :value="slot.to_timestamp" v-if="slot_from < slot.to_timestamp" :key="index">
                                 {{ slot.to }}
                             </option>
                         </select>
@@ -74,7 +83,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
 
         <div v-else>
@@ -135,6 +143,12 @@
                     date_from: '',
 
                     date_to: ''
+                }
+            },
+
+            watch: {
+                sub_renting_type: function (newValue, oldValue) {
+                    this.formData.booking.renting_type = newValue;
                 }
             },
 

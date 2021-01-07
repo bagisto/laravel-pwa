@@ -211,10 +211,21 @@
                                 });
 
                             } else if(this.product.booking_product.type == "rental") {
-                                this.formData.booking = {
-                                    'date_to': '',
-                                    'date_from': '',
-                                };
+                                if (this.product.booking_product.renting_type == "daily_hourly") {
+                                    this.formData.booking = {
+                                        "date": "",
+                                        'renting_type': 'hourly',
+                                        "slot": {
+                                            "from"  : "",
+                                            "to"    : "",
+                                        }
+                                    };
+                                } else {
+                                    this.formData.booking = {
+                                        'date_to': '',
+                                        'date_from': '',
+                                    };
+                                }
                             } else if(this.product.booking_product.type == "table") {
                                 this.formData.booking = {
                                     "note": "",

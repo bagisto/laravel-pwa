@@ -626,6 +626,16 @@ ul {
         left: -20px;
         position: relative;
     }
+
+    span {
+        &.radio {
+            margin: 10px 0;
+        }
+    }
+
+    .slots {
+        margin-bottom: 20px;
+    }
 }
 
 .booking-info-row {
