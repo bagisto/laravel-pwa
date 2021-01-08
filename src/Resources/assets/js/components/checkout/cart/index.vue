@@ -9,13 +9,13 @@
 
             <div class="cart-item-list">
                 <cart-item
-                    v-for="cartItem in cart.items"
                     :key='cartItem.uid'
                     :cart-item="cartItem"
                     :quantities="quantities"
+                    v-for="cartItem in cart.items"
                     @quantityChanged="quantityChanged"
-                    @moveToWishlist="moveToWishlist(cartItem)"
                     @removeItem="removeItem(cartItem)"
+                    @moveToWishlist="moveToWishlist(cartItem)"
                 ></cart-item>
             </div>
 

@@ -99,7 +99,7 @@ const app = new Vue({
                     break;
 
                 default:
-                    this.$toasted.show(error.response.data.error, { type: 'error' })
+                    this.$toasted.show(error.response.data.error || error.response.data.message, { type: 'error' })
 
                     return Promise.reject(error);
                     

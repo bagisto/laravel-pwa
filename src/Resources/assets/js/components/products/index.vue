@@ -256,7 +256,18 @@
             addToCart (event) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, this.formData)
+                var formData = this.formData;
+
+                if (
+                    formData
+                    && formData.booking
+                    && formData.booking.renting_type == "daily"
+                ) {
+                    delete(formData.booking.date);
+                    delete(formData.booking.slot);
+                }
+
+                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, formData)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
