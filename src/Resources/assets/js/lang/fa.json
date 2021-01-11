@@ -201,11 +201,11 @@
         "download_error"        : "Download link has been expired."
     },
     "bundle"                                    : {
-        "customize_options": "Customize Options",
-        "your_customization": "Your Customization",
-        "total_amount": "Total Amount",
-        "choose_a_selection": "Choose a selection",
-        "none": "None"
+        "none"                  : "None",
+        "total_amount"          : "Total Amount",
+        "customize_options"     : "Customize Options",
+        "your_customization"    : "Your Customization",
+        "choose_a_selection"    : "Choose a selection"
     },
     "booking"                                   : {
         "to"                        : "to",
