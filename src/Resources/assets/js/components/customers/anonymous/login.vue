@@ -10,6 +10,8 @@
             </div>
         </custom-header>
 
+        <social-login></social-login>
+
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
                 <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
@@ -41,12 +43,13 @@
 </template>
 
 <script>
+    import SocialLogin  from '../social-login';
     import CustomHeader from '../../layouts/custom-header';
 
     export default {
         name: 'login',
 
-        components: { CustomHeader },
+        components: { CustomHeader, SocialLogin },
 
         data () {
             return {
@@ -121,7 +124,6 @@
 
         .form-container {
             padding: 24px 16px;
-            margin-top: 55px;
 
             .control-group {
                 .forgot-password {

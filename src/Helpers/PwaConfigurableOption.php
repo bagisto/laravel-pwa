@@ -32,7 +32,7 @@ class PwaConfigurableOption extends ConfigurableOption
     protected $price;
 
     /**
-     * Create a new controller instance.
+     * Create a new Helper instance.
      *
      * @param  Webkul\Attribute\Repositories\AttributeOptionRepository $attributeOption
      * @param  Webkul\Product\Helpers\ProductImage                     $productImage
@@ -43,8 +43,7 @@ class PwaConfigurableOption extends ConfigurableOption
         AttributeOption $attributeOption,
         ProductImage $productImage,
         Price $price
-    )
-    {
+    ) {
         $this->attributeOption = $attributeOption;
 
         $this->productImage = $productImage;

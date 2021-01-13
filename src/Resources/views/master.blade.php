@@ -54,14 +54,14 @@
         <script type="text/javascript">
             window.channel = @json(new \Webkul\API\Http\Resources\Core\Channel(core()->getCurrentChannel()));
             window.config = {
-                app_short_name: "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
-                app_base_url: "{{ config('app.url') }}",
-                url_path: "{{ $urlPath }}",
-                prefix: "{{ $urlPath }}" + '/' + "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}",
-                currencies: @json(core()->getCurrentChannel()->currencies),
-                currentCurrency: @json(core()->getCurrentCurrency()),
-                locales: @json(core()->getCurrentChannel()->locales),
-                currentLocale: @json(core()->getCurrentLocale())
+                url_path        : "{{ $urlPath }}",
+                app_base_url    : "{{ config('app.url') }}",
+                app_short_name  : "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
+                prefix          : "{{ $urlPath }}" + '/' + "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}",
+                currentCurrency : @json(core()->getCurrentCurrency()),
+                currencies      : @json(core()->getCurrentChannel()->currencies),
+                locales         : @json(core()->getCurrentChannel()->locales),
+                currentLocale   : @json(core()->getCurrentLocale())
             };
         </script>
 

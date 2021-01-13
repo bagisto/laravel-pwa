@@ -166,10 +166,11 @@
 </template>
 
 <script>
-    import BottomSheet   from './shared/bottom-sheet';
-    import HeaderNav     from './layouts/header-nav';
-    import AjaxLoader    from './common/ajax-loader';
-    import DrawerSidebar from './common/drawer-sidebar';
+    import { mapState, mapActions }   from 'vuex';
+    import BottomSheet    from './shared/bottom-sheet';
+    import HeaderNav      from './layouts/header-nav';
+    import AjaxLoader     from './common/ajax-loader';
+    import DrawerSidebar  from './common/drawer-sidebar';
 
     export default {
         name: 'app',
@@ -178,36 +179,24 @@
 
         data () {
 			return {
-                categories: [],
-                subCategories: {},
-                locales: window.config.locales,
-                currencies: window.config.currencies,
-                currentLocale: window.config.currentLocale,
-                parent_id: window.channel.root_category_id,
-                currentCurrency: window.config.currentCurrency,
+                categories      : [],
+                subCategories   : {},
+                locales         : window.config.locales,
+                currencies      : window.config.currencies,
+                currentLocale   : window.config.currentLocale,
+                currentCurrency : window.config.currentCurrency,
+                parent_id       : window.channel.root_category_id,
 
                 bottomSheets: {
-                    locale: false,
-                    currency: false,
-                    subCategory: false,
-                },
-
-                currentUser: false
+                    locale      : false,
+                    currency    : false,
+                    subCategory : false,
+                }
 			}
 		},
 
         mounted () {
-            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
             var this_this = this;
-
-            EventBus.$on('user-logged-in', function(user) {
-                this_this.currentUser = user;
-            });
-
-            EventBus.$on('user-logged-out', function() {
-                this_this.currentUser = null;
-            });
 
             this.getCategories();
         },
@@ -218,7 +207,15 @@
             }
         },
 
+        computed: mapState({
+            currentUser: state => state.customer,
+        }),
+
         methods: {
+            ...mapActions([
+                'log_out',
+            ]),
+
             handleToggleDrawer () {
 				if (this.$refs.drawer.active) {
 					this.$refs.drawer.close();
