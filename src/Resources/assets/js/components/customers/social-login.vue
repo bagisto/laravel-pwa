@@ -11,35 +11,35 @@
         class="social-login-links"
         >
         <div class="control-group" v-if="is_facebook">
-            <a :href="`${app_base_url}/customer/social-login/facebook`" class="link facebook-link">
+            <a :href="`${app_base_url}/mobile/customer/social-login/facebook`" class="link facebook-link">
                 <span class="icon icon-facebook-login"></span>
                 {{ $t('social_login.continue-with-facebook') }}
             </a>
         </div>
 
         <div class="control-group" v-if="is_twitter">
-            <a :href="`${app_base_url}/customer/social-login/twitter`" class="link twitter-link">
+            <a :href="`${app_base_url}/mobile/customer/social-login/twitter`" class="link twitter-link">
                 <span class="icon icon-twitter-login"></span>
                 {{ $t('social_login.continue-with-twitter') }}
             </a>
         </div>
 
         <div class="control-group" v-if="is_google">
-            <a :href="`${app_base_url}/customer/social-login/google`" class="link google-link">
+            <a :href="`${app_base_url}/mobile/customer/social-login/google`" class="link google-link">
                 <span class="icon icon-google-login"></span>
                 {{ $t('social_login.continue-with-google') }}
             </a>
         </div>
 
         <div class="control-group" v-if="is_linkedin">
-            <a :href="`${app_base_url}/customer/social-login/linkedin`" class="link linkedin-link">
+            <a :href="`${app_base_url}/mobile/customer/social-login/linkedin`" class="link linkedin-link">
                 <span class="icon icon-linkedin-login"></span>
                 {{ $t('social_login.continue-with-linkedin') }}
             </a>
         </div>
 
         <div class="control-group" v-if="is_github">
-            <a :href="`${app_base_url}/customer/social-login/github`" class="link github-link">
+            <a :href="`${app_base_url}/mobile/customer/social-login/github`" class="link github-link">
                 <span class="icon icon-github-login"></span>
                 {{ $t('social_login.continue-with-github') }}
             </a>

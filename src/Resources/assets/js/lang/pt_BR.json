@@ -236,6 +236,14 @@
     "order"                                     : {
         "minimum_order_message": "Seu pedido deve ser maior que {amount}"
     },
+    "social_login"                              : {
+        "or"                     : "Or",
+        "continue-with-facebook" : "Continue With Facebook",
+        "continue-with-twitter"  : "Continue With Twitter",
+        "continue-with-google"   : "Continue With Google",
+        "continue-with-linkedin" : "Continue With Linkedin",
+        "continue-with-github"   : "Continue With Github"
+    },
     "You have just reached to the bottom of page."                              : "Você acabou de chegar ao final da página.",
     "You are not connected to the internet, please try again in some time."     : "Você não está conectado à Internet, tente novamente em algum tempo.",
     "We will email you an order confirmation with details and tracking info."   : "Enviaremos um e-mail com a confirmação do pedido com detalhes e informações de rastreamento.",
