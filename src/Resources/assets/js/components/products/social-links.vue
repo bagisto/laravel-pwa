@@ -46,9 +46,9 @@
             share () {
                 if (navigator.share) {
                     navigator.share({
-                        title: this.product.name,
-                        text: this.product.name,
-                        url: `${window.config.app_base_url}/mobile/products/${this.product.id}`,
+                        title   : this.product.name,
+                        text    : this.product.name,
+                        url     : `${window.config.app_base_url}/mobile/products/${this.product.id}`,
                     })
                     .then(() => console.log('Successful share'))
                     .catch((error) => console.log('Error sharing', error));

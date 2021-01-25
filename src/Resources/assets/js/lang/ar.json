@@ -236,6 +236,14 @@
     "order"                                     : {
         "minimum_order_message": "يجب أن يكون طلبك أكبر من {amount}"
     },
+    "social_login"                              : {
+        "or"                     : "Or",
+        "continue-with-facebook" : "Continue With Facebook",
+        "continue-with-twitter"  : "Continue With Twitter",
+        "continue-with-google"   : "Continue With Google",
+        "continue-with-linkedin" : "Continue With Linkedin",
+        "continue-with-github"   : "Continue With Github"
+    },
     "You have just reached to the bottom of page."                              : "لقد وصلت لنهاية الصفحة",
     "You are not connected to the internet, please try again in some time."     : "انت غير متصل بالإنترنت, الرجاء المجاولة لاحقاً",
     "We will email you an order confirmation with details and tracking info."   : "سوف نقوم بإرسال إيميل لك لتأكيد الطلب مع التفاصيل ومعلومات التتبع",

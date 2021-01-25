@@ -43,9 +43,7 @@
 </template>
 
 <script>
-    import {
-        mapActions
-    } from 'vuex';
+    import { mapActions } from 'vuex';
     import CustomHeader   from '../../layouts/custom-header';
     import Login          from './login';
     import Register       from './register';

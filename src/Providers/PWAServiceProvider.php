@@ -2,10 +2,12 @@
 
 namespace Webkul\PWA\Providers;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Checkout\Facades\Cart as CartFacade;
+use Webkul\PWA\Http\Middleware\SocialLoginMiddleware;
 
 /**
  * PWA service provider
@@ -20,7 +22,7 @@ class PWAServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Router $router)
     {
         $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
 
@@ -43,6 +45,8 @@ class PWAServiceProvider extends ServiceProvider
             __DIR__ . '/../../publishable/pwa'      => public_path(),
             __DIR__ . '/../../publishable/assets'   => public_path('vendor/webkul/pwa/assets'),
         ], 'public');
+
+        $router->aliasMiddleware('social_login', SocialLoginMiddleware::class);
     }
 
     /**

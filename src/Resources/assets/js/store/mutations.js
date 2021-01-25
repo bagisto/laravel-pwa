@@ -12,6 +12,10 @@ var setCustomer = (state, customer) => {
     }
 }
 
+const LOGOUT = state => {
+    state.customer = false;
+};
+
 const GET_CUSTOMER = state => {
     EventBus.$emit('show-ajax-loader');
 
@@ -46,6 +50,7 @@ const GET_CART = state => {
 };
 
 export default {
+    LOGOUT,
     GET_CART,
     GET_CUSTOMER
 };

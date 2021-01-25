@@ -188,9 +188,24 @@
         });
     });
 
-    Route::group(['middleware' => ['web','locale', 'currency']], function ($router) {
-        Route::get('/mobile/{any?}', 'Webkul\PWA\Http\Controllers\SinglePageController@index')->where('any', '.*')->name('mobile.home');
-        Route::get('/pwa/{any?}', 'Webkul\PWA\Http\Controllers\SinglePageController@index')->where('any', '.*')->name('pwa.home');
+    Route::group([
+            'namespace'  => 'Webkul\PWA\Http\Controllers',
+            'middleware' => ['web','locale', 'currency']
+        ], function ($router) {
+            Route::prefix('mobile/customer')->group(function () {
+                Route::get('social-login/{provider}', 'Shop\LoginController@redirectToProvider')->defaults('_config', [
+                    'redirect' => 'customer.profile.index'
+                ])->name('customer.pwa.social-login.index');
+        
+                Route::get('social-login/{provider}/callback','Shop\LoginController@handleProviderCallback')->defaults('_config', [
+                    'redirect' => 'customer.profile.index'
+                ])->name('customer.pwa.social-login.callback');
+            });
+
+            Route::get('/{prefix}/{any?}', 'SinglePageController@index')
+                ->where('any', '.*')
+                ->where('prefix', 'mobile|pwa')
+                ->name('mobile.home');
     });
 
     Route::prefix('paypal/standard')->group(function () {

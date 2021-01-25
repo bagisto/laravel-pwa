@@ -2,13 +2,12 @@
 
 namespace Webkul\PWA\Repositories;
 
-use Illuminate\Container\Container as App;
 use DB;
 use Webkul\Core\Eloquent\Repository;
+use Illuminate\Container\Container as App;
+use Webkul\Product\Models\ProductAttributeValue;
 use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Attribute\Repositories\AttributeOptionRepository;
-use Webkul\Product\Models\ProductAttributeValue;
-use Webkul\SAASCustomizer\Models\Product\ProductFlat;
 
 /**
  * Product Repository
