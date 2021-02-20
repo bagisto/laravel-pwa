@@ -17,8 +17,6 @@ class Product extends JsonResource
     {
         $this->productPriceHelper = app('Webkul\PWA\Helpers\Price');
 
-        $this->productImageHelper = app('Webkul\Product\Helpers\ProductImage');
-
         $this->productReviewHelper = app('Webkul\Product\Helpers\Review');
 
         parent::__construct($resource);
@@ -142,7 +140,7 @@ class Product extends JsonResource
             'description'            => $this->description,
             'sku'                    => $this->sku,
             'images'                 => ProductImage::collection($product->images),
-            'base_image'             => $this->productImageHelper->getProductBaseImage($product),
+            'base_image'             => productimage()->getProductBaseImage($product),
             'variants'               => Self::collection($this->variants),
             'in_stock'               => $product->haveSufficientQuantity(1),
             $this->mergeWhen($product->getTypeInstance()->isComposite(), [

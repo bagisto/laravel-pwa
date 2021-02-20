@@ -92,8 +92,6 @@ class CartController extends Controller
             $redirectToCustomerLogin = true;
         }
 
-        
-
         return response()->json([
             'data'                      => $cart ? new CartResource($cart) : null,
             'redirectToCustomerLogin'   => $redirectToCustomerLogin ?? false,

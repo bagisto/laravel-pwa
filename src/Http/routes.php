@@ -172,6 +172,12 @@
                 ]);
 
                 Route::group(['prefix' => 'pwa'], function ($router) {
+                    Route::get('orders', 'ResourceController@index')->defaults('_config', [
+                        'repository' => 'Webkul\Sales\Repositories\OrderRepository',
+                        'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
+                        'authorization_required' => true
+                    ]);
+
                     Route::get('orders/{id}', 'ResourceController@get')->defaults('_config', [
                         'repository' => 'Webkul\Sales\Repositories\OrderRepository',
                         'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',

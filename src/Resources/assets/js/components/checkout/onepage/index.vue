@@ -266,7 +266,7 @@
                     <div class="panel-content" style="padding-left: 16px">
                         <div class="cart-item-list">
                             <div class="cart-item" :key="index" v-for="(cartItem, index) in cart.items">
-                                <div class="product-name">{{ cartItem.product.name }}</div>
+                                <div class="product-name">{{ cartItem.name }}</div>
 
                                 <div class="cart-item-options">
                                     <div class="attributes" v-if="cartItem.additional.attributes">
