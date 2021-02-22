@@ -63,6 +63,12 @@
                 });
             });
         });
+
+        Route::prefix('pwa/paypal/smart-button')->group(function () {
+            Route::get('/create-order', 'Webkul\PWA\Http\Controllers\Shop\SmartButtonController@createOrder')->name('paypal.smart-button.create-order.pwa');
+    
+            Route::post('/capture-order', 'Webkul\PWA\Http\Controllers\Shop\SmartButtonController@captureOrder')->name('paypal.smart-button.capture-order.pwa');
+        });
     });
 
     Route::group(['prefix' => 'api'], function ($router) {
@@ -138,7 +144,7 @@
             });
 
             Route::namespace('Webkul\API\Http\Controllers\Shop')->group(function () {
-                Route::get('reviews/{id}', 'ResourceController@get')->defaults('_config', [
+                Route::get('pwa-reviews/{id}', 'ResourceController@get')->defaults('_config', [
                     'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
                     'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
                 ]);
@@ -155,13 +161,13 @@
                     'authorization_required' => true
                 ]);
 
-                Route::get('wishlist', 'ResourceController@index')->defaults('_config', [
+                Route::get('pwa-wishlist', 'ResourceController@index')->defaults('_config', [
                     'repository' => 'Webkul\Customer\Repositories\WishlistRepository',
                     'resource' => 'Webkul\PWA\Http\Resources\Customer\Wishlist',
                     'authorization_required' => true
                 ]);
 
-                Route::get('reviews', 'ResourceController@index')->defaults('_config', [
+                Route::get('pwa-reviews', 'ResourceController@index')->defaults('_config', [
                     'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
                     'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
                 ]);
