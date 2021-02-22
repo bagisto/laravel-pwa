@@ -69,7 +69,7 @@
     "Proceed"                                   : "Continuar",
     "Place Order"                               : "Enviar Compra",
     "Thank you for your order"                  : "Obrigado pelo sua compra",
-    "Your order number is : order_id"           : "O numero da sua compra é: {order_id}",
+    "your_order_number_is"                      : "O numero da sua compra é: {order_id}",
     "Continue Shopping"                         : "Continuar comprando",
     "Edit"                                      : "Editar",
     "Remove"                                    : "Remover",
