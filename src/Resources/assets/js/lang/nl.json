@@ -69,7 +69,7 @@
     "Proceed"                                   : "Proceed",
     "Place Order"                               : "Place Order",
     "Thank you for your order"                  : "Thank you for your order",
-    "your_order_number_is"                      : "Your order number is : {order_id}",
+    "Your order number is : order_id"           : "Your order number is : {order_id}",
     "Continue Shopping"                         : "Continue Shopping",
     "Edit"                                      : "Edit",
     "Remove"                                    : "Remove",

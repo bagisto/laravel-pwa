@@ -69,7 +69,7 @@
     "Proceed"                                   : "المتابعة",
     "Place Order"                               : "تأكيد الطلب",
     "Thank you for your order"                  : "شكراً لطلبك",
-    "your_order_number_is"                      : "رقم طلبك هو: {order_id}",
+    "Your order number is : order_id"           : "رقم طلبك هو: {order_id}",
     "Continue Shopping"                         : "تابع التسوق",
     "Edit"                                      : "تعديل",
     "Remove"                                    : "حذف",

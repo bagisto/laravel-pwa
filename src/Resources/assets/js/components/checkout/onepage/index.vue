@@ -1203,7 +1203,6 @@
                 position: fixed;
                 bottom: 0;
                 padding: 6px 8px;
-                z-index: 999;
                 width: 100%;
                 background: #ffffff;
                 -webkit-box-shadow: 0 -10px 10px 0 rgba(0, 0, 0, 0.04), 0 -1px 4px 0 rgba(0, 0, 0, 0.16);
