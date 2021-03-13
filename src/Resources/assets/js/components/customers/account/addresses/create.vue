@@ -106,7 +106,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post('/api/addresses/create', this.address)
+                this.$http.post('/api/save-address', this.address)
                     .then(function(response) {
                         this_this.loading = false;
 

@@ -89,6 +89,8 @@
                 Route::post('reviews/{id}/create', 'ReviewController@store');
 
                 Route::get('advertisements', 'API\APIController@fetchAdvertisementImages');
+
+                Route::post('save-address', 'AddressController@store');
             });
 
             // Checkout routes

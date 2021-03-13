@@ -10,10 +10,16 @@
                 v-if="product.images.length"
                 v-for="image in product.images"
             >
-                <img
-                    alt="original-image-url"
-                    :src="image.original_image_url"
-                />
+                <div>
+                    <video v-if="image.type == 'video'" :src="image.small_image_url" type="video/mp4" width="100%" height="200px" controls>
+                        Not Supported
+                    </video>
+
+                    <img v-else
+                        alt="original-image-url"
+                        :src="image.original_image_url"
+                    />
+                </div>
             </slide>
 
             <slide v-if="! product.images.length">
@@ -28,14 +34,18 @@
 
 <script>
     import { Carousel, Slide } from 'vue-carousel';
-
     export default {
         name: 'gallery-images',
 
         components: { Carousel, Slide },
 
-        props: ['product']
+        props: ['product'],
+
+        mounted () {
+            console.log(this.product);
+        }
     }
+    
 </script>
 
 <style lang="scss" scoped>
