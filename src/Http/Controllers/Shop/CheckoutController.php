@@ -151,6 +151,39 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Check Guest Checkout.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function isGuestCheckout()
+    {
+        $cart = Cart::getCart();
+        
+        if (! auth()->guard('customer')->check()
+            && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
+            return response()->json([
+                'data' => [
+                    'status' => false
+                ]
+            ]);
+        }
+
+        if (! auth()->guard('customer')->check() && ! $cart->hasGuestCheckoutItems()) {
+            return response()->json([
+                'data' => [
+                    'status' => false
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'data' => [
+                'status' => true
+            ]
+        ]);
+    }
+
+    /**
      * Saves payment method.
      *
      * @return \Illuminate\Http\Response

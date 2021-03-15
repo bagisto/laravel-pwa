@@ -130,6 +130,8 @@
 
                 Route::get('cart/empty', 'CartController@destroy');
 
+                Route::get('guest-checkout', 'CheckoutController@isGuestCheckout');
+
                 Route::put('cart/update', 'CartController@update');
 
                 Route::get('cart/remove-item/{id}', 'CartController@destroyItem');

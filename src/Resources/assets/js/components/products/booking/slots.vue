@@ -4,10 +4,7 @@
 
         <div class="control-group-container">
             <div class="control-group date" :class="[errors.has('booking[date]') ? 'has-error' : '']">
-                <date @onChange="dateSelected($event)">
-                    <input type="text" v-validate="'required'" name="booking[date]" class="control" :data-vv-as="$t('booking.date')" v-model="formData.booking.date" />
-                </date>
-
+                <input type="date" name="booking[date]" class="control" v-model="formData.booking.date" :placeholder="$t('Date Of Birth')" v-on:input="dateSelected()"/>
                 <span class="control-error" v-if="errors.has('booking[date]')">{{ errors.first('booking[date]') }}</span>
             </div>
 
@@ -43,8 +40,8 @@
         },
 
         methods: {
-            dateSelected: function(date) {
-                this.$http.get(this.bookingProduct.slot_index_route, {params: {date: date}})
+            dateSelected: function() {
+                this.$http.get(this.bookingProduct.slot_index_route, {params: {date: this.formData.booking.date}})
                     .then (response => {
                         this.slots = response.data.data;
 

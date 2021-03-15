@@ -399,6 +399,7 @@
                 selected_shipping_method: '',
                 first_payment_iteration: true,
                 first_shipping_iteration: true,
+                guest_checkout: '',
                 route_name: "{{ request()->route()->getName() }}",
 
                 addresses: {
@@ -442,6 +443,8 @@
         },
 
         mounted () {
+            this.getGuestCheckoutStatus();
+           
             this.getAuthCustomer();
 
             this.getCart();
@@ -452,7 +455,7 @@
         methods: {
             paypalSmartBtn () {
                 var self = this;
-
+                
                     EventBus.$on('after-payment-method-selected', function(payment) {            
                         if (payment != 'paypal_smart_button') {
 
@@ -530,7 +533,19 @@
                     });
             },
 
-            getAuthCustomer () {
+            getGuestCheckoutStatus () { 
+                var this_this = this;
+
+                this.$http.get('/api/checkout/guest-checkout')
+                    .then(function(response) {
+                        if(! response.data.data.status) {
+                            this_this.$router.push({ name: 'login-register' });
+                        }
+                    })
+                    .catch(function (error) {});
+            },
+
+            getAuthCustomer () { 
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');

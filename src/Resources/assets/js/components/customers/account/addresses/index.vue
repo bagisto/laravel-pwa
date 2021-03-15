@@ -4,6 +4,8 @@
 
         <div class="address-list" v-if="addresses.length">
             <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
+            
+            <router-link class="btn btn-black" :to="'/customer/account/addresses/create'">{{ $t('Add New Address') }}</router-link>
         </div>
 
         <empty-address-list v-else></empty-address-list>
