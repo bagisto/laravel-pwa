@@ -91,6 +91,8 @@
                 Route::get('advertisements', 'API\APIController@fetchAdvertisementImages');
 
                 Route::post('save-address', 'AddressController@store');
+
+                Route::post('pwa/image-search-upload', 'ImageSearchController@upload');
             });
 
             // Checkout routes
