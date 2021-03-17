@@ -276,7 +276,7 @@
                         EventBus.$emit('checkout.cart.changed', response.data.data);
 
                         if (this.is_buy_now) {
-                            this.$router.push({name: 'cart'})
+                            this.$router.push({name: 'onepage'})
                         }
                     })
                     .catch(error => {

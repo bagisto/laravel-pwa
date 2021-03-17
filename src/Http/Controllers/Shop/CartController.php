@@ -92,8 +92,6 @@ class CartController extends Controller
             $redirectToCustomerLogin = true;
         }
 
-        
-
         return response()->json([
             'data'                      => $cart ? new CartResource($cart) : null,
             'redirectToCustomerLogin'   => $redirectToCustomerLogin ?? false,
@@ -113,11 +111,22 @@ class CartController extends Controller
         if (request()->get('is_buy_now')) {
             Event::dispatch('shop.item.buy-now', $id);
         }
+        $data = request()->all();
+
+        if (isset($data['links'])) {
+            $tempLinks = $data['links'];
+            $temArray = [];
+            unset($data['links']);
+            foreach ($tempLinks as $key => $value) {
+                array_push($temArray, $key);
+            }
+            $data['links'] = $temArray;
+        }
 
         Event::dispatch('checkout.cart.item.add.before', $id);
 
         try {
-            $result = Cart::addProduct($id, request()->except('_token'));
+            $result = Cart::addProduct($id, $data);
 
             if (is_array($result) && isset($result['warning'])) {
                 return response()->json([

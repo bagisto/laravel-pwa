@@ -5,6 +5,7 @@ import App                  from './components/app';
 import Homepage             from './components/home-page/index';
 import Search               from './components/search/index';
 import SearchResult         from './components/search/result';
+import ImageSearchResult    from './components/search/image-search-result';
 import Category             from './components/categories/index';
 import Product              from './components/products/index';
 import ProductReviewList    from './components/reviews/index';
@@ -49,6 +50,10 @@ export default new Router({
             path: '/search/:term',
             name: 'search-result',
             component: SearchResult
+        }, {
+            path: '/image-search/:term',
+            name: 'image-search-result',
+            component: ImageSearchResult
         }, {
             path: '/categories/:id',
             name: 'category',

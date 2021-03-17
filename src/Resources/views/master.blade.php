@@ -65,6 +65,14 @@
             };
         </script>
 
+        @php
+            $clientId = core()->getConfigData('sales.paymentmethods.paypal_smart_button.client_id');
+            $acceptedCurrency = core()->getConfigData('sales.paymentmethods.paypal_smart_button.accepted_currencies');
+        @endphp
+
+        <script src="https://www.paypal.com/sdk/js?client-id={{ $clientId }}&currency={{ $acceptedCurrency }}" data-partner-attribution-id="Bagisto_Cart"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>    
         <script type="text/javascript" src="{{ asset('vendor/webkul/pwa/assets/js/app.js?v=' . strtotime("now")) }}"></script>
 
         @stack('scripts')

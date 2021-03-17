@@ -4,7 +4,16 @@
             <div slot="content">
                 <form @submit.prevent="search(term)">
                     <input type="text" class="search-control" v-model="term" :placeholder="$t('Search for products')"/>
-                </form>
+                    <span v-if="image_search_status">
+                        <label class="image-search-container" :for="'image-search-container-' + _uid">
+                            <i class="icon camera-icon"></i>
+
+                            <input type="file" :id="'image-search-container-' + _uid" ref="image_search_input" v-on:change="uploadImage()" style="display:none"/>
+
+                            <img :id="'uploaded-image-url-' +  + _uid" :src="uploaded_image_url" alt="" width="20" height="20" style="display:none"/>
+                        </label>
+                    </span>
+                </form> 
             </div>
         </custom-header>
 
@@ -60,7 +69,11 @@
 
                 recentSearches: [],
 
-                categories: []
+                categories: [],
+
+                uploaded_image_url: '',
+
+                image_search_status: true
             }
         },
 
@@ -112,7 +125,88 @@
                 this.recentSearches = [];
 
                 localStorage.removeItem('recent-terms');
-            }
+            },
+            
+            uploadImage: function() {
+                    var imageInput = this.$refs.image_search_input;
+
+                    if (imageInput.files && imageInput.files[0]) {
+                        if (imageInput.files[0].type.includes('image/')) {
+                            var self = this;
+
+                            if (imageInput.files[0].size <= 2000000) {
+
+                                EventBus.$emit('show-ajax-loader');
+
+                                var formData = new FormData();
+
+                                formData.append('image', imageInput.files[0]);
+
+                                axios.post("/api/pwa/image-search-upload", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                                    .then(function(response) {
+                                        self.uploaded_image_url = response.data;
+
+                                        var net;
+
+                                        async function app() {
+                                            var analysedResult = [];
+
+                                            var queryString = '';
+
+                                            net = await mobilenet.load();
+
+                                            const imgElement = document.getElementById('uploaded-image-url-' +  + self._uid);
+
+                                            try {
+                                                const result = await net.classify(imgElement);
+
+                                                result.forEach(function(value) {
+                                                    queryString = value.className.split(',');
+
+                                                    if (queryString.length > 1) {
+                                                        analysedResult = analysedResult.concat(queryString)
+                                                    } else {
+                                                        analysedResult.push(queryString[0])
+                                                    }
+                                                });
+                                            } catch (error) {
+                                                EventBus.$emit('hide-ajax-loader');
+
+                                                self.$toasted.show('No search results found.', { type: 'error' });
+                                            };
+
+                                            localStorage.searched_image_url = self.uploaded_image_url;
+
+                                            queryString = localStorage.searched_terms = analysedResult.join('_');
+
+                                            EventBus.$emit('hide-ajax-loader');
+                                        
+                                            self.$router.push({ path: '/image-search/' + queryString })
+
+
+                                        }
+
+                                        app();
+                                    })
+                                    .catch(function(error) {
+                                        EventBus.$emit('hide-ajax-loader');
+
+                                        self.$toasted.show('No search results found.', { type: 'error' });
+                                    });
+                            } else {
+
+                                imageInput.value = '';
+
+                                self.$toasted.show('Oops! Image size must be less than 2mb', { type: 'error' });
+
+                            }
+                        } else {
+                            imageInput.value = '';
+
+                            self.$toasted.show('Only images (.jpeg, .jpg, .png, ..) are allowed.', { type: 'error' });
+                        }
+                    }
+                }
         }
     }
 </script>

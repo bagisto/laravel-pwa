@@ -80,7 +80,7 @@ class CheckoutController extends Controller
     public function saveAddress(CustomerAddressForm $request)
     {
         $data = request()->all();
-
+        
         $data['billing']['address1'] = implode(PHP_EOL, array_filter($data['billing']['address1']));
         $data['shipping']['address1'] = implode(PHP_EOL, array_filter($data['shipping']['address1']));
 
@@ -146,6 +146,39 @@ class CheckoutController extends Controller
             'data' => [
                 'methods' => Payment::getPaymentMethods(),
                 'cart' => new CartResource(Cart::getCart())
+            ]
+        ]);
+    }
+
+    /**
+     * Check Guest Checkout.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function isGuestCheckout()
+    {
+        $cart = Cart::getCart();
+        
+        if (! auth()->guard('customer')->check()
+            && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
+            return response()->json([
+                'data' => [
+                    'status' => false
+                ]
+            ]);
+        }
+
+        if (! auth()->guard('customer')->check() && ! $cart->hasGuestCheckoutItems()) {
+            return response()->json([
+                'data' => [
+                    'status' => false
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'data' => [
+                'status' => true
             ]
         ]);
     }

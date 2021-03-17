@@ -134,8 +134,8 @@
         methods: {
             getOrders () {
                 EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/orders', { params: { customer_id: this.customer.id } })
+ 
+                this.$http.get('/api/pwa/orders', { params: { customer_id: this.customer.id } })
                     .then(response => {
                         this.orders = response.data.data;
 
@@ -173,7 +173,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
+                this.$http.get('/api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
                     .then(function(response) {
                         this_this.reviews = response.data.data;
 

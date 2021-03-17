@@ -17,8 +17,6 @@ class Product extends JsonResource
     {
         $this->productPriceHelper = app('Webkul\PWA\Helpers\Price');
 
-        $this->productImageHelper = app('Webkul\Product\Helpers\ProductImage');
-
         $this->productReviewHelper = app('Webkul\Product\Helpers\Review');
 
         parent::__construct($resource);
@@ -131,6 +129,26 @@ class Product extends JsonResource
             $data['show_quantity_changer'] = $product->getTypeInstance()->showQuantityBox();
         }
 
+        $pwa_images = productimage()->getGalleryImages($product);
+        $pwa_videos = productvideo()->getVideos($product);
+
+        $pwa_videoData = $pwa_imageData = [];
+
+        foreach ($pwa_videos as $key => $video) {
+            $pwa_videoData[$key]['type'] = $video['type'];
+            $pwa_videoData[$key]['large_image_url'] = $pwa_videoData[$key]['small_image_url']= $pwa_videoData[$key]['medium_image_url']= $pwa_videoData[$key]['original_image_url'] = $video['video_url'];
+        }
+
+        foreach ($pwa_images as $key => $image) {
+            $pwa_imageData[$key]['type'] = '';
+            $pwa_imageData[$key]['large_image_url']    = $image['large_image_url'];
+            $pwa_imageData[$key]['small_image_url']    = $image['small_image_url'];
+            $pwa_imageData[$key]['medium_image_url']   = $image['medium_image_url'];
+            $pwa_imageData[$key]['original_image_url'] = $image['original_image_url'];
+        }
+
+        $pwa_images = array_merge($pwa_imageData, $pwa_videoData);
+
         $data +=  [
             'id'                     => $product->id,
             'type'                   => $product->type,
@@ -141,8 +159,9 @@ class Product extends JsonResource
             'short_description'      => $this->short_description,
             'description'            => $this->description,
             'sku'                    => $this->sku,
-            'images'                 => ProductImage::collection($product->images),
-            'base_image'             => $this->productImageHelper->getProductBaseImage($product),
+            'images'                 => $pwa_images, 
+            'videos'                 => productvideo()->getVideos($product), 
+            'base_image'             => productimage()->getProductBaseImage($product),
             'variants'               => Self::collection($this->variants),
             'in_stock'               => $product->haveSufficientQuantity(1),
             $this->mergeWhen($product->getTypeInstance()->isComposite(), [

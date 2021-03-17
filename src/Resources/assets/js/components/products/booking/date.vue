@@ -1,7 +1,7 @@
 <template>
 	<span>
 		<slot>
-			<input type="text" :name="name" class="control" :value="value" data-input>
+			<input type="date" :name="name" class="control" :value="value" data-input>
 		</slot>
         
 		<span

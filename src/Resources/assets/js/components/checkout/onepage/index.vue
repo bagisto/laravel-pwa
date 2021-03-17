@@ -266,7 +266,7 @@
                     <div class="panel-content" style="padding-left: 16px">
                         <div class="cart-item-list">
                             <div class="cart-item" :key="index" v-for="(cartItem, index) in cart.items">
-                                <div class="product-name">{{ cartItem.product.name }}</div>
+                                <div class="product-name">{{ cartItem.name }}</div>
 
                                 <div class="cart-item-options">
                                     <div class="attributes" v-if="cartItem.additional.attributes">
@@ -355,6 +355,9 @@
 
                     </div>
                 </div>
+                <div style="padding: 10px;">
+                    <div class="paypal-button-container mt10"></div>
+                </div>
             </div>
 
             <div class="checkout-action">
@@ -365,7 +368,7 @@
 
                 <button type="button" class="btn btn-black" v-if="step != 4" @click="validateForm()" :disabled="disable_button">{{ $t('Proceed') }}</button>
 
-                <button type="button" class="btn btn-success" v-if="step == 4" @click="placeOrder()" :disabled="disable_button">{{ $t('Place Order') }}</button>
+                <button type="button" class="btn btn-success" v-if="step == 4 && selected_payment_method != 'paypal_smart_button'" @click="placeOrder()" :disabled="disable_button">{{ $t('Place Order') }}</button>
             </div>
         </div>
     </div>
@@ -396,6 +399,7 @@
                 selected_shipping_method: '',
                 first_payment_iteration: true,
                 first_shipping_iteration: true,
+                guest_checkout: '',
                 route_name: "{{ request()->route()->getName() }}",
 
                 addresses: {
@@ -439,13 +443,109 @@
         },
 
         mounted () {
+            this.getGuestCheckoutStatus();
+           
             this.getAuthCustomer();
 
             this.getCart();
+
+            this.paypalSmartBtn();
         },
 
         methods: {
-            getAuthCustomer () {
+            paypalSmartBtn () {
+                var self = this;
+                
+                    EventBus.$on('after-payment-method-selected', function(payment) {            
+                        if (payment != 'paypal_smart_button') {
+
+                            $('.paypal-buttons').remove();
+
+                            return;
+                        }
+
+                        if (typeof paypal == 'undefined') {
+
+                            self.$toasted.show('SDK Validation error: client-id not recognized for either production or sandbox', { type: 'error' });
+
+                            return;
+                        }
+
+                        let options = {
+                            style: {
+                                layout:  'vertical',
+                                shape:   'rect',
+                            },
+
+                            enableStandardCardFields: false,
+
+                            createOrder: function(data, actions) {
+
+                                return self.$http.get('/pwa/paypal/smart-button/create-order', { params: { } })
+                                            .then(function(response) {
+                                                return response.data.result;
+                                            })
+                                            .then(function(orderData) {
+                                                return orderData.id;
+                                            })
+                                            .catch(function (error) {
+                                                console.log(error);
+                                            });
+                            },
+
+                            onApprove: function(data, actions) {
+                                EventBus.$emit('show-ajax-loader');
+
+                                return self.$http.post('/pwa/paypal/smart-button/capture-order', { orderData: data })
+                                            .then(function(response) {
+                                                if (response.data.success) {
+                                                    EventBus.$emit('hide-ajax-loader'); 
+
+                                                    if (response.data.redirect_url) {
+                                                        window.location.href = response.data.redirect_url;
+                                                    } else {
+                                                        self.$router.push({ name: 'order-success', params: {id: response.data.order_id}}); 
+                                                                                                                                                              
+                                                        EventBus.$emit('checkout.cart.changed', null);
+                                                    }
+                                                }
+                                            })
+                                            .catch(function (error) {
+
+                                                EventBus.$emit('hide-ajax-loader'); 
+
+                                                self.$router.push({ name: 'cart' });
+                                            });
+                            },
+
+                            onCancel: function (data) {
+                                
+                                self.$toasted.show('Canceled payment...', { type: 'error' });
+                            },
+
+                            onError: function (err) {
+
+                                self.$toasted.show(err, { type: 'error' });
+                            }
+                        };
+
+                        paypal.Buttons(options).render('.paypal-button-container');
+                    });
+            },
+
+            getGuestCheckoutStatus () { 
+                var this_this = this;
+
+                this.$http.get('/api/checkout/guest-checkout')
+                    .then(function(response) {
+                        if(! response.data.data.status) {
+                            this_this.$router.push({ name: 'login-register' });
+                        }
+                    })
+                    .catch(function (error) {});
+            },
+
+            getAuthCustomer () { 
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
@@ -680,6 +780,7 @@
                         if (this_this.step != 4) {
                             this_this.step++;
                         }
+                        EventBus.$emit('after-payment-method-selected', this_this.selected_payment_method);
                     })
                     .catch(function (error) {
                         this_this.disable_button = false;
