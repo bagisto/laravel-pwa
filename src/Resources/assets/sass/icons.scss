@@ -68,6 +68,10 @@
         height: 12px;
     }
 
+    &.compare-icon {
+        background-image: url("../images/compare_arrows.png");
+    }
+
     &.wishlist-icon {
         background-image: url("../images/wishlist-icon.svg");
     }

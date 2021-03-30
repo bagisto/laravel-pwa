@@ -15,7 +15,7 @@
                 <!--if there is no special price of an item-->
                 <span v-html="product.formated_price"></span>
                 <!--end-->
-
+                <i class="icon compare-icon"  @click="moveToCompare"></i>
                 <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
             </div>
 
@@ -39,6 +39,22 @@
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/wishlist/add/' + this.product.id)
+                    .then(response => {
+                        this.$toasted.show(response.data.message, { type: 'success' })
+
+                        this.product.is_saved = response.data.data ? true : false;
+
+                        EventBus.$emit('hide-ajax-loader');
+                    })
+                    .catch(error => {
+                        this.$toasted.show(error.response.data.error, { type: 'error' })
+                    });
+            },
+
+            moveToCompare () {
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.put('/api/pwa/comparison/', 'productId:' + this.product.id)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -87,7 +103,6 @@
                     float: left;
                     margin-top: 5px;
                     display: inline;
-                    width: 80%;
                     margin-left: 0px;
                 }
 
