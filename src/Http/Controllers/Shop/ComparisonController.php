@@ -3,6 +3,7 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\Velocity\Helpers\Helper;
 use Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository as CustomerCompareProductRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\PWA\Http\Resources\Customer\Comparison as CompareResource;
@@ -34,20 +35,31 @@ class ComparisonController extends Controller
     protected $productRepository;
 
     /**
+     * Helper object
+     *
+     * @var \Webkul\Velocity\Helpers\Helper
+     */
+    protected $velocityHelper;
+
+    /**
      * Create a new controller instance.
      *
+     * @param  \Webkul\Velocity\Helpers\Helper                                         $velocityHelper
      * @param  \Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository  $compareProductsRepository
-     * @param Webkul\Product\Repositories\ProductRepository   $productRepository
+     * @param Webkul\Product\Repositories\ProductRepository                            $productRepository
      *
      * @return void
      */
     public function __construct(
+        Helper $velocityHelper,
         CustomerCompareProductRepository $compareProductsRepository,
         ProductRepository $productRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
+
+        $this->velocityHelper = $velocityHelper;
 
         $this->compareProductsRepository = $compareProductsRepository;
 
@@ -109,18 +121,16 @@ class ComparisonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function addCompareProduct()
-    {
-        dd(request()->all());
-        
+    {           
         $productId = request()->get('productId');
-
+      
         $customerId = auth()->guard('customer')->user()->id;
-
+        
         $compareProduct = $this->compareProductsRepository->findOneByField([
             'customer_id'     => $customerId,
             'product_flat_id' => $productId,
         ]);
-
+        
         if (! $compareProduct) {
             // insert new row
 
@@ -185,5 +195,29 @@ class ComparisonController extends Controller
             'message' => $message,
             'label'   => trans('velocity::app.shop.general.alert.success'),
         ];
+    }
+
+    /**
+     * This function will provide details of multiple product
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDetailedProducts()
+    {
+        // for product details
+        if ($items = request()->get('items')) {
+            $moveToCart = request()->get('moveToCart');
+
+            $productCollection = $this->velocityHelper->fetchProductCollection($items, $moveToCart);
+
+            $response = [
+                'status'   => 'success',
+                'products' => $productCollection,
+            ];
+        }
+
+        return response()->json($response ?? [
+            'status' => false
+        ]);
     }
 }

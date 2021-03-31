@@ -58,6 +58,13 @@
                                     </li>
 
                                     <li>
+                                        <router-link :to="'/compare'">
+                                            {{ $t('Compare') }}
+                                            <i class="icon sharp-arrow-right-icon"></i>
+                                        </router-link>
+                                    </li>
+
+                                    <li>
                                         <router-link :to="'/customer/account/orders'">
                                             {{ $t('Orders') }}
                                             <i class="icon sharp-arrow-right-icon"></i>

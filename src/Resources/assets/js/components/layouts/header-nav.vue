@@ -33,6 +33,10 @@
                         <i class="icon notification-icon"></i>
                     </div>-->
 
+                    <router-link class="compare-icon" :to="'/compare'">
+                        <i class="icon compare-icon"><p style="color: white;">.</p></i> <!--<p> used to meet some req. of lighthouse-->
+                    </router-link>
+
                     <router-link class="cart-icon" :to="'/checkout/cart'">
                         <span class="count" v-if="cart && cart.items.length">{{ cart.items.length }}</span>
                         <i class="icon cart-icon"><p style="color: white;">.</p></i> <!--<p> used to meet some req. of lighthouse-->

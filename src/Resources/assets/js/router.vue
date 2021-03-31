@@ -4,6 +4,7 @@ import Router               from 'vue-router';
 import App                  from './components/app';
 import Homepage             from './components/home-page/index';
 import Search               from './components/search/index';
+import Compare              from './components/compare/index';
 import SearchResult         from './components/search/result';
 import ImageSearchResult    from './components/search/image-search-result';
 import Category             from './components/categories/index';
@@ -46,6 +47,10 @@ export default new Router({
             path: '/search',
             name: 'search',
             component: Search
+        }, {
+            path: '/compare',
+            name: 'compare',
+            component: Compare
         }, {
             path: '/search/:term',
             name: 'search-result',
