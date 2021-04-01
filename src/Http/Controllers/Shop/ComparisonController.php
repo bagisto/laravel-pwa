@@ -4,7 +4,7 @@ namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Velocity\Helpers\Helper;
-use Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository as CustomerCompareProductRepository;
+use Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\PWA\Http\Resources\Customer\Comparison as CompareResource;
 use Webkul\API\Http\Resources\Checkout\Cart as CartResource;
@@ -52,7 +52,7 @@ class ComparisonController extends Controller
      */
     public function __construct(
         Helper $velocityHelper,
-        CustomerCompareProductRepository $compareProductsRepository,
+        VelocityCustomerCompareProductRepository $compareProductsRepository,
         ProductRepository $productRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
@@ -78,6 +78,8 @@ class ComparisonController extends Controller
         } else {
             if (request()->get('data')) {
                 $productCollection = [];
+                
+                $comparableAttributes = [];
 
                 if (auth()->guard('customer')->user()) {
                     $productCollection = $this->compareProductsRepository
@@ -103,10 +105,16 @@ class ComparisonController extends Controller
                     }
                 }
 
+                if ($productCollection) {
+                    $comparableAttributes = $this->getComparableAttributes();
+                }
+
                 $response = [
                     'status'   => 'success',
                     'products' => $productCollection,
+                    'comparableAttributes' => $comparableAttributes,
                 ];
+
             } else {
                 $response = view($this->_config['view']);
             }
@@ -195,6 +203,7 @@ class ComparisonController extends Controller
             'message' => $message,
             'label'   => trans('velocity::app.shop.general.alert.success'),
         ];
+            
     }
 
     /**
@@ -206,18 +215,91 @@ class ComparisonController extends Controller
     {
         // for product details
         if ($items = request()->get('items')) {
+            $comparableAttributes = [];
+
             $moveToCart = request()->get('moveToCart');
 
             $productCollection = $this->velocityHelper->fetchProductCollection($items, $moveToCart);
 
+            if ($productCollection) {
+                $comparableAttributes = $this->getComparableAttributes();
+            }
+
             $response = [
                 'status'   => 'success',
                 'products' => $productCollection,
+                'comparableAttributes' => $comparableAttributes,
             ];
         }
 
         return response()->json($response ?? [
             'status' => false
         ]);
+    }
+
+
+
+     /**
+     * Move product from compare list to cart.
+     *
+     * @param integer $id
+     * @return \Illuminate\Http\Response
+     */
+    public function moveToCart($id)
+    {
+        $wishlistItem = $this->wishlistRepository->findOrFail($id);
+
+        if ($wishlistItem->customer_id != auth()->guard($this->guard)->user()->id) {
+            return response()->json([
+                'message' => trans('shop::app.security-warning'),
+            ], 400);
+        }
+
+        $result = Cart::moveToCart($wishlistItem);
+
+        if ($result) {
+            Cart::collectTotals();
+
+            $cart = Cart::getCart();
+
+            return response()->json([
+                'data' => $cart ? new CartResource($cart) : null,
+                'message' => trans('shop::app.customer.account.wishlist.moved'),
+            ]);
+        } else {
+            return response()->json([
+                'data' => -1,
+                'error' => trans('shop::app.wishlist.option-missing'),
+            ], 400);
+        }
+    }
+
+     /**
+     * Get Comparable Attributes.
+     *
+     * @return array
+     */
+    public function getComparableAttributes()
+    {
+        $attributeRepository = app('\Webkul\Attribute\Repositories\AttributeFamilyRepository');
+        $comparableAttributes = $attributeRepository->getComparableAttributesBelongsToFamily();
+
+        $locale = request()->get('locale') ?: app()->getLocale();
+
+        $attributeOptionTranslations = app('\Webkul\Attribute\Repositories\AttributeOptionTranslationRepository')->where('locale', $locale)->get()->toJson();
+                
+        $comparableAttributes = $comparableAttributes->toArray();
+
+        array_splice($comparableAttributes, 1, 0, [[
+            'code' => 'product_image',
+            'admin_name' => __('velocity::app.customer.compare.product_image'),
+        ]]);
+
+        array_splice($comparableAttributes, 2, 0, [[
+            'code' => 'addToCartHtml',
+            'admin_name' => __('velocity::app.customer.compare.actions'),
+        ]]);
+
+        return $comparableAttributes;
     }
 }

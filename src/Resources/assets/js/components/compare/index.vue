@@ -4,17 +4,22 @@
 
         <div class="panel" v-if="compare.length">
             <div class="panel-content">
-                <div class="compare-list product-list product-grid-2">
-
+                <table class="row">
+                    <tr v-for="attribute in comparableAttributes" class="compare-products">
+                        <td class="attribute-name">
+                            <span class="fs16">{{ attribute['name'] ? attribute['name'] : attribute['admin_name'] }}</span>
+                        </td>
                     <compare-card 
                         v-for="item in compare"
-                        :key='item.uid'
+                        :key='item.id'
                         :compareItem="item"
+                        :attribute="attribute"
+                        :customer="customer"
                         @onRemove="removecompareItem(item)"
                         @onMoveToCart="moveToCart(item)"
                     ></compare-card>
-
-                </div>
+                    <tr>
+                </table>
             </div>
         </div>
 
@@ -24,36 +29,36 @@
 
 <script>
     import CustomHeader  from '../layouts/custom-header';
-    import compareCard  from './card';
-    import Emptycompare from './empty-compare';
-    import {
-        mapState,
-        mapActions
-    } from 'vuex';
+    import CompareCard  from './card';
+    import EmptyCompare from './empty-compare';
 
     export default {
         name: 'compare',
 
-        components: { CustomHeader, compareCard, Emptycompare },
+        components: { CustomHeader, CompareCard, EmptyCompare },
 
         data () {
             return {
-                compare: []
+                customer: '',
+                compare: [],
+                comparableAttributes: []
             }
         },
 
-        computed: mapState({
-            customer: state => state.customer,
-        }),
-
         mounted () {
-            this.getcompare()
+            this.getCustomer();
+
+            this.getcompare();
         },
 
         methods: {
-            ...mapActions([
-                'getCustomer',
-            ]),
+            getCustomer () {
+                if (JSON.parse(localStorage.getItem('currentUser'))) {
+                    this.customer = true;
+                } else {
+                    this.customer = false;
+                }
+            },
 
             getcompare () {
                 var this_this = this;
@@ -84,7 +89,13 @@
                     this_this.$http.get(url, data)
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
-                        this_this.compare = response.data.products;
+
+                        if (response.data.status === 'success') {
+                            console.log(response.data.products);
+                            this_this.compare = response.data.products;
+                            this_this.comparableAttributes = response.data.comparableAttributes;
+                        }
+                        
                     })
                     .catch(error => {
                         EventBus.$emit('hide-ajax-loader');
@@ -99,18 +110,41 @@
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
-                
-                this.$http.delete('/api/compare/' + item.id)
+
+                if (this_this.customer) {
+                    this_this.$http.post('/api/pwa/comparison', {productId: item.id} )
                     .then(function(response) {
-                        this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
                         var index = this_this.compare.indexOf(item);
-
+                        
                         this_this.compare.splice(index, 1);
+
+                        this_this.$toasted.show(response.data.message, { type: 'success' })
+
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                        this_this.$toasted.show('Something went wrong, Please try againg later', { type: 'error' })
+                    });
+                } else {
+
+                    let existingItems = JSON.parse(localStorage.getItem('compared_product'));
+
+                    EventBus.$emit('hide-ajax-loader');
+
+                    var index = this_this.compare.indexOf(item);
+
+                    var index_local_storage = existingItems.indexOf(item.id)
+
+                    this_this.compare.splice(index, 1);
+
+                    existingItems.splice(index_local_storage, 1);                 
+
+                    localStorage.setItem('compared_product', JSON.stringify(existingItems));    
+
+                    this_this.$toasted.show('Item removed from compare list Succesfully', { type: 'success' })
+                }    
             },
 
             moveToCart (item) {
@@ -148,5 +182,14 @@
         bottom: 0;
         top: 0;
         width: 100%;
+    }
+    .panel {
+        overflow:auto;
+    }
+    .compare-products {
+        height:45px;
+    }
+    .attribute-name {
+        padding-right: 35px;
     }
 </style>

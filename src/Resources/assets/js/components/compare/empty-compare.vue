@@ -1,6 +1,5 @@
 <template>
     <div class="no-result-found">
-        <div class="illustration empty-compare-img"></div>
 
         <h2>{{ $t('No Items') }}</h2>
 

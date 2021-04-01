@@ -1,37 +1,52 @@
 <template>
-    <div class="product-card">
-        <span class="remove-item" @click="removeItem">
+
+    <td v-if="attribute['code'] == 'name'" class="attribute-value">
+        <div class="product-name">
+            {{ compareItem.name }}
+        </div>
+    </td>
+
+    <td v-else-if="attribute['code'] == 'product_image'" class="attribute-value">
+        <div class="product-image">
+            <img alt="product-base-medium-image" :src="compareItem.product_image" />
+        </div>
+    </td>
+
+    <td v-else-if="attribute['code'] == 'price'" class="attribute-value">
+        <div class="product-price" v-html="compareItem.priceHTML">
+        </div>
+    </td>
+
+    <td v-else-if="attribute['code'] == 'addToCartHtml'" class="attribute-value">
+        <div class="product-price" v-html="compareItem.addToCartHtml">
+        </div>
+        <span class="remove-item" @click="removeItem" class="attribute-value">
             <i class="icon sharp-cross-icon"></i>
         </span>
+    </td>
 
-        <router-link :to="'/products/' + wishlistItem.product.id">
-            <div class="product-image">
-                <img alt="product-base-medium-image" :src="wishlistItem.product.base_image.medium_image_url" />
-            </div>
-
-            <div class="product-information">
-
-                <div class="product-price" v-html="wishlistItem.product.formated_price">
-                </div>
-
-                <div class="product-name">
-                    {{ wishlistItem.product.name }}
-                </div>
-
-            </div>
-        </router-link>
-
-        <div class="wishlist-action" @click="moveToCart">
-            {{ $t('Move To Cart') }}
+    <td v-else-if="attribute['code'] == 'color'" class="attribute-value">
+        <div class="product-price" v-html="compareItem.color_label">
         </div>
-    </div>
+    </td>
+
+    <td v-else-if="attribute['code'] == 'size'" class="attribute-value">
+        <div class="product-price" v-html="compareItem.size_label">
+        </div>
+    </td>
+
+    <td v-else-if="attribute['code'] == 'description'" class="attribute-value">
+        <div class="product-price" v-html="compareItem.description">
+        </div>
+    </td>
+    
 </template>
 
 <script>
     export default {
-        name: 'wishlist-item',
+        name: 'compare-item',
 
-        props: ['wishlistItem'],
+        props: ['compareItem', 'customer', 'attribute'],
 
         methods: {
             removeItem () {
@@ -46,18 +61,11 @@
 </script>
 
 <style scoped lang="scss">
-    .product-card {
-        width: 100%;
-        box-shadow: 0 10px 10px 0 rgba(0,0,0,0.04), 0 1px 4px 0 rgba(0,0,0,0.16);
-        position: relative;
+    
 
         .remove-item {
-            position: absolute;
             background: #fff;
             border-radius: 50%;
-            right: 12px;
-            top: 12px;
-            box-shadow: 0 10px 10px 0 rgba(0,0,0,0.04), 0 1px 4px 0 rgba(0,0,0,0.16);
             width: 24px;
             height: 24px;
             padding: 2px;
@@ -81,28 +89,15 @@
             background: #f2f2f2;
 
             img {
-                width: 100%;
-                height: 100%;
+                height: 150px;
             }
         }
 
-        .product-information {
-            float: left;
-            width: 100%;
-            margin-top: 8px;
-
-            .product-price {
-                color: rgba(0, 0, 0, 1);
-                font-weight: 600;
-                margin-bottom: 8px;
-            }
-
-            .product-name {
-                font-size: 12px;
-            }
+        .product-name {
+            font-weight:bold;
         }
 
-        .wishlist-action {
+        .compare-action {
             padding: 12px;
             text-align: center;
             display: inline-block;
@@ -117,5 +112,9 @@
             position: relative;
             bottom: 0;
         }
-    }
+
+        .attribute-value {
+            padding-right:10px;
+        }
+    
 </style>

@@ -109,9 +109,13 @@
 
                 Route::put('/comparison', 'ComparisonController@addCompareProduct');
 
+                Route::post('/comparison', 'ComparisonController@deleteComparisonProduct');
+
                 Route::get('/comparison/get-products', 'ComparisonController@getComparisonList');
 
                 Route::get('/detailed-products', 'ComparisonController@getDetailedProducts');
+
+                Route::get('/comparison/move-to-cart/{id}', 'ComparisonController@moveToCart');
 
                 Route::get('invoices', 'InvoiceController@index')->defaults('_config', [
                     'repository'    => 'Webkul\Sales\Repositories\InvoiceRepository',
