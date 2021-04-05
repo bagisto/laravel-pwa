@@ -18,11 +18,9 @@
     </td>
 
     <td v-else-if="attribute['code'] == 'addToCartHtml'" class="attribute-value">
-        <div class="product-price" v-html="compareItem.addToCartHtml">
+        <div class="compare-to-cart" @click="removeItem">
+            {{ $t('Remove') }}
         </div>
-        <span class="remove-item" @click="removeItem" class="attribute-value">
-            <i class="icon sharp-cross-icon"></i>
-        </span>
     </td>
 
     <td v-else-if="attribute['code'] == 'color'" class="attribute-value">
@@ -76,6 +74,15 @@
                 width: 20px;
                 height: 20px;
             }
+        }
+        .compare-to-cart {
+            padding: 2px;
+            background: #000;
+            float: left;
+            margin-top: 1px;
+            margin-right: 10px;
+            color: #fff;
+            border: 2px solid #000;
         }
 
         a {

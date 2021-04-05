@@ -238,42 +238,6 @@ class ComparisonController extends Controller
     }
 
 
-
-     /**
-     * Move product from compare list to cart.
-     *
-     * @param integer $id
-     * @return \Illuminate\Http\Response
-     */
-    public function moveToCart($id)
-    {
-        $wishlistItem = $this->wishlistRepository->findOrFail($id);
-
-        if ($wishlistItem->customer_id != auth()->guard($this->guard)->user()->id) {
-            return response()->json([
-                'message' => trans('shop::app.security-warning'),
-            ], 400);
-        }
-
-        $result = Cart::moveToCart($wishlistItem);
-
-        if ($result) {
-            Cart::collectTotals();
-
-            $cart = Cart::getCart();
-
-            return response()->json([
-                'data' => $cart ? new CartResource($cart) : null,
-                'message' => trans('shop::app.customer.account.wishlist.moved'),
-            ]);
-        } else {
-            return response()->json([
-                'data' => -1,
-                'error' => trans('shop::app.wishlist.option-missing'),
-            ], 400);
-        }
-    }
-
      /**
      * Get Comparable Attributes.
      *

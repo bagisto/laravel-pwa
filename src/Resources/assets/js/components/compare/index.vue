@@ -150,17 +150,13 @@
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
                 
-                this.$http.get('/api/pwa/move-to-cart/' + item.id)
+                this.$http.get('/api/pwa/comparison/move-to-cart/' + item.id)
                     .then(response => {
+                    
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        var index = this.compare.indexOf(item);
-
-                        this.compare.splice(index, 1);
-                        
-                        EventBus.$emit('checkout.cart.changed', response.data.data);
                     })
                     .catch(error => {
                         if (error.response.data.data == -1) {
