@@ -15,7 +15,7 @@
                 <!--if there is no special price of an item-->
                 <span v-html="product.formated_price"></span>
                 <!--end-->
-
+                <i class="icon compare-icon"  @click="moveToCompare"></i>
                 <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
             </div>
 
@@ -49,6 +49,47 @@
                     .catch(error => {
                         this.$toasted.show(error.response.data.error, { type: 'error' })
                     });
+            },
+
+            moveToCompare () {
+                EventBus.$emit('show-ajax-loader');
+
+                if (this.isCustomer) {
+                    this.$http.put('/api/pwa/comparison/', {productId: this.product.id})
+                    .then(response => {
+                        this.$toasted.show(response.data.message, { type: 'success' })
+
+                        EventBus.$emit('hide-ajax-loader');
+                    })
+                    .catch(error => {
+                        this.$toasted.show(error.response.data.error, { type: 'error' })
+                    });
+                } else {                    
+                    let updatedItems = [this.product.id];
+                    let existingItems = JSON.parse(localStorage.getItem('compared_product'));
+                    
+                    if (existingItems) {
+                        if (existingItems.indexOf(this.product.id) == -1) {
+                            updatedItems = existingItems.concat(updatedItems);
+
+                            localStorage.setItem('compared_product', JSON.stringify(updatedItems));
+
+                            this.$toasted.show('Item Succesfully added to compare list', { type: 'success' })
+
+                            EventBus.$emit('hide-ajax-loader');
+                        } else {
+                            this.$toasted.show('Item is already added to compare list', { type: 'success' })
+                        
+                            EventBus.$emit('hide-ajax-loader');
+                        }
+                    } else {
+                        localStorage.setItem('compared_product', JSON.stringify(updatedItems));
+
+                        this.$toasted.show('Item Succesfully added to compare list', { type: 'success' })
+
+                        EventBus.$emit('hide-ajax-loader');
+                    }
+                }
             },
         }
     }
@@ -87,7 +128,6 @@
                     float: left;
                     margin-top: 5px;
                     display: inline;
-                    width: 80%;
                     margin-left: 0px;
                 }
 

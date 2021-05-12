@@ -178,7 +178,9 @@
                                         <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
                                         <label class="radio-view" :for="rate.method"></label>
 
-                                        {{ rate.method_title + ' - ' + rate.formated_price }}
+                                        {{ rate.formated_price }}
+                                        <b> {{ rate.method_title + ' - ' }} </b>
+                                        {{ rate.method_description }}
                                     </label>
                                 </div>
 
@@ -201,7 +203,9 @@
                                         <input type="radio" v-validate="'required'" :id="payment.method" name="payment_method" :value="payment.method" v-model="selected_payment_method">
                                         <label class="radio-view" :for="payment.method"></label>
 
-                                        {{ payment.method_title }}
+                                        <b>{{ payment.method_title }}</b>
+                                        <br>
+                                        <span style="padding-left:30px;">{{ payment.description }}</span>
                                     </label>
                                 </div>
 
@@ -747,7 +751,7 @@
                         this_this.disable_button = false;
 
                         this_this.paymentMethods = response.data.data.methods;
-
+                        console.log(this_this.paymentMethods);
                         this_this.cart = response.data.data.cart;
 
                         this_this.step++;

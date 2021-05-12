@@ -15,7 +15,7 @@
         </div>
 
         <div class="control-group" :class="[errors.has('address-form.' + type + '[email]') ? 'has-error' : '']">
-            <input type="email" :name="type + '[email]'" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
+            <input type="email" :name="type + '[email]'" class="control" v-model="address.email" v-validate="'required|email'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
             <label>{{ $t('Email') }}</label>
             <span class="control-error" v-if="errors.has('address-form.' + type + '[email]')">{{ errors.first('address-form.' + type + '[email]') }}</span>
         </div>
