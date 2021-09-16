@@ -52,6 +52,9 @@ return [
         'datagrid'          => [
             'id'            => 'ID',
             'title'         => 'Title',
+            'delete'         => 'Delete',
+            'view'         => 'View',
+            'send'         => 'Send',
             'target-url'    => 'Target URL',
             'description'   => 'Description',
         ]
