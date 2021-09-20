@@ -193,22 +193,22 @@ function formFilter(response) {
 
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here, other Firebase libraries are not available in the service worker.
-importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
+importScripts('http://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
+importScripts('http://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC-HKvgBpSVK27IZdxv5U7s-WDTzODswO8",
-  authDomain: "laravel-pwa-5c45c.firebaseapp.com",
-  databaseURL: "https://laravel-pwa-5c45c.firebaseio.com",
-  projectId: "laravel-pwa-5c45c",
+  apiKey: "{{core()->getConfigData('pwa.settings.push-notification.web-api-key')}}",
+  authDomain: "{{core()->getConfigData('pwa.settings.push-notification.auth-domain')}}",
+  databaseURL: "{{core()->getConfigData('pwa.settings.push-notification.database-url')}}",
+  projectId: "{{core()->getConfigData('pwa.settings.push-notification.project-id')}}",
   storageBucket: "",
-  messagingSenderId: "444825614301",
-  appId: "1:444825614301:web:ee31ac20d8c7de3e"
+  messagingSenderId: "{{core()->getConfigData('pwa.settings.push-notification.messaging-id')}}",
+  appId: "{{core()->getConfigData('pwa.settings.push-notification.app-id')}}"
 };
 
 // Initialize the Firebase app in the service worker by passing in themessagingSenderId.
 firebase.initializeApp({
-  'messagingSenderId': '444825614301'
+  'messagingSenderId': "{{core()->getConfigData('pwa.settings.push-notification.messaging-id')}}"
 });
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages
