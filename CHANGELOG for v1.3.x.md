@@ -1,8 +1,8 @@
-# CHANGELOG for v1.3.0
+# CHANGELOG for v1.3.2
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
-## **v1.3.0(31th of March, 2021)** - *Release*
+## **v1.3.2(31th of March, 2021)** - *Release*
 
 * [feature] functionality to edit home page layout from admin panel.
 

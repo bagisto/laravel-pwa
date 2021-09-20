@@ -162,11 +162,41 @@ return [
                 'locale_based' => true
             ], [
                 'name' => 'api-key',
+                'title' => 'pwa::app.admin.system.server-key',
+                'type' => 'password',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'auth-domain',
+                'title' => 'pwa::app.admin.system.auth-domain',
+                'type' => 'text',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'database-url',
+                'title' => 'pwa::app.admin.system.database-url',
+                'type' => 'text',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'project-id',
+                'title' => 'pwa::app.admin.system.project-id',
+                'type' => 'password',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'app-id',
+                'title' => 'pwa::app.admin.system.app-id',
+                'type' => 'password',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'web-api-key',
                 'title' => 'pwa::app.admin.system.api-key',
                 'type' => 'password',
                 'channel_based' => true,
                 'locale_based' => false
-            ]
+            ],
         ]
     ]
 
