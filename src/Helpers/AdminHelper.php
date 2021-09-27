@@ -32,15 +32,17 @@ class AdminHelper
      */
     public function storeCategoryIcon($category)
     {
-        $data = request()->all();
+        if ( core()->getConfigData('pwa.settings.general.status') ) {
+            $data = request()->all();
 
-        if (! $category instanceof \Webkul\Category\Contracts\Category) {
-            $category = $this->categoryRepository->findOrFail($category);
+            if (! $category instanceof \Webkul\Category\Contracts\Category) {
+                $category = $this->categoryRepository->findOrFail($category);
+            }
+
+            $category->category_product_in_pwa = ($data['add_in_pwa'] ?? 0) == "1" ? 1 : 0;
+            $category->save();
         }
-
-        $category->category_product_in_pwa = ($data['add_in_pwa'] ?? 0) == "1" ? 1 : 0;
-        $category->save();
-
+        
         return $category;
     }
 }
