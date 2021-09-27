@@ -1,6 +1,12 @@
-# CHANGELOG for v0.1.x
+# CHANGELOG for v1.3.2
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
+
+## **v1.3.2(20th of september, 2021)** - *Release*
+
+- [compatible] Bagisto Version v1.3.2.
+
+- [Bug] Dynamic Entries of firebase details.
 
 ## **v0.1.5(17th of February, 2020)** - *Release*
 

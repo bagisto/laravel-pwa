@@ -67,6 +67,7 @@ class PushNotificationDataGrid extends DataGrid
     public function prepareActions()
     {
         $this->addAction([
+            'title' => trans('pwa::app.admin.datagrid.view'),
             'type' => 'View',
             'route' => 'pwa.pushnotification.edit',
             'icon' => 'icon pencil-lg-icon',
@@ -74,6 +75,7 @@ class PushNotificationDataGrid extends DataGrid
         ]);
 
         $this->addAction([
+            'title' => trans('pwa::app.admin.datagrid.delete'),
             'type' => 'Delete',
             'route' => 'pwa.pushnotification.delete',
             'icon' => 'icon trash-icon',
@@ -81,6 +83,7 @@ class PushNotificationDataGrid extends DataGrid
         ]);
 
         $this->addAction([
+            'title' => trans('pwa::app.admin.datagrid.send'),
             'type' => 'send',
             'route' => 'pwa.pushnotification.pushtofirebase',
             'icon' => 'icon bell-icon',

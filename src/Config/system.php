@@ -149,24 +149,62 @@ return [
                 'name' => 'topic',
                 'title' => 'pwa::app.admin.system.topic',
                 'type' => 'text',
+                'validation' => 'required',
                 'default' => 'bagisto',
-                'validation' => 'alpha_num',
+                'validation' => 'alpha_num|required',
                 'channel_based' => true,
                 'locale_based' => true
             ], [
                 'name' => 'messaging-id',
                 'title' => 'pwa::app.admin.system.messagingId',
                 'type' => 'text',
-                'validation' => 'numeric',
+                'validation' => 'required',
+                'validation' => 'numeric|required',
                 'channel_based' => true,
                 'locale_based' => true
             ], [
                 'name' => 'api-key',
-                'title' => 'pwa::app.admin.system.api-key',
+                'title' => 'pwa::app.admin.system.server-key',
                 'type' => 'password',
+                'validation' => 'required',
                 'channel_based' => true,
                 'locale_based' => false
-            ]
+            ], [
+                'name' => 'auth-domain',
+                'title' => 'pwa::app.admin.system.auth-domain',
+                'type' => 'text',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'database-url',
+                'title' => 'pwa::app.admin.system.database-url',
+                'type' => 'text',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'project-id',
+                'title' => 'pwa::app.admin.system.project-id',
+                'type' => 'password',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'app-id',
+                'title' => 'pwa::app.admin.system.app-id',
+                'type' => 'password',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'web-api-key',
+                'title' => 'pwa::app.admin.system.api-key',
+                'type' => 'password',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => false
+            ],
         ]
     ]
 
