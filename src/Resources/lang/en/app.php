@@ -4,6 +4,7 @@ return [
     'admin' => [
         'system'            => [
             'pwa'                                   => 'PWA',
+            'status'                                => 'Status',
             'btn-save'                              => 'Save',
             'name'                                  => 'Name',
             'topic'                                 => 'Topic',
@@ -63,6 +64,12 @@ return [
             'send'         => 'Send',
             'target-url'    => 'Target URL',
             'description'   => 'Description',
+        ]
+    ],
+
+    'shop'  => [
+        'home'  => [
+            'enable-pwa-status' => 'Warning: Please enable pwa extension status from the configuration.',
         ]
     ]
 ];

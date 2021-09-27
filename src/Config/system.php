@@ -15,6 +15,10 @@ return [
         'sort' => 1,
         'fields' => [
             [
+                'name' => 'status',
+                'title' => 'pwa::app.admin.system.status',
+                'type' => 'boolean'
+            ],  [
                 'name' => 'name',
                 'title' => 'pwa::app.admin.system.name',
                 'type' => 'text',

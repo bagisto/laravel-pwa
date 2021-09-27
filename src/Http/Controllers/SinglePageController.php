@@ -38,6 +38,12 @@ class SinglePageController extends Controller
     */
     public function index()
     {
+        if (! core()->getConfigData('pwa.settings.general.status') ) {
+            session()->flash('warning', trans('pwa::app.shop.home.enable-pwa-status'));
+
+            return redirect()->route('shop.home.index');
+        }
+        
         $parsedUrl = parse_url(config('app.url'));
 
         $urlPath = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
