@@ -156,17 +156,18 @@ function formFilter(response) {
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 var firebaseConfig = {
-  apiKey: "AIzaSyC-HKvgBpSVK27IZdxv5U7s-WDTzODswO8",
-  authDomain: "laravel-pwa-5c45c.firebaseapp.com",
-  databaseURL: "https://laravel-pwa-5c45c.firebaseio.com",
-  projectId: "laravel-pwa-5c45c",
-  storageBucket: "",
-  messagingSenderId: "444825614301",
-  appId: "1:444825614301:web:ee31ac20d8c7de3e"
+  apiKey: "AIzaSyAYa4bg95RCjz-r6hc6A_Rz98iE_ySgjis",
+  authDomain: "pwa-m-2a314.firebaseapp.com",
+  databaseURL: "https://pwa-m-2a314-default-rtdb.firebaseio.com",
+  projectId: "pwa-m-2a314",
+  storageBucket: "pwa-m-2a314.appspot.com",
+  messagingSenderId: "709349998192",
+  appId: "1:709349998192:web:24a8d491622ad1a8583eb5",
+  measurementId: "G-J71CG5K3WD"
 }; // Initialize the Firebase app in the service worker by passing in themessagingSenderId.
 
 firebase.initializeApp({
-  'messagingSenderId': '444825614301'
+  'messagingSenderId': "709349998192"
 }); // Retrieve an instance of Firebase Messaging so that it can handle background messages
 
 var messaging = firebase.messaging(); // Add the public key generated from the console here.

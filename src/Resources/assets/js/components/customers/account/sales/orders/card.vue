@@ -1,5 +1,5 @@
 <template>
-    <div class="order-card">
+    <div class="order-card" :class="[order.increment_id.toLowerCase()]+' '+[new Date(order.created_at.toLowerCase())]+' '+ [order.status_label.toLowerCase()] +' '+ [order.formated_grand_total.toLowerCase()]">
         <div class="order-details">
             <div class="order-id">{{ order.increment_id }}</div>
             <div class="order-status">

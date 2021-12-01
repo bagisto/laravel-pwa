@@ -7,6 +7,7 @@ use Webkul\Checkout\Repositories\CartRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
 use Webkul\Shipping\Facades\Shipping;
 use Webkul\Payment\Facades\Payment;
+use Webkul\Product\Repositories\ProductRepository;
 use Webkul\PWA\Http\Resources\Checkout\Cart as CartResource;
 use Webkul\API\Http\Resources\Checkout\CartShippingRate as CartShippingRateResource;
 use Webkul\PWA\Http\Resources\Sales\Order as OrderResource;
@@ -43,6 +44,8 @@ class CheckoutController extends Controller
      */
     protected $cartItemRepository;
 
+    protected $productRepository;
+
     /**
      * Controller instance
      *
@@ -53,7 +56,8 @@ class CheckoutController extends Controller
     public function __construct(
         CartRepository $cartRepository,
         CartItemRepository $cartItemRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        ProductRepository $productRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
@@ -69,6 +73,8 @@ class CheckoutController extends Controller
         $this->cartItemRepository = $cartItemRepository;
 
         $this->orderRepository = $orderRepository;
+
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -92,6 +98,18 @@ class CheckoutController extends Controller
         if (isset($data['shipping']['id']) && str_contains($data['shipping']['id'], 'address_')) {
             unset($data['shipping']['id']);
             unset($data['shipping']['address_id']);
+        }
+
+        foreach(Cart::getCart()->items()->get() as $cartitem)
+        {
+            $product = $this->productRepository->find($cartitem->product_id);
+            if($product->type != 'booking' && $product->getTypeInstance()->totalQuantity() < $cartitem->quantity)
+            {
+                return response()->json([
+                'error'=>"qty_unavailable", 
+                'message'=>"Requested Quantity for ".$product->product->name." is not Available" 
+                ]);
+            }
         }
 
         if (Cart::hasError() || ! Cart::saveCustomerAddress($data) || ! Shipping::collectRates())

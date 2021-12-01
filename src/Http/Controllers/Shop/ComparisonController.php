@@ -145,15 +145,12 @@ class ComparisonController extends Controller
             $productFlatRepository = app('\Webkul\Product\Models\ProductFlat');
 
             $productFlat = $productFlatRepository
-                            ->where('id', $productId)
-                            ->orWhere('parent_id', $productId)
-                            ->orWhere('id', $productId)
+                            ->where('product_id', $productId)
                             ->get()
                             ->first();
 
             if ($productFlat) {
                 $productId = $productFlat->id;
-
                 $this->compareProductsRepository->create([
                     'customer_id'     => $customerId,
                     'product_flat_id' => $productId,

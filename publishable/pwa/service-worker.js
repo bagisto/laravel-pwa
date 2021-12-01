@@ -197,18 +197,19 @@ importScripts('http://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 importScripts('http://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 
 const firebaseConfig = {
-  apiKey: "{{core()->getConfigData('pwa.settings.push-notification.web-api-key')}}",
-  authDomain: "{{core()->getConfigData('pwa.settings.push-notification.auth-domain')}}",
-  databaseURL: "{{core()->getConfigData('pwa.settings.push-notification.database-url')}}",
-  projectId: "{{core()->getConfigData('pwa.settings.push-notification.project-id')}}",
-  storageBucket: "",
-  messagingSenderId: "{{core()->getConfigData('pwa.settings.push-notification.messaging-id')}}",
-  appId: "{{core()->getConfigData('pwa.settings.push-notification.app-id')}}"
+    apiKey: "AIzaSyAYa4bg95RCjz-r6hc6A_Rz98iE_ySgjis",
+    authDomain: "pwa-m-2a314.firebaseapp.com",
+    databaseURL: "https://pwa-m-2a314-default-rtdb.firebaseio.com",
+    projectId: "pwa-m-2a314",
+    storageBucket: "pwa-m-2a314.appspot.com",
+    messagingSenderId: "709349998192",
+    appId: "1:709349998192:web:24a8d491622ad1a8583eb5",
+    measurementId: "G-J71CG5K3WD"
 };
 
 // Initialize the Firebase app in the service worker by passing in themessagingSenderId.
 firebase.initializeApp({
-  'messagingSenderId': "{{core()->getConfigData('pwa.settings.push-notification.messaging-id')}}"
+  'messagingSenderId': "709349998192"
 });
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages
