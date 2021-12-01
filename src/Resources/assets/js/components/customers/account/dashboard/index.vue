@@ -24,6 +24,7 @@
                 <tab :name="$t('Recent Orders')" :selected="true">
                     <div v-if="orders.length">
                         <div :class="['order-list', haveMoreOrders ? 'have-more-orders' : '']">
+                            <order-filter :orders="orders"></order-filter>
                             <order-card v-for="order in orders" :key='order.uid' :order="order"></order-card>
                         </div>
 
@@ -86,6 +87,7 @@
     import EmptyOrderList           from '../sales/orders/empty-order-list';
     import EmptyAddressList         from '../addresses/empty-address-list';
     import DownloadableProducts     from '../sales/orders/downloadable-products';
+    import OrderFilter              from '../sales/orders/order-filter';
 
     export default {
         name: 'dashboard',
@@ -93,6 +95,7 @@
         components: {
             CustomHeader,
             Tabs,
+            OrderFilter,
             Tab,
             OrderCard,
             AddressCard,

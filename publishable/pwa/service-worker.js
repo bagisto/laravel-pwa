@@ -210,7 +210,6 @@ const firebaseConfig = {
 firebase.initializeApp({
   'messagingSenderId': "{{core()->getConfigData('pwa.settings.push-notification.messaging-id')}}"
 });
-
 // Retrieve an instance of Firebase Messaging so that it can handle background messages
 const messaging = firebase.messaging();
 
