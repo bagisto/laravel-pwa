@@ -693,6 +693,11 @@
                 self.disable_button = true;
                 this.$http.post('/api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
+                            if(response.data.error=='qty_unavailable')
+                            {
+                                self.$toasted.show(response.data.message, { type: 'error' });
+                                return false;
+                            }
                         if (response.data.data.nextStep == "payment") {
                             self.skipShipping = true;
                             self.disable_button = false;

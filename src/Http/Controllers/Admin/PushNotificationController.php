@@ -170,7 +170,7 @@ class PushNotificationController extends Controller
 
             $headers = array(
                 'Content-Type:application/json',
-                'Authorization:key=' . $server_key,
+                'Authorization:key='.$server_key,
             );
 
             // Open connection
@@ -189,14 +189,13 @@ class PushNotificationController extends Controller
             curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $fields ) );
             // Execute post
             $result = curl_exec( $ch );
-
-            if ( $result === false ) {
-                session()->flash('error', 'Curl failed: ' . curl_error($ch));
+            curl_close( $ch );
+            $resp = json_decode($result);
+            if ( empty($resp->message_id) ) {
+                session()->flash('error', 'Invalid Credentials');
             } else {
                 session()->flash('success', trans('pwa::app.admin.push-notification.success-notification'));
             }
-
-            curl_close( $ch );
 
             // Close connection
             return redirect()->back();

@@ -1,7 +1,7 @@
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 
-firebase.initializeApp({messagingSenderId: "{{core()->getConfigData('pwa.settings.push-notification.messaging-id')}}"});
+firebase.initializeApp({messagingSenderId: "{{core()->getConfigData('pwa.settings.push-notification.messaging-id')}}"}");
 
 const messaging = firebase.messaging();
 

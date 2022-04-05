@@ -1,14 +1,23 @@
-import '@firebase/auth';
-import '@firebase/messaging';
-import firebase from '@firebase/app';
-
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/messaging';
 var topic;
 var serverAPI;
 var messagingId;
+var api;
+var authdomain;
+var databaseurl;
+var projectid;
+var appid;
 
 var topicKey = "pwa.settings.push-notification.topic";
 var serverAPIKey = "pwa.settings.push-notification.api-key";
+var APIKey = "pwa.settings.push-notification.web-api-key";
 var messagingIdKey = "pwa.settings.push-notification.messaging-id";
+var authDomain = "pwa.settings.push-notification.auth-domain";
+var databaseURL = "pwa.settings.push-notification.database-url";
+var projectId = "pwa.settings.push-notification.project-id";
+var appId = "pwa.settings.push-notification.app-id";
 
 var isSafari = () => {
     return window.navigator.vendor == "Apple Computer, Inc." ? true : false;
@@ -23,8 +32,7 @@ var setTokenSentToServer = sent => {
 }
 
 if (! isSafari()) {
-    let url = `${window.config.app_base_url}/api/config?_config=${topicKey},${serverAPIKey},${messagingIdKey}`;
-
+    let url = `${window.config.app_base_url}/api/config?_config=${topicKey},${APIKey},${serverAPIKey},${messagingIdKey},${authDomain},${databaseURL},${projectId},${appId}`;
     fetch(url, {
         method: 'GET',
         headers: new Headers({
@@ -34,11 +42,26 @@ if (! isSafari()) {
     })
     .then(response => response.json())
     .then(response => {
+
+console.log(response.data);
         topic = response.data[topicKey];
+        api = response.data[APIKey];
         serverAPI = response.data[serverAPIKey];
         messagingId = response.data[messagingIdKey];
+        authdomain = response.data[authDomain];
+        databaseurl = response.data[databaseURL];
+        projectid = response.data[projectId];
+        appid = response.data[appId];
 
-        firebase.initializeApp({messagingSenderId: messagingId});
+        firebase.initializeApp({ 
+            apiKey: api,
+            authDomain: authdomain,
+            databaseURL: databaseurl,
+            projectId: projectid,
+            storageBucket: "",
+            messagingSenderId: messagingId,
+            appId: appid
+    });
         const messaging = firebase.messaging();
 
         Notification.requestPermission().then((permission) => {
@@ -94,27 +117,46 @@ function retriveCurrentToken(messaging) {
         // showToken('Error retrieving Instance ID token. ', err);
         setTokenSentToServer(false);
     });
+//     messaging.onTokenRefresh(function () {
+//         messaging
+//             .getToken()
+//             .then(function (refreshedToken) {
+//                 console.log('Token refreshed.');
+//                 // Indicate that the new Instance ID token has not yet been sent to the
+//                 // app server.
+//                 sendTokenToServer(refreshedToken);
+//                 // Send Instance ID token to app se
+    .special-price {
+        float: left;
+    }
 
-    messaging.onTokenRefresh(function () {
+    .regular-price {
+        border: 1px solid red !important;
+        text-decoration: line-through;
+        opacity: 0.56;
+        font-family: 600;
+        font-size: 14px;
+        color: #000000;
+        margin-left: 8px;
+    }rver.
+//             })
+//             .catch(function (err) {
+//                 console.log('Unable to retrieve refreshed token ', err);
+//                 setTokenSentToServer(false);
+//             });
+//   });
+
         messaging
             .getToken()
             .then(function (refreshedToken) {
                 console.log('Token refreshed.');
-                // Indicate that the new Instance ID token has not yet been sent to the
-                // app server.
                 sendTokenToServer(refreshedToken);
-                // Send Instance ID token to app server.
             })
             .catch(function (err) {
                 console.log('Unable to retrieve refreshed token ', err);
                 setTokenSentToServer(false);
             });
-  });
 }
-
-// Send the Instance ID token your application server, so that it can:
-// - send messages back to this app
-// - subscribe/unsubscribe the token from topics
 function sendTokenToServer(currentToken) {
     if (!  isTokenSentToServer()) {
         console.log('Sending token to server...');

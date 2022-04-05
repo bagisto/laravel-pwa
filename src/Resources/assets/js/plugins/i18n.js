@@ -4,6 +4,7 @@ import en      from '../lang/en.json';
 import ar      from '../lang/ar.json';
 import de      from '../lang/de.json';
 import fa      from '../lang/fa.json';
+import fr      from '../lang/fr.json';
 import it      from '../lang/it.json';
 import ja      from '../lang/ja.json';
 import nl      from '../lang/nl.json';
@@ -15,6 +16,7 @@ Vue.use(VueI18n);
 
 const messages = {
     'en'    : en,
+    'fr'    : fr,
     'ar'    : ar,
     'de'    : de,
     'fa'    : fa,
