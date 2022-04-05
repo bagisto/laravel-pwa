@@ -17,7 +17,7 @@
 <script>
     export default {
         name: 'social-links',
-        
+
         props: ['product'],
 
         methods: {
@@ -35,7 +35,7 @@
                     .catch(error => {
                         if (error.response.status == 401) {
                             this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
-                            
+
                             this.$router.push({name: 'login-register'})
                         } else {
                             this.$toasted.show(error.response.data.error, { type: 'error' })

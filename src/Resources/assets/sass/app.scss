@@ -366,19 +366,6 @@ ul {
         }
     }
 
-    .special-price {
-        float: left;
-    }
-
-    .regular-price {
-        border: 1px solid red !important;
-        text-decoration: line-through;
-        opacity: 0.56;
-        font-family: 600;
-        font-size: 14px;
-        color: #000000;
-        margin-left: 8px;
-    }
     .control-error {
         color: #ff5656;
         margin-top: 5px;
@@ -496,19 +483,6 @@ ul {
     }
 
     h3 {
-        .special-price {
-            float: left;
-        }
-    
-        .regular-price {
-            border: 1px solid red !important;
-            text-decoration: line-through;
-            opacity: 0.56;
-            font-family: 600;
-            font-size: 14px;
-            color: #000000;
-            margin-left: 8px;
-        }
         padding: 10px 10px 10px 0px;
     }
 
@@ -520,20 +494,7 @@ ul {
         float: right;
     }
 
-    .control-
-    .special-price {
-        float: left;
-    }
-
-    .regular-price {
-        border: 1px solid red !important;
-        text-decoration: line-through;
-        opacity: 0.56;
-        font-family: 600;
-        font-size: 14px;
-        color: #000000;
-        margin-left: 8px;
-    }error {
+    .control-error {
         color: #ff5656;
         margin-top: 5px;
     }
@@ -543,19 +504,11 @@ ul {
     .bundle-option-item {
         padding: 15px 0 50px 0;
 
-        .special-price {
-            float: left;
+        &:last-child {
+            padding: 15px 0;
         }
-    
-        .regular-price {
-            border: 1px solid red !important;
-            text-decoration: line-through;
-            opacity: 0.56;
-            font-family: 600;
-            font-size: 14px;
-            color: #000000;
-            margin-left: 8px;
-        }on_label {
+
+        .option_label {
             padding: 10px;
             position: static;
         }

@@ -125,20 +125,7 @@ function retriveCurrentToken(messaging) {
 //                 // Indicate that the new Instance ID token has not yet been sent to the
 //                 // app server.
 //                 sendTokenToServer(refreshedToken);
-//                 // Send Instance ID token to app se
-    .special-price {
-        float: left;
-    }
-
-    .regular-price {
-        border: 1px solid red !important;
-        text-decoration: line-through;
-        opacity: 0.56;
-        font-family: 600;
-        font-size: 14px;
-        color: #000000;
-        margin-left: 8px;
-    }rver.
+//                 // Send Instance ID token to app server.
 //             })
 //             .catch(function (err) {
 //                 console.log('Unable to retrieve refreshed token ', err);
