@@ -25,6 +25,7 @@ return [
             'server-key'                            => 'SERVER Key',
             'enable_slider'                         => 'Enable Slider',
             'background-color'                      => 'Background Color',
+            'info'                                  => 'Note:Use hexadecimal color code',
             'small'                                 => 'App Icon (48x48)',
             'medium'                                => 'App Icon (96x96)',
             'push-notification'                     => 'Push Notification',
