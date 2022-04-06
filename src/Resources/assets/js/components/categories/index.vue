@@ -23,7 +23,7 @@
                 <div class="panel-content">
                     <div class="product-list product-grid-2">
 
-                        <product-card v-for="product in products" :key='product.uid' :product="product"></product-card>
+                        <product-card :is-customer="customer ? true : false" v-for="product in products" :key='product.uid' :product="product"></product-card>
 
                     </div>
 
@@ -66,6 +66,10 @@
     import ProductCard       from '../products/card';
     import Pagination        from '../shared/pagination';
     import NoProductFound    from './no-product-found';
+    import {
+            mapState,
+            mapActions
+        } from 'vuex';
 
     export default {
         name: 'category',
@@ -97,11 +101,22 @@
             }
         },
 
+        computed: mapState({
+            customer: state => state.customer,
+        }),
+
         mounted () {
             this.getCategory(this.$route.params.id);
+
+            this.getCustomer();
         },
 
         methods: {
+
+            ...mapActions([
+                'getCustomer',
+            ]),
+
             getCategory (categoryId) {
                 var this_this = this;
 

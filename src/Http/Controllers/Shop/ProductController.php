@@ -45,9 +45,9 @@ class ProductController extends Controller
         if (isset ($data['new'])) {
             $result = app(ProductFlatRepository::class)->scopeQuery(function($query) {
                 $channel = request()->get('channel') ?: (core()->getCurrentChannelCode() ?: core()->getDefaultChannelCode());
-    
+
                 $locale = request()->get('locale') ?: app()->getLocale();
-    
+
                 return $query->distinct()
                              ->addSelect('product_flat.*')
                              ->where('product_flat.status', 1)
@@ -57,14 +57,14 @@ class ProductController extends Controller
                              ->where('product_flat.locale', $locale)
                              ->orderBy('product_id', 'desc');
             })->paginate($data['count'] ?? '4');
-    
+
             $result;
         } else if (isset($data['featured'])) {
             $result = app(ProductFlatRepository::class)->scopeQuery(function($query) {
                 $channel = request()->get('channel') ?: (core()->getCurrentChannelCode() ?: core()->getDefaultChannelCode());
-    
+
                 $locale = request()->get('locale') ?: app()->getLocale();
-    
+
                 return $query->distinct()
                              ->addSelect('product_flat.*')
                              ->where('product_flat.status', 1)
@@ -74,7 +74,7 @@ class ProductController extends Controller
                              ->where('product_flat.locale', $locale)
                              ->orderBy('product_id', 'desc');
             })->paginate($data['count'] ?? '4');
-    
+
             $result;
         } else {
             $result = $this->productRepository->getAll(request()->input('category_id'));

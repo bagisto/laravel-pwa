@@ -1,7 +1,7 @@
 <template>
     <div class="product-social-links">
         <div class="wishlist-link" @click="moveToWishlist">
-            <i class="icon wishlist-icon" :class="[product.is_saved ? 'filled-wishlist-icon' : '']"></i>
+            <i class="icon wishlist-icon" :class="[product.is_wishlisted ? 'filled-wishlist-icon' : '']"></i>
 
             <span>{{ $t('Wishlist') }}</span>
         </div>
@@ -29,6 +29,7 @@
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         this.product.is_saved = response.data.data ? true : false;
+                        this.product.is_wishlisted = response.data.data ? true : false;
 
                         EventBus.$emit('hide-ajax-loader');
                     })

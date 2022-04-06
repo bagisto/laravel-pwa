@@ -67,7 +67,7 @@
                 v-else-if="index == 'advertisement-three'"
                 >
             </advertisement>
-            
+
             <div class="products panel" v-else>
                 <template v-if="content.products && content.products.length">
                     <div class="category-title">
@@ -116,9 +116,7 @@
             </div>
 
             <div class="panel-content product-list product-grid-2">
-
                 <product-card :is-customer="customer ? true : false" v-for="product in product.new" :key='product.uid' :product="product"></product-card>
-
             </div>
 
         </div>
@@ -183,7 +181,7 @@
                 }
 			}
         },
-        
+
         computed: mapState({
             customer: state => state.customer,
         }),
@@ -314,7 +312,7 @@
                                 this.homePageContent[category.slug] = {
                                     'category_details' : category,
                                 }
-                                
+
                                 this.getProducts(category.slug, { 'category_id': category.id });
                             }
                         });
@@ -328,7 +326,7 @@
                 this.$http.get("/api/pwa/products", { params: params })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
-                        
+
                         if (params.category_id) {
                             if (this.homePageContent[details]) {
                                 this.$set(this.homePageContent[details], 'products', response.data.data);

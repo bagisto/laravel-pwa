@@ -22,7 +22,7 @@
                     <label>{{ $t('Vat Id') }}</label>
                     <span class="control-error" v-if="errors.has('vat_id')">{{ errors.first('vat_id') }}</span>
                 </div>
-                
+
                 <div class="control-group" :class="[errors.has('city') ? 'has-error' : '']">
                     <input type="text" name="city" class="control" v-model="address.city" v-validate="'required'" :placeholder="$t('City')" :data-vv-as="$t('City')"/>
                     <label>{{ $t('City') }}</label>
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
-                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
+                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required|numeric'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
                     <label>{{ $t('Phone') }}</label>
                     <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
                 </div>

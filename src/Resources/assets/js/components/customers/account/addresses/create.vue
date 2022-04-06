@@ -36,9 +36,9 @@
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
-                    <input type="number" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
+                    <input type="number" name="phone" class="control" v-model="address.phone" v-validate="'required|numeric'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
                     <label>{{ $t('Phone') }}</label>
-                    <span class="control-error" v-if="errors.has('phone')">Phone number is required.</span>
+                    <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
                 </div>
 
                 <div class="button-group">

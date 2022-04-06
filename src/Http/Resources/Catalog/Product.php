@@ -3,7 +3,6 @@
 namespace Webkul\PWA\Http\Resources\Catalog;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Webkul\API\Http\Resources\Catalog\ProductImage;
 use Webkul\API\Http\Resources\Catalog\Attribute;
 
 class Product extends JsonResource
@@ -18,6 +17,8 @@ class Product extends JsonResource
         $this->productPriceHelper = app('Webkul\PWA\Helpers\Price');
 
         $this->productReviewHelper = app('Webkul\Product\Helpers\Review');
+
+        $this->wishlistHelper = app('Webkul\Customer\Helpers\Wishlist');
 
         parent::__construct($resource);
     }
@@ -63,7 +64,7 @@ class Product extends JsonResource
 
                 $downloadableLinks = $product->downloadable_links;
                 $downloadableSamples = $product->downloadable_samples;
-                
+
                 foreach ($downloadableSamples as $index => $downloadableSample) {
                     $sample = $downloadableSample->toArray();
                     $data['downloadable_samples'][$index] = $sample;
@@ -76,7 +77,7 @@ class Product extends JsonResource
                     if (isset($downloadableLink['sample_file'])) {
                         $data['downloadable_links'][$index]['price'] = core()->currency($downloadableLink->price);
                         $data['downloadable_links'][$index]['sample_download_url'] = route('shop.downloadable.download_sample', ['type' => 'link', 'id' => $downloadableLink['id']]);
-                        
+
                     }
                 }
             break;
@@ -159,8 +160,8 @@ class Product extends JsonResource
             'short_description'      => $this->short_description,
             'description'            => $this->description,
             'sku'                    => $this->sku,
-            'images'                 => $pwa_images, 
-            'videos'                 => productvideo()->getVideos($product), 
+            'images'                 => $pwa_images,
+            'videos'                 => productvideo()->getVideos($product),
             'base_image'             => productimage()->getProductBaseImage($product),
             'variants'               => Self::collection($this->variants),
             'in_stock'               => $product->haveSufficientQuantity(1),
@@ -190,6 +191,7 @@ class Product extends JsonResource
                 'percentage'     => $total ? json_encode($this->productReviewHelper->getPercentageRating($product)) : [],
             ],
             'is_saved'               => false,
+            'is_wishlisted'          => $this->wishlistHelper->getWishlistProduct($product) ? true : false,
             'created_at'             => $this->created_at,
             'updated_at'             => $this->updated_at,
         ];
