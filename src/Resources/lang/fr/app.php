@@ -4,7 +4,6 @@ return [
     'admin' => [
         'system'            => [
             'pwa'                                   => 'PWA',
-            'status'                                => 'Status',
             'btn-save'                              => 'Save',
             'name'                                  => 'Name',
             'topic'                                 => 'Topic',
@@ -16,16 +15,9 @@ return [
             'theme-color'                           => 'Theme Color',
             'add_in_pwa'                            => 'Add in PWA',
             'messagingId'                           => 'Messaging Id',
-            'api-key'                               => 'API Key',
-            'auth-domain'                           => 'AUTH DOMAIN',
-            'database-url'                          => 'DATABASE URL',
-            'project-id'                            => 'PROJECT ID',
-            'app-id'                                => 'APP ID',
-            'public-vapid-key'                      => 'PUBLIC VAPID Key',
-            'server-key'                            => 'SERVER Key',
+            'api-key'                               => 'Server API Key',
             'enable_slider'                         => 'Enable Slider',
             'background-color'                      => 'Background Color',
-            'info'                                  => 'Note:Use hexadecimal color code',
             'small'                                 => 'App Icon (48x48)',
             'medium'                                => 'App Icon (96x96)',
             'push-notification'                     => 'Push Notification',
@@ -60,17 +52,8 @@ return [
         'datagrid'          => [
             'id'            => 'ID',
             'title'         => 'Title',
-            'delete'         => 'Delete',
-            'view'         => 'View',
-            'send'         => 'Send',
             'target-url'    => 'Target URL',
             'description'   => 'Description',
-        ]
-    ],
-
-    'shop'  => [
-        'home'  => [
-            'enable-pwa-status' => 'Warning: Please enable pwa extension status from the configuration.',
         ]
     ]
 ];

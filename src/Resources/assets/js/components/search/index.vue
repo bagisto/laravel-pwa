@@ -3,7 +3,7 @@
         <custom-header>
             <div slot="content">
                 <form @submit.prevent="search(term)">
-                    <input type="text" class="search-control" v-model="term" :placeholder="$t('Search for products')"/>
+                    <input type="text" class="search-control searchinput" v-model="term" :placeholder="$t('Search for products')"/>
                     <span v-if="image_search_status">
                         <label class="image-search-container" :for="'image-search-container-' + _uid">
                             <i class="icon camera-icon"></i>
@@ -321,5 +321,12 @@
 
     ::placeholder {
         color: rgba(0, 0, 0, 0.5);
+    }
+
+
+    @media only screen and (max-width: 400px) {
+        .searchinput {
+            width:130px;
+        }
     }
 </style>

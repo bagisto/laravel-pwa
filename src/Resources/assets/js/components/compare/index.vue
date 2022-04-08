@@ -5,20 +5,20 @@
         <div class="panel" v-if="compare.length">
             <div class="panel-content">
                 <table class="row">
-                    <tr v-for="attribute in comparableAttributes" class="compare-products">
+                    <tr class="compare-products" v-for="attribute in comparableAttributes">
                         <td class="attribute-name">
                             <span class="fs16">{{ attribute['name'] ? attribute['name'] : attribute['admin_name'] }}</span>
                         </td>
-                    <compare-card 
-                        v-for="item in compare"
-                        :key='item.id'
-                        :compareItem="item"
-                        :attribute="attribute"
-                        :customer="customer"
-                        @onRemove="removecompareItem(item)"
-                        @onMoveToCart="moveToCart(item)"
-                    ></compare-card>
-                    <tr>
+                        <compare-card 
+                            v-for="item in compare"
+                            :key='item.id'
+                            :compareItem="item"
+                            :attribute="attribute"
+                            :customer="customer"
+                            @onRemove="removecompareItem(item)"
+                            @onMoveToCart="moveToCart(item)"
+                        ></compare-card>
+                    </tr>
                 </table>
             </div>
         </div>

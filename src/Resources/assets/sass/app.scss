@@ -121,7 +121,7 @@ ul {
 
 .category-container {
     margin-bottom: 28px;
-    
+
     .category-list {
         -webkit-overflow-scrolling: touch;
         -overflow-scrolling: touch;
@@ -271,20 +271,20 @@ ul {
     }
 }
 
-.control-group { 
-    position: relative; 
-    margin-bottom: 24px; 
+.control-group {
+    position: relative;
+    margin-bottom: 24px;
 
     label {
-        color: rgba(0, 0, 0, 0.56); 
+        color: rgba(0, 0, 0, 0.56);
         font-size: 16px;
         font-weight: normal;
         position: absolute;
         pointer-events: none;
         left: 16px;
         top: 20px;
-        transition: 0.2s ease all; 
-        -moz-transition: 0.2s ease all; 
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
         -webkit-transition: 0.2s ease all;
         font-weight: 500;
     }
@@ -322,7 +322,7 @@ ul {
     select.control ~ label {
         top: -6px;
         font-size: 12px;
-        color: rgba(0, 0, 0, 1); 
+        color: rgba(0, 0, 0, 1);
         background: #fff;
         padding: 0 5px;
     }
@@ -448,7 +448,7 @@ ul {
             font-size: 14px;
             display: block;
         }
-        
+
         .quantity-container {
             top: 0px;
             position: relative;
@@ -520,7 +520,7 @@ ul {
                 top: 0;
                 left: 0;
                 position: relative;
-    
+
                 ~ div {
                     display: inline-block;
                 }
@@ -602,6 +602,28 @@ ul {
     }
 }
 
+.price-from {
+    .bundle-regular-price {
+        font-size: 12px !important;
+        font-weight: 500;
+        margin-right: 10px;
+        text-decoration: line-through;
+    }
+
+    .bundle-special-price {
+        font-size: 12px !important;
+        font-weight: 600;
+    }
+
+    .bundle-to {
+        display: block;
+        font-size: 12px !important;
+        font-weight: 500;
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+}
+
 .booking-product {
     .quantity-container {
         top: 0px;
@@ -645,7 +667,7 @@ ul {
             width: 32px;
             height: 32px;
         }
-    
+
         ~span {
             top: -10px;
             position: relative;
@@ -735,6 +757,21 @@ ul {
         display: none;
     }
 
+    .special-price {
+        float: left;
+    }
+
+    .regular-price {
+        text-decoration: line-through;
+        opacity: 0.56;
+        font-family: 600;
+        font-size: 14px;
+        color: #000000;
+        margin-left: 8px;
+    }
+}
+
+.cart-item-price {
     .special-price {
         float: left;
     }

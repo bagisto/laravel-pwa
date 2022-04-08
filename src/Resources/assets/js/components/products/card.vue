@@ -1,4 +1,5 @@
 <template>
+
     <div class="product-card">
         <router-link :to="'/products/' + product.id">
             <div class="product-image">
@@ -15,8 +16,9 @@
                 <!--if there is no special price of an item-->
                 <span v-html="product.formated_price"></span>
                 <!--end-->
-                <i class="icon compare-icon"  @click="moveToCompare"></i>
-                <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
+                <i class="icon compare-icon" @click="moveToCompare"></i>
+
+                <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_wishlisted ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
             </div>
 
             <router-link :to="'/products/' + product.id">
@@ -44,6 +46,8 @@
 
                         this.product.is_saved = response.data.data ? true : false;
 
+                        this.product.is_wishlisted = response.data.data ? true : false;
+
                         EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(error => {
@@ -64,11 +68,12 @@
                     .catch(error => {
                         this.$toasted.show(error.response.data.error, { type: 'error' })
                     });
-                } else {                    
+                } else {
                     let updatedItems = [this.product.id];
                     let existingItems = JSON.parse(localStorage.getItem('compared_product'));
-                    
+
                     if (existingItems) {
+                        debugger
                         if (existingItems.indexOf(this.product.id) == -1) {
                             updatedItems = existingItems.concat(updatedItems);
 
@@ -79,7 +84,7 @@
                             EventBus.$emit('hide-ajax-loader');
                         } else {
                             this.$toasted.show('Item is already added to compare list', { type: 'success' })
-                        
+
                             EventBus.$emit('hide-ajax-loader');
                         }
                     } else {

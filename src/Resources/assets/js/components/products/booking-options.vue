@@ -5,7 +5,9 @@
             <span class="icon bp-location-icon"></span>
             <span class="title">{{ $t('booking.location') }}</span>
             <span class="value">{{ bookingProduct.location }}</span>
-            <a :href="`https://maps.google.com/maps?q=${bookingProduct.location}`" target="_blank">{{ $t('booking.view_on_map') }}</a>
+            <span>
+                <a :href="`https://maps.google.com/maps?q=${bookingProduct.location}`" target="_blank">{{ $t('booking.view_on_map') }}</a>
+            </span>
         </div>
 
         <default-view

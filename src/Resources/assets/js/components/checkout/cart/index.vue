@@ -203,7 +203,7 @@
                 clearTimeout(this.debounceTimer);
                 this.debounceTimer = setTimeout(() => {
                     this.updateCart();
-                }, 2000); 
+                }, 2000);
             }
         }
     }
@@ -280,6 +280,7 @@
                 .panel-heading {
                     padding: 0;
                     border-bottom: 1px solid rgba(0, 0, 0 ,0.12);
+                    width: 100%;
 
                     .update-cart-link {
                         float: left;

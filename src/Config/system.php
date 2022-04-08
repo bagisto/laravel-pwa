@@ -37,6 +37,7 @@ return [
                 'title' => 'pwa::app.admin.system.theme-color',
                 'type' => 'text',
                 'validation' => 'required',
+                'info' => 'pwa::app.admin.system.info',
                 'channel_based' => true,
                 'locale_based' => false
             ], [
@@ -44,6 +45,7 @@ return [
                 'title' => 'pwa::app.admin.system.background-color',
                 'type' => 'text',
                 'validation' => 'required',
+                'info' => 'pwa::app.admin.system.info',
                 'channel_based' => true,
                 'locale_based' => false
             ], [

@@ -141,13 +141,14 @@
             },
 
             changeQuantity: function (type, optionId) {
+
                 if (type == 'increase') {
                     this.$set(this.formData.bundle_option_qty, optionId, this.formData.qty_options[optionId][this.selected_product] + 1);
                     this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.qty_options[optionId][this.selected_product] + 1);
                 } else if (type == 'decrease') {
-                    if (this.formData.bundle_option_qty[optionId][this.selected_product] > 1) {
-                        this.$set(this.formData.bundle_option_qty, optionId, this.formData.bundle_option_qty[optionId][this.selected_product] - 1);
-                        this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.bundle_option_qty[optionId][this.selected_product] - 1);
+                    if (this.formData.qty_options[optionId][this.selected_product] > 1) {
+                        this.$set(this.formData.bundle_option_qty, optionId, this.formData.qty_options[optionId][this.selected_product] - 1);
+                        this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.qty_options[optionId][this.selected_product] - 1);
                     }
                 }
 

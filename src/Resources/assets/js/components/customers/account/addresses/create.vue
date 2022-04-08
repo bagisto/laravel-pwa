@@ -17,6 +17,12 @@
 
                 <country-state :address="address"></country-state>
 
+                <div class="control-group" :class="[errors.has('vat_id') ? 'has-error' : '']">
+                    <input type="text" name="vat_id" class="control" v-model="address.vat_id" :placeholder="$t('Vat Id')" :data-vv-as="$t('Vat Id')"/>
+                    <label>{{ $t('Vat Id') }}</label>
+                    <span class="control-error" v-if="errors.has('vat_id')">{{ errors.first('vat_id') }}</span>
+                </div>
+
                 <div class="control-group" :class="[errors.has('city') ? 'has-error' : '']">
                     <input type="text" name="city" class="control" v-model="address.city" v-validate="'required'" :placeholder="$t('City')" :data-vv-as="$t('City')"/>
                     <label>{{ $t('City') }}</label>
@@ -30,9 +36,9 @@
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
-                    <input type="number" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
+                    <input type="number" name="phone" class="control" v-model="address.phone" v-validate="'required|numeric'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
                     <label>{{ $t('Phone') }}</label>
-                    <span class="control-error" v-if="errors.has('phone')">Phone number is required.</span>
+                    <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
                 </div>
 
                 <div class="button-group">
