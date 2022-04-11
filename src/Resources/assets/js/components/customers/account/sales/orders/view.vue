@@ -4,6 +4,11 @@
         <sales-header :title="$t('Order Details')" active="order" :order-id="$route.params.id" @onHeaderToggle="toggleHeader($event)"></sales-header>
 
         <div class="order-details" v-if="order">
+            <div class="order-info-section cancel-order" v-if="order.canCancel">
+                <a class="btn btn-black btn-sm" @click="cancelOrder(order.id)">
+                    {{ $t('Cancel') }}
+                </a>
+            </div>
             <div class="order-info-section sale-section">
                 <h2 class="sale-section-title">{{ order.increment_id }}</h2>
 
@@ -209,6 +214,25 @@
 
             toggleHeader (value) {
                 this.isMenuExpanded = value;
+            },
+
+            cancelOrder(orderId) {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.post('/api/pwa/orders/' + orderId+ '/cancel')
+                    .then(function(response) {
+                        if (response.data.status) {
+                            this_this.$toasted.show(response.data.message, { type: 'success' })
+                        } else {
+                            this_this.$toasted.show(response.data.message, { type: 'error' })
+                        }
+                        EventBus.$emit('hide-ajax-loader');
+
+                        this_this.$router.push({ name: 'order-list' })
+                    })
+                    .catch(function (error) {});
             }
         }
     }
@@ -442,5 +466,10 @@
                 top: 207px;
             }
         }
+    }
+
+    .cancel-order {
+        float: right !important;
+        margin: 5px !important;
     }
 </style>

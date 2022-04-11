@@ -63,9 +63,9 @@ class CheckoutController extends Controller
 
         auth()->setDefaultDriver($this->guard);
 
-        
+
         // $this->middleware('auth:' . $this->guard);
-        
+
         $this->_config = request('_config');
 
         $this->cartRepository = $cartRepository;
@@ -86,7 +86,7 @@ class CheckoutController extends Controller
     public function saveAddress(CustomerAddressForm $request)
     {
         $data = request()->all();
-        
+
         $data['billing']['address1'] = implode(PHP_EOL, array_filter($data['billing']['address1']));
         $data['shipping']['address1'] = implode(PHP_EOL, array_filter($data['shipping']['address1']));
 
@@ -103,11 +103,12 @@ class CheckoutController extends Controller
         foreach(Cart::getCart()->items()->get() as $cartitem)
         {
             $product = $this->productRepository->find($cartitem->product_id);
-            if($product->type != 'booking' && $product->getTypeInstance()->totalQuantity() < $cartitem->quantity)
+
+            if($product->type != 'booking' && $product->type != 'downloadable' && $product->getTypeInstance()->totalQuantity() < $cartitem->quantity)
             {
                 return response()->json([
-                'error'=>"qty_unavailable", 
-                'message'=>"Requested Quantity for ".$product->product->name." is not Available" 
+                'error'=>"qty_unavailable",
+                'message'=>"Requested Quantity for ".$product->product->name." is not Available"
                 ]);
             }
         }
@@ -176,7 +177,7 @@ class CheckoutController extends Controller
     public function isGuestCheckout()
     {
         $cart = Cart::getCart();
-        
+
         if (! auth()->guard('customer')->check()
             && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
             return response()->json([
