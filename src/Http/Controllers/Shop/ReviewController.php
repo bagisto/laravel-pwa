@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Product\Repositories\ProductReviewRepository;
 use Webkul\PWA\Http\Resources\Catalog\ProductReview as ProductReviewResource;
+use Webkul\Product\Repositories\ProductReviewImageRepository;
 
 /**
  * Review controller
@@ -25,22 +26,35 @@ class ReviewController extends Controller
     /**
      * ProductReviewRepository object
      *
-     * @var array
+     * @var object
      */
     protected $reviewRepository;
+
+    /**
+     * ProductReviewImageRepository object
+     *
+     * @var \Webkul\Product\Repositories\ProductReviewImageRepository
+     */
+    protected $productReviewImageRepository;
 
     /**
      * Controller instance
      *
      * @param Webkul\Product\Repositories\ProductReviewRepository $reviewRepository
+     * @param  \Webkul\Product\Repositories\ProductReviewImageRepository  $productReviewImageRepository
      */
-    public function __construct(ProductReviewRepository $reviewRepository)
+    public function __construct(
+        ProductReviewRepository $reviewRepository,
+        ProductReviewImageRepository $productReviewImageRepository
+    )
     {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
 
         $this->reviewRepository = $reviewRepository;
+
+        $this->productReviewImageRepository = $productReviewImageRepository;
     }
 
     /**
@@ -59,14 +73,19 @@ class ReviewController extends Controller
             'title'   => 'required',
         ]);
 
-        $data = array_merge(request()->all(), [
+        $data = request()->all();
+        
+        $productReview = $this->reviewRepository->create([
             'customer_id' => $customer ? $customer->id : null,
-            'name' => $customer ? $customer->name : request()->input('name'),
-            'status' => 'pending',
-            'product_id' => $id
+            'name'        => $customer ? $customer->name : $request->get('name'),
+            'status'      => 'pending',
+            'product_id'  => $id,
+            'comment'     => $request->comment,
+            'rating'      => $request->rating,
+            'title'       => $request->title
         ]);
 
-        $productReview = $this->reviewRepository->create($data);
+        $this->productReviewImageRepository->uploadImages($data, $productReview);
 
         return response()->json([
                 'message' => 'Your review submitted successfully.',

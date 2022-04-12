@@ -86,7 +86,9 @@
 
                 Route::get('wishlist/add/{id}', 'WishlistController@create');
 
-                Route::post('reviews/{id}/create', 'ReviewController@store');
+                //product review create for pwa
+                Route::post('pwa/reviews/{id}/create', 'ReviewController@store');
+
 
                 Route::get('advertisements', 'API\APIController@fetchAdvertisementImages');
 
@@ -166,6 +168,13 @@
             });
 
             Route::namespace('Webkul\API\Http\Controllers\Shop')->group(function () {
+
+                //Product Review routes for pwa
+                Route::get('/pwa/reviews', 'ResourceController@index')->defaults('_config', [
+                    'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
+                ]);
+                
                 Route::get('pwa-reviews/{id}', 'ResourceController@get')->defaults('_config', [
                     'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
                     'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
