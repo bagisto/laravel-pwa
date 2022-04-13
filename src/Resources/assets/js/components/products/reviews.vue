@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="image" v-for="image in review.images">
-                            <img :src="`${this.$root.baseUrl}/storage/${image.path}`">
+                            <img :src="`${baseUrl}/storage/${image.path}`" height="50" width="50" target="new">
                         </div>
 
                         <div class="info">
@@ -102,6 +102,8 @@
                 reviews: [],
 
                 pagination: {},
+
+                baseUrl: window.location.origin,
             }
         },
 

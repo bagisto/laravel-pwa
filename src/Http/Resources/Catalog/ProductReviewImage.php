@@ -13,7 +13,7 @@ class ProductReviewImage extends JsonResource
      * @return array
      */
     public function toArray($request)
-    {   dd($this);
+    {
         return [
             'id' => $this->id,
             'path' => $this->path,

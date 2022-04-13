@@ -111,11 +111,3 @@ const app = new Vue({
 
     store
 });
-
-Vue.mixin({
-    data: function() {
-        return {
-            baseUrl: getBaseUrl(),
-        };
-    },
-});
