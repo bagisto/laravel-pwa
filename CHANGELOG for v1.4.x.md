@@ -1,3 +1,12 @@
+# CHANGELOG for v1.4.x
+
+#### This changelog consists the bug & security fixes and new features being included in the releases listed below.
+
+## **v1.3.3(31th of Nov, 2021)** - *Release*
+
+* [feature] Compatible With bagisto v1.4.3
+
+
 # CHANGELOG for v1.3.x
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
