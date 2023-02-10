@@ -53,6 +53,10 @@
                             {{ review.comment }}
                         </div>
 
+                        <div class="image" v-for="image in review.images">
+                            <img :src="`${baseUrl}/storage/${image.path}`" height="50" width="50" target="new">
+                        </div>
+
                         <div class="info">
                             <div class="review-by">
                                 <span class="by">{{ $t('Review by -') }} </span>
@@ -88,7 +92,7 @@
 
     export default {
         name: 'reviews',
-        
+
         components: { Accordian, DonutChart },
 
         props: ['product'],
@@ -98,6 +102,8 @@
                 reviews: [],
 
                 pagination: {},
+
+                baseUrl: window.location.origin,
             }
         },
 
@@ -133,7 +139,7 @@
             getReviews (productId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/reviews', { params: { product_id: productId, limit: 5, status: 'approved' } })
+                this.$http.get('api/pwa/reviews', { params: { product_id: productId, limit: 5, status: 'approved' } })
                     .then(response => {
                         this.reviews = response.data.data;
 

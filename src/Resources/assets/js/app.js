@@ -7,6 +7,7 @@ import App               from './components/app';
 import VueCurrencyFilter from 'vue-currency-filter';
 import './plugins/push-notification';
 
+window.Vue = Vue;
 window.axios = require('axios');
 window.jQuery = window.$ = require('jquery');
 window.VeeValidate = require('vee-validate');
@@ -82,11 +83,11 @@ const app = new Vue({
                 case 401:
                     if (this.$route.fullPath.includes('/account/')) {
                         localStorage.removeItem('currentUser');
-    
+
                         EventBus.$emit('user-logged-out');
-    
+
                         this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
-    
+
                         this.$router.push({name: 'login-register'})
                     } else {
                         localStorage.removeItem('currentUser');
@@ -100,7 +101,7 @@ const app = new Vue({
                     this.$toasted.show(error.response.data.error || error.response.data.message, { type: 'error' })
 
                     return Promise.reject(error);
-                    
+
                     break;
             }
         }

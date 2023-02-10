@@ -108,6 +108,7 @@ class Order extends JsonResource
             'formated_base_tax_amount_refunded'     => core()->formatBasePrice($this->base_tax_amount_refunded),
             'formated_base_discount_refunded'       => core()->formatBasePrice($this->base_discount_refunded),
             'created_at'                            => $this->created_at,
+            'canCancel'                             => $this->canCancel()
         ];
     }
 }

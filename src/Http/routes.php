@@ -66,13 +66,13 @@
 
         Route::prefix('pwa/paypal/smart-button')->group(function () {
             Route::get('/create-order', 'Webkul\PWA\Http\Controllers\Shop\SmartButtonController@createOrder')->name('paypal.smart-button.create-order.pwa');
-    
+
             Route::post('/capture-order', 'Webkul\PWA\Http\Controllers\Shop\SmartButtonController@captureOrder')->name('paypal.smart-button.capture-order.pwa');
         });
     });
 
     Route::group(['prefix' => 'api'], function ($router) {
-    
+
         Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
 
             Route::namespace('Webkul\PWA\Http\Controllers\Shop')->group(function () {
@@ -86,7 +86,9 @@
 
                 Route::get('wishlist/add/{id}', 'WishlistController@create');
 
-                Route::post('reviews/{id}/create', 'ReviewController@store');
+                //product review create for pwa
+                Route::post('pwa/reviews/{id}/create', 'ReviewController@store');
+
 
                 Route::get('advertisements', 'API\APIController@fetchAdvertisementImages');
 
@@ -97,6 +99,14 @@
 
             // Checkout routes
             Route::group(['namespace' => 'Webkul\PWA\Http\Controllers\Shop', 'prefix' => 'pwa'], function ($router) {
+
+                // Order cancel Api
+                Route::post('orders/{id}/cancel', 'OrderController@cancel')->defaults('_config', [
+                    'repository' => 'Webkul\Sales\Repositories\OrderRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
+                    'authorization_required' => true
+                ]);
+
                 Route::group(['prefix' => 'checkout'], function ($router) {
                     Route::get('cart', 'CartController@get');
 
@@ -126,7 +136,7 @@
                     'resource' => 'Webkul\API\Http\Resources\Sales\Invoice',
                     'authorization_required' => true
                 ]);
-                
+
                 Route::get('move-to-cart/{id}', 'WishlistController@moveToCart');
 
                 Route::get('categories', 'CategoryController@index');
@@ -158,6 +168,13 @@
             });
 
             Route::namespace('Webkul\API\Http\Controllers\Shop')->group(function () {
+
+                //Product Review routes for pwa
+                Route::get('/pwa/reviews', 'ResourceController@index')->defaults('_config', [
+                    'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
+                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
+                ]);
+                
                 Route::get('pwa-reviews/{id}', 'ResourceController@get')->defaults('_config', [
                     'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
                     'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
@@ -203,7 +220,7 @@
                         'resource' => 'Webkul\PWA\Http\Resources\Sales\Order',
                         'authorization_required' => true
                     ]);
-                    
+
                     // Slider routes
                     Route::get('sliders', 'ResourceController@index')->defaults('_config', [
                         'repository' => 'Webkul\Core\Repositories\SliderRepository',

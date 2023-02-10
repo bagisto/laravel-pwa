@@ -13,7 +13,7 @@
                             <img :id="'uploaded-image-url-' +  + _uid" :src="uploaded_image_url" alt="" width="20" height="20" style="display:none"/>
                         </label>
                     </span>
-                </form> 
+                </form>
             </div>
         </custom-header>
 
@@ -44,7 +44,7 @@
                 <div class="panel-content">
                     <ul class="category-list">
                         <li v-for="category in categories">
-                            <router-link :to="''">
+                            <router-link :to="'/categories/' + category.id">
                                 <span>{{ category.name }}</span>
                             </router-link>
                         </li>
@@ -82,7 +82,7 @@
 
             this.recentSearches = terms ? JSON.parse(terms) : [];
 
-            this.getCategories(); 
+            this.getCategories();
         },
 
         methods: {
@@ -99,7 +99,7 @@
                     })
                     .catch(function (error) {});
             },
-            
+
             search (term) {
                 if (term == '')
                     return;
@@ -112,7 +112,7 @@
 
                 this.$router.push({ path: '/search/' + term })
             },
-        
+
             removeSaveTerm (index, event) {
                 event.stopPropagation();
 
@@ -126,7 +126,7 @@
 
                 localStorage.removeItem('recent-terms');
             },
-            
+
             uploadImage: function() {
                     var imageInput = this.$refs.image_search_input;
 
@@ -180,7 +180,7 @@
                                             queryString = localStorage.searched_terms = analysedResult.join('_');
 
                                             EventBus.$emit('hide-ajax-loader');
-                                        
+
                                             self.$router.push({ path: '/image-search/' + queryString })
 
 

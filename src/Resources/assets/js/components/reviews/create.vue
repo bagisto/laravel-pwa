@@ -2,7 +2,7 @@
     <div class="content">
         <custom-header :title="$t('Review Details')"></custom-header>
 
-        <form action="POST" @submit.prevent="validateBeforeSubmit">
+        <form action="POST" id="upload-image-form" @submit.prevent="validateBeforeSubmit" enctype="multipart/form-data">
             <div class="form-container" v-if="product">
                 <div class="product-details">
                     <div class="product-image">
@@ -41,6 +41,14 @@
                         <span class="control-error" v-if="errors.has('comment')">{{ errors.first('comment') }}</span>
                     </div>
 
+                    <div class="image-wrapper">
+                        <label class="image-item" :for="_uid" v-bind:class="{ 'has-image': imageData.length > 0 }">
+                            <input type="file" v-validate="'mimes:image/*'" accept="image/*" name="image" ref="imageInput" @change="addImageView($event)" :id="_uid"/>
+
+                            <img class="preview" :src="imageData" v-if="imageData.length > 0">
+                        </label>
+                    </div>
+
                     <div class="button-group">
                         <button type="submit" class="btn btn-black btn-lg" :disabled="loading">{{ $t('Save') }}</button>
                     </div>
@@ -55,6 +63,7 @@
 
     export default {
         name: 'customer-review-detail',
+            components: { CustomHeader },
 
         data () {
 			return {
@@ -64,13 +73,15 @@
                     rating: 1
                 },
 
-                loading: false
+                loading: false,
+                file: '',
+                imageData: ''
             }
         },
 
-        components: { CustomHeader },
 
         mounted () {
+
             this.getProduct(this.$route.params.id)
         },
 
@@ -106,9 +117,16 @@
             saveReview () {
                 var this_this = this;
 
+                let data = new FormData();
+                data.append('attachments[image_1]', this_this.file);
+                data.append('rating', this_this.review.rating);
+                data.append('name', this_this.review.name);
+                data.append('title', this_this.review.title);
+                data.append('comment', this_this.review.comment);
+
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post('/api/reviews/' + this.$route.params.id + '/create', this.review)
+                this.$http.post('/api/pwa/reviews/' + this.$route.params.id + '/create', data)
                     .then(function(response) {
                         this_this.loading = false;
 
@@ -129,8 +147,30 @@
 
                         this_this.loading = false;
                     })
-            }
-        }
+            },
+
+            addImageView () {
+                var imageInput = this.$refs.imageInput;
+
+                if (imageInput.files && imageInput.files[0]) {
+                    if(imageInput.files[0].type.includes('image/')) {
+                        var reader = new FileReader();
+
+                        reader.onload = (e) => {
+                            this.imageData = e.target.result;
+                        }
+
+                        reader.readAsDataURL(imageInput.files[0]);
+
+                        this.file = imageInput.files[0];
+                    } else {
+                        imageInput.value = "";
+                        alert('Only images (.jpeg, .jpg, .png, ..) are allowed.');
+                    }
+
+                }
+            },
+        },
     }
 </script>
 
