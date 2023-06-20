@@ -2,18 +2,10 @@
 
 namespace Webkul\PWA\Helpers;
 
-use Illuminate\Support\Facades\Storage;
 use Webkul\Category\Repositories\CategoryRepository;
 
 class AdminHelper
 {
-    /**
-     * CategoryRepository object
-     *
-     * @var \Webkul\Category\Repositories\CategoryRepository
-     */
-    protected $categoryRepository;
-
     /**
      * Create a new helper instance.
      *
@@ -21,9 +13,8 @@ class AdminHelper
      * @return void
      */
     public function __construct(
-        CategoryRepository $categoryRepository
+        protected CategoryRepository $categoryRepository
     ) {
-        $this->categoryRepository =  $categoryRepository;
     }
 
     /**
@@ -32,7 +23,7 @@ class AdminHelper
      */
     public function storeCategoryIcon($category)
     {
-        if ( core()->getConfigData('pwa.settings.general.status') ) {
+        if (core()->getConfigData('pwa.settings.general.status')) {
             $data = request()->all();
 
             if (! $category instanceof \Webkul\Category\Contracts\Category) {
@@ -42,7 +33,7 @@ class AdminHelper
             $category->category_product_in_pwa = ($data['add_in_pwa'] ?? 0) == "1" ? 1 : 0;
             $category->save();
         }
-        
+
         return $category;
     }
 }

@@ -82,7 +82,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post("/api/customer/login", this.user)
+                this.$http.post("/api/v1/customer/login", this.user)
                     .then(function(response) {
                         this_this.loading = false;
 

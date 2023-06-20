@@ -127,18 +127,18 @@
         mounted () {
             this.getOrders();
 
-            this.getDownloadableProducts();
+            //this.getDownloadableProducts();
 
             this.getAddresses();
 
-            this.getReviews();
+            //this.getReviews();
         },
 
         methods: {
             getOrders () {
                 EventBus.$emit('show-ajax-loader');
  
-                this.$http.get('/api/pwa/orders', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/v1/customer/orders', { params: { customer_id: this.customer.id } })
                     .then(response => {
                         this.orders = response.data.data;
 
@@ -156,7 +156,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id, pagination: 0 } })
+                this.$http.get('/api/v1/customer/addresses', { params: { customer_id: this.customer.id, pagination: 0 } })
                     .then(function(response) {
                         this_this.addresses = response.data.data;
 

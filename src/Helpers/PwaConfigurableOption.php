@@ -11,27 +11,6 @@ use Webkul\Product\Helpers\ConfigurableOption;
 class PwaConfigurableOption extends ConfigurableOption
 {
     /**
-     * AttributeOptionRepository object
-     *
-     * @var array
-     */
-    protected $attributeOption;
-
-    /**
-     * ProductImage object
-     *
-     * @var array
-     */
-    protected $productImage;
-
-    /**
-     * Price object
-     *
-     * @var array
-     */
-    protected $price;
-
-    /**
      * Create a new controller instance.
      *
      * @param  Webkul\Attribute\Repositories\AttributeOptionRepository $attributeOption
@@ -40,16 +19,10 @@ class PwaConfigurableOption extends ConfigurableOption
      * @return void
      */
     public function __construct(
-        AttributeOption $attributeOption,
-        ProductImage $productImage,
-        Price $price
-    )
-    {
-        $this->attributeOption = $attributeOption;
-
-        $this->productImage = $productImage;
-
-        $this->price = $price;
+        protected AttributeOption $attributeOption,
+        protected ProductImage $productImage,
+        protected Price $price
+    ) {
     }
 
     /**
