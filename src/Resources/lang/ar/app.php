@@ -2,58 +2,75 @@
 
 return [
     'admin' => [
-        'system'            => [
-            'pwa'                                   => 'التطبيق',
+        'system' => [
+            'pwa'                                   => 'تطبيق الويب التقدمي',
+            'status'                                => 'الحالة',
             'btn-save'                              => 'حفظ',
             'name'                                  => 'الاسم',
             'topic'                                 => 'الموضوع',
             'media'                                 => 'الوسائط',
-            'seo-author'                            => 'المالك',
-            'settings'                              => 'الإعدادت ',
+            'seo-author'                            => 'الكاتب',
+            'settings'                              => 'الإعدادات',
             'general'                               => 'عام',
-            'short-name'                            => 'الاسم القصير',
-            'theme-color'                           => 'لون التطبيق ',
-            'add_in_pwa'                            => 'إضافة في التطبيق',
-            'messagingId'                           => 'معرف المراسلة',
-            'api-key'                               => 'مفتاح خادم API',
-            'enable_slider'                         => 'تفعيل الشريط المتحرك',
+            'short-name'                            => 'الاسم المختصر',
+            'theme-color'                           => 'لون السمة',
+            'add_in_pwa'                            => 'إضافة في تطبيق الويب التقدمي',
+            'messagingId'                           => 'معرّف الرسائل',
+            'api-key'                               => 'مفتاح API',
+            'auth-domain'                           => 'نطاق المصادقة',
+            'database-url'                          => 'عنوان URL لقاعدة البيانات',
+            'project-id'                            => 'معرّف المشروع',
+            'app-id'                                => 'معرّف التطبيق',
+            'public-vapid-key'                      => 'مفتاح VAPID العام',
+            'server-key'                            => 'مفتاح الخادم',
+            'enable_slider'                         => 'تمكين شريط التمرير',
             'background-color'                      => 'لون الخلفية',
-            'small'                                 => 'ايقونة التطبيق (48 x48)',
-            'medium'                                => 'ايقونة التطبيق (96x96)',
-            'push-notification'                     => 'إرسال إشعارات',
-            'large'                                 => 'ايقونة التطبيق (144x144)',
-            'extra-large'                           => 'ايقونة التطبيق (196x196)',
+            'info'                                  => 'ملاحظة: استخدم رمز لون سداسي عشري',
+            'small'                                 => 'أيقونة التطبيق (48x48)',
+            'medium'                                => 'أيقونة التطبيق (96x96)',
+            'push-notification'                     => 'إشعار الدفع',
+            'large'                                 => 'أيقونة التطبيق (144x144)',
+            'extra-large'                           => 'أيقونة التطبيق (196x196)',
             'pwa_full_name'                         => 'تطبيق الويب التقدمي',
-            'enable_new'                            => 'تفعيل المنتجات الجديدة',
-            'enable_featured'                       => 'تفعيل المنتجات المميزة',
-            'enable_categories_home_page_listing'   => 'تمكين سرد الصفحة الرئيسية للفئات',
-            'redirect_to_pwa_if_mobile'             => 'أعد توجيه المستخدم إلى PWA في حالة استخدام جهاز محمول',
+            'enable_new'                            => 'تمكين المنتجات الجديدة',
+            'enable_featured'                       => 'تمكين المنتجات المميزة',
+            'enable_categories_home_page_listing'   => 'تمكين عرض الفئات في الصفحة الرئيسية',
+            'redirect_to_pwa_if_mobile'             => 'إعادة توجيه المستخدم إلى تطبيق الويب التقدمي إذا كان يستخدم جهازًا محمولًا',
         ],
 
-        'layouts'           => [
-            'index'             => 'تخطيط PWA',
-            'push-notification' => 'إرسال إشعارات'
+        'layouts' => [
+            'index'             => 'تخطيط تطبيق الويب التقدمي',
+            'push-notification' => 'إشعار الدفع'
         ],
 
         'push-notification' => [
-            'icon'                  => 'الايقونة',
+            'icon'                  => 'الأيقونة',
             'label-title'           => 'العنوان',
-            'target-url'            => 'الرابط المقصود',
+            'target-url'            => 'عنوان URL المستهدف',
             'description'           => 'الوصف',
-            'notification'          => 'الإشعارات',
+            'notification'          => 'الإشعار',
             'title-create'          => 'إضافة إشعار',
-            'title-edit'            => 'تعديل إشعار',
-            'edit-notification'     => 'تعديل بث منبثق',
-            'title'                 => 'قائمة الإشعارات المرسلة',
-            'create-notification'   => 'عمل إشعار منبثق',
-            'success-notification'  => 'نجح: تم إرسال الإشعار بنجاح.'
+            'title-edit'            => 'تعديل الإشعار',
+            'edit-notification'     => 'تحرير إشعار الدفع',
+            'title'                 => 'قائمة إشعارات الدفع',
+            'create-notification'   => 'إنشاء إشعار الدفع',
+            'success-notification'  => 'نجاح: تم إرسال إشعار الدفع بنجاح.'
         ],
 
-        'datagrid'          => [
-            'id'            => 'ID',
-            'title'         => 'العنوان',
-            'target-url'    => 'الرابط المقصود',
-            'description'   => 'الوصف',
+        'datagrid' => [
+            'id'          => 'المعرّف',
+            'title'       => 'العنوان',
+            'delete'      => 'حذف',
+            'view'        => 'عرض',
+            'send'        => 'إرسال',
+            'target-url'  => 'عنوان URL المستهدف',
+            'description' => 'الوصف',
+        ]
+    ],
+
+    'shop'  => [
+        'home'  => [
+            'enable-pwa-status' => 'تحذير: يرجى تمكين حالة امتداد PWA من التكوين.',
         ]
     ]
 ];

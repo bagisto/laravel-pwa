@@ -2,58 +2,75 @@
 
 return [
     'admin' => [
-        'system'            => [
+        'system' => [
             'pwa'                                   => 'PWA',
-            'btn-save'                              => 'Save',
-            'name'                                  => 'Name',
-            'topic'                                 => 'Topic',
+            'status'                                => 'Status',
+            'btn-save'                              => 'Opslaan',
+            'name'                                  => 'Naam',
+            'topic'                                 => 'Onderwerp',
             'media'                                 => 'Media',
-            'seo-author'                            => 'Author',
-            'settings'                              => 'Settings',
-            'general'                               => 'General',
-            'short-name'                            => 'Short Name',
-            'theme-color'                           => 'Theme Color',
-            'add_in_pwa'                            => 'Add in PWA',
-            'messagingId'                           => 'Messaging Id',
-            'api-key'                               => 'Server API Key',
-            'enable_slider'                         => 'Enable Slider',
-            'background-color'                      => 'Background Color',
-            'small'                                 => 'App Icon (48x48)',
-            'medium'                                => 'App Icon (96x96)',
-            'push-notification'                     => 'Push Notification',
-            'large'                                 => 'App Icon (144x144)',
-            'extra-large'                           => 'App Icon (196x196)',
+            'seo-author'                            => 'Auteur SEO',
+            'settings'                              => 'Instellingen',
+            'general'                               => 'Algemeen',
+            'short-name'                            => 'Korte naam',
+            'theme-color'                           => 'Themakleur',
+            'add_in_pwa'                            => 'Toevoegen aan PWA',
+            'messagingId'                           => 'Messaging-ID',
+            'api-key'                               => 'API-sleutel',
+            'auth-domain'                           => 'Authenticatie-domein',
+            'database-url'                          => 'Database-URL',
+            'project-id'                            => 'Project-ID',
+            'app-id'                                => 'App-ID',
+            'public-vapid-key'                      => 'Openbare VAPID-sleutel',
+            'server-key'                            => 'Server-sleutel',
+            'enable_slider'                         => 'Schuifregelaar inschakelen',
+            'background-color'                      => 'Achtergrondkleur',
+            'info'                                  => 'Opmerking: Gebruik hexadecimale kleurcode',
+            'small'                                 => 'App-pictogram (48x48)',
+            'medium'                                => 'App-pictogram (96x96)',
+            'push-notification'                     => 'Pushmelding',
+            'large'                                 => 'App-pictogram (144x144)',
+            'extra-large'                           => 'App-pictogram (196x196)',
             'pwa_full_name'                         => 'Progressive Web App',
-            'enable_new'                            => 'Enable new products',
-            'enable_featured'                       => 'Enable featured products',
-            'enable_categories_home_page_listing'   => 'Enable categories home page listing',
-            'redirect_to_pwa_if_mobile'             => 'Redirect user to PWA if using mobile device',
+            'enable_new'                            => 'Nieuwe producten inschakelen',
+            'enable_featured'                       => 'Aanbevolen producten inschakelen',
+            'enable_categories_home_page_listing'   => 'Categorielijst op startpagina inschakelen',
+            'redirect_to_pwa_if_mobile'             => 'Gebruiker doorverwijzen naar PWA bij gebruik van mobiel apparaat',
         ],
 
-        'layouts'           => [
-            'index'             => 'PWA Layout',
-            'push-notification' => 'Push Notification'
+        'layouts' => [
+            'index'             => 'PWA-indeling',
+            'push-notification' => 'Pushmelding'
         ],
 
         'push-notification' => [
-            'icon'                  => 'Icon',
-            'label-title'           => 'Title',
-            'target-url'            => 'Target URL',
-            'description'           => 'Description',
-            'notification'          => 'Notification',
-            'title-create'          => 'Add Notification',
-            'title-edit'            => 'Modify Notification',
-            'edit-notification'     => 'Edit Push Notification',
-            'title'                 => 'Push Notification List',
-            'create-notification'   => 'Create Push Notification',
-            'success-notification'  => 'Success: Push notification sent successfully.'
+            'icon'                  => 'Pictogram',
+            'label-title'           => 'Titel',
+            'target-url'            => 'Doel-URL',
+            'description'           => 'Beschrijving',
+            'notification'          => 'Melding',
+            'title-create'          => 'Melding toevoegen',
+            'title-edit'            => 'Melding wijzigen',
+            'edit-notification'     => 'Pushmelding bewerken',
+            'title'                 => 'Lijst met pushmeldingen',
+            'create-notification'   => 'Pushmelding maken',
+            'success-notification'  => 'Succes: Pushmelding succesvol verzonden.'
         ],
 
-        'datagrid'          => [
-            'id'            => 'ID',
-            'title'         => 'Title',
-            'target-url'    => 'Target URL',
-            'description'   => 'Description',
+        'datagrid' => [
+            'id'          => 'ID',
+            'title'       => 'Titel',
+            'delete'      => 'Verwijderen',
+            'view'        => 'Bekijken',
+            'send'        => 'Versturen',
+            'target-url'  => 'Doel-URL',
+            'description' => 'Beschrijving',
+        ]
+    ],
+
+    'shop'  => [
+        'home'  => [
+            'enable-pwa-status' => 'Waarschuwing: Schakel de PWA-extensiestatus in bij de configuratie.',
         ]
     ]
 ];

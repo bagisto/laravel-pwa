@@ -2,7 +2,7 @@
 
 return [
     'admin' => [
-        'system'            => [
+        'system' => [
             'pwa'                                   => 'PWA',
             'status'                                => 'Status',
             'btn-save'                              => 'Save',
@@ -38,7 +38,7 @@ return [
             'redirect_to_pwa_if_mobile'             => 'Redirect user to PWA if using mobile device',
         ],
 
-        'layouts'           => [
+        'layouts' => [
             'index'             => 'PWA Layout',
             'push-notification' => 'Push Notification'
         ],
@@ -57,14 +57,14 @@ return [
             'success-notification'  => 'Success: Push notification sent successfully.'
         ],
 
-        'datagrid'          => [
-            'id'            => 'ID',
-            'title'         => 'Title',
-            'delete'         => 'Delete',
-            'view'         => 'View',
-            'send'         => 'Send',
-            'target-url'    => 'Target URL',
-            'description'   => 'Description',
+        'datagrid' => [
+            'id'          => 'ID',
+            'title'       => 'Title',
+            'delete'      => 'Delete',
+            'view'        => 'View',
+            'send'        => 'Send',
+            'target-url'  => 'Target URL',
+            'description' => 'Description',
         ]
     ],
 
