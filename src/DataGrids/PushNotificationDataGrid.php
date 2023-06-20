@@ -3,7 +3,7 @@
 namespace Webkul\PWA\DataGrids;
 
 use Webkul\Ui\DataGrid\DataGrid;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 /**
  * OrderDataGrid Class
@@ -20,7 +20,7 @@ class PushNotificationDataGrid extends DataGrid
     public function prepareQueryBuilder()
     {
         $queryBuilder = DB::table('push_notifications')
-                ->select('id','title','description','targeturl','imageurl');
+            ->select('id', 'title', 'description', 'targeturl', 'imageurl');
 
         $this->setQueryBuilder($queryBuilder);
     }
@@ -28,38 +28,38 @@ class PushNotificationDataGrid extends DataGrid
     public function addColumns()
     {
         $this->addColumn([
-            'index' => 'id',
-            'label' => trans('pwa::app.admin.datagrid.id'),
-            'type' => 'number',
+            'index'      => 'id',
+            'label'      => trans('pwa::app.admin.datagrid.id'),
+            'type'       => 'number',
             'searchable' => true,
-            'sortable' => true,
+            'sortable'   => true,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'title',
-            'label' => trans('pwa::app.admin.datagrid.title'),
-            'type' => 'string',
+            'index'      => 'title',
+            'label'      => trans('pwa::app.admin.datagrid.title'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => true,
+            'sortable'   => true,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'description',
-            'label' => trans('pwa::app.admin.datagrid.description'),
-            'type' => 'string',
+            'index'      => 'description',
+            'label'      => trans('pwa::app.admin.datagrid.description'),
+            'type'       => 'string',
             'searchable' => false,
-            'sortable' => false,
+            'sortable'   => false,
             'filterable' => false
         ]);
 
         $this->addColumn([
-            'index' => 'targeturl',
-            'label' => trans('pwa::app.admin.datagrid.target-url'),
-            'type' => 'string',
+            'index'      => 'targeturl',
+            'label'      => trans('pwa::app.admin.datagrid.target-url'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => false,
+            'sortable'   => false,
             'filterable' => false
         ]);
     }
@@ -67,28 +67,27 @@ class PushNotificationDataGrid extends DataGrid
     public function prepareActions()
     {
         $this->addAction([
-            'title' => trans('pwa::app.admin.datagrid.view'),
-            'type' => 'View',
-            'route' => 'pwa.pushnotification.edit',
-            'icon' => 'icon pencil-lg-icon',
+            'title'  => trans('pwa::app.admin.datagrid.view'),
+            'type'   => 'View',
+            'route'  => 'pwa.pushnotification.edit',
+            'icon'   => 'icon pencil-lg-icon',
             'method' => 'GET'
         ]);
 
         $this->addAction([
-            'title' => trans('pwa::app.admin.datagrid.delete'),
-            'type' => 'Delete',
-            'route' => 'pwa.pushnotification.delete',
-            'icon' => 'icon trash-icon',
+            'title'  => trans('pwa::app.admin.datagrid.delete'),
+            'type'   => 'Delete',
+            'route'  => 'pwa.pushnotification.delete',
+            'icon'   => 'icon trash-icon',
             'method' => 'GET'
         ]);
 
         $this->addAction([
-            'title' => trans('pwa::app.admin.datagrid.send'),
-            'type' => 'send',
-            'route' => 'pwa.pushnotification.pushtofirebase',
-            'icon' => 'icon bell-icon',
+            'title'  => trans('pwa::app.admin.datagrid.send'),
+            'type'   => 'send',
+            'route'  => 'pwa.pushnotification.pushtofirebase',
+            'icon'   => 'icon bell-icon',
             'method' => 'GET'
         ]);
     }
 }
-?>

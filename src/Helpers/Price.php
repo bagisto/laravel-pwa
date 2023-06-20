@@ -13,16 +13,6 @@ use Webkul\Product\Helpers\AbstractProduct;
 class Price extends AbstractProduct
 {
     /**
-     * CustomerGroupRepository object
-     */
-    protected $customerGroupRepository;
-
-    /**
-     * CatalogRuleProductPrice object
-     */
-    protected $catalogRuleProductPriceHelper;
-
-    /**
      * Create a new helper instance.
      *
      * @param  Webkul\Customer\Repositories\CustomerGroupRepository              $customerGroupRepository
@@ -31,16 +21,10 @@ class Price extends AbstractProduct
      * @return void
      */
     public function __construct(
-        CustomerGroupRepository $customerGroupRepository,
-        CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository,
-        CatalogRuleProductPrice $catalogRuleProductPriceHelper
-    )
-    {
-        $this->customerGroupRepository = $customerGroupRepository;
-
-        $this->catalogRuleProductPriceRepository = $catalogRuleProductPriceRepository;
-
-        $this->catalogRuleProductPriceHelper = $catalogRuleProductPriceHelper;
+        protected CustomerGroupRepository $customerGroupRepository,
+        protected CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository,
+        protected CatalogRuleProductPrice $catalogRuleProductPriceHelper
+    ) {
     }
 
     /**
@@ -53,14 +37,16 @@ class Price extends AbstractProduct
     {
         static $price = [];
 
-        if(array_key_exists($product->id, $price))
+        if (array_key_exists($product->id, $price)) {
             return $price[$product->id];
+        }
 
         if ($product->type == 'configurable') {
             return $price[$product->id] = $this->getVariantMinPrice($product);
         } else {
-            if ($this->haveSpecialPrice($product))
+            if ($this->haveSpecialPrice($product)) {
                 return $price[$product->id] = $product->special_price;
+            }
 
             return $price[$product->id] = $product->price;
         }
@@ -85,16 +71,16 @@ class Price extends AbstractProduct
         }
 
         $qb = ProductFlat::join('products', 'product_flat.product_id', '=', 'products.id')
-                ->where('products.parent_id', $productId);
+            ->where('products.parent_id', $productId);
 
         $result = $qb
-                ->distinct()
-                ->selectRaw('IF( product_flat.special_price_from IS NOT NULL
+            ->distinct()
+            ->selectRaw('IF( product_flat.special_price_from IS NOT NULL
                 AND product_flat.special_price_to IS NOT NULL , IF( NOW( ) >= product_flat.special_price_from
                 AND NOW( ) <= product_flat.special_price_to, IF( product_flat.special_price IS NULL OR product_flat.special_price = 0 , product_flat.price, LEAST( product_flat.special_price, product_flat.price ) ) , product_flat.price ) , IF( product_flat.special_price_from IS NULL , IF( product_flat.special_price_to IS NULL , IF( product_flat.special_price IS NULL OR product_flat.special_price = 0 , product_flat.price, LEAST( product_flat.special_price, product_flat.price ) ) , IF( NOW( ) <= product_flat.special_price_to, IF( product_flat.special_price IS NULL OR product_flat.special_price = 0 , product_flat.price, LEAST( product_flat.special_price, product_flat.price ) ) , product_flat.price ) ) , IF( product_flat.special_price_to IS NULL , IF( NOW( ) >= product_flat.special_price_from, IF( product_flat.special_price IS NULL OR product_flat.special_price = 0 , product_flat.price, LEAST( product_flat.special_price, product_flat.price ) ) , product_flat.price ) , product_flat.price ) ) ) AS final_price')
-                ->where('product_flat.channel', core()->getCurrentChannelCode())
-                ->where('product_flat.locale', app()->getLocale())
-                ->get();
+            ->where('product_flat.channel', core()->getCurrentChannelCode())
+            ->where('product_flat.locale', app()->getLocale())
+            ->get();
 
         foreach ($result as $price) {
             $finalPrice[] = $price->final_price;
@@ -103,20 +89,29 @@ class Price extends AbstractProduct
         $rulePrice =  null;
 
         if (request()->route()->getPrefix() != 'admin/catalog') {
-            $rulePrice = $this->catalogRuleProductPriceRepository->scopeQuery(function($query) use($product) {
+            $rulePrice = $this->catalogRuleProductPriceRepository->scopeQuery(function ($query) use ($product) {
                 return $query->selectRaw('min(price) as price')
-                            ->whereIn('product_id', $product->variants()->pluck('id'))
-                            ->where('channel_id', core()->getCurrentChannel()->id)
-                            ->where('customer_group_id', $this->getCurrentCustomerGroupId())
-                            ->where('rule_date', Carbon::now()->format('Y-m-d'));
+                    ->whereIn('product_id', $product->variants()->pluck('id'))
+                    ->where('channel_id', core()->getCurrentChannel()->id)
+                    ->where('customer_group_id', $this->getCurrentCustomerGroupId())
+                    ->where('rule_date', Carbon::now()->format('Y-m-d'));
             })->first();
         }
 
-        if (empty($finalPrice) && ! $rulePrice)
+        if (
+            empty($finalPrice)
+            && ! $rulePrice
+        ) {
             return $price[$productId] = 0;
+        }
 
-        if ($rulePrice && $rulePrice->price && min($finalPrice) > $rulePrice->price)
+        if (
+            $rulePrice
+            && $rulePrice->price
+            && min($finalPrice) > $rulePrice->price
+        ) {
             return $price[$productId] = $rulePrice->price;
+        }
 
         return $price[$productId] = min($finalPrice);
     }
@@ -131,8 +126,9 @@ class Price extends AbstractProduct
     {
         static $price = [];
 
-        if(array_key_exists($product->id, $price))
+        if (array_key_exists($product->id, $price)) {
             return $price[$product->id];
+        }
 
         if ($this->haveSpecialPrice($product)) {
             return $price[$product->id] = $product->special_price;
@@ -153,8 +149,15 @@ class Price extends AbstractProduct
             $rulePrice = $this->catalogRuleProductPriceHelper->getRulePrice($product);
         }
 
-        if ((is_null($product->special_price) || ! (float) $product->special_price) && ! $rulePrice)
+        if (
+            (
+                is_null($product->special_price)
+                || ! (float) $product->special_price
+            )
+            && ! $rulePrice
+        ) {
             return false;
+        }
 
         if (! (float) $product->special_price) {
             if ($rulePrice) {
@@ -163,13 +166,17 @@ class Price extends AbstractProduct
                 return true;
             }
         } else {
-            if ($rulePrice && $rulePrice->price <= $product->special_price) {
+            if (
+                $rulePrice
+                && $rulePrice->price <= $product->special_price
+            ) {
                 $product->special_price = $rulePrice->price;
 
                 return true;
             } else {
-                if (core()->isChannelDateInInterval($product->special_price_from, $product->special_price_to))
+                if (core()->isChannelDateInInterval($product->special_price_from, $product->special_price_to)) {
                     return true;
+                }
             }
         }
 
