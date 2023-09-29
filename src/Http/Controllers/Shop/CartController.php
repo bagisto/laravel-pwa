@@ -2,9 +2,9 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Cart;
 use Illuminate\Support\Facades\Event;
 use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\Checkout\Facades\Cart;
 use Webkul\Checkout\Repositories\CartRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
 use Webkul\Customer\Repositories\WishlistRepository;
@@ -83,15 +83,17 @@ class CartController extends Controller
         $customer = auth($this->guard)->user();
 
         $cart = Cart::getCart();
+        if(! empty($cart)) {
+            if (
 
-        if (
-            ! auth()->guard('customer')->check()
-            && method_exists($cart, 'hasDownloadableItems')
-            && $cart->hasDownloadableItems()
-        ) {
-            $redirectToCustomerLogin = true;
+                method_exists($cart, 'hasDownloadableItems')
+                && ! auth()->guard('customer')->check()
+                && $cart->hasDownloadableItems()
+            ) {
+                $redirectToCustomerLogin = true;
+            }
         }
-
+    
         return response()->json([
             'data'                      => $cart ? new CartResource($cart) : null,
             'redirectToCustomerLogin'   => $redirectToCustomerLogin ?? false,

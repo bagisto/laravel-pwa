@@ -8,9 +8,8 @@ use Webkul\Product\Models\ProductFlat;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\CatalogRule\Repositories\CatalogRuleProductPriceRepository;
 use Webkul\CatalogRule\Helpers\CatalogRuleProductPrice;
-use Webkul\Product\Helpers\AbstractProduct;
 
-class Price extends AbstractProduct
+class Price
 {
     /**
      * CustomerGroupRepository object

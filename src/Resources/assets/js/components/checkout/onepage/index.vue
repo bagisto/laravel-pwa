@@ -170,17 +170,20 @@
 
                         <div class="panel-content">
                             <div class="form-container shipping-methods" :class="[errors.has('shipping-form.shipping_method') ? 'has-error' : '']">
-
+                               
                                 <div class="method" :key="index" v-for="(method, index) in shippingRates">
                                     <h2>{{ method['carrier_title'] }}</h2>
 
                                     <label class="radio" :key="index" v-for="(rate, index) in method['rates']" :for="rate.method">
+                                        
                                         <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
                                         <label class="radio-view" :for="rate.method"></label>
-
-                                        {{ rate.formated_price }}
-                                        <b> {{ rate.method_title + ' - ' }} </b>
-                                        {{ rate.method_description }}
+                                        
+                                            {{ rate.base_price }}
+                                            <div >
+                                                <b> {{ rate.method_title + ' - ' }} </b>
+                                                {{ rate.method_description }}
+                                            </div>
                                     </label>
                                 </div>
 
@@ -693,18 +696,13 @@
                 self.disable_button = true;
                 this.$http.post('/api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
-                            if(response.data.error=='qty_unavailable')
-                            {
-                                self.$toasted.show(response.data.message, { type: 'error' });
-                                return false;
-                            }
-                        if (response.data.data.nextStep == "payment") {
+                        self.disable_button = false;
+
+                        if (response.data.nextStep == "payment") {
                             self.skipShipping = true;
                             self.disable_button = false;
 
-                            self.paymentMethods = response.data.data.methods;
-
-                            self.cart = response.data.data.cart;
+                            self.paymentMethods = response.data.methods.paymentMethods;
 
                             self.step++;
                             self.step++;
@@ -720,10 +718,9 @@
                         } else {
                             self.disable_button = false;
 
-                            self.shippingRates = response.data.data.rates;
+                            self.shippingRates = response.data.rates.shippingMethods;
 
-                            self.cart = response.data.data.cart;
-
+                            
                             self.step++;
                             
                             self.save_as_address = false;
@@ -731,8 +728,11 @@
 
                             if ( self.shippingRates ) {
                                 $.each(self.shippingRates, (key, method) => {
+
                                     if ( self.first_shipping_iteration ) {
                                         $.each(method['rates'], (key, rate) => {
+                                            console.log(key, rate,"edfgdg");
+
                                             self.selected_shipping_method = rate['method'];
                                             self.first_shipping_iteration = false;
                                         });
