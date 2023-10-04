@@ -27,7 +27,7 @@ It packs with lots of demanding features that allows your business to scale in n
 
 ### 2. Requirements:
 
-* **Bagisto**: v1.3.3.
+* **Bagisto**: v1.5.1
 
 
 ### 3. Installation:
