@@ -20,7 +20,7 @@ class PushNotificationDataGrid extends DataGrid
     public function prepareQueryBuilder()
     {
         $queryBuilder = DB::table('push_notifications')
-                ->select('id','title','description','targeturl','imageurl');
+                ->select('id','title','description','targeturl');
 
         $this->setQueryBuilder($queryBuilder);
     }

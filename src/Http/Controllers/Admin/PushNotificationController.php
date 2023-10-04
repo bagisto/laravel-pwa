@@ -22,22 +22,13 @@ class PushNotificationController extends Controller
     protected $_config;
 
     /**
-     * PushNotificationRepository object
-     *
-     * @var array
-     */
-    protected $pushNotificationRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Core\Repositories\CoreConfigRepository  $coreConfig
      * @return void
      */
-    public function __construct(PushNotificationRepository $pushNotificationRepository)
+    public function __construct(protected PushNotificationRepository $pushNotificationRepository)
     {
-        $this->pushNotificationRepository = $pushNotificationRepository;
-
         $this->_config = request('_config');
     }
 
@@ -75,7 +66,7 @@ class PushNotificationController extends Controller
             'targeturl' => 'required',
             'image.*' => 'mimes:jpeg,jpg,bmp,png'
         ]);
-        
+       
         // call the repository
         $this->pushNotificationRepository->create(request()->all());
 

@@ -130,8 +130,8 @@ class Product extends JsonResource
             $data['show_quantity_changer'] = $product->getTypeInstance()->showQuantityBox();
         }
 
-        $pwa_images = productimage()->getGalleryImages($product);
-        $pwa_videos = productvideo()->getVideos($product);
+        $pwa_images = product_image()->getGalleryImages($product);
+        $pwa_videos = product_video()->getVideos($product);
 
         $pwa_videoData = $pwa_imageData = [];
 
@@ -161,27 +161,27 @@ class Product extends JsonResource
             'description'            => $this->description,
             'sku'                    => $this->sku,
             'images'                 => $pwa_images,
-            'videos'                 => productvideo()->getVideos($product),
-            'base_image'             => productimage()->getProductBaseImage($product),
+            'videos'                 => product_video()->getVideos($product),
+            'base_image'             => product_image()->getProductBaseImage($product),
             'variants'               => Self::collection($this->variants),
             'in_stock'               => $product->haveSufficientQuantity(1),
             $this->mergeWhen($product->getTypeInstance()->isComposite(), [
                 'super_attributes' => Attribute::collection($product->super_attributes),
             ]),
             'special_price'          => $this->when(
-                $product->getTypeInstance()->haveSpecialPrice(),
-                $product->getTypeInstance()->getSpecialPrice()
+                $product->getTypeInstance()->getMinimalPrice(),
+                core()->currency($product->getTypeInstance()->getMinimalPrice())
             ),
             'formated_special_price' => $this->when(
-                $product->getTypeInstance()->haveSpecialPrice(),
-                core()->currency($product->getTypeInstance()->getSpecialPrice())
+                $product->getTypeInstance()->getMinimalPrice(),
+                core()->currency($product->getTypeInstance()->getMinimalPrice())
             ),
             'regular_price'          => $this->when(
-                $product->getTypeInstance()->haveSpecialPrice(),
+                $product->getTypeInstance()->getMinimalPrice(),
                 data_get($prices, 'regular_price.price')
             ),
             'formated_regular_price' => $this->when(
-                $product->getTypeInstance()->haveSpecialPrice(),
+                $product->getTypeInstance()->getMinimalPrice(),
                 data_get($prices, 'regular_price.formated_price')
             ),
             'reviews'                => [

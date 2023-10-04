@@ -140,13 +140,13 @@
  
                 this.$http.get('/api/pwa/orders', { params: { customer_id: this.customer.id } })
                     .then(response => {
+                        EventBus.$emit('hide-ajax-loader');
+
                         this.orders = response.data.data;
 
                         if (response.data.meta.current_page < response.data.meta.last_page) {
                             this.haveMoreOrders = true;
                         }
-
-                        EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
             },

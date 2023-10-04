@@ -10,10 +10,10 @@ use Webkul\Payment\Facades\Payment;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\PWA\Http\Resources\Checkout\Cart as CartResource;
 use Webkul\API\Http\Resources\Checkout\CartShippingRate as CartShippingRateResource;
+use Webkul\Checkout\Facades\Cart;
 use Webkul\PWA\Http\Resources\Sales\Order as OrderResource;
 use Webkul\Checkout\Http\Requests\CustomerAddressForm;
 use Webkul\Sales\Repositories\OrderRepository;
-use Cart;
 
 /**
  * Checkout controller
@@ -31,22 +31,6 @@ class CheckoutController extends Controller
     protected $guard;
 
     /**
-     * CartRepository object
-     *
-     * @var Object
-     */
-    protected $cartRepository;
-
-    /**
-     * CartItemRepository object
-     *
-     * @var Object
-     */
-    protected $cartItemRepository;
-
-    protected $productRepository;
-
-    /**
      * Controller instance
      *
      * @param Webkul\Checkout\Repositories\CartRepository     $cartRepository
@@ -54,27 +38,19 @@ class CheckoutController extends Controller
      * @param Webkul\Sales\Repositories\OrderRepository       $orderRepository
      */
     public function __construct(
-        CartRepository $cartRepository,
-        CartItemRepository $cartItemRepository,
-        OrderRepository $orderRepository,
-        ProductRepository $productRepository
+        protected CartRepository $cartRepository,
+        protected CartItemRepository $cartItemRepository,
+        protected OrderRepository $orderRepository,
+        protected ProductRepository $productRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
-
         
-        // $this->middleware('auth:' . $this->guard);
+        $this->middleware('auth:' . $this->guard);
         
         $this->_config = request('_config');
 
-        $this->cartRepository = $cartRepository;
-
-        $this->cartItemRepository = $cartItemRepository;
-
-        $this->orderRepository = $orderRepository;
-
-        $this->productRepository = $productRepository;
     }
 
     /**
@@ -100,50 +76,35 @@ class CheckoutController extends Controller
             unset($data['shipping']['address_id']);
         }
 
-        foreach(Cart::getCart()->items()->get() as $cartitem)
-        {
-            $product = $this->productRepository->find($cartitem->product_id);
-            if($product->type != 'booking' && $product->getTypeInstance()->totalQuantity() < $cartitem->quantity)
-            {
-                return response()->json([
-                'error'=>"qty_unavailable", 
-                'message'=>"Requested Quantity for ".$product->product->name." is not Available" 
-                ]);
-            }
+        if (
+            Cart::hasError()
+            || ! Cart::saveCustomerAddress($data)
+        ) {
+            return response()->json([
+                    'error' => 'warning',
+                ], 400);
         }
 
-        if (Cart::hasError() || ! Cart::saveCustomerAddress($data) || ! Shipping::collectRates())
-            abort(400);
-
-        $rates = [];
-
-        foreach (Shipping::getGroupedAllShippingRates() as $code => $shippingMethod) {
-            $rates[] = [
-                'carrier_title' => $shippingMethod['carrier_title'],
-                'rates' => CartShippingRateResource::collection(collect($shippingMethod['rates']))
-            ];
-        }
 
         $cart = Cart::getCart();
 
+        Cart::collectTotals();
+        
         if ($cart->haveStockableItems()) {
-            $data = [
+            if (! $rates = Shipping::collectRates()) {
+                abort(400);
+            }
+
+            return response()->json([
                 'rates'     => $rates,
                 'nextStep'  => "shipping",
-            ];
-        } else {
-            $data = [
-                'nextStep'  => "payment",
-                'methods'   => Payment::getPaymentMethods(),
-            ];
+            ]);
         }
 
-        $data['cart'] = new CartResource(Cart::getCart());
-
-
         return response()->json([
-            'data' => $data
-        ]);
+            'nextStep'  => "payment",
+            'methods'   => Payment::getSupportedPaymentMethods(),
+            ]);
     }
 
     /**
