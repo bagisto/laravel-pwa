@@ -21,27 +21,6 @@ class ComparisonController extends Controller
 {
 
     /**
-     * VelocityCustomerCompareProductRepository object of repository
-     *
-     * @var \Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository
-     */
-    protected $compareProductsRepository;
-
-    /**
-     * ProductRepository object
-     *
-     * @var object
-     */
-    protected $productRepository;
-
-    /**
-     * Helper object
-     *
-     * @var \Webkul\Velocity\Helpers\Helper
-     */
-    protected $velocityHelper;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Velocity\Helpers\Helper                                         $velocityHelper
@@ -51,19 +30,14 @@ class ComparisonController extends Controller
      * @return void
      */
     public function __construct(
-        Helper $velocityHelper,
-        VelocityCustomerCompareProductRepository $compareProductsRepository,
-        ProductRepository $productRepository
+        protected Helper $velocityHelper,
+        protected VelocityCustomerCompareProductRepository $compareProductsRepository,
+        protected ProductRepository $productRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
 
-        $this->velocityHelper = $velocityHelper;
-
-        $this->compareProductsRepository = $compareProductsRepository;
-
-        $this->productRepository = $productRepository;
     }
 
     /**
