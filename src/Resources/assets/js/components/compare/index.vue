@@ -68,7 +68,7 @@
                 let items = '';
                 let url = '';
                 let data = {
-                    params: {'data': true}
+                    params: {'data': true,token:JSON.parse(localStorage.getItem('token'))}
                 }
 
                 if (! this_this.customer) {
@@ -112,7 +112,7 @@
                 EventBus.$emit('show-ajax-loader');
 
                 if (this_this.customer) {
-                    this_this.$http.post('/api/pwa/comparison', {productId: item.id} )
+                    this_this.$http.post('/api/pwa/comparison', {productId: item.id},{params : { token : JSON.parse(localStorage.getItem('token'))}} )
                     .then(function(response) {
 
                         EventBus.$emit('hide-ajax-loader');

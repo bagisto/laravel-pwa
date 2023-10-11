@@ -40,7 +40,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id,token:true } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

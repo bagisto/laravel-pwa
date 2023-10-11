@@ -32,7 +32,8 @@
                 pagination: {},
 
 				params: {
-                    'customer_id': this.customer.id
+                    'customer_id': this.customer.id,
+                    token : true
                 },
             }
         },

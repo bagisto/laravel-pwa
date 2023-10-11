@@ -295,7 +295,7 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         localStorage.removeItem('currentUser');
-
+                        
                         EventBus.$emit('user-logged-out');
                     });
             },

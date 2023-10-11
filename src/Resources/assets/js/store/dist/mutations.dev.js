@@ -27,7 +27,7 @@ var GET_CUSTOMER = function GET_CUSTOMER(state) {
   EventBus.$emit('show-ajax-loader');
 
   if (!state.isCustomerFetched) {
-    _vue["default"].prototype.$http.get('/api/customer/get').then(function (response) {
+    _vue["default"].prototype.$http.get('/api/customer/get', { params: {token:state.customer.token } }).then(function (response) {
       setCustomer(state, response.data.data);
     })["catch"](function (error) {
       state.isCustomerFetched = true;

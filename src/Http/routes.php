@@ -160,7 +160,8 @@
             Route::namespace('Webkul\API\Http\Controllers\Shop')->group(function () {
                 Route::get('pwa-reviews/{id}', 'ResourceController@get')->defaults('_config', [
                     'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
-                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
+                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
+                    'authorization_required' => true
                 ]);
 
                 Route::delete('reviews/{id}', 'ResourceController@destroy')->defaults('_config', [
@@ -183,7 +184,8 @@
 
                 Route::get('pwa-reviews', 'ResourceController@index')->defaults('_config', [
                     'repository' => 'Webkul\Product\Repositories\ProductReviewRepository',
-                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview'
+                    'resource' => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
+                    'authorization_required' => true
                 ]);
 
                 Route::get('pwa-layout', 'ResourceController@index')->defaults('_config', [
