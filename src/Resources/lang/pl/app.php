@@ -2,58 +2,75 @@
 
 return [
     'admin' => [
-        'system'            => [
+        'system' => [
             'pwa'                                   => 'PWA',
-            'btn-save'                              => 'Save',
-            'name'                                  => 'Name',
-            'topic'                                 => 'Topic',
+            'status'                                => 'Status',
+            'btn-save'                              => 'Zapisz',
+            'name'                                  => 'Nazwa',
+            'topic'                                 => 'Temat',
             'media'                                 => 'Media',
-            'seo-author'                            => 'Author',
-            'settings'                              => 'Settings',
-            'general'                               => 'General',
-            'short-name'                            => 'Short Name',
-            'theme-color'                           => 'Theme Color',
-            'add_in_pwa'                            => 'Add in PWA',
-            'messagingId'                           => 'Messaging Id',
-            'api-key'                               => 'Server API Key',
-            'enable_slider'                         => 'Enable Slider',
-            'background-color'                      => 'Background Color',
-            'small'                                 => 'App Icon (48x48)',
-            'medium'                                => 'App Icon (96x96)',
-            'push-notification'                     => 'Push Notification',
-            'large'                                 => 'App Icon (144x144)',
-            'extra-large'                           => 'App Icon (196x196)',
+            'seo-author'                            => 'Autor SEO',
+            'settings'                              => 'Ustawienia',
+            'general'                               => 'Ogólne',
+            'short-name'                            => 'Krótka nazwa',
+            'theme-color'                           => 'Kolor motywu',
+            'add_in_pwa'                            => 'Dodaj do PWA',
+            'messagingId'                           => 'ID wiadomości',
+            'api-key'                               => 'Klucz API',
+            'auth-domain'                           => 'Domena uwierzytelniania',
+            'database-url'                          => 'Adres URL bazy danych',
+            'project-id'                            => 'ID projektu',
+            'app-id'                                => 'ID aplikacji',
+            'public-vapid-key'                      => 'Publiczny klucz VAPID',
+            'server-key'                            => 'Klucz serwera',
+            'enable_slider'                         => 'Włącz suwak',
+            'background-color'                      => 'Kolor tła',
+            'info'                                  => 'Uwaga: Użyj kodu koloru szesnastkowego',
+            'small'                                 => 'Ikona aplikacji (48x48)',
+            'medium'                                => 'Ikona aplikacji (96x96)',
+            'push-notification'                     => 'Powiadomienie push',
+            'large'                                 => 'Ikona aplikacji (144x144)',
+            'extra-large'                           => 'Ikona aplikacji (196x196)',
             'pwa_full_name'                         => 'Progressive Web App',
-            'enable_new'                            => 'Enable new products',
-            'enable_featured'                       => 'Enable featured products',
-            'enable_categories_home_page_listing'   => 'Enable categories home page listing',
-            'redirect_to_pwa_if_mobile'             => 'Redirect user to PWA if using mobile device',
+            'enable_new'                            => 'Włącz nowe produkty',
+            'enable_featured'                       => 'Włącz polecane produkty',
+            'enable_categories_home_page_listing'   => 'Włącz listę kategorii na stronie głównej',
+            'redirect_to_pwa_if_mobile'             => 'Przekieruj użytkownika do PWA, jeśli korzysta z urządzenia mobilnego',
         ],
 
-        'layouts'           => [
-            'index'             => 'PWA Layout',
-            'push-notification' => 'Push Notification'
+        'layouts' => [
+            'index'             => 'Układ PWA',
+            'push-notification' => 'Powiadomienie push'
         ],
 
         'push-notification' => [
-            'icon'                  => 'Icon',
-            'label-title'           => 'Title',
-            'target-url'            => 'Target URL',
-            'description'           => 'Description',
-            'notification'          => 'Notification',
-            'title-create'          => 'Add Notification',
-            'title-edit'            => 'Modify Notification',
-            'edit-notification'     => 'Edit Push Notification',
-            'title'                 => 'Push Notification List',
-            'create-notification'   => 'Create Push Notification',
-            'success-notification'  => 'Success: Push notification sent successfully.'
+            'icon'                  => 'Ikona',
+            'label-title'           => 'Tytuł',
+            'target-url'            => 'Adres URL docelowy',
+            'description'           => 'Opis',
+            'notification'          => 'Powiadomienie',
+            'title-create'          => 'Dodaj powiadomienie',
+            'title-edit'            => 'Edytuj powiadomienie',
+            'edit-notification'     => 'Edytuj powiadomienie push',
+            'title'                 => 'Lista powiadomień push',
+            'create-notification'   => 'Utwórz powiadomienie push',
+            'success-notification'  => 'Sukces: Powiadomienie push zostało pomyślnie wysłane.'
         ],
 
-        'datagrid'          => [
-            'id'            => 'ID',
-            'title'         => 'Title',
-            'target-url'    => 'Target URL',
-            'description'   => 'Description',
+        'datagrid' => [
+            'id'          => 'ID',
+            'title'       => 'Tytuł',
+            'delete'      => 'Usuń',
+            'view'        => 'Wyświetl',
+            'send'        => 'Wyślij',
+            'target-url'  => 'Adres URL docelowy',
+            'description' => 'Opis',
+        ]
+    ],
+
+    'shop'  => [
+        'home'  => [
+            'enable-pwa-status' => 'Ostrzeżenie: Włącz status rozszerzenia PWA w konfiguracji.',
         ]
     ]
 ];
