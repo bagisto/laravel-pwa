@@ -6,9 +6,6 @@ use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Velocity\Helpers\Helper;
 use Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository;
 use Webkul\Product\Repositories\ProductRepository;
-use Webkul\PWA\Http\Resources\Customer\Comparison as CompareResource;
-use Webkul\API\Http\Resources\Checkout\Cart as CartResource;
-use Cart;
 
 /**
  * Comparison controller
@@ -19,6 +16,13 @@ use Cart;
 
 class ComparisonController extends Controller
 {
+     /**
+     * Contains current guard
+     *
+     * @var array
+     */
+    protected $guard;
+
 
     /**
      * Create a new controller instance.
@@ -36,7 +40,16 @@ class ComparisonController extends Controller
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
-        auth()->setDefaultDriver($this->guard);
+        $this->_config = request('_config');
+
+        if (isset($this->_config['authorization_required']) && $this->_config['authorization_required']) {
+
+            auth()->setDefaultDriver($this->guard);
+
+            $this->middleware('auth:' . $this->guard);
+        }
+
+        $this->middleware('validateAPIHeader');
 
     }
 
@@ -55,7 +68,7 @@ class ComparisonController extends Controller
                 
                 $comparableAttributes = [];
 
-                if (auth()->guard('customer')->user()) {
+                if (auth()->guard($this->guard)->user()) {
 
                     $productCollection = $this->compareProductsRepository
                         ->leftJoin(
@@ -63,7 +76,7 @@ class ComparisonController extends Controller
                             'velocity_customer_compare_products.product_id',
                             'products.id'
                         )
-                        ->where('customer_id', auth()->guard('customer')->user()->id)
+                        ->where('customer_id', auth()->guard($this->guard)->user()->id)
                         ->get();
 
                     $items = $productCollection->map(function ($product) {
@@ -107,7 +120,7 @@ class ComparisonController extends Controller
     {           
         $productId = request()->get('productId');
       
-        $customerId = auth()->guard('customer')->user()->id;
+        $customerId = auth()->guard($this->guard)->user()->id;
 
         if ($product = $this->productRepository->findOrFail($productId)) {
             if (! $product->visible_individually) {
@@ -169,7 +182,7 @@ class ComparisonController extends Controller
             // delete individual
             $this->compareProductsRepository->deleteWhere([
                 'product_id'  => request()->get('productId'),
-                'customer_id' => auth()->guard('customer')->user()->id,
+                'customer_id' => auth()->guard($this->guard)->user()->id,
             ]);
             $message = trans('velocity::app.customer.compare.removed');
         }

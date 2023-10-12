@@ -2,6 +2,7 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
+use Illuminate\Support\Facades\Log;
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Checkout\Repositories\CartRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
@@ -44,10 +45,12 @@ class CheckoutController extends Controller
         protected ProductRepository $productRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
-
+        
         auth()->setDefaultDriver($this->guard);
         
         $this->middleware('auth:' . $this->guard);
+
+        $this->middleware('validateAPIHeader');
         
         $this->_config = request('_config');
 
@@ -138,7 +141,7 @@ class CheckoutController extends Controller
     {
         $cart = Cart::getCart();
         
-        if (! auth()->guard('customer')->check()
+        if (! auth()->guard($this->guard )->check()
             && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
             return response()->json([
                 'data' => [
@@ -147,7 +150,7 @@ class CheckoutController extends Controller
             ]);
         }
 
-        if (! auth()->guard('customer')->check() && ! $cart->hasGuestCheckoutItems()) {
+        if (! auth()->guard($this->guard )->check() && ! $cart->hasGuestCheckoutItems()) {
             return response()->json([
                 'data' => [
                     'status' => false

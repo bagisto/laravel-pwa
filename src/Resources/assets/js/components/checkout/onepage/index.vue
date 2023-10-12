@@ -14,7 +14,6 @@
                 </div>
             </div>
         </custom-header>
-
         <div class="checkout-container" v-if="cart">
             <div class="address-section" v-show="step == 1">
                 <form data-vv-scope="address-form">
@@ -384,16 +383,23 @@
 <script>
     import CustomHeader    from '../../layouts/custom-header';
     import CheckoutAddress from './address';
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
 
     export default {
         name: 'onepage',
 
         components: { CustomHeader, CheckoutAddress },
 
+        computed: mapState({
+            cart: state => state.cart,
+        }),
+
         data () {
             return {
                 step: 1,
-                cart: null,
                 customer: null,
                 coupon_code: '',
                 isShipping: true,
@@ -450,7 +456,7 @@
         },
 
         mounted () {
-            this.getGuestCheckoutStatus();
+            // this.getGuestCheckoutStatus();
            
             this.getAuthCustomer();
 
@@ -460,6 +466,10 @@
         },
 
         methods: {
+            ...mapActions([
+                'getCart',
+            ]),
+
             paypalSmartBtn () {
                 var self = this;
                 
@@ -543,7 +553,7 @@
             getGuestCheckoutStatus () { 
                 var this_this = this;
 
-                this.$http.get('/api/checkout/guest-checkout')
+                this.$http.get('/api/checkout/guest-checkout',{params : {token: true}})
                     .then(function(response) {
                         if(! response.data.data.status) {
                             this_this.$router.push({ name: 'login-register' });
@@ -557,7 +567,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/customer/get')
+                this.$http.get('/api/customer/get',{params : {token : JSON.parse(localStorage.getItem('token'))}})
                     .then(function(response) {
                         this_this.customer = response.data.data;
 
@@ -586,7 +596,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: customerId, pagination: 0 } })
+                this.$http.get('/api/addresses', { params: { customer_id: customerId, pagination: 0,token: JSON.parse(localStorage.getItem('token'))} })
                     .then(function(response) {
                         this_this.$set(this_this.addresses, 'billing', response.data.data.slice(0))
 
@@ -595,35 +605,7 @@
                         EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
-            },
-
-            getCart () {
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/pwa/checkout/cart')
-                    .then(response => {
-                        EventBus.$emit('hide-ajax-loader');
-
-                        this.cart = response.data.data;
-
-                        this.isShipping = response.data.isShipping;
-
-                        if (
-                            response.data.redirectToCustomerLogin
-                            && this.$route.name == "onepage"
-                        ) {
-                            this.$router.push({ name: 'login-register' });
-                        }
-
-                        this.checkMinimumPrice(this.cart.grand_total);
-
-                        EventBus.$emit('checkout.cart.changed', this.cart);
-
-                        if (! this.cart)
-                            this.$router.go(-2);
-                    })
-                    .catch(function (error) {});
-            },
+            }, 
 
             changeSaveAddress(event) {
                 var self = this;
@@ -694,7 +676,7 @@
                 }
 
                 self.disable_button = true;
-                this.$http.post('/api/pwa/checkout/save-address', self.address)
+                this.$http.post('/api/pwa/checkout/save-address', self.address,{params: {token : JSON.parse(localStorage.getItem('token'))}})
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -751,7 +733,7 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
+                this.$http.post('/api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method },{params : {token : JSON.parse(localStorage.getItem('token')) }})
                     .then(function(response) {
                         this_this.disable_button = false;
 
@@ -780,7 +762,7 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
+                this.$http.post('/api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } },{params : {token : JSON.parse(localStorage.getItem('token')) }})
                     .then(function(response) {
                         this_this.disable_button = false;
 
@@ -804,7 +786,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/coupon', { 'code': self.coupon_code })
+                this.$http.post('/api/checkout/cart/coupon', { 'code': self.coupon_code },{params : {token : JSON.parse(localStorage.getItem('token')) }})
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -830,7 +812,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/remove-coupon')
+                this.$http.post('/api/checkout/cart/remove-coupon'),{params : {token : JSON.parse(localStorage.getItem('token')) }}
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -849,25 +831,30 @@
                     });
             },
 
-            placeOrder () {
+            placeOrder() {
                 this.disable_button = true;
 
-                this.$http.post('/api/pwa/checkout/save-order')
-                    .then(response => {
-                        if (response.data.success) {
-                            if (response.data.redirect_url) {
-                                window.location.href = response.data.redirect_url;
-                            } else {
-                                this.$router.push({ name: 'order-success', params: {id: response.data.order.id}})
+                const token = JSON.parse(localStorage.getItem('token'));
 
-                                EventBus.$emit('checkout.cart.changed', null);
-                            }
+                this.$http.post('/api/pwa/checkout/save-order', null, {
+                    params: { token: token }
+                })
+                .then(response => {
+                    if (response.data.success) {
+                        if (response.data.redirect_url) {
+                            window.location.href = response.data.redirect_url;
+                        } else {
+                            this.$router.push({ name: 'order-success', params: { id: response.data.order.id } });
+                            EventBus.$emit('checkout.cart.changed', null);
                         }
-                    })
-                    .catch(function (error) {
-                        this.disable_button = true;
-                    })
+                    }
+                })
+                .catch(error => {
+                    this.disable_button = false;
+                    console.error('Error placing order:', error);
+                });
             },
+
 
             handleBack () {
                 if (this.step == 1) {

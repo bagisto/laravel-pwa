@@ -198,7 +198,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/orders/' + orderId)
+                this.$http.get('/api/pwa/orders/' + orderId,{params : {token : true}})
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

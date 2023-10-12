@@ -125,20 +125,21 @@
         props: ['customer'],
 
         mounted () {
-            this.getOrders();
+            setTimeout(()=> {
+                this.getOrders();
 
-            this.getDownloadableProducts();
+                this.getDownloadableProducts();
 
-            this.getAddresses();
+                this.getAddresses();
 
-            this.getReviews();
+                this.getReviews();
+            },500);
         },
 
         methods: {
             getOrders () {
                 EventBus.$emit('show-ajax-loader');
- 
-                this.$http.get('/api/pwa/orders', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/pwa/orders', { params: { customer_id: this.customer.id, token: true }})
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -156,7 +157,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id, pagination: 0 } })
+                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id, pagination: 0, token: true } })
                     .then(function(response) {
                         this_this.addresses = response.data.data;
 
@@ -176,7 +177,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
+                this.$http.get('/api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved', token: true } })
                     .then(function(response) {
                         this_this.reviews = response.data.data;
 
@@ -198,7 +199,7 @@
             getDownloadableProducts() {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/downloadable-products', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/downloadable-products', { params: { customer_id: this.customer.id, token: true } })
                     .then(response => {
                         this.downloadable_products = response.data.data;
 

@@ -90,15 +90,22 @@
     import EmptyCart    from './empty-cart';
     import CartItem     from './item';
     import Accordian    from '../../shared/accordian';
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
 
     export default {
         name: 'cart',
 
         components: { CustomHeader, CartItem, Accordian, EmptyCart },
 
+        computed: mapState({
+            cart: state => state.cart,
+        }),
+
         data () {
             return {
-                cart: null,
                 quantities: {},
                 debounceTimer: 0,
             }
@@ -109,21 +116,9 @@
         },
 
         methods: {
-            getCart () {
-                var this_this = this;
-
-                EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/pwa/checkout/cart')
-                    .then(function(response) {
-                        EventBus.$emit('hide-ajax-loader');
-
-                        this_this.cart = response.data.data;
-
-                        EventBus.$emit('checkout.cart.changed', this_this.cart);
-                    })
-                    .catch(function (error) {});
-            },
+            ...mapActions([
+                'getCart',
+            ]),
 
             moveToWishlist (item) {
                 var this_this = this;
@@ -157,7 +152,7 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.cart = response.data.data;
-
+                        
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});

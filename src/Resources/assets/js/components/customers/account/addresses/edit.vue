@@ -82,7 +82,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses/' + addressId)
+                this.$http.get('/api/addresses/' + addressId,{params : {token : true}})
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -126,7 +126,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put('/api/addresses/' + this.address.id, this.address)
+                this.$http.put('/api/addresses/' + this.address.id, this.address,{params : {token : true}})
                     .then(function(response) {
                         this_this.loading = false;
 

@@ -40,7 +40,7 @@
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/wishlist/add/' + this.product.id)
+                this.$http.get('/api/wishlist/add/' + this.product.id,{params : {token : true}})
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -57,9 +57,9 @@
 
             moveToCompare () {
                 EventBus.$emit('show-ajax-loader');
-
+                console.log(this,"edf");
                 if (this.isCustomer) {
-                    this.$http.put('/api/pwa/comparison/', {productId: this.product.id})
+                    this.$http.put('/api/pwa/comparison', {productId: this.product.id}, {params : {token :  JSON.parse(localStorage.getItem('token'))}})
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
