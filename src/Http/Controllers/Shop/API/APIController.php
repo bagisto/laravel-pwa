@@ -75,7 +75,7 @@ class APIController extends Controller
     public function fetchAttributes()
     {
         $category = app('\Webkul\Category\Repositories\CategoryRepository')->find(request()->get('category_id'));
-        $attributes = app('\Webkul\Product\Repositories\ProductFlatRepository')->getProductsRelatedFilterableAttributes($category);
+        $attributes = $category->filterableAttributes;
 
         return response()->json([
             'data' => Attribute::collection($attributes),

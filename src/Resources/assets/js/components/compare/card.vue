@@ -7,8 +7,7 @@
     </td>
 
     <td v-else-if="attribute['code'] == 'product_image'" class="attribute-value">
-
-        <router-link :to="'/products/' + compareItem.product_id">
+        <router-link :to="'/products/' + compareItem.id">
             <div class="product-image">
                 <img alt="product-base-medium-image" :src="compareItem.product_image" />
             </div>

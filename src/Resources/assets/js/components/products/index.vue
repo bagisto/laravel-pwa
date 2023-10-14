@@ -161,7 +161,7 @@
         methods: {
             getProduct (productId) {
                 EventBus.$emit('show-ajax-loader');
-
+               
                 this.$http.get('/api/pwa/products/' + productId)
                     .then(response => {
                         this.product = response.data.data;
