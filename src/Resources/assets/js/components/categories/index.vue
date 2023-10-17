@@ -7,8 +7,8 @@
             >
         </layered-navigation>
 
-        <div class="category-banner" v-if="category.image_url">
-            <img alt="category-image" :src="category.image_url"/>
+        <div class="category-banner" v-if="category.category_banner">
+            <img alt="category-image" :src="category.category_banner"/>
         </div>
 
         <div
@@ -125,7 +125,7 @@
                 this.$http.get('/api/categories/' + categoryId)
                     .then(function(response) {
                         this_this.category = response.data.data;
-
+                        console.log(this_this.category);
                         this_this.childCategories = [];
 
                         if (this_this.category.display_mode == 'description_only') {
