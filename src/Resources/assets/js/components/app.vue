@@ -296,6 +296,8 @@
 
                         localStorage.removeItem('currentUser');
                         
+                        localStorage.removeItem('token');
+                        
                         EventBus.$emit('user-logged-out');
                     });
             },

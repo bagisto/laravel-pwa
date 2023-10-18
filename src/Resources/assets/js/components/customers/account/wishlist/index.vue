@@ -64,7 +64,7 @@
 
                 EventBus.$emit('show-ajax-loader');
                 
-                this.$http.delete('/api/wishlist/' + item.id)
+                this.$http.delete('/api/wishlist/' + item.id, {params : {token : true}})
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -80,7 +80,7 @@
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
                 
-                this.$http.get('/api/pwa/move-to-cart/' + item.id,{params : {token : true}})
+                this.$http.get('/api/pwa/move-to-cart/' + item.id, {params : {token : true}})
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
