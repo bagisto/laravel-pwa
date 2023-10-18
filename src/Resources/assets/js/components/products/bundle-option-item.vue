@@ -60,7 +60,7 @@
                 </select>
             </div>
 
-            <span class="control-error" v-if="errors.has('bundle_options[' + option.id + '][]')">
+            <span class="control-error bundle-error" v-if="errors.has('bundle_options[' + option.id + '][]')">
                 {{ errors.first('bundle_options[' + option.id + '][]') }}
             </span>
         </div>
