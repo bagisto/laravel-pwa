@@ -604,13 +604,15 @@ ul {
 
 .price-from {
     .bundle-regular-price {
-        font-size: 12px !important;
+        opacity: 0.56;
+        font-size: 14px !important;
         font-weight: 500;
         margin-right: 10px;
         text-decoration: line-through;
     }
 
     .bundle-special-price {
+        display: block;
         font-size: 12px !important;
         font-weight: 600;
     }
@@ -796,3 +798,7 @@ ul {
 .display-in-bl {
     display: inline-block;
 }
+
+.bundle-error {
+    margin-top: 33px ! important;
+} 
