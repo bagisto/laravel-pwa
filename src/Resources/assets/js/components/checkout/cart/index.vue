@@ -131,9 +131,7 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.cart = response.data.data;
-
-                        EventBus.$emit('checkout.cart.changed', this_this.cart);
+                        EventBus.$emit('checkout.cart.changed',  response.data.data);
                     })
                     .catch(function (error) {
                         this_this.$toasted.show(error.response.data.message, { type: 'error' });
@@ -150,10 +148,12 @@
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
-
-                        this_this.cart = response.data.data;
                         
-                        EventBus.$emit('checkout.cart.changed', this_this.cart);
+                        const index = this_this.cart.items.findIndex(cartItem => cartItem.id === item.id);
+                        
+                        if (index !== -1) {
+                            this_this.cart.items.splice(index, 1);
+                        }
                     })
                     .catch(function (error) {});
             },
@@ -169,9 +169,7 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.cart = null;
-
-                        EventBus.$emit('checkout.cart.changed', this_this.cart);
+                        EventBus.$emit('checkout.cart.changed', null);
                     })
                     .catch(function (error) {});
             },
@@ -187,9 +185,7 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.cart = response.data.data;
-
-                        EventBus.$emit('checkout.cart.changed', this_this.cart);
+                        EventBus.$emit('checkout.cart.changed', response.data.data);
                     })
                     .catch(function (error) {});
             },
