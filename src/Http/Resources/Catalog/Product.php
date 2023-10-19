@@ -18,7 +18,7 @@ class Product extends JsonResource
 
         $this->productReviewHelper = app('Webkul\Product\Helpers\Review');
 
-        $this->wishlistHelper = app('Webkul\Customer\Helpers\Wishlist');
+        $this->wishlistHelper = app('Webkul\PWA\Helpers\Wishlist');
 
         parent::__construct($resource);
     }
@@ -195,7 +195,7 @@ class Product extends JsonResource
             'created_at'             => $this->created_at,
             'updated_at'             => $this->updated_at,
         ];
-
+      
         return $data;
     }
 

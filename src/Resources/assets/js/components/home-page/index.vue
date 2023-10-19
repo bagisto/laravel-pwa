@@ -116,7 +116,14 @@
             </div>
 
             <div class="panel-content product-list product-grid-2">
-                <product-card :is-customer="customer ? true : false" v-for="product in product.new" :key='product.uid' :product="product"></product-card>
+                <product-card 
+                    v-for="product in product.new" 
+                    :key='product.uid' 
+                    :product="product"
+                    :is-customer="customer ? true : false" 
+                    :isWishlisted="product.is_wishlisted"
+                    @updateWishlistStatus="updateWishlistStatus"
+                ></product-card>
             </div>
 
         </div>
@@ -128,9 +135,14 @@
             </div>
 
             <div class="panel-content product-list product-grid-2">
-
-                <product-card :is-customer="customer ? true : false" v-for="product in product.featured" :key='product.uid' :product="product"></product-card>
-
+                <product-card 
+                    v-for="product in product.featured" 
+                    :key='product.uid' 
+                    :product="product"
+                    :is-customer="customer ? true : false"
+                    :isWishlisted="product.is_wishlisted"
+                    @updateWishlistStatus="updateWishlistStatus" 
+                ></product-card>
             </div>
 
         </div>
@@ -341,6 +353,21 @@
                         console.log(error)
                     });
             },
+
+            updateWishlistStatus (productId, isWishlisted) {
+                const newProductIndex = this.product.new.findIndex(item => item.id === productId);
+
+                if (newProductIndex > -1) {
+                    this.product.new[newProductIndex].is_wishlisted = isWishlisted;
+                }
+
+                // Find the product in the 'featured' section and update its wishlisted status
+                const featuredProductIndex = this.product.featured.findIndex(item => item.id === productId);
+                
+                if (featuredProductIndex > -1) {
+                    this.product.featured[featuredProductIndex].is_wishlisted = isWishlisted;
+                }
+            }
         }
     }
 </script>

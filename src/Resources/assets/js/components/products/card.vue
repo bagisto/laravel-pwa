@@ -49,6 +49,8 @@
                         this.product.is_wishlisted = response.data.data ? true : false;
 
                         EventBus.$emit('hide-ajax-loader');
+
+                        this.$emit("updateWishlistStatus", this.product.id, this.product.is_wishlisted);
                     })
                     .catch(error => {
                         this.$toasted.show(error.response.data.error, { type: 'error' })
