@@ -23,12 +23,13 @@
         methods: {
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/wishlist/add/' + this.$route.params.id)
+              
+                this.$http.get('/api/wishlist/add/' + this.$route.params.id, {params : {token : true}})
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         this.product.is_saved = response.data.data ? true : false;
+
                         this.product.is_wishlisted = response.data.data ? true : false;
 
                         EventBus.$emit('hide-ajax-loader');

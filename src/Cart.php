@@ -188,7 +188,7 @@ class Cart extends BaseCart
         /**
          * Fill in the customer data, as far as possible.
          */
-        if ($this->getCurrentCustomer()) {
+        if ($this->getCurrentCustomer()->check()) {
             $customer = $this->getCurrentCustomer()->user();
 
             $cartData = array_merge($cartData, [

@@ -227,8 +227,8 @@ class CartController extends Controller
      * @param instance cartItem $id
      */
     public function moveToWishlist($id)
-    {
-        if (auth()->guard('customer')->check()) {
+    {   
+        if (auth()->guard($this->guard)->check()) {
             Event::dispatch('checkout.cart.item.move-to-wishlist.before', $id);
 
             cart()->moveToWishlist($id);
