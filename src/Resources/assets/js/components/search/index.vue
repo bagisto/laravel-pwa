@@ -44,7 +44,7 @@
                 <div class="panel-content">
                     <ul class="category-list">
                         <li v-for="category in categories">
-                            <router-link :to="''">
+                            <router-link :to="'/categories/' + category.id">
                                 <span>{{ category.name }}</span>
                             </router-link>
                         </li>
