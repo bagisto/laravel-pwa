@@ -8,9 +8,9 @@ var setCustomer = (state, customer) => {
     state.isCustomerFetched = true;
     Vue.prototype.$http.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
 
-    if (router.app._route.name == 'login-register') {
-        router.app._router.push({name: 'dashboard'})
-    }
+    // if (router.app._route.name == 'login-register') {
+    //     router.app._router.push({name: 'dashboard'})
+    // }
 }
 
 const GET_CUSTOMER = state => {

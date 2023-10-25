@@ -1,6 +1,7 @@
 <?php
 namespace Webkul\PWA;
 
+use Exception;
 use Illuminate\Support\Facades\Event;
 use Webkul\Checkout\Repositories\CartRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
@@ -241,5 +242,61 @@ class Cart extends BaseCart
         }
 
         return $cart;
+    }
+
+    /**
+     * Function to move a already added product to wishlist will run only on customer
+     * authentication.
+     *
+     * @param  int  $itemId
+     * @return bool
+     */
+    public function moveToWishlist($itemId)
+    {
+        $cart = $this->getCart();
+
+        $cartItem = $cart->items()->find($itemId);
+
+        if (! $cartItem) {
+            return false;
+        }
+
+        $wishlistItems = $this->wishlistRepository->findWhere([
+            'customer_id' => auth()->guard('api')->user()->id,
+            'product_id'  => $cartItem->product_id,
+        ]);
+
+        $found = false;
+
+        foreach ($wishlistItems as $wishlistItem) {
+            $options = $wishlistItem->item_options;
+
+            if (! $options) {
+                $options = ['product_id' => $wishlistItem->product_id];
+            }
+
+            if ($cartItem->product->getTypeInstance()->compareOptions($cartItem->additional, $options)) {
+                $found = true;
+            }
+        }
+
+        if (! $found) {
+            $this->wishlistRepository->create([
+                'channel_id'  => $cart->channel_id,
+                'customer_id' => auth()->guard('api')->user()->id,
+                'product_id'  => $cartItem->product_id,
+                'additional'  => $cartItem->additional,
+            ]);
+        }
+
+        $result = $this->cartItemRepository->delete($itemId);
+
+        if (! $cart->items->count()) {
+            $this->cartRepository->delete($cart->id);
+        }
+
+        $this->collectTotals();
+
+        return true;
     }
 }
