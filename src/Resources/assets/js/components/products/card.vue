@@ -39,8 +39,8 @@
         methods: {
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/wishlist/add/' + this.product.id,{params : {token : true}})
+            
+                this.$http.get('/api/wishlist/add/' + this.product.id, {params : {token : true}})
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

@@ -269,7 +269,7 @@
                     delete(formData.booking.slot);
                 }
 
-                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, formData,{params : {token: true}})
+                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, formData, {params : {token: true}})
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

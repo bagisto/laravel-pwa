@@ -125,7 +125,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/checkout/cart/move-to-wishlist/' + item.id)
+                this.$http.get('/api/checkout/cart/move-to-wishlist/' + item.id, {params : {token: true}})
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -133,9 +133,7 @@
 
                         EventBus.$emit('checkout.cart.changed',  response.data.data);
                     })
-                    .catch(function (error) {
-                        this_this.$toasted.show(error.response.data.message, { type: 'error' });
-                    });
+                    .catch(function (error) {});
             },
 
             removeItem (item) {
