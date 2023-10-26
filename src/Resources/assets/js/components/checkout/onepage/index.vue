@@ -565,6 +565,16 @@
             getAuthCustomer () { 
                 var this_this = this;
 
+                const token = JSON.parse(localStorage.getItem('token'));
+
+                if (! token) {
+                    this.$toasted.show("Kindly, Login First", { type: 'success' })
+
+                    this.$router.push({name: 'login-register'})
+
+                    return;
+                }
+
                 EventBus.$emit('show-ajax-loader');
 
                 this.$http.get('/api/customer/get',{params : {token : JSON.parse(localStorage.getItem('token'))}})
@@ -739,7 +749,7 @@
 
                         this_this.paymentMethods = response.data.data.methods;
                         console.log(this_this.paymentMethods);
-                        this_this.cart = response.data.data.cart;
+                        EventBus.$emit('checkout.cart.changed', response.data.data.cart);
 
                         this_this.step++;
 
@@ -766,7 +776,7 @@
                     .then(function(response) {
                         this_this.disable_button = false;
 
-                        this_this.cart = response.data.data.cart;
+                        EventBus.$emit('checkout.cart.changed', response.data.data.cart);
 
                         if (this_this.step != 4) {
                             this_this.step++;

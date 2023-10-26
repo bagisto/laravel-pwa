@@ -256,6 +256,17 @@
             },
 
             addToCart (event) {
+
+                const token = JSON.parse(localStorage.getItem('token'));
+
+                if (! token) {
+                    this.$toasted.show("Kindly, Login First", { type: 'success' })
+
+                    this.$router.push({name: 'login-register'})
+
+                    return;
+                }
+
                 EventBus.$emit('show-ajax-loader');
 
                 var formData = this.formData;
