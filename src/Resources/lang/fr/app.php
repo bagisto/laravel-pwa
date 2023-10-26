@@ -54,6 +54,11 @@ return [
             'title'         => 'Title',
             'target-url'    => 'Target URL',
             'description'   => 'Description',
+        ],
+
+        'notification'      => [
+            'update-success' => 'Notification push mise à jour avec succès.',
+            'delete-success' => 'Notification push supprimée avec succès.',
         ]
     ]
 ];

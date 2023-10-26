@@ -107,7 +107,7 @@ class PushNotificationController extends Controller
 
             $this->pushNotificationRepository->update(request()->all(), $id);
 
-            session()->flash('success', trans('admin::app.response.update-success', ['name' => 'Push Notification']));
+            session()->flash('success', trans('pwa::app.admin.notification.update-success', ['name' => trans('pwa::app.admin.layouts.push-notification')]));
 
             return redirect()->route($this->_config['redirect']);
         } catch(\Exception $e) {
@@ -129,7 +129,7 @@ class PushNotificationController extends Controller
 
         $this->pushNotificationRepository->delete($id);
 
-        session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Push Notification']));
+        session()->flash('success', trans('pwa::app.admin.notification.delete-success', ['name' => 'Push Notification']));
         
         return redirect()->back();
     }

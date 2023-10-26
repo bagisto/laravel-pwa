@@ -54,6 +54,11 @@ return [
             'title'         => 'Title',
             'target-url'    => 'Target URL',
             'description'   => 'Description',
+        ],
+
+        'notification'      => [
+            'update-success' => 'اعلان فشاری با موفقیت به روز شد.',
+            'delete-success' => 'اعلان فشاری با موفقیت حذف شد.',
         ]
     ]
 ];

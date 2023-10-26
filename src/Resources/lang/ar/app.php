@@ -54,6 +54,11 @@ return [
             'title'         => 'العنوان',
             'target-url'    => 'الرابط المقصود',
             'description'   => 'الوصف',
+        ],
+
+        'notification'      => [
+            'update-success' => 'تم تحديث إشعار الدفع بنجاح.',
+            'delete-success' => 'تم حذف إشعار الدفع بنجاح.',
         ]
     ]
 ];
