@@ -256,33 +256,33 @@
             switchCurrency (currency) {
                 this.bottomSheets.currency = false;
 
-                EventBus.$emit('show-ajax-loader');
+                var currentUrl = new URL(window.location.href);
 
-                this.$http.get("/api/switch-currency", { params: { currency: currency.code } })
-                    .then(function(response) {
-                        EventBus.$emit('hide-ajax-loader');
+                // Remove the 'locale' parameter from the URL if it exists
+                if (currentUrl.searchParams.has('locale')) {
+                    currentUrl.searchParams.delete('locale');
+                }
 
-                        window.location.reload()
-                    })
-                    .catch(function (error) {});
+                // Update the 'currency' parameter
+                currentUrl.searchParams.set('currency', currency.code);
+
+                window.location.href = currentUrl.toString();
             },
 
             switchLocale (locale) {
                 this.bottomSheets.locale = false;
 
-                var this_this = this;
+                var currentUrl = new URL(window.location.href);
 
-                EventBus.$emit('show-ajax-loader');
+                // Remove the 'locale' parameter from the URL if it exists
+                if (currentUrl.searchParams.has('currency')) {
+                    currentUrl.searchParams.delete('currency');
+                }
 
-                this.$http.get("/api/switch-locale", { params: { locale: locale.code } })
-                    .then(function(response) {
-                        EventBus.$emit('hide-ajax-loader');
+                // Update the 'currency' parameter
+                currentUrl.searchParams.set('locale', locale.code);
 
-                        this_this.$i18n.locale = locale.code;
-
-                        window.location.reload()
-                    })
-                    .catch(function (error) {});
+                window.location.href = currentUrl.toString();
             },
 
             logout () {
