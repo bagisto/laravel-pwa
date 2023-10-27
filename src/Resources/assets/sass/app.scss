@@ -51,6 +51,23 @@ ul {
     background-size: cover;
 }
 
+.downloadable-product {
+    .checkbox {
+        position: relative;
+        display: block;
+    
+        input {
+            left: unset;
+            opacity: 0;
+            position: absolute;
+            top: unset;
+            height: 24px;
+            width: 24px;
+            z-index: 100;
+        }
+    }
+}
+
 .checkbox {
     position: relative;
     display: block;

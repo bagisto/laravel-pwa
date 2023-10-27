@@ -568,7 +568,7 @@
                 const token = JSON.parse(localStorage.getItem('token'));
 
                 if (! token) {
-                    this.$toasted.show("Kindly, Login First", { type: 'success' })
+                    this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
 
                     this.$router.push({name: 'login-register'})
 

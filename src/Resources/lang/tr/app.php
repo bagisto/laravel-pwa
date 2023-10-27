@@ -54,6 +54,11 @@ return [
             'title'         => 'Başlık',
             'target-url'    => 'Hedef URL',
             'description'   => 'Açıklama',
+        ],
+
+        'notification'      => [
+            'update-success' => 'Anında bildirim başarıyla güncellendi.',
+            'delete-success' => 'Anında bildirim başarıyla silindi.',
         ]
     ]
 ];

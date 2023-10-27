@@ -65,6 +65,11 @@ return [
             'send'         => 'Send',
             'target-url'    => 'Target URL',
             'description'   => 'Description',
+        ],
+
+        'notification'      => [
+            'update-success' => 'Push notification updated successfully.',
+            'delete-success' => 'Push notification deleted successfully.',
         ]
     ],
 
