@@ -80,7 +80,7 @@ class LayoutController extends Controller
         }
         
          // flash message
-         session()->flash('success', trans('admin::app.response.update-success', ['name' => trans('pwa::app.admin.layouts.index')]));
+         session()->flash('success', trans('admin::app.response.create-success', ['name' => trans('pwa::app.admin.layouts.index')]));
 
          return redirect()->route($this->_config['redirect']);
     }

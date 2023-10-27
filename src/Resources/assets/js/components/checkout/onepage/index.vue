@@ -337,9 +337,9 @@
                     <div class="panel-content">
                         <div class="coupon-container">
                             <div class="discount-control" style="padding:10px;">
-                                <form data-vv-scope="coupon-form">
+                                <form data-vv-scope="coupon-form" @submit.prevent="validateForm">
                                     <div class="control-group" :class="[errors.has('coupon-form.code') ? 'has-error' : '']" >
-                                        <input type="text" class="control" v-model="coupon_code" name="code" :placeholder="$t('Enter Coupon Code')" >
+                                        <input type="text" class="control" v-validate="'required'" v-model="coupon_code" name="code" :placeholder="$t('Enter Coupon Code')" >
 
                                         <span class="control-error" v-if="errors.has('coupon-form.code')">{{ errors.first('coupon-form.code') }}</span>
                                     </div>

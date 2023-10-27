@@ -228,20 +228,30 @@
                 var enable_slider_key = 'pwa.settings.general.enable_slider';
                 var enable_featured_key = 'pwa.settings.general.enable_featured';
                 var enable_categories_home_page_listing_key = 'pwa.settings.general.enable_categories_home_page_listing';
+                var new_product_count = 'catalog.products.homepage.no_of_new_product_homepage';
+                var featured_product_count = 'catalog.products.homepage.no_of_featured_product_homepage'; 
 
                 this.$http.get("/api/config", {
                     params: {
-                        _config: `${enable_new_key},${enable_slider_key},${enable_featured_key},${enable_categories_home_page_listing_key}`
+                        _config: `${enable_new_key},${enable_slider_key},${enable_featured_key},${enable_categories_home_page_listing_key},${new_product_count},${featured_product_count}`
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');
 
                     if (response.data.data[enable_new_key] == "1") {
-                        this.getProducts('new', { 'new': 1, limit: 4 });
+                        if (response.data.data[new_product_count]) {
+                            this.getProducts('new', { 'new': 1, limit: 4, count: response.data.data[new_product_count] });
+                        } else {
+                            this.getProducts('new', { 'new': 1, limit: 4 });
+                        }
                     }
 
                     if (response.data.data[enable_featured_key] == "1") {
-                        this.getProducts('featured', { 'featured': 1, limit: 4 });
+                        if (response.data.data[featured_product_count]) {
+                            this.getProducts('featured', { 'featured': 1, limit: 4, count: response.data.data[featured_product_count] });
+                        } else {
+                            this.getProducts('featured', { 'featured': 1, limit: 4 });
+                        }
                     }
 
                     if (response.data.data[enable_slider_key] == "1") {

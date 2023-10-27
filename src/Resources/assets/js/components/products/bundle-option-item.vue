@@ -12,7 +12,7 @@
                 </select>
             </div>
 
-            <div v-if="option.type == 'radio'">
+            <div class="bundle-product-option" v-if="option.type == 'radio'">
                 <div class="radio" v-if="! option.is_required">
                     <input type="radio" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" value="0" :id="'bundle_options[' + option.id + '][]'">
                     <label class="radio-view" :for="'bundle_options[' + option.id + '][]'"></label>
