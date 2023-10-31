@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/messaging';
+
 var topic;
 var serverAPI;
 var messagingId;
@@ -43,7 +44,6 @@ if (! isSafari()) {
     .then(response => response.json())
     .then(response => {
 
-console.log(response.data);
         topic = response.data[topicKey];
         api = response.data[APIKey];
         serverAPI = response.data[serverAPIKey];
@@ -61,7 +61,8 @@ console.log(response.data);
             storageBucket: "",
             messagingSenderId: messagingId,
             appId: appid
-    });
+        });
+
         const messaging = firebase.messaging();
 
         Notification.requestPermission().then((permission) => {
@@ -78,6 +79,7 @@ console.log(response.data);
             console.log('onMessage:', payload);
 
             const notificationTitle = payload.data.title;
+
             const notificationOptions = {
                 body: payload.data.body,
                 icon: payload.data.icon,        
@@ -144,6 +146,7 @@ function retriveCurrentToken(messaging) {
                 setTokenSentToServer(false);
             });
 }
+
 function sendTokenToServer(currentToken) {
     if (!  isTokenSentToServer()) {
         console.log('Sending token to server...');
@@ -164,7 +167,7 @@ function subscribeToTopic(currentToken) {
 
     let url = `https://iid.googleapis.com/iid/v1/${currentToken}/rel/topics/${topic}`;
 
-    fetch( url, {
+    fetch (url, {
         method: 'POST',
         headers: new Headers({
             'Content-Type': 'application/json',
