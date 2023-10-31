@@ -3,6 +3,7 @@
 namespace Webkul\PWA\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationRepository;
 
@@ -99,10 +100,10 @@ class PushNotificationController extends Controller
     {
         try {
             $this->validate(request(), [
-                'title' => 'required',
-                'description' => 'required',
-                'targeturl' => 'required',
-                'image.*' => 'mimes:jpeg,jpg,bmp,png'
+                'title'         => 'required',
+                'description'   => 'required',
+                'targeturl'     => 'required',
+                'image.*'       => 'mimes:jpeg,jpg,bmp,png'
             ]);
 
             $this->pushNotificationRepository->update(request()->all(), $id);
@@ -137,58 +138,32 @@ class PushNotificationController extends Controller
     public function pushtofirebase($id) // send push notification to multiple devices
     {
         $topic = core()->getConfigData('pwa.settings.push-notification.topic');
-        $server_key = core()->getConfigData('pwa.settings.push-notification.api-key');
 
-        if ( $topic && $server_key ) {
-            $pushnotification = $this->pushNotificationRepository->findOrFail($id);
+        $serverKey = core()->getConfigData('pwa.settings.push-notification.api-key');
+
+        if ($topic && $serverKey) {
+            $pushNotification = $this->pushNotificationRepository->findOrFail($id);
+
+            $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => "Bearer {$serverKey}",
+                ])
+                ->post('https://fcm.googleapis.com/fcm/send', [
+                    'to' => "/topics/{$topic}",
+                    'data' => [
+                        'title'        => $pushNotification->title,
+                        'body'         => $pushNotification->description,
+                        'icon'         => asset('/storage/' . $pushNotification->imageurl),
+                        'click_action' => $pushNotification->targeturl,
+                    ],
+                ]);
             
-            $title = $pushnotification->title;
-            $body = $pushnotification->description;
-            $icon = asset('/storage/' . $pushnotification->imageurl);
-            $targeturl = $pushnotification->targeturl;
-
-            $url = 'https://fcm.googleapis.com/fcm/send';
-
-            $fields = array(
-                'to' => '/topics/' . $topic,
-                'data' => [
-                    'body' => $body,
-                    'title' => $title,
-                    'icon' => $icon,
-                    'click_action' => $targeturl
-                ]
-            );
-
-            $headers = array(
-                'Content-Type:application/json',
-                'Authorization:key='.$server_key,
-            );
-
-            // Open connection
-            $ch = curl_init();
-
-            curl_setopt( $ch, CURLOPT_URL, $url );
-
-            curl_setopt( $ch, CURLOPT_POST, true );
-
-            curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-
-            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-            // Disabling SSL Certificate support temporarly
-            curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
-
-            curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $fields ) );
-            // Execute post
-            $result = curl_exec( $ch );
-            curl_close( $ch );
-            $resp = json_decode($result);
-            if ( empty($resp->message_id) ) {
+            if (! $response?->collect()->get('message_id')) {
                 session()->flash('error', 'Invalid Credentials');
             } else {
                 session()->flash('success', trans('pwa::app.admin.push-notification.success-notification'));
             }
 
-            // Close connection
             return redirect()->back();
         } else {
             session()->flash('error', trans('admin::app.users.users.login-error'));

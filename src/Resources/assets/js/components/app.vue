@@ -214,6 +214,7 @@
 
             EventBus.$on('user-logged-out', function() {
                 this_this.currentUser = null;
+                window.location.reload();
             });
 
             this.getCategories();
