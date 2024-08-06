@@ -36,6 +36,7 @@
 
         <span class="phpdebugbar-text-muted">
         <samp data-depth="1" class="sf-dump-compact">
+        @bagistoVite(['src/Resources/assets/css/app.css'], 'pwa')
 
         {!! view_render_event('bagisto.pwa.layout.head') !!}
         <title>

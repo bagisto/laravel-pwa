@@ -2,10 +2,8 @@
 
 namespace Webkul\PWA\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
-use Webkul\Checkout\Facades\Cart as CartFacade;
 use Webkul\PWA\Cart;
 use Webkul\PWA\Facades\PwaFacades;
 
@@ -24,27 +22,34 @@ class PWAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
 
         $this->app->register(EventServiceProvider::class);
 
         $this->app->register(ModuleServiceProvider::class);
 
-        $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'pwa');
 
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'pwa');
 
-        $this->publishes([
-            __DIR__ . '/../Resources/views/paypal/standard-redirect.blade.php'          => resource_path('views/vendor/paypal/standard-redirect.blade.php'),
-            __DIR__ . '/../Resources/views/shop/customers/account/orders/pdf.blade.php' => resource_path('views/vendor/shop/customers/account/orders/pdf.blade.php'),
-        ]);
+        // $this->publishes([
+        //     __DIR__ . '/../Resources/views/paypal/standard-redirect.blade.php'          => resource_path('views/vendor/paypal/standard-redirect.blade.php'),
+        //     __DIR__ . '/../Resources/views/shop/customers/account/orders/pdf.blade.php' => resource_path('views/vendor/shop/customers/account/orders/pdf.blade.php'),
+        // ]);
 
         $this->publishes([
             __DIR__ . '/../../publishable/pwa'      => public_path(),
-            __DIR__ . '/../../publishable/assets'   => public_path('vendor/webkul/pwa/assets'),
+            // __DIR__ . '/../../publishable/assets'   => public_path('vendor/webkul/pwa/assets'),
         ], 'public');
+
+        if (core()->getConfigData('pwa.settings.general.status')) {
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/admin-menu.php',
+                'menu.admin'
+            );
+        }
     }
 
     /**
@@ -67,11 +72,8 @@ class PWAServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php', 'core'
-        );
-
-        $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
+            dirname(__DIR__) . '/Config/system.php',
+            'core'
         );
     }
 
@@ -89,7 +91,6 @@ class PWAServiceProvider extends ServiceProvider
         $this->app->singleton('pwa_facade', function () {
             return app()->make(PwaFacades::class);
         });
-
 
         $this->app->bind('Cart', 'Webkul\PWA\Cart');
 

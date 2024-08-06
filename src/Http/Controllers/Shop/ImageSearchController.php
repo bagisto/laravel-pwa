@@ -2,7 +2,6 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Illuminate\Http\Request;
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Product\Repositories\SearchRepository;
 
@@ -18,13 +17,13 @@ class ImageSearchController extends Controller
      * SearchRepository object
      *
      * @var \Webkul\Core\Repositories\SearchRepository
-    */
+     */
     protected $searchRepository;
 
     /**
      * Controller instance
      *
-     * @param Webkul\Product\Repositories\SearchRepository $searchRepository
+     * @param  Webkul\Product\Repositories\SearchRepository  $searchRepository
      */
     public function __construct(SearchRepository $searchRepository)
     {
@@ -40,6 +39,6 @@ class ImageSearchController extends Controller
     {
         $url = $this->searchRepository->uploadSearchImage(request()->all());
 
-        return $url; 
+        return $url;
     }
 }

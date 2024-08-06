@@ -2,9 +2,9 @@
 
 namespace Webkul\PWA\Repositories;
 
-use Webkul\Core\Eloquent\Repository;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Container\Container as App;
+use Illuminate\Support\Facades\Storage;
+use Webkul\Core\Eloquent\Repository;
 
 /**
  * PushNotificationRepository Reposotory
@@ -12,17 +12,24 @@ use Illuminate\Container\Container as App;
 class PushNotificationRepository extends Repository
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected $_config;
+
+    /**
      * Specify Model class name
      *
      * @return mixed
      */
-    function model()
+    public function model()
     {
         return 'Webkul\PWA\Contracts\PushNotification';
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return mixed
      */
     public function __construct(App $app)
@@ -31,13 +38,12 @@ class PushNotificationRepository extends Repository
         $this->_config = request('_config');
     }
 
-
     public function create(array $data)
     {
         $pushnotification = $this->model->create($data);
 
         $this->uploadImages($data, $pushnotification);
-        
+
         return $pushnotification;
     }
 
@@ -58,18 +64,18 @@ class PushNotificationRepository extends Repository
     }
 
     /**
-     * @param array $data
-     * @param mixed $category
+     * @param  array  $data
+     * @param  mixed  $category
      * @return void
      */
-    public function uploadImages($data, $notification, $type = "image")
+    public function uploadImages($data, $notification, $type = 'image')
     {
         if (isset($data[$type])) {
             $request = request();
 
             foreach ($data[$type] as $imageId => $image) {
-                $file = $type . '.' . $imageId;
-                $dir = 'notification/' . $notification->id;
+                $file = $type.'.'.$imageId;
+                $dir = 'notification/'.$notification->id;
 
                 if ($request->hasFile($file)) {
                     if ($notification->imageurl) {

@@ -2,9 +2,9 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
+use PDF;
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Sales\Repositories\InvoiceRepository;
-use PDF;
 
 /**
  * Invoice controller
@@ -45,7 +45,6 @@ class InvoiceController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  \Webkul\Sales\Repositories\InvoiceRepository     $invoiceRepository
      * @return void
      */
     public function __construct(
@@ -64,7 +63,7 @@ class InvoiceController extends Controller
 
             auth()->setDefaultDriver($this->guard);
 
-            $this->middleware('auth:' . $this->guard);
+            $this->middleware('auth:'.$this->guard);
         }
 
         $this->repository = app($this->_config['repository']);
@@ -92,7 +91,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $query = $this->repository->scopeQuery(function($query) {
+        $query = $this->repository->scopeQuery(function ($query) {
             $query = $query->leftJoin('orders', 'invoices.order_id', '=', 'orders.id')->select('invoices.*', 'orders.customer_id');
 
             if (isset($this->_config['authorization_required']) && $this->_config['authorization_required']) {
@@ -131,9 +130,9 @@ class InvoiceController extends Controller
     {
         if (isset($this->_config['authorization_required']) && $this->_config['authorization_required']) {
             $query = $this->repository->leftJoin('orders', 'invoices.order_id', '=', 'orders.id')
-                          ->select('invoices.*', 'orders.customer_id')
-                          ->where('customer_id', auth()->user()->id)
-                          ->findOrFail($id);
+                ->select('invoices.*', 'orders.customer_id')
+                ->where('customer_id', auth()->user()->id)
+                ->findOrFail($id);
         } else {
             $query = $this->repository->findOrFail($id);
         }

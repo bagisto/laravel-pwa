@@ -1,31 +1,28 @@
 <?php
+
 namespace Webkul\PWA;
 
 use Exception;
 use Illuminate\Support\Facades\Event;
-use Webkul\Checkout\Repositories\CartRepository;
-use Webkul\Checkout\Repositories\CartItemRepository;
-use Webkul\Checkout\Repositories\CartAddressRepository;
-use Webkul\Customer\Repositories\CustomerRepository;
-use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Tax\Repositories\TaxCategoryRepository;
-use Webkul\Checkout\Models\CartPayment;
-use Webkul\Customer\Repositories\WishlistRepository;
-use Webkul\Customer\Repositories\CustomerAddressRepository;
-use Webkul\PWA\Helpers\Price;
 use Webkul\Checkout\Cart as BaseCart;
-use Webkul\Checkout\Facades\Cart as CartFacade;
-use function React\Promise\all;
+use Webkul\Checkout\Repositories\CartAddressRepository;
+use Webkul\Checkout\Repositories\CartItemRepository;
+use Webkul\Checkout\Repositories\CartRepository;
+use Webkul\Customer\Repositories\CustomerAddressRepository;
+use Webkul\Customer\Repositories\CustomerRepository;
+use Webkul\Customer\Repositories\WishlistRepository;
+use Webkul\Product\Repositories\ProductRepository;
+use Webkul\PWA\Helpers\Price;
+use Webkul\Tax\Repositories\TaxCategoryRepository;
 
 /**
  * Class Cart.
- *
  */
 class Cart extends BaseCart
 {
     /**
      * Suppress the session flash messages
-    */
+     */
     protected $suppressFlash;
 
     /**
@@ -60,8 +57,7 @@ class Cart extends BaseCart
         protected WishlistRepository $wishlistRepository,
         protected CustomerAddressRepository $customerAddressRepository,
         protected Price $price
-    )
-    {
+    ) {
         parent::__construct(
             $cartRepository,
             $cartItemRepository,
@@ -98,6 +94,7 @@ class Cart extends BaseCart
      * @param  int  $productId
      * @param  array  $data
      * @return \Webkul\Checkout\Contracts\Cart|string|array
+     *
      * @throws Exception
      */
     public function addProduct($productId, $data)
@@ -168,7 +165,6 @@ class Cart extends BaseCart
         return $this->getCart();
     }
 
-
     /**
      * Create new cart instance.
      *
@@ -217,10 +213,8 @@ class Cart extends BaseCart
         return $cart;
     }
 
-      /**
+    /**
      * Returns cart.
-     *
-     * @return \Webkul\Checkout\Contracts\Cart|null
      */
     public function getCart(): ?\Webkul\Checkout\Contracts\Cart
     {
@@ -229,7 +223,7 @@ class Cart extends BaseCart
         if ($cart) {
             return $cart;
         }
-    
+
         if ($this->getCurrentCustomer()->check()) {
             $customer = $this->getCurrentCustomer()->user();
 

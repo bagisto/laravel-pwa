@@ -32,7 +32,7 @@ return [
 
         'layouts'           => [
             'index'             => 'PWA-Layout',
-            'push-notification' => 'Push-Benachrichtigung'
+            'push-notification' => 'Push-Benachrichtigung',
         ],
 
         'push-notification' => [
@@ -46,7 +46,7 @@ return [
             'edit-notification'     => 'Push-Benachrichtigung bearbeiten',
             'title'                 => 'Push-Benachrichtigungsliste',
             'create-notification'   => 'Push-Benachrichtigung erstellen',
-            'success-notification'  => 'Erfolg: Push-Benachrichtigung erfolgreich gesendet.'
+            'success-notification'  => 'Erfolg: Push-Benachrichtigung erfolgreich gesendet.',
         ],
 
         'datagrid'          => [
@@ -59,6 +59,6 @@ return [
         'notification'      => [
             'update-success' => 'Push-Benachrichtigung erfolgreich aktualisiert.',
             'delete-success' => 'Push-Benachrichtigung erfolgreich gelöscht.',
-        ]
-    ]
+        ],
+    ],
 ];

@@ -1,63 +1,200 @@
-@extends('admin::layouts.content')
+<x-admin::layouts>
+    <!-- Title of the page -->
+    <x-slot:title>
+        @lang('admin::app.catalog.categories.create.title')
+    </x-slot>
 
-@section('page_title')
-    {{ __('pwa::app.admin.push-notification.title-edit') }}
-@stop
+    @php
+        $currentLocale = core()->getRequestedLocale();
+    @endphp
 
-@section('content')
-    <form action="{{ route('pwa.pushnotification.update', $pushnotification->id) }}" method="POST" @submit.prevent="onSubmit" enctype="multipart/form-data" >
-        <div class="content" style="height: 100%">
-            <div class="page-header">
-                <div class="page-title">
-                    <h1>{{ __('pwa::app.admin.push-notification.notification') }}</h1>
-                </div>
+    {!! view_render_event('bagisto.admin.pwa.notification.edit.before', ['pushnotification' => $pushnotification]) !!}
 
-                <div class="page-action">
-                    <button class="btn btn-lg btn-primary">
-                        {{ __('pwa::app.admin.system.btn-save') }}
-                    </button>
-                </div>
-            </div>
+    <!-- Category Create Form -->
+    <x-admin::form
+        :action="route('admin.pwa.pushnotification.update', $pushnotification->id)"
+        enctype="multipart/form-data"
+    >
+        {!! view_render_event('bagisto.admin.pwa.notification.edit.create_form_controls.before', ['pushnotification' => $pushnotification]) !!}
 
-            <div class="page-content">
-                <!-- Edit Push Notification form for Admin -->
-                @csrf
+        <div class="flex gap-4 justify-between items-center max-sm:flex-wrap">
+            <p class="text-xl text-gray-800 dark:text-white font-bold">
+                @lang('pwa::app.admin.push-notification.create-notification')
+            </p>
 
-                <accordian :title="'{{ __('pwa::app.admin.push-notification.edit-notification') }}'" :active="true">
-                    <div slot="body">
-                        <div class="control-group" :class="[errors.has('title') ? 'has-error' : '']">
-                            <label for="title" class="required">{{ __('pwa::app.admin.push-notification.label-title') }}</label>
-                            <input type="text" v-validate="'required'" class="control" id="title" name="title" value="{{ $pushnotification->title }}"/>
-                            <span class="control-error" v-if="errors.has('title')">@{{ errors.first('title') }}</span>
-                        </div>
+            <div class="flex gap-x-2.5 items-center">
+                <!-- Cancel Button -->
+                <a
+                    href="{{ route('admin.pwa.pushnotification.index') }}"
+                    class="transparent-button hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white"
+                >
+                    @lang('pwa::app.admin.push-notification.back-btn')
+                </a>
 
-                        <div class="control-group" :class="[errors.has('description') ? 'has-error' : '']">
-                            <label for="description" class="required">{{ __('pwa::app.admin.push-notification.description') }}</label>
-                            <input type="text" v-validate="'required'" class="control" id="description" name="description" value="{{ $pushnotification->description }}" />
-                            <span class="control-error" v-if="errors.has('description')">@{{ errors.first('description') }}</span>
-                        </div>
-
-                        <div class="control-group" :class="[errors.has('targeturl') ? 'has-error' : '']">
-                            <label for="targeturl" class="required">{{ __('pwa::app.admin.push-notification.target-url') }}</label>
-                            <input type="url" placeholder="http://example.com" v-validate="'required'" class="control" id="tergeturl" name="targeturl" value="{{ $pushnotification->targeturl }}"/>
-                            <span class="control-error" v-if="errors.has('targeturl')">@{{ errors.first('targeturl') }}</span>
-                        </div>
-
-                        <div class="control-group {!! $errors->has('image.*') ? 'has-error' : '' !!}">
-                            <label for="icon">{{ __('pwa::app.admin.push-notification.icon') }}</label>
-
-                            <image-wrapper :button-label="'{{ __('admin::app.catalog.products.add-image-btn-title') }}'" input-name="image" :multiple="false" :images='"{{ $pushnotification->imageurl_url }}"'></image-wrapper>
-
-                            <span class="control-error" v-if="{!! $errors->has('image.*') !!}">
-                                @foreach ($errors->get('image.*') as $key => $message)
-                                    @php echo str_replace($key, 'image', $message[0]); @endphp
-                                @endforeach
-                            </span>
-
-                        </div>
-                    </div>
-                </accordian>
+                <!-- Save Button -->
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    @lang('pwa::app.admin.push-notification.btn-save')
+                </button>
             </div>
         </div>
-    </form>
-@stop
+
+        <!-- Full Pannel -->
+        <div class="flex gap-2.5 mt-3.5 max-xl:flex-wrap">
+
+            <!-- Left Section -->
+            <div class="flex flex-col gap-2 flex-1 max-xl:flex-auto">
+
+                {!! view_render_event('bagisto.admin.pwa.notification.edit.card.general.before', ['pushnotification' => $pushnotification]) !!}
+
+                <!-- General -->
+                <div class="p-4 bg-white dark:bg-gray-900 rounded box-shadow">
+                    <p class="mb-4 text-base text-gray-800 dark:text-white font-semibold">
+                        @lang('pwa::app.admin.push-notification.general')
+                    </p>
+
+                    <!-- Title -->
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.label class="required">
+                            @lang('pwa::app.admin.push-notification.label-title')
+                        </x-admin::form.control-group.label>
+
+                        <v-field
+                            type="text"
+                            name="title"
+                            rules="required"
+                            value="{{ $pushnotification->title }}"
+                            v-slot="{ field }"
+                            label="{{ trans('pwa::app.admin.push-notification.label-title') }}"
+                        >
+                            <input
+                                type="text"
+                                id="name"
+                                :class="[errors['{{ 'name' }}'] ? 'border border-red-600 hover:border-red-600' : '']"
+                                class="flex w-full min-h-[39px] py-2 px-3 border rounded-md text-sm text-gray-600 dark:text-gray-300 transition-all hover:border-gray-400 dark:hover:border-gray-400 focus:border-gray-400 dark:focus:border-gray-400 dark:bg-gray-900 dark:border-gray-800"
+                                name="name"
+                                v-bind="field"
+                                placeholder="{{ trans('pwa::app.admin.push-notification.label-title') }}"
+                                v-slugify-target:slug="setValues"
+                            >
+                        </v-field>
+
+                        <x-admin::form.control-group.error control-name="title" />
+                    </x-admin::form.control-group>
+
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.label class="required">
+                            @lang('pwa::app.admin.push-notification.label-title')
+                        </x-admin::form.control-group.label>
+
+                        <v-field
+                            type="url"
+                            name="targeturl"
+                            rules="required"
+                            value="{{ $pushnotification->targeturl }}"
+                            v-slot="{ field }"
+                            label="{{ trans('pwa::app.admin.push-notification.target-url') }}"
+                        >
+                            <input
+                                type="text"
+                                id="targeturl"
+                                :class="[errors['{{ 'name' }}'] ? 'border border-red-600 hover:border-red-600' : '']"
+                                class="flex w-full min-h-[39px] py-2 px-3 border rounded-md text-sm text-gray-600 dark:text-gray-300 transition-all hover:border-gray-400 dark:hover:border-gray-400 focus:border-gray-400 dark:focus:border-gray-400 dark:bg-gray-900 dark:border-gray-800"
+                                name="targeturl"
+                                v-bind="field"
+                                placeholder="{{ trans('pwa::app.admin.push-notification.target-url') }}"
+                                v-slugify-target:slug="setValues"
+                            >
+                        </v-field>
+
+                        <x-admin::form.control-group.error control-name="targeturl" />
+                    </x-admin::form.control-group>
+
+                    <!-- Description -->
+                    <v-description v-slot="{ isDescriptionRequired }">
+                        <x-admin::form.control-group>
+                            <x-admin::form.control-group.label ::class="{ 'required' : isDescriptionRequired}">
+                                @lang('pwa::app.admin.push-notification.description')
+                            </x-admin::form.control-group.label>
+
+                            <x-admin::form.control-group.control
+                                type="textarea"
+                                id="description"
+                                class="description"
+                                name="description"
+                                ::rules="{ 'required' : isDescriptionRequired}"
+                                :value="$pushnotification->description"
+                                :label="trans('pwa::app.admin.push-notification.description')"
+                                :tinymce="true"
+                            />
+
+                            <x-admin::form.control-group.error control-name="description" />
+                        </x-admin::form.control-group>
+                    </v-description>
+                </div>
+
+                {!! view_render_event('bagisto.admin.pwa.notification.edit.card.general.after', ['pushnotification' => $pushnotification]) !!}
+            </div>
+
+            <!-- Right Section -->
+            <div class="flex flex-col gap-2 w-[360px] max-w-full rounded box-shadow">
+                <!-- Icon -->
+                {!! view_render_event('bagisto.admin.pwa.notification.edit.card.log.before', ['pushnotification' => $pushnotification]) !!}
+
+                        <p class="p-2.5 text-base text-gray-800 dark:text-white font-semibold">
+                           @lang('pwa::app.admin.push-notification.icon')
+                        </p>
+
+                        <div class="p-2.5 flex flex-col gap-2 w-full">
+                            <x-admin::media.images
+                                name="image"
+                                :uploaded-images="$pushnotification->imageurl ? [['id' => 'image', 'url' => Storage::url($pushnotification->imageurl)]] : []"
+                            />
+                        </div>
+
+                {!! view_render_event('bagisto.admin.pwa.notification.edit.card.logo.after', ['pushnotification' => $pushnotification]) !!}
+
+            </div>
+        </div>
+
+        {!! view_render_event('bagisto.admin.pwa.notification.edit.create_form_controls.after', ['pushnotification' => $pushnotification]) !!}
+
+    </x-admin::form>
+
+    {!! view_render_event('bagisto.admin.pwa.notification.edit.after', ['pushnotification' => $pushnotification]) !!}
+
+    @pushOnce('scripts')
+        <script type="text/x-template" id="v-description-template">
+            <div>
+                <slot :is-description-required="isDescriptionRequired"></slot>
+            </div>
+        </script>
+
+        <script type="module">
+            app.component('v-description', {
+                template: '#v-description-template',
+
+                data() {
+                    return {
+                        isDescriptionRequired: true,
+
+                        displayMode: "{{ old('display_mode') ?? 'products_and_description' }}",
+                    };
+                },
+
+                mounted() {
+                    this.isDescriptionRequired = this.displayMode !== 'products_only';
+
+                    this.$nextTick(() => {
+                        document.querySelector('#display_mode').addEventListener('change', (e) => {
+                            this.isDescriptionRequired = e.target.value !== 'products_only';
+                        });
+                    });
+                },
+            });
+        </script>
+    @endPushOnce
+
+</x-admin::layouts>

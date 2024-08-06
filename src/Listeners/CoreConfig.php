@@ -2,8 +2,8 @@
 
 namespace Webkul\PWA\Listeners;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Core Config event handler
@@ -15,18 +15,16 @@ class CoreConfig
 {
     /**
      * Containes images sizes
-     *
      */
     protected $sizes = [
-        'small' => '48x48',
-        'medium' => '96x96',
-        'large' => '144x144',
+        'small'       => '48x48',
+        'medium'      => '96x96',
+        'large'       => '144x144',
         'extra_large' => '196x196',
     ];
 
     /**
      * Generate menifest.json file
-     *
      */
     public function generateManifestFile()
     {
@@ -34,41 +32,42 @@ class CoreConfig
             $icons = [];
 
             foreach (['small', 'medium', 'large', 'extra_large'] as $size) {
-                if (! core()->getConfigData('pwa.settings.media.' . $size))
+                if (! core()->getConfigData('pwa.settings.media.'.$size)) {
                     continue;
+                }
 
                 $icons[] = [
-                    'src' => Storage::url(core()->getConfigData('pwa.settings.media.' . $size)),
+                    'src'   => Storage::url(core()->getConfigData('pwa.settings.media.'.$size)),
                     'sizes' => $this->sizes[$size],
-                    'type' => Storage::mimeType(core()->getConfigData('pwa.settings.media.' . $size))
+                    'type'  => Storage::mimeType(core()->getConfigData('pwa.settings.media.'.$size)),
                 ];
             }
 
             if (! count($icons)) {
                 foreach (['small', 'medium', 'large', 'extra_large'] as $size) {
                     $icons[] = [
-                        'src' => 'vendor/webkul/pwa/assets/images/' . $this->sizes[$size] . '.png',
+                        'src'   => 'vendor/webkul/pwa/assets/images/'.$this->sizes[$size].'.png',
                         'sizes' => $this->sizes[$size],
-                        'type' => 'image/png'
+                        'type'  => 'image/png',
                     ];
                 }
             }
 
             $manifest = [
-                'name' => core()->getConfigData('pwa.settings.general.name') ?? 'Bagisto PWA App',
-                'short_name' => core()->getConfigData('pwa.settings.general.short_name') ?? 'Bagisto',
-                'start_url' => config('app.url'),
-                'display' => 'standalone',
-                'orientation' => 'any',
-                'theme_color' => core()->getConfigData('pwa.settings.general.theme_color') ?? '#0041ff',
+                'name'             => core()->getConfigData('pwa.settings.general.name') ?? 'Bagisto PWA App',
+                'short_name'       => core()->getConfigData('pwa.settings.general.short_name') ?? 'Bagisto',
+                'start_url'        => config('app.url'),
+                'display'          => 'standalone',
+                'orientation'      => 'any',
+                'theme_color'      => core()->getConfigData('pwa.settings.general.theme_color') ?? '#0041ff',
                 'background_color' => core()->getConfigData('pwa.settings.general.background_color') ?? '#0041ff',
-                'icons' => $icons
+                'icons'            => $icons,
             ];
 
             $encodedFile = json_encode($manifest);
 
-            File::put(public_path() . '/manifest.json', $encodedFile);
-            File::put(public_path() . '/manifest.webmanifest', $encodedFile);
+            File::put(public_path().'/manifest.json', $encodedFile);
+            File::put(public_path().'/manifest.webmanifest', $encodedFile);
         }
     }
 }

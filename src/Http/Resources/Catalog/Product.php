@@ -56,7 +56,7 @@ class Product extends JsonResource
                         'show_quantity_changer' => $associatedProduct->getTypeInstance()->showQuantityBox(),
                     ];
                 }
-            break;
+                break;
 
             case 'downloadable':
                 $data['downloadable_links'] = [];
@@ -80,13 +80,13 @@ class Product extends JsonResource
 
                     }
                 }
-            break;
+                break;
 
             case 'bundle':
                 $options = [];
                 $data['currency_options'] = core()->getAccountJsSymbols();
                 $data['bundle_options'] = app('Webkul\Product\Helpers\BundleOption')->getBundleConfig($product);
-            break;
+                break;
 
             case 'booking':
                 $bookingProduct = app('\Webkul\BookingProduct\Repositories\BookingProductRepository')->findOneByField('product_id', $product->product_id);
@@ -94,7 +94,7 @@ class Product extends JsonResource
                 $data['booking_product'] = $bookingProduct;
                 $data['booking_product']['slot_index_route'] = route('booking_product.slots.index', $data['booking_product']->id);
 
-                if ($data['booking_product']->type == "appointment") {
+                if ($data['booking_product']->type == 'appointment') {
                     $bookingSlotHelper = app('\Webkul\BookingProduct\Helpers\AppointmentSlot');
 
                     $data['booking_product']['today_slots_html'] = $bookingSlotHelper->getTodaySlotsHtml($bookingProduct);
@@ -102,31 +102,31 @@ class Product extends JsonResource
                     $data['booking_product']['appointment_slot'] = $bookingProduct->appointment_slot;
                 }
 
-                if ($data['booking_product']->type == "event") {
+                if ($data['booking_product']->type == 'event') {
                     $bookingSlotHelper = app('\Webkul\BookingProduct\Helpers\EventTicket');
 
                     $data['booking_product']['tickets'] = $bookingSlotHelper->getTickets($bookingProduct);
                     $data['booking_product']['event_date'] = $bookingSlotHelper->getEventDate($bookingProduct);
                 }
 
-                if ($data['booking_product']->type == "rental") {
+                if ($data['booking_product']->type == 'rental') {
                     $data['booking_product']['renting_type'] = $bookingProduct->rental_slot->renting_type;
                 }
 
-                if ($data['booking_product']->type == "table") {
+                if ($data['booking_product']->type == 'table') {
                     $bookingSlotHelper = app('\Webkul\BookingProduct\Helpers\TableSlot');
 
                     $data['booking_product']['today_slots_html'] = $bookingSlotHelper->getTodaySlotsHtml($bookingProduct);
                     $data['booking_product']['week_slot_durations'] = $bookingSlotHelper->getWeekSlotDurations($bookingProduct);
                     $data['booking_product']['table_slot'] = $bookingProduct->table_slot;
                 }
-            break;
+                break;
 
             default:
-            break;
+                break;
         }
 
-        if ($product->type != "grouped") {
+        if ($product->type != 'grouped') {
             $data['show_quantity_changer'] = $product->getTypeInstance()->showQuantityBox();
         }
 
@@ -137,20 +137,20 @@ class Product extends JsonResource
 
         foreach ($pwa_videos as $key => $video) {
             $pwa_videoData[$key]['type'] = $video['type'];
-            $pwa_videoData[$key]['large_image_url'] = $pwa_videoData[$key]['small_image_url']= $pwa_videoData[$key]['medium_image_url']= $pwa_videoData[$key]['original_image_url'] = $video['video_url'];
+            $pwa_videoData[$key]['large_image_url'] = $pwa_videoData[$key]['small_image_url'] = $pwa_videoData[$key]['medium_image_url'] = $pwa_videoData[$key]['original_image_url'] = $video['video_url'];
         }
 
         foreach ($pwa_images as $key => $image) {
             $pwa_imageData[$key]['type'] = '';
-            $pwa_imageData[$key]['large_image_url']    = $image['large_image_url'];
-            $pwa_imageData[$key]['small_image_url']    = $image['small_image_url'];
-            $pwa_imageData[$key]['medium_image_url']   = $image['medium_image_url'];
+            $pwa_imageData[$key]['large_image_url'] = $image['large_image_url'];
+            $pwa_imageData[$key]['small_image_url'] = $image['small_image_url'];
+            $pwa_imageData[$key]['medium_image_url'] = $image['medium_image_url'];
             $pwa_imageData[$key]['original_image_url'] = $image['original_image_url'];
         }
 
         $pwa_images = array_merge($pwa_imageData, $pwa_videoData);
 
-        $data +=  [
+        $data += [
             'id'                     => $product->id,
             'type'                   => $product->type,
             'name'                   => $this->name,
@@ -163,7 +163,7 @@ class Product extends JsonResource
             'images'                 => $pwa_images,
             'videos'                 => product_video()->getVideos($product),
             'base_image'             => product_image()->getProductBaseImage($product),
-            'variants'               => Self::collection($this->variants),
+            'variants'               => self::collection($this->variants),
             'in_stock'               => $product->haveSufficientQuantity(1),
             $this->mergeWhen($product->getTypeInstance()->isComposite(), [
                 'super_attributes' => Attribute::collection($product->super_attributes),
@@ -195,7 +195,7 @@ class Product extends JsonResource
             'created_at'             => $this->created_at,
             'updated_at'             => $this->updated_at,
         ];
-      
+
         return $data;
     }
 

@@ -4,6 +4,7 @@ namespace Webkul\PWA\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Webkul\PWA\DataGrids\PushNotificationDataGrid;
 use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationRepository;
 
@@ -40,7 +41,11 @@ class PushNotificationController extends Controller
      */
     public function index()
     {
-        return view($this->_config['view']);
+        if (request()->ajax()) {
+            return app(PushNotificationDataGrid::class)->toJson();
+        }
+
+        return view('pwa::admin.push-notification.index');
     }
 
     /**
@@ -50,31 +55,30 @@ class PushNotificationController extends Controller
      */
     public function create()
     {
-        return view($this->_config['view']);
+        return view('pwa::admin.push-notification.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'title' => 'required',
+            'title'       => 'required',
             'description' => 'required',
-            'targeturl' => 'required',
-            'image.*' => 'mimes:jpeg,jpg,bmp,png'
+            'targeturl'   => 'required',
+            'image.*'     => 'mimes:jpeg,jpg,bmp,png',
         ]);
-       
+
         // call the repository
         $this->pushNotificationRepository->create(request()->all());
 
-         // flash message
-         session()->flash('success', trans('admin::app.response.create-success', ['name' => trans('pwa::app.admin.layouts.push-notification')]));
+        // flash message
+        session()->flash('success', trans('pwa::app.admin.push-notification.create-success'));
 
-         return redirect()->route($this->_config['redirect']);
+        return redirect()->route('admin.pwa.pushnotification.index');
     }
 
     /**
@@ -86,13 +90,13 @@ class PushNotificationController extends Controller
     public function edit($id)
     {
         $pushnotification = $this->pushNotificationRepository->findOrFail($id);
-        return view($this->_config['view'], compact('pushnotification'));
+
+        return view('pwa::admin.push-notification.edit', compact('pushnotification'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -103,15 +107,15 @@ class PushNotificationController extends Controller
                 'title'         => 'required',
                 'description'   => 'required',
                 'targeturl'     => 'required',
-                'image.*'       => 'mimes:jpeg,jpg,bmp,png'
+                'image.*'       => 'mimes:jpeg,jpg,bmp,png',
             ]);
 
             $this->pushNotificationRepository->update(request()->all(), $id);
 
             session()->flash('success', trans('pwa::app.admin.notification.update-success', ['name' => trans('pwa::app.admin.layouts.push-notification')]));
 
-            return redirect()->route($this->_config['redirect']);
-        } catch(\Exception $e) {
+            return redirect()->route('admin.pwa.pushnotification.index');
+        } catch (\Exception $e) {
             session()->flash('error', trans($e->getMessage()));
 
             return redirect()->back();
@@ -126,12 +130,10 @@ class PushNotificationController extends Controller
      */
     public function destroy($id)
     {
-        $pushnotification = $this->pushNotificationRepository->findOrFail($id);
-
         $this->pushNotificationRepository->delete($id);
 
-        session()->flash('success', trans('pwa::app.admin.notification.delete-success', ['name' => 'Push Notification']));
-        
+        session()->flash('success', trans('pwa::app.admin.push-notification.delete-success'));
+
         return redirect()->back();
     }
 
@@ -145,21 +147,21 @@ class PushNotificationController extends Controller
             $pushNotification = $this->pushNotificationRepository->findOrFail($id);
 
             $response = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Authorization' => "Bearer {$serverKey}",
-                ])
+                'Content-Type'  => 'application/json',
+                'Authorization' => "Bearer {$serverKey}",
+            ])
                 ->post('https://fcm.googleapis.com/fcm/send', [
-                    'to' => "/topics/{$topic}",
+                    'to'   => "/topics/{$topic}",
                     'data' => [
                         'title'        => $pushNotification->title,
                         'body'         => $pushNotification->description,
-                        'icon'         => asset('/storage/' . $pushNotification->imageurl),
+                        'icon'         => asset('/storage/'.$pushNotification->imageurl),
                         'click_action' => $pushNotification->targeturl,
                     ],
                 ]);
-            
+
             if (! $response?->collect()->get('message_id')) {
-                session()->flash('error', 'Invalid Credentials');
+                session()->flash('error', trans('pwa::app.admin.push-to-firebase.invalid-credentials'));
             } else {
                 session()->flash('success', trans('pwa::app.admin.push-notification.success-notification'));
             }
@@ -167,7 +169,7 @@ class PushNotificationController extends Controller
             return redirect()->back();
         } else {
             session()->flash('error', trans('admin::app.users.users.login-error'));
-            
+
             return redirect()->back();
         }
     }

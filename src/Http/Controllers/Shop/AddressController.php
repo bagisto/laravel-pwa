@@ -2,10 +2,10 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Webkul\Customer\Rules\VatIdRule;
 use Webkul\API\Http\Controllers\Shop\Controller;
-use Webkul\Customer\Repositories\CustomerAddressRepository;
 use Webkul\API\Http\Resources\Customer\CustomerAddress as CustomerAddressResource;
+use Webkul\Customer\Repositories\CustomerAddressRepository;
+use Webkul\Customer\Rules\VatIdRule;
 
 class AddressController extends Controller
 {
@@ -77,7 +77,7 @@ class AddressController extends Controller
             'city'     => 'string|required',
             'postcode' => 'required',
             'phone'    => 'required',
-            'vat_id'   => new VatIdRule()
+            'vat_id'   => new VatIdRule,
         ]);
 
         $customerAddress = $this->customerAddressRepository->create(request()->all());

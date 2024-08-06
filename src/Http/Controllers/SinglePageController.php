@@ -2,9 +2,7 @@
 
 namespace Webkul\PWA\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Jenssegers\Agent\Agent;
+use Detection\MobileDetect;
 
 /**
  * Home page controller
@@ -19,10 +17,11 @@ class SinglePageController extends Controller
      */
     public function home()
     {
-        $agent = new Agent();
+        $agent = new MobileDetect;
 
-        if ($agent->isMobile() || $agent->isTablet())
+        if ($agent->isMobile() || $agent->isTablet()) {
             return redirect('/mobile');
+        }
 
         $currentChannel = core()->getCurrentChannel();
 
@@ -35,15 +34,15 @@ class SinglePageController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function index()
     {
-        if (! core()->getConfigData('pwa.settings.general.status') ) {
+        if (!core()->getConfigData('pwa.settings.general.status')) {
             session()->flash('warning', trans('pwa::app.shop.home.enable-pwa-status'));
 
             return redirect()->route('shop.home.index');
         }
-        
+
         $parsedUrl = parse_url(config('app.url'));
 
         $urlPath = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';

@@ -2,10 +2,10 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop\API;
 
-use Illuminate\Http\Request;
-use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\API\Http\Resources\Catalog\Attribute;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Velocity\Helpers\Helper as VelocityHelper;
+
 /**
  * Push Notification controller
  *
@@ -31,7 +31,6 @@ class APIController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  \Webkul\Velocity\Helpers\Helper  $velocityHelper
      * @return void
      */
     public function __construct(

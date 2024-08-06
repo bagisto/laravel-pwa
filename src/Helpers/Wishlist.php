@@ -1,6 +1,6 @@
 <?php
 
-namespace  Webkul\PWA\Helpers;
+namespace Webkul\PWA\Helpers;
 
 class Wishlist
 {
@@ -13,8 +13,8 @@ class Wishlist
     public function getWishlistProduct($product)
     {
         $wishlist = false;
-        
-        if ($customer =  auth()->guard('api')->user()) {
+
+        if ($customer = auth()->guard('api')->user()) {
             $wishlist = $customer->wishlist_items->filter(function ($item) use ($product) {
                 return $item->channel_id == core()->getCurrentChannel()->id && $item->product_id == $product->id;
             })->first();

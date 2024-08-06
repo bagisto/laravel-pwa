@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="{{ bagisto_asset('vendor/webkul/pwa/assets/css/pwa-admin.css') }}">
+@bagistoVite(['src/Resources/assets/css/app.css'], 'pwa')

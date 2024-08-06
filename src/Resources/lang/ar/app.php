@@ -32,7 +32,7 @@ return [
 
         'layouts'           => [
             'index'             => 'تخطيط PWA',
-            'push-notification' => 'إرسال إشعارات'
+            'push-notification' => 'إرسال إشعارات',
         ],
 
         'push-notification' => [
@@ -46,7 +46,7 @@ return [
             'edit-notification'     => 'تعديل بث منبثق',
             'title'                 => 'قائمة الإشعارات المرسلة',
             'create-notification'   => 'عمل إشعار منبثق',
-            'success-notification'  => 'نجح: تم إرسال الإشعار بنجاح.'
+            'success-notification'  => 'نجح: تم إرسال الإشعار بنجاح.',
         ],
 
         'datagrid'          => [
@@ -59,6 +59,6 @@ return [
         'notification'      => [
             'update-success' => 'تم تحديث إشعار الدفع بنجاح.',
             'delete-success' => 'تم حذف إشعار الدفع بنجاح.',
-        ]
-    ]
+        ],
+    ],
 ];

@@ -3,11 +3,6 @@
 namespace Webkul\PWA\Http\Resources\Sales;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Webkul\API\Http\Resources\Core\Channel as ChannelResource;
-use Webkul\API\Http\Resources\Customer\Customer as CustomerResource;
-use Webkul\API\Http\Resources\Sales\Invoice;
-use Webkul\API\Http\Resources\Sales\Shipment;
-use Webkul\API\Http\Resources\Sales\OrderAddress;
 
 class DownloadableProduct extends JsonResource
 {
@@ -29,7 +24,7 @@ class DownloadableProduct extends JsonResource
             'title'                 => ($this->status == 'pending'
                                        || $this->status == 'expired')
                                        ? $this->product_name
-                                       : $this->product_name . ' ' . '<a href="' . route('customer.downloadable_products.download', $this->id) . '" target="_blank" style="display:block;" data-class="download-link">' . $this->name . '</a>',
+                                       : $this->product_name.' '.'<a href="'.route('customer.downloadable_products.download', $this->id).'" target="_blank" style="display:block;" data-class="download-link">'.$this->name.'</a>',
         ];
     }
 }
