@@ -103,17 +103,17 @@ class Cart extends BaseCart
 
         $cart = $this->getCart();
 
-        if (! $cart) {
+        if (!$cart) {
             $cart = $this->create($data);
         }
 
-        if (! $cart) {
+        if (!$cart) {
             return ['warning' => __('shop::app.checkout.cart.item.error-add')];
         }
 
         $product = $this->productRepository->find($productId);
 
-        if (! $product->status) {
+        if (!$product->status) {
             return ['info' => __('shop::app.checkout.cart.item.inactive-add')];
         }
 
@@ -137,7 +137,7 @@ class Cart extends BaseCart
                     $cartProduct['parent_id'] = $parentCartItem->id;
                 }
 
-                if (! $cartItem) {
+                if (!$cartItem) {
                     $cartItem = $this->cartItemRepository->create(array_merge($cartProduct, ['cart_id' => $cart->id]));
                 } else {
                     if (
@@ -152,7 +152,7 @@ class Cart extends BaseCart
                     }
                 }
 
-                if (! $parentCartItem) {
+                if (!$parentCartItem) {
                     $parentCartItem = $cartItem;
                 }
             }
@@ -201,7 +201,7 @@ class Cart extends BaseCart
 
         $cart = $this->cartRepository->create($cartData);
 
-        if (! $cart) {
+        if (!$cart) {
             session()->flash('error', __('shop::app.checkout.cart.create-error'));
 
             return;
@@ -236,61 +236,5 @@ class Cart extends BaseCart
         }
 
         return $cart;
-    }
-
-    /**
-     * Function to move a already added product to wishlist will run only on customer
-     * authentication.
-     *
-     * @param  int  $itemId
-     * @return bool
-     */
-    public function moveToWishlist($itemId)
-    {
-        $cart = $this->getCart();
-
-        $cartItem = $cart->items()->find($itemId);
-
-        if (! $cartItem) {
-            return false;
-        }
-
-        $wishlistItems = $this->wishlistRepository->findWhere([
-            'customer_id' => auth()->guard('api')->user()->id,
-            'product_id'  => $cartItem->product_id,
-        ]);
-
-        $found = false;
-
-        foreach ($wishlistItems as $wishlistItem) {
-            $options = $wishlistItem->item_options;
-
-            if (! $options) {
-                $options = ['product_id' => $wishlistItem->product_id];
-            }
-
-            if ($cartItem->product->getTypeInstance()->compareOptions($cartItem->additional, $options)) {
-                $found = true;
-            }
-        }
-
-        if (! $found) {
-            $this->wishlistRepository->create([
-                'channel_id'  => $cart->channel_id,
-                'customer_id' => auth()->guard('api')->user()->id,
-                'product_id'  => $cartItem->product_id,
-                'additional'  => $cartItem->additional,
-            ]);
-        }
-
-        $result = $this->cartItemRepository->delete($itemId);
-
-        if (! $cart->items->count()) {
-            $this->cartRepository->delete($cart->id);
-        }
-
-        $this->collectTotals();
-
-        return true;
     }
 }

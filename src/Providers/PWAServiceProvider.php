@@ -2,6 +2,7 @@
 
 namespace Webkul\PWA\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Webkul\PWA\Cart;
@@ -34,6 +35,12 @@ class PWAServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'pwa');
 
+        /**
+         * Component*
+         */
+        Blade::anonymousComponentPath(__DIR__ . '/../Resources/views/shop/components', 'shop-pwa');
+
+
         // $this->publishes([
         //     __DIR__ . '/../Resources/views/paypal/standard-redirect.blade.php'          => resource_path('views/vendor/paypal/standard-redirect.blade.php'),
         //     __DIR__ . '/../Resources/views/shop/customers/account/orders/pdf.blade.php' => resource_path('views/vendor/shop/customers/account/orders/pdf.blade.php'),
@@ -41,7 +48,7 @@ class PWAServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../../publishable/pwa'      => public_path(),
-            // __DIR__ . '/../../publishable/assets'   => public_path('vendor/webkul/pwa/assets'),
+            __DIR__ . '/../../publishable/assets'   => public_path('themes/pwa/default/build/assets'),
         ], 'public');
 
         if (core()->getConfigData('pwa.settings.general.status')) {

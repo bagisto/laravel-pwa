@@ -32,21 +32,27 @@ class CoreConfig
             $icons = [];
 
             foreach (['small', 'medium', 'large', 'extra_large'] as $size) {
-                if (! core()->getConfigData('pwa.settings.media.'.$size)) {
-                    continue;
-                }
 
-                $icons[] = [
-                    'src'   => Storage::url(core()->getConfigData('pwa.settings.media.'.$size)),
-                    'sizes' => $this->sizes[$size],
-                    'type'  => Storage::mimeType(core()->getConfigData('pwa.settings.media.'.$size)),
-                ];
+                if (!core()->getConfigData('pwa.settings.media.' . $size)) {
+                    $icons[] = [
+                        'src'   => 'themes/pwa/default/build/assets/images/' . $this->sizes[$size] . '.png',
+                        'sizes' => $this->sizes[$size],
+                        'type'  => 'image/png',
+                    ];
+                } else {
+
+                    $icons[] = [
+                        'src'   => Storage::url(core()->getConfigData('pwa.settings.media.' . $size)),
+                        'sizes' => $this->sizes[$size],
+                        'type'  => Storage::mimeType(core()->getConfigData('pwa.settings.media.' . $size)),
+                    ];
+                }
             }
 
-            if (! count($icons)) {
+            if (!count($icons)) {
                 foreach (['small', 'medium', 'large', 'extra_large'] as $size) {
                     $icons[] = [
-                        'src'   => 'vendor/webkul/pwa/assets/images/'.$this->sizes[$size].'.png',
+                        'src'   => 'themes/pwa/default/build/assets/images/' . $this->sizes[$size] . '.png',
                         'sizes' => $this->sizes[$size],
                         'type'  => 'image/png',
                     ];
@@ -66,8 +72,8 @@ class CoreConfig
 
             $encodedFile = json_encode($manifest);
 
-            File::put(public_path().'/manifest.json', $encodedFile);
-            File::put(public_path().'/manifest.webmanifest', $encodedFile);
+            File::put(public_path() . '/manifest.json', $encodedFile);
+            File::put(public_path() . '/manifest.webmanifest', $encodedFile);
         }
     }
 }
