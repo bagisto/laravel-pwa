@@ -141,9 +141,7 @@
 
                     super_attribute: {},
 
-                    selected_configurable_option: 0,
-
-                    token: true,
+                    selected_configurable_option: 0
                 }
             }
         },
@@ -151,7 +149,7 @@
         watch: {
             '$route.params.id': function (id) {
                 this.getProduct(id);
-            },
+            }
         },
 
         mounted () {
@@ -161,7 +159,7 @@
         methods: {
             getProduct (productId) {
                 EventBus.$emit('show-ajax-loader');
-               
+
                 this.$http.get('/api/pwa/products/' + productId)
                     .then(response => {
                         this.product = response.data.data;
@@ -256,17 +254,6 @@
             },
 
             addToCart (event) {
-
-                const token = JSON.parse(localStorage.getItem('token'));
-
-                if (! token) {
-                    this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
-
-                    this.$router.push({name: 'login-register'})
-
-                    return;
-                }
-
                 EventBus.$emit('show-ajax-loader');
 
                 var formData = this.formData;
@@ -280,7 +267,7 @@
                     delete(formData.booking.slot);
                 }
 
-                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, formData, {params : {token: true}})
+                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, formData)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

@@ -86,7 +86,7 @@
             },
 
             changeQuantity () {
-                
+                this.$emit('quantityChanged')
             }
         }
     }

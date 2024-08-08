@@ -22,9 +22,9 @@ class EventServiceProvider extends ServiceProvider
 
         Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
 
-        Event::listen('bagisto.shop.layout.head', function ($viewRenderEventManager) {
-            $viewRenderEventManager->addTemplate('pwa::shop.desktop.head.index');
-        });
+        // Event::listen('bagisto.shop.layout.head', function ($viewRenderEventManager) {
+        //     $viewRenderEventManager->addTemplate('pwa::shop.desktop.head.index');
+        // });
 
         // Add new field in category create and update form.
         Event::listen(

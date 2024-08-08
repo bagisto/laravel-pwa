@@ -14,6 +14,7 @@
                 </div>
             </div>
         </custom-header>
+
         <div class="checkout-container" v-if="cart">
             <div class="address-section" v-show="step == 1">
                 <form data-vv-scope="address-form">
@@ -169,20 +170,17 @@
 
                         <div class="panel-content">
                             <div class="form-container shipping-methods" :class="[errors.has('shipping-form.shipping_method') ? 'has-error' : '']">
-                               
+
                                 <div class="method" :key="index" v-for="(method, index) in shippingRates">
                                     <h2>{{ method['carrier_title'] }}</h2>
 
                                     <label class="radio" :key="index" v-for="(rate, index) in method['rates']" :for="rate.method">
-                                        
                                         <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
                                         <label class="radio-view" :for="rate.method"></label>
-                                        
-                                            {{ rate.base_price }}
-                                            <div >
-                                                <b> {{ rate.method_title + ' - ' }} </b>
-                                                {{ rate.method_description }}
-                                            </div>
+
+                                        {{ rate.formated_price }}
+                                        <b> {{ rate.method_title + ' - ' }} </b>
+                                        {{ rate.method_description }}
                                     </label>
                                 </div>
 
@@ -337,9 +335,9 @@
                     <div class="panel-content">
                         <div class="coupon-container">
                             <div class="discount-control" style="padding:10px;">
-                                <form data-vv-scope="coupon-form" @submit.prevent="validateForm">
+                                <form data-vv-scope="coupon-form">
                                     <div class="control-group" :class="[errors.has('coupon-form.code') ? 'has-error' : '']" >
-                                        <input type="text" class="control" v-validate="'required'" v-model="coupon_code" name="code" :placeholder="$t('Enter Coupon Code')" >
+                                        <input type="text" class="control" v-model="coupon_code" name="code" :placeholder="$t('Enter Coupon Code')" >
 
                                         <span class="control-error" v-if="errors.has('coupon-form.code')">{{ errors.first('coupon-form.code') }}</span>
                                     </div>
@@ -383,23 +381,16 @@
 <script>
     import CustomHeader    from '../../layouts/custom-header';
     import CheckoutAddress from './address';
-    import {
-        mapState,
-        mapActions
-    } from 'vuex';
 
     export default {
         name: 'onepage',
 
         components: { CustomHeader, CheckoutAddress },
 
-        computed: mapState({
-            cart: state => state.cart,
-        }),
-
         data () {
             return {
                 step: 1,
+                cart: null,
                 customer: null,
                 coupon_code: '',
                 isShipping: true,
@@ -456,7 +447,7 @@
         },
 
         mounted () {
-            // this.getGuestCheckoutStatus();
+            this.getGuestCheckoutStatus();
            
             this.getAuthCustomer();
 
@@ -466,10 +457,6 @@
         },
 
         methods: {
-            ...mapActions([
-                'getCart',
-            ]),
-
             paypalSmartBtn () {
                 var self = this;
                 
@@ -553,7 +540,7 @@
             getGuestCheckoutStatus () { 
                 var this_this = this;
 
-                this.$http.get('/api/checkout/guest-checkout',{params : {token: true}})
+                this.$http.get('/api/checkout/guest-checkout')
                     .then(function(response) {
                         if(! response.data.data.status) {
                             this_this.$router.push({ name: 'login-register' });
@@ -565,19 +552,9 @@
             getAuthCustomer () { 
                 var this_this = this;
 
-                const token = JSON.parse(localStorage.getItem('token'));
-
-                if (! token) {
-                    this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
-
-                    this.$router.push({name: 'login-register'})
-
-                    return;
-                }
-
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/customer/get',{params : {token : JSON.parse(localStorage.getItem('token'))}})
+                this.$http.get('/api/customer/get')
                     .then(function(response) {
                         this_this.customer = response.data.data;
 
@@ -606,7 +583,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: customerId, pagination: 0,token: JSON.parse(localStorage.getItem('token'))} })
+                this.$http.get('/api/addresses', { params: { customer_id: customerId, pagination: 0 } })
                     .then(function(response) {
                         this_this.$set(this_this.addresses, 'billing', response.data.data.slice(0))
 
@@ -615,7 +592,35 @@
                         EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
-            }, 
+            },
+
+            getCart () {
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/pwa/checkout/cart')
+                    .then(response => {
+                        EventBus.$emit('hide-ajax-loader');
+
+                        this.cart = response.data.data;
+
+                        this.isShipping = response.data.isShipping;
+
+                        if (
+                            response.data.redirectToCustomerLogin
+                            && this.$route.name == "onepage"
+                        ) {
+                            this.$router.push({ name: 'login-register' });
+                        }
+
+                        this.checkMinimumPrice(this.cart.grand_total);
+
+                        EventBus.$emit('checkout.cart.changed', this.cart);
+
+                        if (! this.cart)
+                            this.$router.go(-2);
+                    })
+                    .catch(function (error) {});
+            },
 
             changeSaveAddress(event) {
                 var self = this;
@@ -686,15 +691,15 @@
                 }
 
                 self.disable_button = true;
-                this.$http.post('/api/pwa/checkout/save-address', self.address,{params: {token : JSON.parse(localStorage.getItem('token'))}})
+                this.$http.post('/api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
-                        self.disable_button = false;
-
-                        if (response.data.nextStep == "payment") {
+                        if (response.data.data.nextStep == "payment") {
                             self.skipShipping = true;
                             self.disable_button = false;
 
-                            self.paymentMethods = response.data.methods.paymentMethods;
+                            self.paymentMethods = response.data.data.methods;
+
+                            self.cart = response.data.data.cart;
 
                             self.step++;
                             self.step++;
@@ -710,9 +715,10 @@
                         } else {
                             self.disable_button = false;
 
-                            self.shippingRates = response.data.rates.shippingMethods;
+                            self.shippingRates = response.data.data.rates;
 
-                            
+                            self.cart = response.data.data.cart;
+
                             self.step++;
                             
                             self.save_as_address = false;
@@ -720,11 +726,8 @@
 
                             if ( self.shippingRates ) {
                                 $.each(self.shippingRates, (key, method) => {
-
                                     if ( self.first_shipping_iteration ) {
                                         $.each(method['rates'], (key, rate) => {
-                                            console.log(key, rate,"edfgdg");
-
                                             self.selected_shipping_method = rate['method'];
                                             self.first_shipping_iteration = false;
                                         });
@@ -743,13 +746,13 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method },{params : {token : JSON.parse(localStorage.getItem('token')) }})
+                this.$http.post('/api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
                     .then(function(response) {
                         this_this.disable_button = false;
 
                         this_this.paymentMethods = response.data.data.methods;
                         console.log(this_this.paymentMethods);
-                        EventBus.$emit('checkout.cart.changed', response.data.data.cart);
+                        this_this.cart = response.data.data.cart;
 
                         this_this.step++;
 
@@ -772,11 +775,11 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } },{params : {token : JSON.parse(localStorage.getItem('token')) }})
+                this.$http.post('/api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
                     .then(function(response) {
                         this_this.disable_button = false;
 
-                        EventBus.$emit('checkout.cart.changed', response.data.data.cart);
+                        this_this.cart = response.data.data.cart;
 
                         if (this_this.step != 4) {
                             this_this.step++;
@@ -796,7 +799,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/coupon', { 'code': self.coupon_code },{params : {token : JSON.parse(localStorage.getItem('token')) }})
+                this.$http.post('/api/checkout/cart/coupon', { 'code': self.coupon_code })
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -822,7 +825,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/remove-coupon'),{params : {token : JSON.parse(localStorage.getItem('token')) }}
+                this.$http.post('/api/checkout/cart/remove-coupon')
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -841,30 +844,25 @@
                     });
             },
 
-            placeOrder() {
+            placeOrder () {
                 this.disable_button = true;
 
-                const token = JSON.parse(localStorage.getItem('token'));
+                this.$http.post('/api/pwa/checkout/save-order')
+                    .then(response => {
+                        if (response.data.success) {
+                            if (response.data.redirect_url) {
+                                window.location.href = response.data.redirect_url;
+                            } else {
+                                this.$router.push({ name: 'order-success', params: {id: response.data.order.id}})
 
-                this.$http.post('/api/pwa/checkout/save-order', null, {
-                    params: { token: token }
-                })
-                .then(response => {
-                    if (response.data.success) {
-                        if (response.data.redirect_url) {
-                            window.location.href = response.data.redirect_url;
-                        } else {
-                            this.$router.push({ name: 'order-success', params: { id: response.data.order.id } });
-                            EventBus.$emit('checkout.cart.changed', null);
+                                EventBus.$emit('checkout.cart.changed', null);
+                            }
                         }
-                    }
-                })
-                .catch(error => {
-                    this.disable_button = false;
-                    console.error('Error placing order:', error);
-                });
+                    })
+                    .catch(function (error) {
+                        this.disable_button = true;
+                    })
             },
-
 
             handleBack () {
                 if (this.step == 1) {

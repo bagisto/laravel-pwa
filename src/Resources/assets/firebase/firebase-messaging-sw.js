@@ -1,9 +1,10 @@
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 
-var messagingId = "709349998192";
+var messagingId = "1007045788486";
 
 firebase.initializeApp({messagingSenderId: messagingId});
+
 const messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function(payload) {

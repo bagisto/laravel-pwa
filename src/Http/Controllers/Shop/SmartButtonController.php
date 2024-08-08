@@ -5,8 +5,8 @@ namespace Webkul\PWA\Http\Controllers\Shop;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Paypal\Http\Controllers\Controller;
 use Webkul\Paypal\Payment\SmartButton;
-use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\Sales\Repositories\InvoiceRepository;
 
 class SmartButtonController extends Controller
 {
@@ -34,14 +34,17 @@ class SmartButtonController extends Controller
     /**
      * Create a new controller instance.
      *
+     * @param  \Webkul\Paypal\Payment\SmartButton  $smartButton
      * @param  \Webkul\Attribute\Repositories\OrderRepository  $orderRepository
+     * @param  \Webkul\Sales\Repositories\InvoiceRepository  $invoiceRepository
      * @return void
      */
     public function __construct(
         SmartButton $smartButton,
         OrderRepository $orderRepository,
         InvoiceRepository $invoiceRepository
-    ) {
+    )
+    {
         $this->smartButton = $smartButton;
 
         $this->orderRepository = $orderRepository;
@@ -72,7 +75,6 @@ class SmartButtonController extends Controller
     {
         try {
             $this->smartButton->captureOrder(request()->input('orderData.orderID'));
-
             return $this->saveOrder();
         } catch (\Exception $e) {
             throw $e;
@@ -154,7 +156,7 @@ class SmartButtonController extends Controller
 
                     'items'    => $this->getLineItems($cart),
                 ],
-            ],
+            ]
         ];
 
         if ($cart->haveStockableItems() && $cart->shipping_address) {
@@ -251,7 +253,7 @@ class SmartButtonController extends Controller
             session()->flash('order', $order);
 
             return response()->json([
-                'success'  => true,
+                'success' => true,
                 'order_id' => $order->id,
             ]);
         } catch (\Exception $e) {
@@ -269,7 +271,7 @@ class SmartButtonController extends Controller
      */
     protected function prepareInvoiceData($order)
     {
-        $invoiceData = ['order_id' => $order->id];
+        $invoiceData = ["order_id" => $order->id,];
 
         foreach ($order->items as $item) {
             $invoiceData['invoice']['items'][$item->id] = $item->qty_to_invoice;

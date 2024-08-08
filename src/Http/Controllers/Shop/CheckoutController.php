@@ -3,15 +3,16 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Webkul\API\Http\Controllers\Shop\Controller;
-use Webkul\Checkout\Facades\Cart;
-use Webkul\Checkout\Http\Requests\CustomerAddressForm;
-use Webkul\Checkout\Repositories\CartItemRepository;
 use Webkul\Checkout\Repositories\CartRepository;
-use Webkul\Payment\Facades\Payment;
-use Webkul\Product\Repositories\ProductRepository;
-use Webkul\PWA\Http\Resources\Checkout\Cart as CartResource;
-use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\Checkout\Repositories\CartItemRepository;
 use Webkul\Shipping\Facades\Shipping;
+use Webkul\Payment\Facades\Payment;
+use Webkul\PWA\Http\Resources\Checkout\Cart as CartResource;
+use Webkul\API\Http\Resources\Checkout\CartShippingRate as CartShippingRateResource;
+use Webkul\PWA\Http\Resources\Sales\Order as OrderResource;
+use Webkul\Checkout\Http\Requests\CustomerAddressForm;
+use Webkul\Sales\Repositories\OrderRepository;
+use Cart;
 
 /**
  * Checkout controller
@@ -29,39 +30,57 @@ class CheckoutController extends Controller
     protected $guard;
 
     /**
+     * CartRepository object
+     *
+     * @var Object
+     */
+    protected $cartRepository;
+
+    /**
+     * CartItemRepository object
+     *
+     * @var Object
+     */
+    protected $cartItemRepository;
+
+    /**
      * Controller instance
      *
-     * @param  Webkul\Checkout\Repositories\CartRepository  $cartRepository
-     * @param  Webkul\Checkout\Repositories\CartItemRepository  $cartItemRepository
-     * @param  Webkul\Sales\Repositories\OrderRepository  $orderRepository
+     * @param Webkul\Checkout\Repositories\CartRepository     $cartRepository
+     * @param Webkul\Checkout\Repositories\CartItemRepository $cartItemRepository
+     * @param Webkul\Sales\Repositories\OrderRepository       $orderRepository
      */
     public function __construct(
-        protected CartRepository $cartRepository,
-        protected CartItemRepository $cartItemRepository,
-        protected OrderRepository $orderRepository,
-        protected ProductRepository $productRepository
+        CartRepository $cartRepository,
+        CartItemRepository $cartItemRepository,
+        OrderRepository $orderRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
         auth()->setDefaultDriver($this->guard);
 
-        $this->middleware('auth:'.$this->guard);
-
-        $this->middleware('validateAPIHeader');
-
+        
+        // $this->middleware('auth:' . $this->guard);
+        
         $this->_config = request('_config');
 
+        $this->cartRepository = $cartRepository;
+
+        $this->cartItemRepository = $cartItemRepository;
+
+        $this->orderRepository = $orderRepository;
     }
 
     /**
      * Saves customer address.
      *
+     * @param  \Webkul\Checkout\Http\Requests\CustomerAddressForm $request
      * @return \Illuminate\Http\Response
-     */
+    */
     public function saveAddress(CustomerAddressForm $request)
     {
         $data = request()->all();
-
+        
         $data['billing']['address1'] = implode(PHP_EOL, array_filter($data['billing']['address1']));
         $data['shipping']['address1'] = implode(PHP_EOL, array_filter($data['shipping']['address1']));
 
@@ -75,33 +94,37 @@ class CheckoutController extends Controller
             unset($data['shipping']['address_id']);
         }
 
-        if (
-            Cart::hasError()
-            || ! Cart::saveCustomerAddress($data)
-        ) {
-            return response()->json([
-                'error' => 'warning',
-            ], 400);
+        if (Cart::hasError() || ! Cart::saveCustomerAddress($data) || ! Shipping::collectRates())
+            abort(400);
+
+        $rates = [];
+
+        foreach (Shipping::getGroupedAllShippingRates() as $code => $shippingMethod) {
+            $rates[] = [
+                'carrier_title' => $shippingMethod['carrier_title'],
+                'rates' => CartShippingRateResource::collection(collect($shippingMethod['rates']))
+            ];
         }
 
         $cart = Cart::getCart();
 
-        Cart::collectTotals();
-
         if ($cart->haveStockableItems()) {
-            if (! $rates = Shipping::collectRates()) {
-                abort(400);
-            }
-
-            return response()->json([
+            $data = [
                 'rates'     => $rates,
-                'nextStep'  => 'shipping',
-            ]);
+                'nextStep'  => "shipping",
+            ];
+        } else {
+            $data = [
+                'nextStep'  => "payment",
+                'methods'   => Payment::getPaymentMethods(),
+            ];
         }
 
+        $data['cart'] = new CartResource(Cart::getCart());
+
+
         return response()->json([
-            'nextStep'  => 'payment',
-            'methods'   => Payment::getSupportedPaymentMethods(),
+            'data' => $data
         ]);
     }
 
@@ -109,22 +132,21 @@ class CheckoutController extends Controller
      * Saves shipping method.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
     public function saveShipping()
     {
         $shippingMethod = request()->get('shipping_method');
 
-        if (Cart::hasError() || ! $shippingMethod || ! Cart::saveShippingMethod($shippingMethod)) {
+        if (Cart::hasError() || !$shippingMethod || ! Cart::saveShippingMethod($shippingMethod))
             abort(400);
-        }
 
         Cart::collectTotals();
 
         return response()->json([
             'data' => [
                 'methods' => Payment::getPaymentMethods(),
-                'cart'    => new CartResource(Cart::getCart()),
-            ],
+                'cart' => new CartResource(Cart::getCart())
+            ]
         ]);
     }
 
@@ -132,32 +154,32 @@ class CheckoutController extends Controller
      * Check Guest Checkout.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
     public function isGuestCheckout()
     {
         $cart = Cart::getCart();
-
-        if (! auth()->guard($this->guard)->check()
+        
+        if (! auth()->guard('customer')->check()
             && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
             return response()->json([
                 'data' => [
-                    'status' => false,
-                ],
+                    'status' => false
+                ]
             ]);
         }
 
-        if (! auth()->guard($this->guard)->check() && ! $cart->hasGuestCheckoutItems()) {
+        if (! auth()->guard('customer')->check() && ! $cart->hasGuestCheckoutItems()) {
             return response()->json([
                 'data' => [
-                    'status' => false,
-                ],
+                    'status' => false
+                ]
             ]);
         }
 
         return response()->json([
             'data' => [
-                'status' => true,
-            ],
+                'status' => true
+            ]
         ]);
     }
 
@@ -165,19 +187,18 @@ class CheckoutController extends Controller
      * Saves payment method.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
     public function savePayment()
     {
         $payment = request()->get('payment');
 
-        if (Cart::hasError() || ! $payment || ! Cart::savePaymentMethod($payment)) {
+        if (Cart::hasError() || ! $payment || ! Cart::savePaymentMethod($payment))
             abort(400);
-        }
 
         return response()->json([
             'data' => [
-                'cart' => new CartResource(Cart::getCart()),
-            ],
+                'cart' => new CartResource(Cart::getCart())
+            ]
         ]);
     }
 
@@ -185,7 +206,7 @@ class CheckoutController extends Controller
      * Saves order.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
     public function saveOrder()
     {
         if (Cart::hasError()) {
@@ -214,7 +235,7 @@ class CheckoutController extends Controller
         return response()->json([
             'success'   => true,
             'order'     => [
-                'id' => $order->increment_id,
+                "id" => $order->increment_id
             ],
         ]);
     }

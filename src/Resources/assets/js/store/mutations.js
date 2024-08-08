@@ -3,21 +3,20 @@ import router from '../router';
 
 var setCustomer = (state, customer) => {
     EventBus.$emit('hide-ajax-loader');
-
+    
     state.customer = customer;
     state.isCustomerFetched = true;
-    Vue.prototype.$http.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
 
-    // if (router.app._route.name == 'login-register') {
-    //     router.app._router.push({name: 'dashboard'})
-    // }
+    if (router.app._route.name == 'login-register') {
+        router.app._router.push({name: 'dashboard'})
+    }
 }
 
 const GET_CUSTOMER = state => {
     EventBus.$emit('show-ajax-loader');
 
-    if (state.token) {        
-        Vue.prototype.$http.get('/api/customer/get',{ params: {token:state.token } })
+    if (! state.isCustomerFetched) {
+        Vue.prototype.$http.get('/api/customer/get')
             .then(response => {
                 setCustomer(state, response.data.data);
             })
@@ -26,7 +25,7 @@ const GET_CUSTOMER = state => {
             });
     }
 
-    if (state.token) {
+    if (state.customer) {
         setCustomer(state, state.customer);
     }
 
@@ -35,16 +34,11 @@ const GET_CUSTOMER = state => {
 
 const GET_CART = state => {
     EventBus.$emit('show-ajax-loader');
-    Vue.prototype.$http.get('/api/pwa/checkout/cart', {
-            params: {
-                token: true,
-            },
-            headers: {
-                Authorization : `Bearer ${state.token}`
-            }
-        })
+
+    Vue.prototype.$http.get('/api/pwa/checkout/cart')
         .then(response => {
             EventBus.$emit('hide-ajax-loader');
+
             state.cart = response.data.data;
             state.pagination = response.data.meta;
         })

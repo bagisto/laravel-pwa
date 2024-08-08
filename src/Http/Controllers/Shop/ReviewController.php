@@ -32,7 +32,7 @@ class ReviewController extends Controller
     /**
      * Controller instance
      *
-     * @param  Webkul\Product\Repositories\ProductReviewRepository  $reviewRepository
+     * @param Webkul\Product\Repositories\ProductReviewRepository $reviewRepository
      */
     public function __construct(ProductReviewRepository $reviewRepository)
     {
@@ -46,6 +46,7 @@ class ReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id)
@@ -60,16 +61,16 @@ class ReviewController extends Controller
 
         $data = array_merge(request()->all(), [
             'customer_id' => $customer ? $customer->id : null,
-            'name'        => $customer ? $customer->name : request()->input('name'),
-            'status'      => 'pending',
-            'product_id'  => $id,
+            'name' => $customer ? $customer->name : request()->input('name'),
+            'status' => 'pending',
+            'product_id' => $id
         ]);
 
         $productReview = $this->reviewRepository->create($data);
 
         return response()->json([
-            'message' => 'Your review submitted successfully.',
-            'data'    => new ProductReviewResource($this->reviewRepository->find($productReview->id)),
-        ]);
+                'message' => 'Your review submitted successfully.',
+                'data' => new ProductReviewResource($this->reviewRepository->find($productReview->id))
+            ]);
     }
 }

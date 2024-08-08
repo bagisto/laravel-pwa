@@ -54,10 +54,14 @@
 
                 user: {
                     'email': '',
-                    'password': '',
-                    'token' : true
+                    'password': ''
                 }
             }
+        },
+
+        mounted () {
+            if (JSON.parse(localStorage.getItem('currentUser')))
+                this.$router.push({name: 'dashboard'})
         },
 
         methods: {
@@ -80,13 +84,11 @@
 
                 this.$http.post("/api/customer/login", this.user)
                     .then(function(response) {
-                       
                         this_this.loading = false;
-                        
-                        EventBus.$emit('hide-ajax-loader');
-                        localStorage.setItem('currentUser', JSON.stringify(response.data.data));
 
-                        localStorage.setItem('token', JSON.stringify(response.data.data.token));
+                        EventBus.$emit('hide-ajax-loader');
+
+                        localStorage.setItem('currentUser', JSON.stringify(response.data.data));
 
                         EventBus.$emit('user-logged-in', response.data.data);
 

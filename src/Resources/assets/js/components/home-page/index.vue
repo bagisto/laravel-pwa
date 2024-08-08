@@ -67,7 +67,7 @@
                 v-else-if="index == 'advertisement-three'"
                 >
             </advertisement>
-
+            
             <div class="products panel" v-else>
                 <template v-if="content.products && content.products.length">
                     <div class="category-title">
@@ -116,14 +116,9 @@
             </div>
 
             <div class="panel-content product-list product-grid-2">
-                <product-card 
-                    v-for="product in product.new" 
-                    :key='product.uid' 
-                    :product="product"
-                    :is-customer="customer ? true : false" 
-                    :isWishlisted="product.is_wishlisted"
-                    @updateWishlistStatus="updateWishlistStatus"
-                ></product-card>
+
+                <product-card :is-customer="customer ? true : false" v-for="product in product.new" :key='product.uid' :product="product"></product-card>
+
             </div>
 
         </div>
@@ -135,14 +130,9 @@
             </div>
 
             <div class="panel-content product-list product-grid-2">
-                <product-card 
-                    v-for="product in product.featured" 
-                    :key='product.uid' 
-                    :product="product"
-                    :is-customer="customer ? true : false"
-                    :isWishlisted="product.is_wishlisted"
-                    @updateWishlistStatus="updateWishlistStatus" 
-                ></product-card>
+
+                <product-card :is-customer="customer ? true : false" v-for="product in product.featured" :key='product.uid' :product="product"></product-card>
+
             </div>
 
         </div>
@@ -193,7 +183,7 @@
                 }
 			}
         },
-
+        
         computed: mapState({
             customer: state => state.customer,
         }),
@@ -228,30 +218,20 @@
                 var enable_slider_key = 'pwa.settings.general.enable_slider';
                 var enable_featured_key = 'pwa.settings.general.enable_featured';
                 var enable_categories_home_page_listing_key = 'pwa.settings.general.enable_categories_home_page_listing';
-                var new_product_count = 'catalog.products.homepage.no_of_new_product_homepage';
-                var featured_product_count = 'catalog.products.homepage.no_of_featured_product_homepage'; 
 
                 this.$http.get("/api/config", {
                     params: {
-                        _config: `${enable_new_key},${enable_slider_key},${enable_featured_key},${enable_categories_home_page_listing_key},${new_product_count},${featured_product_count}`
+                        _config: `${enable_new_key},${enable_slider_key},${enable_featured_key},${enable_categories_home_page_listing_key}`
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');
 
                     if (response.data.data[enable_new_key] == "1") {
-                        if (response.data.data[new_product_count]) {
-                            this.getProducts('new', { 'new': 1, limit: 4, count: response.data.data[new_product_count] });
-                        } else {
-                            this.getProducts('new', { 'new': 1, limit: 4 });
-                        }
+                        this.getProducts('new', { 'new': 1, limit: 4 });
                     }
 
                     if (response.data.data[enable_featured_key] == "1") {
-                        if (response.data.data[featured_product_count]) {
-                            this.getProducts('featured', { 'featured': 1, limit: 4, count: response.data.data[featured_product_count] });
-                        } else {
-                            this.getProducts('featured', { 'featured': 1, limit: 4 });
-                        }
+                        this.getProducts('featured', { 'featured': 1, limit: 4 });
                     }
 
                     if (response.data.data[enable_slider_key] == "1") {
@@ -334,7 +314,7 @@
                                 this.homePageContent[category.slug] = {
                                     'category_details' : category,
                                 }
-
+                                
                                 this.getProducts(category.slug, { 'category_id': category.id });
                             }
                         });
@@ -348,7 +328,7 @@
                 this.$http.get("/api/pwa/products", { params: params })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
-
+                        
                         if (params.category_id) {
                             if (this.homePageContent[details]) {
                                 this.$set(this.homePageContent[details], 'products', response.data.data);
@@ -363,21 +343,6 @@
                         console.log(error)
                     });
             },
-
-            updateWishlistStatus (productId, isWishlisted) {
-                const newProductIndex = this.product.new.findIndex(item => item.id === productId);
-
-                if (newProductIndex > -1) {
-                    this.product.new[newProductIndex].is_wishlisted = isWishlisted;
-                }
-
-                // Find the product in the 'featured' section and update its wishlisted status
-                const featuredProductIndex = this.product.featured.findIndex(item => item.id === productId);
-                
-                if (featuredProductIndex > -1) {
-                    this.product.featured[featuredProductIndex].is_wishlisted = isWishlisted;
-                }
-            }
         }
     }
 </script>

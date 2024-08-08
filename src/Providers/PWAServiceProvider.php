@@ -2,11 +2,10 @@
 
 namespace Webkul\PWA\Providers;
 
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
-use Webkul\PWA\Cart;
-use Webkul\PWA\Facades\PwaFacades;
+use Webkul\Checkout\Facades\Cart as CartFacade;
 
 /**
  * PWA service provider
@@ -38,13 +37,17 @@ class PWAServiceProvider extends ServiceProvider
         /**
          * Component*
          */
-        Blade::anonymousComponentPath(__DIR__ . '/../Resources/views/shop/components', 'shop-pwa');
-
+        // Blade::anonymousComponentPath(__DIR__ . '/../Resources/views/shop/components', 'shop-pwa');
 
         // $this->publishes([
         //     __DIR__ . '/../Resources/views/paypal/standard-redirect.blade.php'          => resource_path('views/vendor/paypal/standard-redirect.blade.php'),
         //     __DIR__ . '/../Resources/views/shop/customers/account/orders/pdf.blade.php' => resource_path('views/vendor/shop/customers/account/orders/pdf.blade.php'),
         // ]);
+
+        // $this->publishes([
+        //     __DIR__ . '/../../publishable/pwa'      => public_path(),
+        //     __DIR__ . '/../../publishable/assets'   => public_path('vendor/webkul/pwa/assets'),
+        // ], 'public');
 
         $this->publishes([
             __DIR__ . '/../../publishable/pwa'      => public_path(),
@@ -93,14 +96,12 @@ class PWAServiceProvider extends ServiceProvider
     {
         $loader = AliasLoader::getInstance();
 
-        $loader->alias('pwa_facade', PwaFacades::class);
+        $loader->alias('cart', CartFacade::class);
 
-        $this->app->singleton('pwa_facade', function () {
-            return app()->make(PwaFacades::class);
+        $this->app->singleton('cart', function () {
+            return new Cart();
         });
 
-        $this->app->bind('Cart', 'Webkul\PWA\Cart');
-
-        $this->app->bind(\Webkul\Checkout\Cart::class, Cart::class);
+        $this->app->bind('cart', 'Webkul\PWA\Cart');
     }
 }

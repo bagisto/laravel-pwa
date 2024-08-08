@@ -31,7 +31,6 @@ class Category extends JsonResource
             'additional'            => is_array($this->resource->additional)
                                         ? $this->resource->additional
                                         : json_decode($this->resource->additional, true),
-            'category_banner'       => \Storage::url($this->category_banner),
             'created_at'            => $this->created_at,
             'updated_at'            => $this->updated_at,
         ];

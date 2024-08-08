@@ -75,7 +75,6 @@
             padding: 8px;
             display: inline-block;
             width: 100%;
-            height: 85%;
         }
 
         .product-image {

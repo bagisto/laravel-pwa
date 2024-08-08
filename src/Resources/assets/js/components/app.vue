@@ -214,7 +214,6 @@
 
             EventBus.$on('user-logged-out', function() {
                 this_this.currentUser = null;
-                window.location.reload();
             });
 
             this.getCategories();
@@ -257,33 +256,33 @@
             switchCurrency (currency) {
                 this.bottomSheets.currency = false;
 
-                var currentUrl = new URL(window.location.href);
+                EventBus.$emit('show-ajax-loader');
 
-                // Remove the 'locale' parameter from the URL if it exists
-                if (currentUrl.searchParams.has('locale')) {
-                    currentUrl.searchParams.delete('locale');
-                }
+                this.$http.get("/api/switch-currency", { params: { currency: currency.code } })
+                    .then(function(response) {
+                        EventBus.$emit('hide-ajax-loader');
 
-                // Update the 'currency' parameter
-                currentUrl.searchParams.set('currency', currency.code);
-
-                window.location.href = currentUrl.toString();
+                        window.location.reload()
+                    })
+                    .catch(function (error) {});
             },
 
             switchLocale (locale) {
                 this.bottomSheets.locale = false;
 
-                var currentUrl = new URL(window.location.href);
+                var this_this = this;
 
-                // Remove the 'locale' parameter from the URL if it exists
-                if (currentUrl.searchParams.has('currency')) {
-                    currentUrl.searchParams.delete('currency');
-                }
+                EventBus.$emit('show-ajax-loader');
 
-                // Update the 'currency' parameter
-                currentUrl.searchParams.set('locale', locale.code);
+                this.$http.get("/api/switch-locale", { params: { locale: locale.code } })
+                    .then(function(response) {
+                        EventBus.$emit('hide-ajax-loader');
 
-                window.location.href = currentUrl.toString();
+                        this_this.$i18n.locale = locale.code;
+
+                        window.location.reload()
+                    })
+                    .catch(function (error) {});
             },
 
             logout () {
@@ -296,9 +295,7 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         localStorage.removeItem('currentUser');
-                        
-                        localStorage.removeItem('token');
-                        
+
                         EventBus.$emit('user-logged-out');
                     });
             },

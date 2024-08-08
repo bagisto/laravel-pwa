@@ -2,10 +2,10 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop\API;
 
-use Webkul\API\Http\Resources\Catalog\Attribute;
+use Illuminate\Http\Request;
 use Webkul\PWA\Http\Controllers\Controller;
+use Webkul\API\Http\Resources\Catalog\Attribute;
 use Webkul\Velocity\Helpers\Helper as VelocityHelper;
-
 /**
  * Push Notification controller
  *
@@ -31,6 +31,7 @@ class APIController extends Controller
     /**
      * Create a new controller instance.
      *
+     * @param  \Webkul\Velocity\Helpers\Helper  $velocityHelper
      * @return void
      */
     public function __construct(
@@ -74,7 +75,7 @@ class APIController extends Controller
     public function fetchAttributes()
     {
         $category = app('\Webkul\Category\Repositories\CategoryRepository')->find(request()->get('category_id'));
-        $attributes = $category->filterableAttributes;
+        $attributes = app('\Webkul\Product\Repositories\ProductFlatRepository')->getProductsRelatedFilterableAttributes($category);
 
         return response()->json([
             'data' => Attribute::collection($attributes),

@@ -38,7 +38,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved',token:true} })
+                this.$http.get('/api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

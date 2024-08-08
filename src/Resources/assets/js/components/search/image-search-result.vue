@@ -4,7 +4,7 @@
             <div class="panel-content">
                 <div style="display: flow-root; margin-bottom: 10px;">
                     <h2>{{ $t('other-keyword') }}</h2>
-                    <div v-for="keyword in suggestedKeyword" :key="keyword.id"  style="border: 1px solid; padding:3px;width: fit-content; float: left; margin: 3px;">
+                    <div v-for="keyword in suggestedKeyword" style="border: 1px solid; padding:3px;width: fit-content; float: left; margin: 3px;">
                         <router-link :to="'/search/' + keyword">{{ keyword }}</router-link>
                     </div>
                 </div>

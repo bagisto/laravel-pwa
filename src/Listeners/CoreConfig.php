@@ -2,8 +2,8 @@
 
 namespace Webkul\PWA\Listeners;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 /**
  * Core Config event handler
@@ -15,16 +15,18 @@ class CoreConfig
 {
     /**
      * Containes images sizes
+     *
      */
     protected $sizes = [
-        'small'       => '48x48',
-        'medium'      => '96x96',
-        'large'       => '144x144',
+        'small' => '48x48',
+        'medium' => '96x96',
+        'large' => '144x144',
         'extra_large' => '196x196',
     ];
 
     /**
      * Generate menifest.json file
+     *
      */
     public function generateManifestFile()
     {
@@ -45,16 +47,6 @@ class CoreConfig
                         'src'   => Storage::url(core()->getConfigData('pwa.settings.media.' . $size)),
                         'sizes' => $this->sizes[$size],
                         'type'  => Storage::mimeType(core()->getConfigData('pwa.settings.media.' . $size)),
-                    ];
-                }
-            }
-
-            if (!count($icons)) {
-                foreach (['small', 'medium', 'large', 'extra_large'] as $size) {
-                    $icons[] = [
-                        'src'   => 'themes/pwa/default/build/assets/images/' . $this->sizes[$size] . '.png',
-                        'sizes' => $this->sizes[$size],
-                        'type'  => 'image/png',
                     ];
                 }
             }

@@ -27,13 +27,13 @@
 
             EventBus.$on('hide-ajax-loader', function() {
                 if (this_this.requestCount)
-                    this_this.requestCount = false;
+                    this_this.requestCount--;
             });
 
             EventBus.$on('destroy-ajax-loader', function() {
                 this_this.requestCount = 0;
             });
-        }   
+        }
     }
 </script>
 

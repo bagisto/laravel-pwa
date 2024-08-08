@@ -18,7 +18,7 @@ class PWAListeners
                 $detect->isMobile()
                 && request()->url() == route('shop.home.index')
             ) {
-                // return redirect()->to('/mobile')->send();
+                return redirect()->to('/mobile')->send();
             }
         }
     }

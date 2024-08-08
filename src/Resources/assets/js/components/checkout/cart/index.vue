@@ -90,22 +90,15 @@
     import EmptyCart    from './empty-cart';
     import CartItem     from './item';
     import Accordian    from '../../shared/accordian';
-    import {
-        mapState,
-        mapActions
-    } from 'vuex';
 
     export default {
         name: 'cart',
 
         components: { CustomHeader, CartItem, Accordian, EmptyCart },
 
-        computed: mapState({
-            cart: state => state.cart,
-        }),
-
         data () {
             return {
+                cart: null,
                 quantities: {},
                 debounceTimer: 0,
             }
@@ -116,24 +109,40 @@
         },
 
         methods: {
-            ...mapActions([
-                'getCart',
-            ]),
+            getCart () {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/pwa/checkout/cart')
+                    .then(function(response) {
+                        EventBus.$emit('hide-ajax-loader');
+
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
+                    })
+                    .catch(function (error) {});
+            },
 
             moveToWishlist (item) {
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/checkout/cart/move-to-wishlist/' + item.id, {params : {token: true}})
+                this.$http.get('/api/checkout/cart/move-to-wishlist/' + item.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        EventBus.$emit('checkout.cart.changed',  response.data.data);
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                        this_this.$toasted.show(error.response.data.message, { type: 'error' });
+                    });
             },
 
             removeItem (item) {
@@ -146,12 +155,10 @@
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
-                        
-                        const index = this_this.cart.items.findIndex(cartItem => cartItem.id === item.id);
-                        
-                        if (index !== -1) {
-                            this_this.cart.items.splice(index, 1);
-                        }
+
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
             },
@@ -167,7 +174,9 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        EventBus.$emit('checkout.cart.changed', null);
+                        this_this.cart = null;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
             },
@@ -183,7 +192,9 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        EventBus.$emit('checkout.cart.changed', response.data.data);
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
             },
@@ -192,7 +203,7 @@
                 clearTimeout(this.debounceTimer);
                 this.debounceTimer = setTimeout(() => {
                     this.updateCart();
-                }, 2000);
+                }, 2000); 
             }
         }
     }
@@ -269,7 +280,6 @@
                 .panel-heading {
                     padding: 0;
                     border-bottom: 1px solid rgba(0, 0, 0 ,0.12);
-                    width: 100%;
 
                     .update-cart-link {
                         float: left;

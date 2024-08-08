@@ -1,9 +1,8 @@
 <template>
-    <div class="content test">
+    <div class="content">
         <custom-header :title="$t('Orders')"></custom-header>
 
         <div class="order-list" v-if="orders.length">
-             <order-filter :orders="orders"></order-filter>
             <order-card v-for="order in orders" :key='order.uid' :order="order"></order-card>
         </div>
 
@@ -18,12 +17,11 @@
     import OrderCard      from './card';
     import Pagination     from '../../../../shared/pagination';
     import EmptyOrderList from './empty-order-list';
-    import OrderFilter              from './order-filter';
 
     export default {
         name: 'order-list',
 
-        components: { CustomHeader,OrderFilter, OrderCard, Pagination, EmptyOrderList },
+        components: { CustomHeader, OrderCard, Pagination, EmptyOrderList },
 
         data () {
             return {
@@ -32,8 +30,7 @@
                 pagination: {},
 
 				params: {
-                    'customer_id': this.customer.id,
-                    token : true
+                    'customer_id': this.customer.id
                 },
             }
         },

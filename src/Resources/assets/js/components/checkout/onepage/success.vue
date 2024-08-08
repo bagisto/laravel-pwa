@@ -4,12 +4,7 @@
 
         <h2>{{ $t('Thank you for your order') }}</h2>
 
-        <p>
-            {{ $t('your_order_number_is') }}
-            <router-link class="view-link" :to="'/customer/account/orders/' + orderId">
-                <span class='order-id' style='font-weight: 700; color: rgba(0, 0, 0, 0.86);'>#{{ orderId }}</span>
-            </router-link>
-        </p>
+        <p v-html="$t('your_order_number_is', {order_id: '<span class=\'order-id\' style=\'font-weight: 700; color: rgba(0, 0, 0, 0.86);\'>#' + orderId + '</span>'})"></p>
 
         <p>{{ $t('We will email you an order confirmation with details and tracking info.') }}</p>
 

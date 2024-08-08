@@ -1,7 +1,7 @@
 <template>
     <div class="content" v-if="address">
         <custom-header :title="$t('Edit Address')"></custom-header>
-
+        
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
                 <div class="control-group" :class="[errors.has('address1[]') ? 'has-error' : '']">
@@ -17,12 +17,6 @@
 
                 <country-state :address="address"></country-state>
 
-                <div class="control-group" :class="[errors.has('vat_id') ? 'has-error' : '']">
-                    <input type="text" name="vat_id" class="control" v-model="address.vat_id" :placeholder="$t('Vat Id')" :data-vv-as="$t('Vat Id')"/>
-                    <label>{{ $t('Vat Id') }}</label>
-                    <span class="control-error" v-if="errors.has('vat_id')">{{ errors.first('vat_id') }}</span>
-                </div>
-
                 <div class="control-group" :class="[errors.has('city') ? 'has-error' : '']">
                     <input type="text" name="city" class="control" v-model="address.city" v-validate="'required'" :placeholder="$t('City')" :data-vv-as="$t('City')"/>
                     <label>{{ $t('City') }}</label>
@@ -36,7 +30,7 @@
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
-                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required|numeric'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
+                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
                     <label>{{ $t('Phone') }}</label>
                     <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
                 </div>
@@ -82,7 +76,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses/' + addressId,{params : {token : true}})
+                this.$http.get('/api/addresses/' + addressId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -123,10 +117,10 @@
 
             updateAddress () {
                 var this_this = this;
-
+                
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put('/api/addresses/' + this.address.id, this.address,{params : {token : true}})
+                this.$http.put('/api/addresses/' + this.address.id, this.address)
                     .then(function(response) {
                         this_this.loading = false;
 

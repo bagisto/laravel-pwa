@@ -7,8 +7,8 @@
             >
         </layered-navigation>
 
-        <div class="category-banner" v-if="category.category_banner">
-            <img alt="category-image" :src="category.category_banner"/>
+        <div class="category-banner" v-if="category.image_url">
+            <img alt="category-image" :src="category.image_url"/>
         </div>
 
         <div
@@ -23,7 +23,7 @@
                 <div class="panel-content">
                     <div class="product-list product-grid-2">
 
-                        <product-card :is-customer="customer ? true : false" v-for="product in products" :key='product.uid' :product="product"></product-card>
+                        <product-card v-for="product in products" :key='product.uid' :product="product"></product-card>
 
                     </div>
 
@@ -66,10 +66,6 @@
     import ProductCard       from '../products/card';
     import Pagination        from '../shared/pagination';
     import NoProductFound    from './no-product-found';
-    import {
-            mapState,
-            mapActions
-        } from 'vuex';
 
     export default {
         name: 'category',
@@ -101,22 +97,11 @@
             }
         },
 
-        computed: mapState({
-            customer: state => state.customer,
-        }),
-
         mounted () {
             this.getCategory(this.$route.params.id);
-
-            this.getCustomer();
         },
 
         methods: {
-
-            ...mapActions([
-                'getCustomer',
-            ]),
-
             getCategory (categoryId) {
                 var this_this = this;
 
@@ -125,7 +110,7 @@
                 this.$http.get('/api/categories/' + categoryId)
                     .then(function(response) {
                         this_this.category = response.data.data;
-                        console.log(this_this.category);
+
                         this_this.childCategories = [];
 
                         if (this_this.category.display_mode == 'description_only') {

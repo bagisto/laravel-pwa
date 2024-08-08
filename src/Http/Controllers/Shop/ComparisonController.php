@@ -3,9 +3,12 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Webkul\API\Http\Controllers\Shop\Controller;
-use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Velocity\Helpers\Helper;
 use Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository;
+use Webkul\Product\Repositories\ProductRepository;
+use Webkul\PWA\Http\Resources\Customer\Comparison as CompareResource;
+use Webkul\API\Http\Resources\Checkout\Cart as CartResource;
+use Cart;
 
 /**
  * Comparison controller
@@ -13,39 +16,54 @@ use Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository;
  * @author Webkul Software Pvt. Ltd. <support@webkul.com>
  * @copyright 2021 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
+
 class ComparisonController extends Controller
 {
+
     /**
-     * Contains current guard
+     * VelocityCustomerCompareProductRepository object of repository
      *
-     * @var array
+     * @var \Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository
      */
-    protected $guard;
+    protected $compareProductsRepository;
+
+    /**
+     * ProductRepository object
+     *
+     * @var object
+     */
+    protected $productRepository;
+
+    /**
+     * Helper object
+     *
+     * @var \Webkul\Velocity\Helpers\Helper
+     */
+    protected $velocityHelper;
 
     /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Product\Repositories\ProductRepository  $productRepository
+     * @param  \Webkul\Velocity\Helpers\Helper                                         $velocityHelper
+     * @param  \Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository  $compareProductsRepository
+     * @param Webkul\Product\Repositories\ProductRepository                            $productRepository
+     *
      * @return void
      */
     public function __construct(
-        protected Helper $velocityHelper,
-        protected VelocityCustomerCompareProductRepository $compareProductsRepository,
-        protected ProductRepository $productRepository
+        Helper $velocityHelper,
+        VelocityCustomerCompareProductRepository $compareProductsRepository,
+        ProductRepository $productRepository
     ) {
         $this->guard = request()->has('token') ? 'api' : 'customer';
 
-        $this->_config = request('_config');
+        auth()->setDefaultDriver($this->guard);
 
-        if (isset($this->_config['authorization_required']) && $this->_config['authorization_required']) {
+        $this->velocityHelper = $velocityHelper;
 
-            auth()->setDefaultDriver($this->guard);
+        $this->compareProductsRepository = $compareProductsRepository;
 
-            $this->middleware('auth:'.$this->guard);
-        }
-
-        $this->middleware('validateAPIHeader');
-
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -60,18 +78,17 @@ class ComparisonController extends Controller
         } else {
             if (request()->get('data')) {
                 $productCollection = [];
-
+                
                 $comparableAttributes = [];
 
-                if (auth()->guard($this->guard)->user()) {
-
+                if (auth()->guard('customer')->user()) {
                     $productCollection = $this->compareProductsRepository
                         ->leftJoin(
-                            'products',
-                            'velocity_customer_compare_products.product_id',
-                            'products.id'
+                            'product_flat',
+                            'velocity_customer_compare_products.product_flat_id',
+                            'product_flat.id'
                         )
-                        ->where('customer_id', auth()->guard($this->guard)->user()->id)
+                        ->where('customer_id', auth()->guard('customer')->user()->id)
                         ->get();
 
                     $items = $productCollection->map(function ($product) {
@@ -93,8 +110,8 @@ class ComparisonController extends Controller
                 }
 
                 $response = [
-                    'status'               => 'success',
-                    'products'             => $productCollection,
+                    'status'   => 'success',
+                    'products' => $productCollection,
                     'comparableAttributes' => $comparableAttributes,
                 ];
 
@@ -112,50 +129,49 @@ class ComparisonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function addCompareProduct()
-    {
+    {           
         $productId = request()->get('productId');
-
-        $customerId = auth()->guard($this->guard)->user()->id;
-
-        if ($product = $this->productRepository->findOrFail($productId)) {
-            if (! $product->visible_individually) {
-                abort(404);
-            }
-        }
-
+      
+        $customerId = auth()->guard('customer')->user()->id;
+        
         $compareProduct = $this->compareProductsRepository->findOneByField([
-            'customer_id' => $customerId,
-            'product_id'  => $productId,
+            'customer_id'     => $customerId,
+            'product_flat_id' => $productId,
         ]);
+        
+        if (! $compareProduct) {
+            // insert new row
 
-        if ($compareProduct) {
+            $productFlatRepository = app('\Webkul\Product\Models\ProductFlat');
+
+            $productFlat = $productFlatRepository
+                            ->where('id', $productId)
+                            ->orWhere('parent_id', $productId)
+                            ->orWhere('id', $productId)
+                            ->get()
+                            ->first();
+
+            if ($productFlat) {
+                $productId = $productFlat->id;
+
+                $this->compareProductsRepository->create([
+                    'customer_id'     => $customerId,
+                    'product_flat_id' => $productId,
+                ]);
+            }
+
             return response()->json([
-                'status'  => 'warning',
-                'label'   => trans('velocity::app.shop.general.alert.warning'),
+                'status'  => 'success',
+                'message' => trans('velocity::app.customer.compare.added'),
+                'label'   => trans('velocity::app.shop.general.alert.success'),
+            ], 201);
+        } else {
+            return response()->json([
+                'status'  => 'success',
+                'label'   => trans('velocity::app.shop.general.alert.success'),
                 'message' => trans('velocity::app.customer.compare.already_added'),
-            ]);
+            ], 200);
         }
-
-        $product = $this->productRepository->find($productId);
-
-        if (! $product) {
-            return response()->json([
-                'status'  => 'warning',
-                'message' => trans('customer::app.product-removed'),
-                'label'   => trans('velocity::app.shop.general.alert.warning'),
-            ]);
-        }
-
-        $this->compareProductsRepository->create([
-            'customer_id' => $customerId,
-            'product_id'  => $product->id,
-        ]);
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => trans('velocity::app.customer.compare.added'),
-            'label'   => trans('velocity::app.shop.general.alert.success'),
-        ]);
     }
 
     /**
@@ -176,8 +192,8 @@ class ComparisonController extends Controller
         } else {
             // delete individual
             $this->compareProductsRepository->deleteWhere([
-                'product_id'  => request()->get('productId'),
-                'customer_id' => auth()->guard($this->guard)->user()->id,
+                'product_flat_id' => request()->get('productId'),
+                'customer_id'     => auth()->guard('customer')->user()->id,
             ]);
             $message = trans('velocity::app.customer.compare.removed');
         }
@@ -187,7 +203,7 @@ class ComparisonController extends Controller
             'message' => $message,
             'label'   => trans('velocity::app.shop.general.alert.success'),
         ];
-
+            
     }
 
     /**
@@ -210,18 +226,19 @@ class ComparisonController extends Controller
             }
 
             $response = [
-                'status'               => 'success',
-                'products'             => $productCollection,
+                'status'   => 'success',
+                'products' => $productCollection,
                 'comparableAttributes' => $comparableAttributes,
             ];
         }
 
         return response()->json($response ?? [
-            'status' => false,
+            'status' => false
         ]);
     }
 
-    /**
+
+     /**
      * Get Comparable Attributes.
      *
      * @return array
@@ -234,16 +251,16 @@ class ComparisonController extends Controller
         $locale = request()->get('locale') ?: app()->getLocale();
 
         $attributeOptionTranslations = app('\Webkul\Attribute\Repositories\AttributeOptionTranslationRepository')->where('locale', $locale)->get()->toJson();
-
+                
         $comparableAttributes = $comparableAttributes->toArray();
 
         array_splice($comparableAttributes, 1, 0, [[
-            'code'       => 'product_image',
+            'code' => 'product_image',
             'admin_name' => __('velocity::app.customer.compare.product_image'),
         ]]);
 
         array_splice($comparableAttributes, 2, 0, [[
-            'code'       => 'addToCartHtml',
+            'code' => 'addToCartHtml',
             'admin_name' => __('velocity::app.customer.compare.actions'),
         ]]);
 

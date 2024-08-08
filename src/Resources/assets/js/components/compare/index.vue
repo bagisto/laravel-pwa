@@ -5,20 +5,20 @@
         <div class="panel" v-if="compare.length">
             <div class="panel-content">
                 <table class="row">
-                    <tr class="compare-products" v-for="attribute in comparableAttributes">
+                    <tr v-for="attribute in comparableAttributes" class="compare-products">
                         <td class="attribute-name">
                             <span class="fs16">{{ attribute['name'] ? attribute['name'] : attribute['admin_name'] }}</span>
                         </td>
-                        <compare-card 
-                            v-for="item in compare"
-                            :key='item.id'
-                            :compareItem="item"
-                            :attribute="attribute"
-                            :customer="customer"
-                            @onRemove="removecompareItem(item)"
-                            @onMoveToCart="moveToCart(item)"
-                        ></compare-card>
-                    </tr>
+                    <compare-card 
+                        v-for="item in compare"
+                        :key='item.id'
+                        :compareItem="item"
+                        :attribute="attribute"
+                        :customer="customer"
+                        @onRemove="removecompareItem(item)"
+                        @onMoveToCart="moveToCart(item)"
+                    ></compare-card>
+                    <tr>
                 </table>
             </div>
         </div>
@@ -68,7 +68,7 @@
                 let items = '';
                 let url = '';
                 let data = {
-                    params: {'data': true,token:JSON.parse(localStorage.getItem('token'))}
+                    params: {'data': true}
                 }
 
                 if (! this_this.customer) {
@@ -112,7 +112,7 @@
                 EventBus.$emit('show-ajax-loader');
 
                 if (this_this.customer) {
-                    this_this.$http.post('/api/pwa/comparison', {productId: item.id},{params : { token : JSON.parse(localStorage.getItem('token'))}} )
+                    this_this.$http.post('/api/pwa/comparison', {productId: item.id} )
                     .then(function(response) {
 
                         EventBus.$emit('hide-ajax-loader');

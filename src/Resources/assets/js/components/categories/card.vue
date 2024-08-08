@@ -5,8 +5,8 @@
                 <img
                     alt="category-image"
                     onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
-                    :src="category.category_icon_path
-                          ? category.category_icon_path
+                    :src="category.image_url
+                          ? category.image_url
                           : '/vendor/webkul/pwa/assets/images/category-image.png'"
                 />
             </div>

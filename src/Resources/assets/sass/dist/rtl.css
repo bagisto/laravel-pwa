@@ -1,0 +1,61 @@
+.rtl .product-social-links .share-link .icon,
+.rtl .product-social-links .wishlist-link .icon {
+  margin-left: 8px;
+  float: right !important;
+}
+.rtl li.category-card {
+  margin-right: 15px !important;
+}
+.rtl .drawer .drawer-header .login-info .avatar {
+  float: right;
+  margin-left: 15px;
+}
+.rtl .drawer .drawer-header .login-info .arrow-right-icon {
+  left: 0;
+  right: unset;
+}
+.rtl .drawer .drawer-content .drawer-box {
+  padding: 15px 15px 0px 15px;
+}
+.rtl .drawer .drawer-content .drawer-box ul li a {
+  padding: 15px 0 15px 15px;
+}
+.rtl .drawer .drawer-content .drawer-box ul li .sharp-arrow-right-icon {
+  float: left;
+}
+.rtl header.navbar.navbar-top .navbar-left {
+  float: right !important;
+}
+.rtl header.navbar.navbar-top .navbar-left .drawer-icon {
+  float: right !important;
+}
+.rtl header.navbar.navbar-top .navbar-left .shop-title {
+  margin-right: 20px;
+}
+.rtl header.navbar.navbar-top .navbar-right {
+  float: left !important;
+}
+.rtl header.navbar.navbar-top .navbar-right a {
+  margin-left: 20px;
+}
+.rtl aside.sidebar.active {
+  right: 0px;
+  left: unset !important;
+}
+.rtl .content .checkout-container .panel .panel-content .address-list .address-item .address_details {
+  padding-left: 0;
+  padding-right: 36px;
+}
+.rtl .content .cart-container .total-summary table tr td:last-child {
+  text-align: left !important;
+}
+.rtl .control-group label {
+  right: 16px;
+  left: unset;
+}
+.rtl .icon.arrow-right-icon {
+  background-image: url(../images/arrow_left_icon.png);
+}
+.rtl .icon.sharp-arrow-right-icon {
+  background-image: url(../images/sharp-arrow-left-icon.svg);
+}

@@ -1,0 +1,140 @@
+.rtl {
+    .product-social-links {
+        .share-link,
+        .wishlist-link {
+            .icon {
+                margin-left: 8px;
+                float: right !important;
+            }
+        }
+    }
+
+    li {
+        &.category-card {
+            margin-right: 15px !important;
+        }
+    }
+
+    .drawer {
+        .drawer-header {
+            .login-info {
+                .avatar {
+                    float: right;
+                    margin-left: 15px;
+                }
+
+                .arrow-right-icon {
+                    left: 0;
+                    right: unset;
+                }
+            }
+        }
+        
+        .drawer-content {
+            .drawer-box {
+                padding: 15px 15px 0px 15px;
+
+                ul {
+                    li {
+                        a {
+                            padding: 15px 0 15px 15px;
+                        }
+
+                        .sharp-arrow-right-icon {
+                            float: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    header {
+        &.navbar {
+            &.navbar-top {
+                .navbar-left {
+                    float: right !important;
+
+                    .drawer-icon {
+                        float: right !important;
+                    }
+
+                    .shop-title {
+                        margin-right: 20px;
+                    }
+                }
+
+                .navbar-right {
+                    float: left !important;
+
+                    a {
+                        margin-left: 20px;
+                    }
+                }
+            }
+        }
+    }
+
+    .header {
+        .home-icon {
+            float: left !important;
+        }
+    }
+
+    aside {
+        &.sidebar {
+            &.active {
+                right: 0px;
+                left: unset !important;
+            }
+        }
+    }
+
+    .content {
+        .checkout-container {
+            .panel {
+                .panel-content {
+                    .address-list {
+                        .address-item {
+                            .address_details {
+                                padding-left: 0;
+                                padding-right: 36px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .cart-container {
+            .total-summary {
+                table {
+                    tr {
+                        td {
+                            &:last-child {
+                                text-align: left !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .control-group {
+        label {
+            right: 16px;
+            left: unset;
+        }
+    }
+
+    .icon {
+        &.arrow-right-icon {
+            background-image: url(../images/arrow_left_icon.png);
+        }
+
+        &.sharp-arrow-right-icon {
+            background-image: url(../images/sharp-arrow-left-icon.svg);
+        }
+    }
+}
