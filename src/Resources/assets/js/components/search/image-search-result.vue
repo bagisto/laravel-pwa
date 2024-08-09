@@ -49,7 +49,7 @@
 
         mounted () {
             this.getImageSearchQuery();
-            
+
         },
 
         methods: {
@@ -63,7 +63,7 @@
                 this.params.search = firstResult[0];
 
                 this.getProducts(this.params);
-            
+
             },
 
             getProducts (searchTerm) {
@@ -71,7 +71,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/products", { params: searchTerm })
+                this.$http.get("/leagcy-api/pwa/products", { params: searchTerm })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
                         response.data.data.forEach(function(product) {
@@ -93,5 +93,5 @@
 </script>
 
 <style scoped lang="scss">
-    
+
 </style>

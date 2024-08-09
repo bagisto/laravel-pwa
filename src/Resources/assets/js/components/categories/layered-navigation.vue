@@ -10,7 +10,7 @@
                 <li @click="bottomSheets.filter = true">
                     <i class="icon sharp-filter-icon"></i>
                     {{ $t('Filter') }}
-                </li> 
+                </li>
                 <!-- <li>
                     <i class="icon sharp-grid-icon"></i>
                     Grid
@@ -128,7 +128,7 @@
 
     export default {
         name: 'layered-navigation',
-        
+
         props: ['categoryId'],
 
         components: { BottomSheet, VueSlider },
@@ -207,7 +207,7 @@
             getFilerableAttributes () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/attributes', { params: {
+                this.$http.get('/leagcy-api/pwa/attributes', { params: {
                         pagination: 0,
                         is_filterable: 1,
                         category_id: this.categoryId,
@@ -363,7 +363,7 @@
                             height: 100%;
                             top: 0;
                         }
-                        
+
                         input {
                             display: none;
                         }
@@ -375,7 +375,7 @@
                         .icon.sharp-done-green {
                             float: right;
                             display: none;
-                        } 
+                        }
 
                         input:checked + .icon.sharp-done-green {
                             display: inline-block;
@@ -397,7 +397,7 @@
 
                         .icon.sharp-done-white {
                             display: none;
-                        } 
+                        }
 
                         input:checked + .icon.sharp-done-white {
                             display: inline-block;

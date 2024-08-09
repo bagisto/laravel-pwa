@@ -4,7 +4,7 @@
 
         <div class="address-list" v-if="addresses.length">
             <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
-            
+
             <router-link class="btn btn-black" :to="'/customer/account/addresses/create'">{{ $t('Add New Address') }}</router-link>
         </div>
 
@@ -40,7 +40,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id } })
+                this.$http.get('/leagcy-api/addresses', { params: { customer_id: this.customer.id } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

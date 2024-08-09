@@ -18,21 +18,20 @@
         <meta name="keywords" content="{{ core()->getConfigData('pwa.settings.seo.seo_keywords')  }}" >
         @endif
 
-        {{-- <link rel="stylesheet" href="{{ asset('vendor/webkul/pwa/assets/css/pwa.css?v=' . strtotime("now")) }}"> --}}
-        @bagistoVite(['src/Resources/assets/css/app.css'], 'pwa')
+        <link rel="stylesheet" href="{{ asset('themes/pwa/default/build/assets/css/pwa.css?v=' . strtotime("now")) }}">
         <link rel="manifest" href="{{ asset('manifest.json') }}">
         <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
 
-        <link rel="icon" sizes="48x48" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.small')) : asset('vendor/webkul/pwa/assets/images/48x48.png') }}" />
-        <link rel="icon" sizes="96x96" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.medium')) : asset('vendor/webkul/pwa/assets/images/96x96.png')  }}">
-        <link rel="icon" sizes="144x144" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.large')) : asset('vendor/webkul/pwa/assets/images/144x144.png')  }}">
-        <link rel="icon" sizes="196x196" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.extra_large')) : asset('vendor/webkul/pwa/assets/images/196x196.png')  }}">
+        <link rel="icon" sizes="48x48" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.small')) : asset('themes/pwa/default/build/assets/images/48x48.png') }}" />
+        <link rel="icon" sizes="96x96" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.medium')) : asset('themes/pwa/default/build/assets/images/96x96.png')  }}">
+        <link rel="icon" sizes="144x144" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.large')) : asset('themes/pwa/default/build/assets/images/144x144.png')  }}">
+        <link rel="icon" sizes="196x196" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.extra_large')) : asset('themes/pwa/default/build/assets/images/196x196.png')  }}">
 
         {{-- icons for IOS devices --}}
-        <link rel="apple-touch-icon" sizes="48x48" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.small')) : asset('vendor/webkul/pwa/assets/images/48x48.png')  }}">
-        <link rel="apple-touch-icon" sizes="96x96" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.medium')) : asset('vendor/webkul/pwa/assets/images/96x96.png')  }}">
-        <link rel="apple-touch-icon" sizes="144x144" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.large')) : asset('vendor/webkul/pwa/assets/images/144x144.png')  }}">
-        <link rel="apple-touch-icon" sizes="196x196" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.extra_large')) : asset('vendor/webkul/pwa/assets/images/196x196.png')  }}">
+        <link rel="apple-touch-icon" sizes="48x48" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.small')) : asset('themes/pwa/default/build/assets/images/48x48.png')  }}">
+        <link rel="apple-touch-icon" sizes="96x96" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.medium')) : asset('themes/pwa/default/build/assets/images/96x96.png')  }}">
+        <link rel="apple-touch-icon" sizes="144x144" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.large')) : asset('themes/pwa/default/build/assets/images/144x144.png')  }}">
+        <link rel="apple-touch-icon" sizes="196x196" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.extra_large')) : asset('themes/pwa/default/build/assets/images/196x196.png')  }}">
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <span class="phpdebugbar-text-muted">
@@ -62,7 +61,10 @@
                 currencies: @json(core()->getCurrentChannel()->currencies),
                 currentCurrency: @json(core()->getCurrentCurrency()),
                 locales: @json(core()->getCurrentChannel()->locales),
-                currentLocale: @json(core()->getCurrentLocale())
+                currentLocale: @json(core()->getCurrentLocale()),
+                topicKey:"{{ core()->getConfigData('pwa.settings.push-notification.topic') }}",
+                serverAPIKey:"{{ core()->getConfigData('pwa.settings.push-notification.api-key') }}",
+                messagingIdKey:"{{ core()->getConfigData('pwa.settings.push-notification.messaging-id') }}",
             };
         </script>
 
@@ -71,7 +73,10 @@
             $acceptedCurrency = core()->getConfigData('sales.paymentmethods.paypal_smart_button.accepted_currencies');
         @endphp
 
-        <script src="https://www.paypal.com/sdk/js?client-id={{ $clientId }}&currency={{ $acceptedCurrency }}" data-partner-attribution-id="Bagisto_Cart"></script>
+        @if ($clientId && $acceptedCurrency)
+            <script src="https://www.paypal.com/sdk/js?client-id={{ $clientId }}&currency={{ $acceptedCurrency }}" data-partner-attribution-id="Bagisto_Cart"></script>
+        @endif
+
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
         <script type="text/javascript" src="{{ asset('themes/pwa/default/build/assets/js/app.js?v=' . strtotime("now")) }}"></script>
@@ -82,6 +87,7 @@
 
         <script>
             if ('serviceWorker' in navigator ) {
+
                 window.addEventListener('load', function() {
                     navigator.serviceWorker.register("{{ asset('service-worker.js') }}")
                         .then(function(registration) {

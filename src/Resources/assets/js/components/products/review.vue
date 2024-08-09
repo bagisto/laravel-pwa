@@ -16,7 +16,7 @@
                 {{ $t('Add Your Review') }}
             </router-link>
         </div>
-        
+
     </div>
 </template>
 
@@ -55,7 +55,7 @@
 
                 var guest_checkout_key = 'catalog.products.review.guest_review';
 
-                this.$http.get("/api/config", {
+                this.$http.get("/leagcy-api/config", {
                     params: {
                         _config: `${guest_checkout_key}`
                     }

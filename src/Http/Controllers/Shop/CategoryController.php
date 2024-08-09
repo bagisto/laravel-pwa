@@ -2,7 +2,6 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Illuminate\Http\Request;
 use Webkul\API\Http\Controllers\Shop\Controller;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\PWA\Http\Resources\Catalog\Category as CategoryResource;

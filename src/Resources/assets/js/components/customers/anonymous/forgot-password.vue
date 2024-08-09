@@ -20,7 +20,7 @@
 
                 <div class="button-group">
                     <button class="btn btn-black btn-lg">{{ $t('Submit') }}</button>
-                    
+
                     <button class="btn btn-outline-black btn-lg" @click="$emit('onOpenPopup', 'login')">{{ $t('Sign In') }}</button>
                 </div>
             </div>
@@ -61,10 +61,10 @@
 
             forgotPassword () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post("/api/customer/forgot-password", this.user)
+                this.$http.post("/leagcy-api/customer/forgot-password", this.user)
                     .then(function(response) {
                         this_this.loading = false;
 

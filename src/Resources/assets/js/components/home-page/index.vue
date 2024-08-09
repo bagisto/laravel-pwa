@@ -1,6 +1,5 @@
 <template>
     <div class="content">
-
         <carousel
                 :per-page="1"
                 :loop="true"
@@ -13,11 +12,15 @@
                 :key='slider.id'
                 v-for="slider in sliders"
             >
-                <a :href="slider.slider_path" class="slider-image-container" v-if="slider.slider_path && slider.slider_path != ''">
+                <a
+                    :href="slider.link"
+                    class="slider-image-container"
+                    v-if="slider.link && slider.link != ''"
+                >
                     <img
                         class="slider-image"
                         alt="base-image-original"
-                        :src="slider.image_url"
+                        :src="slider.image"
                     />
                 </a>
 
@@ -25,22 +28,18 @@
                     v-else
                     class="slider-image"
                     alt="base-image-original"
-                    :src="slider.image_url"
+                    :src="slider.image"
                 />
 
-                <div class="show-content" v-html="slider.content">
+                <div class="show-content" v-html="slider.title">
                 </div>
             </slide>
         </carousel>
 
         <div class="category-container" v-if="showCategories">
-
             <ul class="category-list">
-
                 <category-card v-for="category in categories" :key='category.uid' :category="category"></category-card>
-
             </ul>
-
         </div>
 
         <div :key="index" class="products panel" v-for="(content, index) in homePageContent">
@@ -67,7 +66,7 @@
                 v-else-if="index == 'advertisement-three'"
                 >
             </advertisement>
-            
+
             <div class="products panel" v-else>
                 <template v-if="content.products && content.products.length">
                     <div class="category-title">
@@ -183,7 +182,7 @@
                 }
 			}
         },
-        
+
         computed: mapState({
             customer: state => state.customer,
         }),
@@ -204,9 +203,16 @@
             ]),
 
             getSliders () {
-                this.$http.get("/api/pwa/sliders?sort=id&order=asc")
+                this.$http.get("/api/pwa/sliders")
                     .then(response => {
-                        this.sliders = response.data.data;
+
+                        this.sliders = response.data.images;
+
+                        this.sliders.forEach(item => {
+                            if (!item.image.startsWith(window.config.app_base_url)) {
+                                item.image = window.config.app_base_url + item.image;
+                            }
+                        });
                     })
                     .catch(function (error) {});
             },
@@ -219,13 +225,20 @@
                 var enable_featured_key = 'pwa.settings.general.enable_featured';
                 var enable_categories_home_page_listing_key = 'pwa.settings.general.enable_categories_home_page_listing';
 
-                this.$http.get("/api/config", {
+                const configKeys = [
+                    enable_new_key,
+                    enable_slider_key,
+                    enable_featured_key,
+                    enable_categories_home_page_listing_key,
+                ];
+
+                this.$http.get("/api/v1/core-configs", {
                     params: {
-                        _config: `${enable_new_key},${enable_slider_key},${enable_featured_key},${enable_categories_home_page_listing_key}`
+                        _config: configKeys
                     }
                 }).then(response => {
-                    EventBus.$emit('hide-ajax-loader');
 
+                    EventBus.$emit('hide-ajax-loader');
                     if (response.data.data[enable_new_key] == "1") {
                         this.getProducts('new', { 'new': 1, limit: 4 });
                     }
@@ -242,7 +255,9 @@
                         this.showCategories = true;
                     }
                 })
-                .catch(function (error) {});
+                .catch(error =>  {
+                    console.error(error);
+                });
             },
 
             getHomePageContent () {
@@ -250,13 +265,15 @@
 
                 this.$http.get("/api/pwa-layout")
                     .then(response => {
+
                         EventBus.$emit('hide-ajax-loader');
 
                         let homePageContent = response.data.data[0].home_page_content;
-                        let homePageContentArray = homePageContent.split(",");
+                        let homePageContentArray = homePageContent.replace(/<\/?[^>]+(>|$)/g, "").split(",");
 
                         this.$http.get("/api/advertisements?locale=en")
                             .then(response => {
+
                                 homePageContentArray.forEach(content => {
                                     switch (content) {
                                         case 'velocity-advertisement-two':
@@ -272,17 +289,19 @@
                                             break;
 
                                         default:
-                                            this.homePageContent[content] = {};
+                                            let base_content = content.toLowerCase().trim();
+                                            this.homePageContent[base_content] = {};
 
                                             if (this.categories) {
                                                 this.categories.filter(category => {
-                                                    if (category.slug == content) {
-                                                        this.homePageContent[content] = {
+                                                    if (category.slug.toLowerCase() == base_content) {
+
+                                                        this.homePageContent[base_content] = {
                                                             'products' : [],
                                                             'category_details' : category,
                                                         }
 
-                                                        this.getProducts(content, { 'category_id': category.id });
+                                                        this.getProducts(base_content, { 'category_id': category.id });
                                                     }
                                                 });
                                             }
@@ -298,7 +317,7 @@
             getCategories () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
+                this.$http.get("/api/v1/descendant-categories", { params: { parent_id: window.channel.root_category_id } })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -314,7 +333,7 @@
                                 this.homePageContent[category.slug] = {
                                     'category_details' : category,
                                 }
-                                
+
                                 this.getProducts(category.slug, { 'category_id': category.id });
                             }
                         });
@@ -324,11 +343,11 @@
 
             getProducts (details, params) {
                 EventBus.$emit('show-ajax-loader');
-
-                this.$http.get("/api/pwa/products", { params: params })
+                this.$http.get("/api/v1/products", { params: params })
                     .then(response => {
+
                         EventBus.$emit('hide-ajax-loader');
-                        
+
                         if (params.category_id) {
                             if (this.homePageContent[details]) {
                                 this.$set(this.homePageContent[details], 'products', response.data.data);

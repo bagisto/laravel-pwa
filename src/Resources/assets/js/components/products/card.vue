@@ -38,7 +38,7 @@
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/wishlist/add/' + this.product.id)
+                this.$http.get('/leagcy-api/wishlist/add/' + this.product.id)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -55,7 +55,7 @@
                 EventBus.$emit('show-ajax-loader');
 
                 if (this.isCustomer) {
-                    this.$http.put('/api/pwa/comparison/', {productId: this.product.id})
+                    this.$http.put('/leagcy-api/pwa/comparison/', {productId: this.product.id})
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -64,10 +64,10 @@
                     .catch(error => {
                         this.$toasted.show(error.response.data.error, { type: 'error' })
                     });
-                } else {                    
+                } else {
                     let updatedItems = [this.product.id];
                     let existingItems = JSON.parse(localStorage.getItem('compared_product'));
-                    
+
                     if (existingItems) {
                         if (existingItems.indexOf(this.product.id) == -1) {
                             updatedItems = existingItems.concat(updatedItems);
@@ -79,7 +79,7 @@
                             EventBus.$emit('hide-ajax-loader');
                         } else {
                             this.$toasted.show('Item is already added to compare list', { type: 'success' })
-                        
+
                             EventBus.$emit('hide-ajax-loader');
                         }
                     } else {

@@ -1,7 +1,7 @@
 <template>
     <div class="content" v-if="address">
         <custom-header :title="$t('Edit Address')"></custom-header>
-        
+
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
                 <div class="control-group" :class="[errors.has('address1[]') ? 'has-error' : '']">
@@ -76,7 +76,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses/' + addressId)
+                this.$http.get('/leagcy-api/addresses/' + addressId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -90,7 +90,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/config', { params: { '_config': 'customer.settings.address.street_lines' } })
+                this.$http.get('/leagcy-api/config', { params: { '_config': 'customer.settings.address.street_lines' } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -117,10 +117,10 @@
 
             updateAddress () {
                 var this_this = this;
-                
+
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put('/api/addresses/' + this.address.id, this.address)
+                this.$http.put('/leagcy-api/addresses/' + this.address.id, this.address)
                     .then(function(response) {
                         this_this.loading = false;
 

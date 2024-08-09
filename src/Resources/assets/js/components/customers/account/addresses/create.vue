@@ -76,7 +76,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/config', { params: { '_config': 'customer.settings.address.street_lines' } })
+                this.$http.get('/leagcy-api/config', { params: { '_config': 'customer.settings.address.street_lines' } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -106,7 +106,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post('/api/save-address', this.address)
+                this.$http.post('/leagcy-api/save-address', this.address)
                     .then(function(response) {
                         this_this.loading = false;
 

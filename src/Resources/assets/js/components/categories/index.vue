@@ -107,8 +107,9 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/categories/' + categoryId)
+                this.$http.get('/api/v1/categories/' + categoryId)
                     .then(function(response) {
+
                         this_this.category = response.data.data;
 
                         this_this.childCategories = [];
@@ -131,7 +132,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/categories', { params: { parent_id: categoryId } })
+                this.$http.get('/api/v1/descendant-categories', { params: { parent_id: categoryId } })
                     .then(function(response) {
                         this_this.childCategories = response.data.data;
 
@@ -148,7 +149,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/products", { params: this.params })
+                this.$http.get("/api/v1/products", { params: this.params })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

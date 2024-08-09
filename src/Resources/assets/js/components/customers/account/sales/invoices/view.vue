@@ -10,9 +10,9 @@
 
                 <div class="invoice-item-list sale-section-content">
                     <div class="invoice-item">
-                        
+
                         <div v-for="(invoiceItem, index) in invoice.items" :key="index">
-                            
+
                             <div class="invoice-item-info">
                                 <div class="invoice-item-name">
                                     {{ invoiceItem.name }}
@@ -112,7 +112,7 @@
             getInvoice (invoiceId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get(`/api/pwa/invoices/${invoiceId}`)
+                this.$http.get(`/leagcy-api/pwa/invoices/${invoiceId}`)
                     .then(response => {
                         this.invoice = response.data.data;
 
@@ -122,11 +122,11 @@
             },
 
             printInvoice (invoiceId) {
-                this.$http.get(`/api/invoices/${invoiceId}/download`, { responseType: 'blob'})
+                this.$http.get(`/leagcy-api/invoices/${invoiceId}/download`, { responseType: 'blob'})
                     .then(response => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');
-                        
+
                         link.href = url;
 
                         link.setAttribute('download', 'invoice.pdf'); //or any other extension

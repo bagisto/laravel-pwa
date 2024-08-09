@@ -7,7 +7,7 @@
                 <label class="swatch"
                     :key="index"
                     v-for='(option, index) in attribute.options'
-                    
+
                     :data-id="option.id"
                     :for="['attribute_' + attribute.id + '_option_' + option.id]">
 
@@ -86,7 +86,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/product-configurable-config/' + productId)
+                this.$http.get('/leagcy-api/product-configurable-config/' + productId)
                     .then(function(response) {
                         this_this.config = response.data.data;
 

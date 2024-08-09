@@ -26,7 +26,7 @@
                             <img
                                 alt="product-base-small-image"
                                 :src="orderItem.product.base_image.small_image_url"
-                                onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
+                                onerror="this.src = '/themes/pwa/default/build/assets/images/category-image.png'"
                             />
                         </div>
 
@@ -198,7 +198,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/orders/' + orderId)
+                this.$http.get('/leagcy-api/pwa/orders/' + orderId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

@@ -6,8 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Webkul\API\Http\Resources\Core\Channel as ChannelResource;
 use Webkul\API\Http\Resources\Customer\Customer as CustomerResource;
 use Webkul\API\Http\Resources\Sales\Invoice;
-use Webkul\API\Http\Resources\Sales\Shipment;
 use Webkul\API\Http\Resources\Sales\OrderAddress;
+use Webkul\API\Http\Resources\Sales\Shipment;
 
 class Order extends JsonResource
 {
@@ -101,7 +101,7 @@ class Order extends JsonResource
             'formated_shipping_amount'              => core()->formatPrice($this->shipping_amount, $this->order_currency_code),
             'formated_shipping_invoiced'            => core()->formatPrice($this->shipping_invoiced, $this->order_currency_code),
             'formated_shipping_refunded'            => core()->formatPrice($this->shipping_refunded, $this->order_currency_code),
-            'payment_title'                         => core()->getConfigData('sales.paymentmethods.' . $this->payment->method . '.title'),
+            'payment_title'                         => core()->getConfigData('sales.paymentmethods.'.$this->payment->method.'.title'),
             'formated_base_shipping_refunded'       => core()->formatBasePrice($this->base_shipping_refunded),
             'formated_base_shipping_amount'         => core()->formatBasePrice($this->base_shipping_amount),
             'formated_base_shipping_invoiced'       => core()->formatBasePrice($this->base_shipping_invoiced),

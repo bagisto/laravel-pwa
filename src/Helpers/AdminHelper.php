@@ -33,7 +33,7 @@ class AdminHelper
         if (core()->getConfigData('pwa.settings.general.status')) {
             $data = request()->all();
 
-            if (!$category instanceof \Webkul\Category\Contracts\Category) {
+            if (! $category instanceof \Webkul\Category\Contracts\Category) {
                 $category = $this->categoryRepository->findOrFail($category);
             }
 

@@ -323,7 +323,7 @@
                                     <td>{{ $t('Order Total') }}</td>
                                     <td>{{ cart.formated_grand_total }}</td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -448,7 +448,7 @@
 
         mounted () {
             this.getGuestCheckoutStatus();
-           
+
             this.getAuthCustomer();
 
             this.getCart();
@@ -459,8 +459,8 @@
         methods: {
             paypalSmartBtn () {
                 var self = this;
-                
-                    EventBus.$on('after-payment-method-selected', function(payment) {            
+
+                    EventBus.$on('after-payment-method-selected', function(payment) {
                         if (payment != 'paypal_smart_button') {
 
                             $('.paypal-buttons').remove();
@@ -503,27 +503,27 @@
                                 return self.$http.post('/pwa/paypal/smart-button/capture-order', { orderData: data })
                                             .then(function(response) {
                                                 if (response.data.success) {
-                                                    EventBus.$emit('hide-ajax-loader'); 
+                                                    EventBus.$emit('hide-ajax-loader');
 
                                                     if (response.data.redirect_url) {
                                                         window.location.href = response.data.redirect_url;
                                                     } else {
-                                                        self.$router.push({ name: 'order-success', params: {id: response.data.order_id}}); 
-                                                                                                                                                              
+                                                        self.$router.push({ name: 'order-success', params: {id: response.data.order_id}});
+
                                                         EventBus.$emit('checkout.cart.changed', null);
                                                     }
                                                 }
                                             })
                                             .catch(function (error) {
 
-                                                EventBus.$emit('hide-ajax-loader'); 
+                                                EventBus.$emit('hide-ajax-loader');
 
                                                 self.$router.push({ name: 'cart' });
                                             });
                             },
 
                             onCancel: function (data) {
-                                
+
                                 self.$toasted.show('Canceled payment...', { type: 'error' });
                             },
 
@@ -537,10 +537,10 @@
                     });
             },
 
-            getGuestCheckoutStatus () { 
+            getGuestCheckoutStatus () {
                 var this_this = this;
 
-                this.$http.get('/api/checkout/guest-checkout')
+                this.$http.get('/leagcy-api/checkout/guest-checkout')
                     .then(function(response) {
                         if(! response.data.data.status) {
                             this_this.$router.push({ name: 'login-register' });
@@ -549,13 +549,15 @@
                     .catch(function (error) {});
             },
 
-            getAuthCustomer () { 
+            getAuthCustomer () {
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/customer/get')
+                this.$http.get('/leagcy-api/customer/get')
                     .then(function(response) {
+                        console.log('one');
+
                         this_this.customer = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');
@@ -583,7 +585,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: customerId, pagination: 0 } })
+                this.$http.get('/leagcy-api/addresses', { params: { customer_id: customerId, pagination: 0 } })
                     .then(function(response) {
                         this_this.$set(this_this.addresses, 'billing', response.data.data.slice(0))
 
@@ -597,7 +599,7 @@
             getCart () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/checkout/cart')
+                this.$http.get('/leagcy-api/pwa/checkout/cart')
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -680,7 +682,7 @@
                     var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
 
                     Object.assign(self.address.billing, newAddress[0]);
-                    
+
                     self.address.billing.save_as_address = save_as_address;
                 }
 
@@ -691,7 +693,7 @@
                 }
 
                 self.disable_button = true;
-                this.$http.post('/api/pwa/checkout/save-address', self.address)
+                this.$http.post('/leagcy-api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
                         if (response.data.data.nextStep == "payment") {
                             self.skipShipping = true;
@@ -720,7 +722,7 @@
                             self.cart = response.data.data.cart;
 
                             self.step++;
-                            
+
                             self.save_as_address = false;
                             self.address.billing.save_as_address = false;
 
@@ -746,7 +748,7 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
+                this.$http.post('/leagcy-api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
                     .then(function(response) {
                         this_this.disable_button = false;
 
@@ -775,7 +777,7 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
+                this.$http.post('/leagcy-api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
                     .then(function(response) {
                         this_this.disable_button = false;
 
@@ -799,7 +801,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/coupon', { 'code': self.coupon_code })
+                this.$http.post('/leagcy-api/checkout/cart/coupon', { 'code': self.coupon_code })
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -807,7 +809,7 @@
                             self.cart.coupon_code = self.coupon_code;
 
                             self.coupon_code = '';
-                            
+
                             self.savePayment();
                             self.$toasted.show(response.data.message, { type: 'success' });
                         } else {
@@ -825,7 +827,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/remove-coupon')
+                this.$http.post('/leagcy-api/checkout/cart/remove-coupon')
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -847,7 +849,7 @@
             placeOrder () {
                 this.disable_button = true;
 
-                this.$http.post('/api/pwa/checkout/save-order')
+                this.$http.post('/leagcy-api/pwa/checkout/save-order')
                     .then(response => {
                         if (response.data.success) {
                             if (response.data.redirect_url) {
@@ -890,7 +892,7 @@
             checkMinimumPrice (grandTotal) {
                 var minimumPriceKey = 'sales.orderSettings.minimum-order.minimum_order_amount';
 
-                this.$http.get("/api/config", {
+                this.$http.get("/leagcy-api/config", {
                     params: {
                         _config: `${minimumPriceKey}`
                     }

@@ -1,26 +1,29 @@
-import Vue from 'vue';
-import router from '../router';
+import Vue from "vue";
+import router from "../router";
 
 var setCustomer = (state, customer) => {
-    EventBus.$emit('hide-ajax-loader');
-    
+    EventBus.$emit("hide-ajax-loader");
+
     state.customer = customer;
     state.isCustomerFetched = true;
 
-    if (router.app._route.name == 'login-register') {
-        router.app._router.push({name: 'dashboard'})
+    if (router.app._route.name == "login-register") {
+        router.app._router.push({ name: "dashboard" });
     }
-}
+};
 
-const GET_CUSTOMER = state => {
-    EventBus.$emit('show-ajax-loader');
+const GET_CUSTOMER = (state) => {
+    EventBus.$emit("show-ajax-loader");
 
-    if (! state.isCustomerFetched) {
-        Vue.prototype.$http.get('/api/customer/get')
-            .then(response => {
+    if (!state.isCustomerFetched) {
+        Vue.prototype.$http
+            .get("/leagcy-api/customer/get")
+            .then((response) => {
+                console.log("two");
+
                 setCustomer(state, response.data.data);
             })
-            .catch(error => {
+            .catch((error) => {
                 state.isCustomerFetched = true;
             });
     }
@@ -29,23 +32,24 @@ const GET_CUSTOMER = state => {
         setCustomer(state, state.customer);
     }
 
-    EventBus.$emit('hide-ajax-loader');
+    EventBus.$emit("hide-ajax-loader");
 };
 
-const GET_CART = state => {
-    EventBus.$emit('show-ajax-loader');
+const GET_CART = (state) => {
+    EventBus.$emit("show-ajax-loader");
 
-    Vue.prototype.$http.get('/api/pwa/checkout/cart')
-        .then(response => {
-            EventBus.$emit('hide-ajax-loader');
+    Vue.prototype.$http
+        .get("/leagcy-api/pwa/checkout/cart")
+        .then((response) => {
+            EventBus.$emit("hide-ajax-loader");
 
             state.cart = response.data.data;
             state.pagination = response.data.meta;
         })
-        .catch(error => {});
+        .catch((error) => {});
 };
 
 export default {
     GET_CART,
-    GET_CUSTOMER
+    GET_CUSTOMER,
 };

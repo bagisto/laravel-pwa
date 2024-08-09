@@ -237,8 +237,9 @@
             getCategories (parent_id = window.channel.root_category_id) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/categories", { params: { parent_id } })
+                this.$http.get("/api/v1/descendant-categories", { params: { parent_id } })
                     .then(response => {
+
                         EventBus.$emit('hide-ajax-loader');
                         if (parent_id == window.channel.root_category_id) {
                             this.categories = response.data.data;

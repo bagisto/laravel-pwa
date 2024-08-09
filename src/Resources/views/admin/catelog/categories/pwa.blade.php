@@ -11,7 +11,13 @@
                     @lang('pwa::app.admin.system.add_in_pwa')
                 </x-admin::form.control-group.label>
 
-                @php $is_add_in_pwa = old('category_product_in_pwa') ?: $category->category_product_in_pwa @endphp
+                @php
+                $is_add_in_pwa = old('category_product_in_pwa');
+
+                if (isset($category)) {
+                    $is_add_in_pwa = old('category_product_in_pwa') ?: $category->category_product_in_pwa;
+                }
+                @endphp
 
                 <x-admin::form.control-group.control
                     type="switch"

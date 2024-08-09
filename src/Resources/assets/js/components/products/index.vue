@@ -160,7 +160,7 @@
             getProduct (productId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/products/' + productId)
+                this.$http.get('/leagcy-api/pwa/products/' + productId)
                     .then(response => {
                         this.product = response.data.data;
 
@@ -267,7 +267,7 @@
                     delete(formData.booking.slot);
                 }
 
-                this.$http.post("/api/pwa/checkout/cart/add/" + this.$route.params.id, formData)
+                this.$http.post("/leagcy-api/pwa/checkout/cart/add/" + this.$route.params.id, formData)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

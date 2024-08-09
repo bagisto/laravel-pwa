@@ -106,7 +106,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post("/api/customer/register", this.user)
+                this.$http.post("/leagcy-api/customer/register", this.user)
                     .then(function(response) {
                         this_this.loading = false;
 

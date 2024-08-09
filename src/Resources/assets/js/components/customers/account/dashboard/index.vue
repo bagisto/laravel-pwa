@@ -108,7 +108,7 @@
                 orders: [],
 
                 downloadable_products: [],
-                
+
                 haveMoreOrders: false,
 
                 addresses: [],
@@ -134,8 +134,8 @@
         methods: {
             getOrders () {
                 EventBus.$emit('show-ajax-loader');
- 
-                this.$http.get('/api/pwa/orders', { params: { customer_id: this.customer.id } })
+
+                this.$http.get('/leagcy-api/pwa/orders', { params: { customer_id: this.customer.id } })
                     .then(response => {
                         this.orders = response.data.data;
 
@@ -153,7 +153,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id, pagination: 0 } })
+                this.$http.get('/leagcy-api/addresses', { params: { customer_id: this.customer.id, pagination: 0 } })
                     .then(function(response) {
                         this_this.addresses = response.data.data;
 
@@ -173,7 +173,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
+                this.$http.get('/leagcy-api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
                     .then(function(response) {
                         this_this.reviews = response.data.data;
 
@@ -195,7 +195,7 @@
             getDownloadableProducts() {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/downloadable-products', { params: { customer_id: this.customer.id } })
+                this.$http.get('/leagcy-api/downloadable-products', { params: { customer_id: this.customer.id } })
                     .then(response => {
                         this.downloadable_products = response.data.data;
 

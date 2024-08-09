@@ -9,16 +9,17 @@
                         <td class="attribute-name">
                             <span class="fs16">{{ attribute['name'] ? attribute['name'] : attribute['admin_name'] }}</span>
                         </td>
-                    <compare-card 
-                        v-for="item in compare"
-                        :key='item.id'
-                        :compareItem="item"
-                        :attribute="attribute"
-                        :customer="customer"
-                        @onRemove="removecompareItem(item)"
-                        @onMoveToCart="moveToCart(item)"
-                    ></compare-card>
-                    <tr>
+                        <compare-card
+                            v-for="item in compare"
+                            :key='item.id'
+                            :compareItem="item"
+                            :attribute="attribute"
+                            :customer="customer"
+                            @onRemove="removecompareItem(item)"
+                            @onMoveToCart="moveToCart(item)"
+                        >
+                        </compare-card>
+                    </tr>
                 </table>
             </div>
         </div>
@@ -72,7 +73,7 @@
                 }
 
                 if (! this_this.customer) {
-                    url = '/api/pwa/detailed-products';
+                    url = '/leagcy-api/pwa/detailed-products';
                     items = JSON.parse(localStorage.getItem('compared_product'));
                     items = items ? items.join('&') : '';
 
@@ -82,7 +83,7 @@
                         }
                     };
                 } else {
-                    url = '/api/pwa/comparison/get-products';
+                    url = '/leagcy-api/pwa/comparison/get-products';
                 }
 
                 if (this_this.customer || (! this_this.customer && items != "")) {
@@ -95,7 +96,7 @@
                             this_this.compare = response.data.products;
                             this_this.comparableAttributes = response.data.comparableAttributes;
                         }
-                        
+
                     })
                     .catch(error => {
                         EventBus.$emit('hide-ajax-loader');
@@ -112,13 +113,13 @@
                 EventBus.$emit('show-ajax-loader');
 
                 if (this_this.customer) {
-                    this_this.$http.post('/api/pwa/comparison', {productId: item.id} )
+                    this_this.$http.post('/leagcy-api/pwa/comparison', {productId: item.id} )
                     .then(function(response) {
 
                         EventBus.$emit('hide-ajax-loader');
 
                         var index = this_this.compare.indexOf(item);
-                        
+
                         this_this.compare.splice(index, 1);
 
                         this_this.$toasted.show(response.data.message, { type: 'success' })
@@ -139,20 +140,20 @@
 
                     this_this.compare.splice(index, 1);
 
-                    existingItems.splice(index_local_storage, 1);                 
+                    existingItems.splice(index_local_storage, 1);
 
-                    localStorage.setItem('compared_product', JSON.stringify(existingItems));    
+                    localStorage.setItem('compared_product', JSON.stringify(existingItems));
 
                     this_this.$toasted.show('Item removed from compare list Succesfully', { type: 'success' })
-                }    
+                }
             },
 
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
-                
-                this.$http.get('/api/pwa/comparison/move-to-cart/' + item.id)
+
+                this.$http.get('/leagcy-api/pwa/comparison/move-to-cart/' + item.id)
                     .then(response => {
-                    
+
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');

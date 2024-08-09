@@ -126,7 +126,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/products/' + productId)
+                this.$http.get('/leagcy-api/pwa/products/' + productId)
                     .then(function(response) {
                         this_this.product = response.data.data;
 
@@ -142,7 +142,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/reviews', { params: { product_id: productId, page: this.page, status: 'approved' } })
+                this.$http.get('/leagcy-api/reviews', { params: { product_id: productId, page: this.page, status: 'approved' } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

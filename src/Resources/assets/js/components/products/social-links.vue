@@ -17,14 +17,14 @@
 <script>
     export default {
         name: 'social-links',
-        
+
         props: ['product'],
 
         methods: {
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/wishlist/add/' + this.$route.params.id)
+                this.$http.get('/leagcy-api/wishlist/add/' + this.$route.params.id)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -35,7 +35,7 @@
                     .catch(error => {
                         if (error.response.status == 401) {
                             this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
-                            
+
                             this.$router.push({name: 'login-register'})
                         } else {
                             this.$toasted.show(error.response.data.error, { type: 'error' })

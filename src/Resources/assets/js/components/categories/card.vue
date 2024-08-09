@@ -4,10 +4,10 @@
             <div class="image">
                 <img
                     alt="category-image"
-                    onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
-                    :src="category.image_url
-                          ? category.image_url
-                          : '/vendor/webkul/pwa/assets/images/category-image.png'"
+                    onerror="this.src = '/themes/pwa/default/build/assets/images/category-image.png'"
+                    :src="category.logo_url
+                          ? category.logo_url
+                          : '/themes/pwa/default/build/assets/images/category-image.png'"
                 />
             </div>
 

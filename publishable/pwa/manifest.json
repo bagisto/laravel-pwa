@@ -1,32 +1,31 @@
 {
-    "name": "Bagisto PWA App",
-    "short_name": "Bagisto",
-    "start_url": "https://pwa-v2.com",
+    "name": "pwa app",
+    "short_name": "pwa short",
+    "start_url": "http://192.168.15.215/bagisto/v2.1.2/core-2/public/",
     "display": "standalone",
     "orientation": "any",
-    "theme_color": "#0041ff",
-    "background_color": "#0041ff",
+    "theme_color": "#d1d1d1",
+    "background_color": "#1d1d1d",
     "icons": [
         {
-            "src": "themes/pwa/default/build/assets/images/48x48.png",
+            "src": "http://192.168.15.215/bagisto/v2.1.2/core-2/public/storage/configuration/9f4sJCxFIdjiCApx1TgjxiGV9RVNorrSnBICB8Hx.png",
             "sizes": "48x48",
             "type": "image/png"
         },
         {
-            "src": "themes/pwa/default/build/assets/images/96x96.png",
+            "src": "http://192.168.15.215/bagisto/v2.1.2/core-2/public/storage/configuration/1ORWNrj4VufMrS167cFMoXhA8lHKSzHjdYzLz7wm.png",
             "sizes": "96x96",
             "type": "image/png"
         },
         {
-            "src": "themes/pwa/default/build/assets/images/144x144.png",
+            "src": "http://192.168.15.215/bagisto/v2.1.2/core-2/public/storage/configuration/bGfD6flhXPf5YLYx6n3pWXV5tSmMOOQC4qLvyJot.png",
             "sizes": "144x144",
             "type": "image/png"
         },
         {
-            "src": "themes/pwa/default/build/assets/images/196x196.png",
-            "sizes": "192x192",
+            "src": "http://192.168.15.215/bagisto/v2.1.2/core-2/public/storage/configuration/TJPJBe0KomCoaxyZ7VFr42gbe080TGDS6h3NpPn6.png",
+            "sizes": "196x196",
             "type": "image/png"
         }
-    ],
-    "gcm_sender_id": "709349998192"
+    ]
 }

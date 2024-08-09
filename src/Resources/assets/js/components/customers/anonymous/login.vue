@@ -82,7 +82,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post("/api/customer/login", this.user)
+                this.$http.post("/leagcy-api/customer/login", this.user)
                     .then(function(response) {
                         this_this.loading = false;
 
@@ -95,7 +95,7 @@
                         this_this.$router.push({name: 'dashboard'})
                     })
                     .catch(function (error) {
-                        
+
                         var errors = error.response.data;
                         for (name in errors) {
                             if (errors.hasOwnProperty(name)) {

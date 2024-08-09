@@ -5,7 +5,7 @@
                 <img
                     alt="product-base"
                     :src="cartItem.product.base_image.small_image_url"
-                    onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
+                    onerror="this.src = '/themes/pwa/default/build/assets/images/category-image.png'"
                 />
             </div>
 

@@ -15,14 +15,14 @@
         </div>
 
         <router-link class="view-review" :to="'/customer/account/reviews/' + review.id">
-            <i class="icon sharp-arrow-right-icon"></i>    
+            <i class="icon sharp-arrow-right-icon"></i>
         </router-link>
 
         <div class="remove-review" @click="remove">
-            <i class="icon sharp-trash-icon"></i>    
+            <i class="icon sharp-trash-icon"></i>
         </div>
 
-        
+
     </div>
 </template>
 
@@ -38,7 +38,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.delete('/api/reviews/' + this.review.id)
+                this.$http.delete('/leagcy-api/reviews/' + this.review.id)
                     .then(function(response) {
                         this_this.$toasted.show('Success: Customer review removed successfully.', { type: 'success' })
 

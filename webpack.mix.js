@@ -1,29 +1,32 @@
-const { mix } = require('laravel-mix');
-require('laravel-mix-merge-manifest');
+const mix = require("laravel-mix");
+require("laravel-mix-merge-manifest");
 
 if (mix.inProduction()) {
-    var publicPath = 'publishable/assets';
+    var publicPath = "publishable/assets";
 } else {
-    var publicPath = '../../../public/vendor/webkul/pwa/assets';
+    var publicPath = "../../../public/themes/pwa/default/build/assets";
 }
 
 mix.setPublicPath(publicPath).mergeManifest();
 mix.disableNotifications();
 
-mix.js(path.resolve('src/Resources/assets/js/app.js'), 'js/app.js')
+mix.js(path.resolve("src/Resources/assets/js/app.js"), "js/app.js")
     .webpackConfig({
         resolve: {
             alias: {
-                '@': path.resolve('src/Resources/assets/sass')
-            }
-        }
+                "@": path.resolve("src/Resources/assets/sass"),
+            },
+        },
     })
-    .copy(path.resolve('src/Resources/assets/images'), publicPath + '/images')
-    .copy(path.resolve('src/Resources/assets/firebase'), '../../../public/')
-    .sass(__dirname + "/src/Resources/assets/sass/admin.scss", "css/pwa-admin.css")
-    .sass(path.resolve('src/Resources/assets/sass/app.scss'), 'css/pwa.css')
+    .copy(path.resolve("src/Resources/assets/images"), publicPath + "/images")
+    .copy(path.resolve("src/Resources/assets/firebase"), "../../../public/")
+    .sass(
+        __dirname + "/src/Resources/assets/sass/admin.scss",
+        "css/pwa-admin.css",
+    )
+    .sass(path.resolve("src/Resources/assets/sass/app.scss"), "css/pwa.css")
     .options({
-        processCssUrls: false
+        processCssUrls: false,
     });
 
 if (mix.inProduction()) {

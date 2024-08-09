@@ -7,7 +7,7 @@
                     <tbody>
                         <tr v-for="attribute in viewableAttributes">
                             <td>{{ attribute.label }}</td>
-                            
+
                             <td>{{ attribute.value }}</td>
                         </tr>
                     </tbody>
@@ -23,7 +23,7 @@
 
     export default {
         name: 'attributes',
-        
+
         components: { Accordian },
 
         props: ['product'],
@@ -44,7 +44,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/product-additional-information/' + productId)
+                this.$http.get('/leagcy-api/product-additional-information/' + productId)
                     .then(function(response) {
                         this_this.viewableAttributes = response.data.data;
 

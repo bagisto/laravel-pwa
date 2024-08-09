@@ -38,7 +38,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.delete('/api/addresses/' + this.address.id)
+                this.$http.delete('/leagcy-api/addresses/' + this.address.id)
                     .then(function(response) {
                         this_this.$toasted.show('Address Removed Successfully', { type: 'success' })
 

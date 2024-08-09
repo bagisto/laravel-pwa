@@ -13,7 +13,7 @@
                             <img :id="'uploaded-image-url-' +  + _uid" :src="uploaded_image_url" alt="" width="20" height="20" style="display:none"/>
                         </label>
                     </span>
-                </form> 
+                </form>
             </div>
         </custom-header>
 
@@ -82,7 +82,7 @@
 
             this.recentSearches = terms ? JSON.parse(terms) : [];
 
-            this.getCategories(); 
+            this.getCategories();
         },
 
         methods: {
@@ -91,7 +91,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
+                this.$http.get("/leagcy-api/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -99,7 +99,7 @@
                     })
                     .catch(function (error) {});
             },
-            
+
             search (term) {
                 if (term == '')
                     return;
@@ -112,7 +112,7 @@
 
                 this.$router.push({ path: '/search/' + term })
             },
-        
+
             removeSaveTerm (index, event) {
                 event.stopPropagation();
 
@@ -126,7 +126,7 @@
 
                 localStorage.removeItem('recent-terms');
             },
-            
+
             uploadImage: function() {
                     var imageInput = this.$refs.image_search_input;
 
@@ -142,7 +142,7 @@
 
                                 formData.append('image', imageInput.files[0]);
 
-                                axios.post("/api/pwa/image-search-upload", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                                axios.post("/leagcy-api/pwa/image-search-upload", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                                     .then(function(response) {
                                         self.uploaded_image_url = response.data;
 
@@ -180,7 +180,7 @@
                                             queryString = localStorage.searched_terms = analysedResult.join('_');
 
                                             EventBus.$emit('hide-ajax-loader');
-                                        
+
                                             self.$router.push({ path: '/image-search/' + queryString })
 
 

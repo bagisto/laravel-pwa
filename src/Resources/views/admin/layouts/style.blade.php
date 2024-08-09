@@ -1,1 +1,1 @@
-@bagistoVite(['src/Resources/assets/css/app.css'], 'pwa')
+{{-- @bagistoVite(['src/Resources/assets/css/app.css'], 'pwa') --}}
