@@ -81,14 +81,19 @@
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
+                this.user.device_name = window.config.device.model;
+
+
 
                 this.$http.post("/leagcy-api/customer/login", this.user)
                     .then(function(response) {
+
                         this_this.loading = false;
 
                         EventBus.$emit('hide-ajax-loader');
 
                         localStorage.setItem('currentUser', JSON.stringify(response.data.data));
+                        localStorage.setItem('loginToken', JSON.stringify(response.data.token));
 
                         EventBus.$emit('user-logged-in', response.data.data);
 

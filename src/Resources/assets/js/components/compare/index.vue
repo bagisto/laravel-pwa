@@ -40,7 +40,7 @@
 
         data () {
             return {
-                customer: '',
+                customer: false,
                 compare: [],
                 comparableAttributes: []
             }
@@ -62,6 +62,7 @@
             },
 
             getcompare () {
+
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
@@ -72,35 +73,58 @@
                     params: {'data': true}
                 }
 
+                url = '/api/compare-items';
+
                 if (! this_this.customer) {
-                    url = '/leagcy-api/pwa/detailed-products';
+
                     items = JSON.parse(localStorage.getItem('compared_product'));
-                    items = items ? items.join('&') : '';
+                    // items = items ? items.join('&') : '';
 
                     data = {
                         params: {
-                            items
+                           'product_ids': items
                         }
                     };
-                } else {
-                    url = '/leagcy-api/pwa/comparison/get-products';
+
                 }
 
                 if (this_this.customer || (! this_this.customer && items != "")) {
                     this_this.$http.get(url, data)
+                    // .then(response => response.json())
                     .then(response => {
+
                         EventBus.$emit('hide-ajax-loader');
 
-                        if (response.data.status === 'success') {
-                            console.log(response.data.products);
-                            this_this.compare = response.data.products;
-                            this_this.comparableAttributes = response.data.comparableAttributes;
-                        }
+                        if (response.data.data) {
+                            this.compare = response.data.data;
+                            // this_this.comparableAttributes = response.data.comparableAttributes;
+                            this.comparableAttributes = [
+                                {
+                                    name:'Image',
+                                    code: 'product_image'
+                                },
+                                {
+                                    name: 'name',
+                                    code: 'name'
+                                },
+                                {
+                                    name: 'price',
+                                    code: 'price'
+                                },
+                                {
+                                    name: 'Description',
+                                    code: 'description'
+                                },
+                                {
+                                    name: '',
+                                    code: 'addToCartHtml'
+                                },
+                            ];
 
+                        }
                     })
                     .catch(error => {
                         EventBus.$emit('hide-ajax-loader');
-                        console.log(this.__('error.something_went_wrong'));
                     });
                 } else {
                     EventBus.$emit('hide-ajax-loader');
@@ -113,7 +137,7 @@
                 EventBus.$emit('show-ajax-loader');
 
                 if (this_this.customer) {
-                    this_this.$http.post('/leagcy-api/pwa/comparison', {productId: item.id} )
+                    this.$http.post('/api/compare-items/', {productId: item.id} )
                     .then(function(response) {
 
                         EventBus.$emit('hide-ajax-loader');

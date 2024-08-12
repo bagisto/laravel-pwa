@@ -114,7 +114,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/checkout/cart')
+                this.$http.get('/api/v1/customer/cart')
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

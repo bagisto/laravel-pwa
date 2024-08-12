@@ -265,51 +265,30 @@
 
                 this.$http.get("/api/pwa-layout")
                     .then(response => {
-
                         EventBus.$emit('hide-ajax-loader');
 
                         let homePageContent = response.data.data[0].home_page_content;
                         let homePageContentArray = homePageContent.replace(/<\/?[^>]+(>|$)/g, "").split(",");
 
-                        this.$http.get("/api/advertisements?locale=en")
-                            .then(response => {
+                        homePageContentArray.forEach(content => {
 
-                                homePageContentArray.forEach(content => {
-                                    switch (content) {
-                                        case 'velocity-advertisement-two':
-                                            this.homePageContent['advertisement-two'] = Object.values(response.data.data[2]);
-                                            break;
+                            let base_content = content.toLowerCase().trim();
+                            this.homePageContent[base_content] = {};
 
-                                        case 'velocity-advertisement-three':
-                                            this.homePageContent['advertisement-three'] = Object.values(response.data.data[3]);
-                                            break;
+                            if (this.categories) {
+                                this.categories.filter(category => {
+                                    if (category.slug.toLowerCase() == base_content) {
 
-                                        case 'velocity-advertisement-four':
-                                            this.homePageContent['advertisement-four'] = Object.values(response.data.data[4]);
-                                            break;
+                                        this.homePageContent[base_content] = {
+                                            'products' : [],
+                                            'category_details' : category,
+                                        }
 
-                                        default:
-                                            let base_content = content.toLowerCase().trim();
-                                            this.homePageContent[base_content] = {};
-
-                                            if (this.categories) {
-                                                this.categories.filter(category => {
-                                                    if (category.slug.toLowerCase() == base_content) {
-
-                                                        this.homePageContent[base_content] = {
-                                                            'products' : [],
-                                                            'category_details' : category,
-                                                        }
-
-                                                        this.getProducts(base_content, { 'category_id': category.id });
-                                                    }
-                                                });
-                                            }
-                                            break;
+                                        this.getProducts(base_content, { 'category_id': category.id });
                                     }
                                 });
-                            })
-                            .catch(function (error) {});
+                            }
+                        });
                     })
                     .catch(function (error) {});
             },

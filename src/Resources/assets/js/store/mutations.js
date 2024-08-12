@@ -16,11 +16,10 @@ const GET_CUSTOMER = (state) => {
     EventBus.$emit("show-ajax-loader");
 
     if (!state.isCustomerFetched) {
+        console.log("two");
         Vue.prototype.$http
-            .get("/leagcy-api/customer/get")
+            .get("/api/v1/customer/get", { params: { token: state.token } })
             .then((response) => {
-                console.log("two");
-
                 setCustomer(state, response.data.data);
             })
             .catch((error) => {
@@ -39,7 +38,7 @@ const GET_CART = (state) => {
     EventBus.$emit("show-ajax-loader");
 
     Vue.prototype.$http
-        .get("/leagcy-api/pwa/checkout/cart")
+        .get("/api/v1/customer/cart")
         .then((response) => {
             EventBus.$emit("hide-ajax-loader");
 

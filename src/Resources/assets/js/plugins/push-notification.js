@@ -33,7 +33,25 @@ var setTokenSentToServer = (sent) => {
 };
 
 if (!isSafari()) {
-    let url = `${window.config.app_base_url}leagcy-api/config?_config=${topicKey},${serverAPIKey},${messagingIdKey},${authDomainKey},${databaseUrlKey},${projectIdKey},${appIdKey},${webAPIKeyKey},`;
+    const configKeys = [
+        topicKey,
+        serverAPIKey,
+        messagingIdKey,
+        authDomainKey,
+        databaseUrlKey,
+        projectIdKey,
+        appIdKey,
+        webAPIKeyKey,
+    ];
+
+    // let url = `${window.config.app_base_url}api/v1/core-configs?_config=[${topicKey},${serverAPIKey},${messagingIdKey},${authDomainKey},${databaseUrlKey},${projectIdKey},${appIdKey},${webAPIKeyKey},]`;
+
+    const params = new URLSearchParams();
+    configKeys.forEach((key) => params.append("_config[]", key));
+
+    let url = `${
+        window.config.app_base_url
+    }api/v1/core-configs?${params.toString()}`;
 
     fetch(url, {
         method: "GET",

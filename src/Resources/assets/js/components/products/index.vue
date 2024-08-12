@@ -160,8 +160,9 @@
             getProduct (productId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/products/' + productId)
+                this.$http.get('/api/v1/products/' + productId)
                     .then(response => {
+
                         this.product = response.data.data;
 
                         if (this.product.type == "grouped") {

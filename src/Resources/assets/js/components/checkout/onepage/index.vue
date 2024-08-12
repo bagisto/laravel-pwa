@@ -554,9 +554,8 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/customer/get')
+                this.$http.get('/api/v1/customer/get')
                     .then(function(response) {
-                        console.log('one');
 
                         this_this.customer = response.data.data;
 
@@ -599,7 +598,7 @@
             getCart () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/checkout/cart')
+                this.$http.get('/api/v1/customer/cart')
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -753,7 +752,6 @@
                         this_this.disable_button = false;
 
                         this_this.paymentMethods = response.data.data.methods;
-                        console.log(this_this.paymentMethods);
                         this_this.cart = response.data.data.cart;
 
                         this_this.step++;
@@ -892,9 +890,13 @@
             checkMinimumPrice (grandTotal) {
                 var minimumPriceKey = 'sales.orderSettings.minimum-order.minimum_order_amount';
 
-                this.$http.get("/leagcy-api/config", {
-                    params: {
-                        _config: `${minimumPriceKey}`
+                const configKeys = [
+                    minimumPriceKey,
+                ];
+
+                this.$http.get("/api/v1/core-configs", {
+                   params: {
+                        _config: configKeys
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');

@@ -30,10 +30,8 @@ var GET_CUSTOMER = function GET_CUSTOMER(state) {
 
     if (!state.isCustomerFetched) {
         _vue["default"].prototype.$http
-            .get("/leagcy-api/customer/get")
+            .get("/api/v1/customer/get")
             .then(function (response) {
-                console.log("three");
-
                 setCustomer(state, response.data.data);
             })
             ["catch"](function (error) {
@@ -52,7 +50,7 @@ var GET_CART = function GET_CART(state) {
     EventBus.$emit("show-ajax-loader");
 
     _vue["default"].prototype.$http
-        .get("/leagcy-api/pwa/checkout/cart")
+        .get("/api/v1/customer/cart")
         .then(function (response) {
             EventBus.$emit("hide-ajax-loader");
             state.cart = response.data.data;

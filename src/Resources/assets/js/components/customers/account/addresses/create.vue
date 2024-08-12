@@ -76,12 +76,22 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/config', { params: { '_config': 'customer.settings.address.street_lines' } })
+                let street_lines = 'customer.settings.address.street_lines';
+
+                const configKeys = [
+                    street_lines,
+                ];
+
+                this.$http.get('/api/v1/core-configs', {
+                        params: {
+                            _config: configKeys
+                        }
+                    })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
-                        if (response.data.data['customer.settings.address.street_lines']) {
-                            this_this.streetLines = response.data.data['customer.settings.address.street_lines'];
+                        if (response.data.data[street_lines]) {
+                            this_this.streetLines = response.data.data[street_lines];
 
                             this_this.streetLines = this_this.streetLines - 1;
                         }

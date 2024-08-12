@@ -3,6 +3,7 @@
 namespace Webkul\PWA\Http\Controllers;
 
 use Detection\MobileDetect;
+use WhichBrowser\Parser;
 
 /**
  * Home page controller
@@ -23,11 +24,7 @@ class SinglePageController extends Controller
             return redirect('/mobile');
         }
 
-        $currentChannel = core()->getCurrentChannel();
-
-        $sliderData = app('Webkul\Core\Repositories\SliderRepository')->findByField('channel_id', $currentChannel->id)->toArray();
-
-        return view('shop::home.index', compact('sliderData'));
+        return redirect()->route('shop.home.index');
     }
 
     /**
@@ -47,6 +44,9 @@ class SinglePageController extends Controller
 
         $urlPath = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
 
-        return view('pwa::master', compact('urlPath'));
+        $result = new Parser(request()->header('User-Agent'));
+        $device = $result->device;
+
+        return view('pwa::master', compact('urlPath', 'device'));
     }
 }

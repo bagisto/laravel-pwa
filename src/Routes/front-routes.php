@@ -171,7 +171,7 @@ Route::group(['prefix' => 'api'], function ($router) {
     });
 });
 
-Route::group(['middleware' => ['web', 'locale', 'currency']], function ($router) {
+Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
     Route::get('/mobile/{any?}', [SinglePageController::class, 'index'])->where('any', '.*')->name('mobile.home');
 
     Route::get('/pwa/{any?}', [SinglePageController::class, 'index'])->where('any', '.*')->name('pwa.home');

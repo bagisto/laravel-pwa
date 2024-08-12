@@ -8,12 +8,12 @@
 
     <td v-else-if="attribute['code'] == 'product_image'" class="attribute-value">
         <div class="product-image">
-            <img alt="product-base-medium-image" :src="compareItem.product_image" />
+            <img alt="product-base-medium-image" :src="compareItem.base_image.small_image_url" />
         </div>
     </td>
 
     <td v-else-if="attribute['code'] == 'price'" class="attribute-value">
-        <div class="product-price" v-html="compareItem.priceHTML">
+        <div class="product-price" v-html="compareItem.prices.final.formatted_price">
         </div>
     </td>
 
@@ -37,7 +37,7 @@
         <div class="product-price" v-html="compareItem.description">
         </div>
     </td>
-    
+
 </template>
 
 <script>
@@ -59,7 +59,7 @@
 </script>
 
 <style scoped lang="scss">
-    
+
 
         .remove-item {
             background: #fff;
@@ -123,5 +123,5 @@
         .attribute-value {
             padding-right:10px;
         }
-    
+
 </style>

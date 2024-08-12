@@ -42,10 +42,10 @@
         props: ['product'],
 
         mounted () {
-            console.log(this.product);
+            // console.log(this.product);
         }
     }
-    
+
 </script>
 
 <style lang="scss" scoped>

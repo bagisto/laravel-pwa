@@ -55,9 +55,13 @@
 
                 var guest_checkout_key = 'catalog.products.review.guest_review';
 
-                this.$http.get("/leagcy-api/config", {
+                const configKeys = [
+                    guest_checkout_key,
+                ];
+
+                this.$http.get("/api/v1/core-configs", {
                     params: {
-                        _config: `${guest_checkout_key}`
+                        _config: configKeys
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');

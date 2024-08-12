@@ -65,6 +65,7 @@
                 topicKey:"{{ core()->getConfigData('pwa.settings.push-notification.topic') }}",
                 serverAPIKey:"{{ core()->getConfigData('pwa.settings.push-notification.api-key') }}",
                 messagingIdKey:"{{ core()->getConfigData('pwa.settings.push-notification.messaging-id') }}",
+                device:@json($device),
             };
         </script>
 

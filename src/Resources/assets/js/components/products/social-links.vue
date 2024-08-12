@@ -24,8 +24,9 @@
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/wishlist/add/' + this.$route.params.id)
+                this.$http.post('/api/v1/customer/wishlist/' + this.$route.params.id)
                     .then(response => {
+
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         this.product.is_saved = response.data.data ? true : false;

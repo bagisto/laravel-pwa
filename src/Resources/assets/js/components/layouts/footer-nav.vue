@@ -42,6 +42,7 @@
             font-size: 10px;
             color: #000000;
             text-transform: uppercase;
+            cursor:pointer;
         }
     }
 </style>

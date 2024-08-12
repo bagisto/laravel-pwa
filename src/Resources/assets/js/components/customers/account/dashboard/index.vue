@@ -122,6 +122,8 @@
         props: ['customer'],
 
         mounted () {
+            this.customer = JSON.parse(localStorage.getItem('currentUser'));
+
             this.getOrders();
 
             this.getDownloadableProducts();
@@ -133,10 +135,12 @@
 
         methods: {
             getOrders () {
+
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/orders', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/v1/customer/orders', { params: { customer_id: this.customer.id } })
                     .then(response => {
+
                         this.orders = response.data.data;
 
                         if (response.data.meta.current_page < response.data.meta.last_page) {
@@ -153,7 +157,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/addresses', { params: { customer_id: this.customer.id, pagination: 0 } })
+                this.$http.get('/api/v1/customer/addresses')
                     .then(function(response) {
                         this_this.addresses = response.data.data;
 

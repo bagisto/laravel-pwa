@@ -55,8 +55,9 @@
                 EventBus.$emit('show-ajax-loader');
 
                 if (this.isCustomer) {
-                    this.$http.put('/leagcy-api/pwa/comparison/', {productId: this.product.id})
+                    this.$http.put('/api/compare-items/store/', {params: { product_id: this.product.id }})
                     .then(response => {
+
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');

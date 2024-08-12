@@ -291,7 +291,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/customer/logout")
+                this.$http.get("/api/v1/customer/logout")
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
