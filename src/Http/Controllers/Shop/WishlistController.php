@@ -3,7 +3,7 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Cart;
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\API\Http\Resources\Checkout\Cart as CartResource;
 use Webkul\Customer\Repositories\WishlistRepository;
 use Webkul\Product\Repositories\ProductRepository;
@@ -43,7 +43,7 @@ class WishlistController extends Controller
 
         auth()->setDefaultDriver($this->guard);
 
-        $this->middleware('auth:'.$this->guard);
+        $this->middleware('auth:' . $this->guard);
 
         $this->wishlistRepository = $wishlistRepository;
 

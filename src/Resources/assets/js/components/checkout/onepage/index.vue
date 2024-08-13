@@ -540,7 +540,7 @@
             getGuestCheckoutStatus () {
                 var this_this = this;
 
-                this.$http.get('/leagcy-api/checkout/guest-checkout')
+                this.$http.get('/api/v1/checkout/guest-checkout')
                     .then(function(response) {
                         if(! response.data.data.status) {
                             this_this.$router.push({ name: 'login-register' });
@@ -584,7 +584,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/addresses', { params: { customer_id: customerId, pagination: 0 } })
+                this.$http.get('/api/v1/addresses', { params: { customer_id: customerId, pagination: 0 } })
                     .then(function(response) {
                         this_this.$set(this_this.addresses, 'billing', response.data.data.slice(0))
 
@@ -692,7 +692,7 @@
                 }
 
                 self.disable_button = true;
-                this.$http.post('/leagcy-api/pwa/checkout/save-address', self.address)
+                this.$http.post('/api/v1/pwa/checkout/save-address', self.address)
                     .then(function(response) {
                         if (response.data.data.nextStep == "payment") {
                             self.skipShipping = true;
@@ -747,7 +747,7 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/leagcy-api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
+                this.$http.post('/api/v1/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
                     .then(function(response) {
                         this_this.disable_button = false;
 
@@ -775,7 +775,7 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/leagcy-api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
+                this.$http.post('/api/v1/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
                     .then(function(response) {
                         this_this.disable_button = false;
 
@@ -799,7 +799,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/leagcy-api/checkout/cart/coupon', { 'code': self.coupon_code })
+                this.$http.post('/api/v1/checkout/cart/coupon', { 'code': self.coupon_code })
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -825,7 +825,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/leagcy-api/checkout/cart/remove-coupon')
+                this.$http.post('/api/v1/checkout/cart/remove-coupon')
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -847,7 +847,7 @@
             placeOrder () {
                 this.disable_button = true;
 
-                this.$http.post('/leagcy-api/pwa/checkout/save-order')
+                this.$http.post('/api/v1/pwa/checkout/save-order')
                     .then(response => {
                         if (response.data.success) {
                             if (response.data.redirect_url) {

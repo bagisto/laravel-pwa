@@ -175,7 +175,7 @@
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/comparison/move-to-cart/' + item.id)
+                this.$http.get('/api/v1/pwa/comparison/move-to-cart/' + item.id)
                     .then(response => {
 
                         this.$toasted.show(response.data.message, { type: 'success' })

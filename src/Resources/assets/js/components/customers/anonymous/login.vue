@@ -60,8 +60,9 @@
         },
 
         mounted () {
-            if (JSON.parse(localStorage.getItem('currentUser')))
+            if (JSON.parse(localStorage.getItem('currentUser'))){
                 this.$router.push({name: 'dashboard'})
+            }
         },
 
         methods: {
@@ -83,34 +84,33 @@
                 EventBus.$emit('show-ajax-loader');
                 this.user.device_name = window.config.device.model;
 
-
-
-                this.$http.post("/leagcy-api/customer/login", this.user)
+                this.$http.post("/api/v1/customer/login", this.user)
                     .then(function(response) {
+                    this_this.loading = false;
+                    EventBus.$emit('hide-ajax-loader');
 
-                        this_this.loading = false;
+                    localStorage.setItem('currentUser', JSON.stringify(response.data.data));
+                    localStorage.setItem('token', JSON.stringify(response.data.token));
 
-                        EventBus.$emit('hide-ajax-loader');
+                    this_this.$http.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
-                        localStorage.setItem('currentUser', JSON.stringify(response.data.data));
-                        localStorage.setItem('loginToken', JSON.stringify(response.data.token));
+                    EventBus.$emit('user-logged-in', response.data);
 
-                        EventBus.$emit('user-logged-in', response.data.data);
+                    this_this.$router.push({name: 'dashboard'})
+                })
+                .catch(function (error) {
+                    console.error(error);
 
-                        this_this.$router.push({name: 'dashboard'})
-                    })
-                    .catch(function (error) {
+                    // var errors = error.response.data;
+                    // for (name in errors) {
+                    //     if (errors.hasOwnProperty(name)) {
+                    //         this_this.errors.add(name, errors[name])
+                    //         this_this.$toasted.show(errors[name], { type: 'error' })
+                    //     }
+                    // }
 
-                        var errors = error.response.data;
-                        for (name in errors) {
-                            if (errors.hasOwnProperty(name)) {
-                                this_this.errors.add(name, errors[name])
-                                this_this.$toasted.show(errors[name], { type: 'error' })
-                            }
-                        }
-
-                        this_this.loading = false;
-                    })
+                    this_this.loading = false;
+                })
             }
         }
     }

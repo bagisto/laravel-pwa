@@ -83,7 +83,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa-reviews/' + reviewId)
+                this.$http.get('/api/v1/pwa-reviews/' + reviewId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

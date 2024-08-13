@@ -3,7 +3,7 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Illuminate\Support\Facades\Log;
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Theme\Repositories\ThemeCustomizationRepository;
 
 

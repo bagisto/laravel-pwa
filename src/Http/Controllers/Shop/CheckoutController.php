@@ -2,7 +2,7 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Checkout\Http\Requests\CustomerAddressForm;
 use Webkul\Checkout\Repositories\CartItemRepository;
@@ -45,12 +45,11 @@ class CheckoutController extends Controller
 
         auth()->setDefaultDriver($this->guard);
 
-        $this->middleware('auth:'.$this->guard);
+        $this->middleware('auth:' . $this->guard);
 
         $this->middleware('validateAPIHeader');
 
         $this->_config = request('_config');
-
     }
 
     /**
@@ -137,8 +136,10 @@ class CheckoutController extends Controller
     {
         $cart = Cart::getCart();
 
-        if (! auth()->guard($this->guard)->check()
-            && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
+        if (
+            ! auth()->guard($this->guard)->check()
+            && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')
+        ) {
             return response()->json([
                 'data' => [
                     'status' => false,

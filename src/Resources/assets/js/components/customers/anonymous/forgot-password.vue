@@ -64,7 +64,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post("/leagcy-api/customer/forgot-password", this.user)
+                this.$http.post("/api/v1/customer/forgot-password", this.user)
                     .then(function(response) {
                         this_this.loading = false;
 

@@ -1,7 +1,7 @@
 <template>
     <div class="address-card">
         <div class="address-deatils">
-            {{ address.address1.join(' ') }}<br/>
+            {{ address.first_name }} {{ address.last_name }}<br/>
             {{ address.city }}<br/>
             {{ address.state }}<br/>
             {{ address.country_name + ' ' + address.postcode }}<br/>
@@ -38,15 +38,15 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.delete('/leagcy-api/addresses/' + this.address.id)
-                    .then(function(response) {
-                        this_this.$toasted.show('Address Removed Successfully', { type: 'success' })
+                this.$http.delete('/api/v1/customer/addresses/' + this.address.id)
+                .then(function(response) {
+                    this_this.$toasted.show('Address Removed Successfully', { type: 'success' })
 
-                        EventBus.$emit('hide-ajax-loader');
+                    EventBus.$emit('hide-ajax-loader');
 
-                        this_this.$emit('onRemove')
-                    })
-                    .catch(function (error) {});
+                    this_this.$emit('onRemove')
+                })
+                .catch(function (error) {});
             }
         }
     }

@@ -268,7 +268,7 @@
                     delete(formData.booking.slot);
                 }
 
-                this.$http.post("/leagcy-api/pwa/checkout/cart/add/" + this.$route.params.id, formData)
+                this.$http.post("/api/v1/pwa/checkout/cart/add/" + this.$route.params.id, formData)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

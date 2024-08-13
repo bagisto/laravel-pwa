@@ -2,7 +2,7 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\API\Http\Resources\Customer\CustomerAddress as CustomerAddressResource;
 use Webkul\Customer\Repositories\CustomerAddressRepository;
 use Webkul\Customer\Rules\VatIdRule;

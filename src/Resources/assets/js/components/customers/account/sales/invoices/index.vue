@@ -57,7 +57,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/orders/' + orderId)
+                this.$http.get('/api/v1/orders/' + orderId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -69,7 +69,7 @@
             getInvoices (orderId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/invoices', { params: { order_id: orderId, pagination: 0 } })
+                this.$http.get('/api/v1/pwa/invoices', { params: { order_id: orderId, pagination: 0 } })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 

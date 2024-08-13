@@ -4,7 +4,7 @@ namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Checkout\Facades\Cart as FacadesCart;
 use Webkul\Checkout\Repositories\CartItemRepository;
 use Webkul\Checkout\Repositories\CartRepository;
@@ -45,11 +45,10 @@ class CartController extends Controller
 
             auth()->setDefaultDriver($this->guard);
 
-            $this->middleware('auth:'.$this->guard);
+            $this->middleware('auth:' . $this->guard);
         }
 
         $this->middleware('validateAPIHeader');
-
     }
 
     /**
@@ -128,8 +127,10 @@ class CartController extends Controller
                 'data'    => $cart ? new CartResource($cart) : null,
             ]);
         } catch (Exception $e) {
-            Log::error('API CartController: '.$e->getMessage(),
-                ['product_id' => $id, 'cart_id' => cart()->getCart() ?? 0]);
+            Log::error(
+                'API CartController: ' . $e->getMessage(),
+                ['product_id' => $id, 'cart_id' => cart()->getCart() ?? 0]
+            );
 
             return response()->json([
                 'error' => [

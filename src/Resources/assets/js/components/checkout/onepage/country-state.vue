@@ -66,7 +66,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/countries', { params: { pagination: 0 } })
+                this.$http.get('/api/v1/countries', { params: { pagination: 0 } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -80,7 +80,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/country-states')
+                this.$http.get('/api/v1/country-states')
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

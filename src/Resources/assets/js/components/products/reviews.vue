@@ -133,7 +133,7 @@
             getReviews (productId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/reviews', { params: { product_id: productId, limit: 5, status: 'approved' } })
+                this.$http.get('/api/v1/reviews', { params: { product_id: productId, limit: 5, status: 'approved' } })
                     .then(response => {
                         this.reviews = response.data.data;
 

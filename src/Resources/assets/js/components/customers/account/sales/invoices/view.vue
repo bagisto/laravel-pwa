@@ -112,7 +112,7 @@
             getInvoice (invoiceId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get(`/leagcy-api/pwa/invoices/${invoiceId}`)
+                this.$http.get(`/api/v1/pwa/invoices/${invoiceId}`)
                     .then(response => {
                         this.invoice = response.data.data;
 
@@ -122,7 +122,7 @@
             },
 
             printInvoice (invoiceId) {
-                this.$http.get(`/leagcy-api/invoices/${invoiceId}/download`, { responseType: 'blob'})
+                this.$http.get(`/api/v1/invoices/${invoiceId}/download`, { responseType: 'blob'})
                     .then(response => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');

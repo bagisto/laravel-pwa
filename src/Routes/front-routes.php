@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Webkul\API\Http\Controllers\Shop\ResourceController;
+// use Webkul\API\Http\Controllers\Shop\ResourceController;
 use Webkul\PWA\Http\Controllers\Shop\AddressController;
 use Webkul\PWA\Http\Controllers\Shop\API\APIController;
 use Webkul\PWA\Http\Controllers\Shop\CartController;
@@ -17,6 +17,9 @@ use Webkul\PWA\Http\Controllers\Shop\SmartButtonController;
 use Webkul\PWA\Http\Controllers\Shop\WishlistController;
 use Webkul\PWA\Http\Controllers\SinglePageController;
 use Webkul\PWA\Http\Controllers\StandardController;
+use Webkul\PWA\Http\Controllers\Shop\SessionController;
+use Webkul\PWA\Http\Controllers\Shop\CustomerController;
+use Webkul\PWA\Http\Controllers\Shop\LayoutController;
 
 Route::group(['middleware' => ['web']], function () {
 
@@ -95,6 +98,8 @@ Route::group(['prefix' => 'api'], function ($router) {
             Route::get('products/{id}', [ProductController::class, 'get']);
 
             Route::get('sliders', [ThemeController::class, 'sliders']);
+
+            Route::get('layout', [LayoutController::class, 'get']);
         });
 
         Route::group(['prefix' => 'checkout'], function ($router) {
@@ -118,55 +123,60 @@ Route::group(['prefix' => 'api'], function ($router) {
             Route::post('cart/remove-coupon', [CartController::class, 'removeCoupon']);
         });
 
-        Route::get('pwa-reviews/{id}', [ResourceController::class, 'get'])->defaults('_config', [
-            'repository'             => 'Webkul\Product\Repositories\ProductReviewRepository',
-            'resource'               => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
-            'authorization_required' => true,
-        ]);
+        // Route::get('pwa-reviews/{id}', [ResourceController::class, 'get'])->defaults('_config', [
+        //     'repository'             => 'Webkul\Product\Repositories\ProductReviewRepository',
+        //     'resource'               => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
+        //     'authorization_required' => true,
+        // ]);
 
-        Route::delete('reviews/{id}', [ResourceController::class, 'destroy'])->defaults('_config', [
-            'repository'             => 'Webkul\Product\Repositories\ProductReviewRepository',
-            'resource'               => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
-            'authorization_required' => true,
-        ]);
+        // Route::delete('reviews/{id}', [ResourceController::class, 'destroy'])->defaults('_config', [
+        //     'repository'             => 'Webkul\Product\Repositories\ProductReviewRepository',
+        //     'resource'               => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
+        //     'authorization_required' => true,
+        // ]);
 
-        Route::get('downloadable-products', [ResourceController::class, 'index'])->defaults('_config', [
-            'resource'               => 'Webkul\PWA\Http\Resources\Sales\DownloadableProduct',
-            'repository'             => 'Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository',
-            'authorization_required' => true,
-        ]);
+        // Route::get('downloadable-products', [ResourceController::class, 'index'])->defaults('_config', [
+        //     'resource'               => 'Webkul\PWA\Http\Resources\Sales\DownloadableProduct',
+        //     'repository'             => 'Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository',
+        //     'authorization_required' => true,
+        // ]);
 
-        Route::get('pwa-wishlist', [ResourceController::class, 'index'])->defaults('_config', [
-            'repository'             => 'Webkul\Customer\Repositories\WishlistRepository',
-            'resource'               => 'Webkul\PWA\Http\Resources\Customer\Wishlist',
-            'authorization_required' => true,
-        ]);
+        // Route::get('pwa-wishlist', [ResourceController::class, 'index'])->defaults('_config', [
+        //     'repository'             => 'Webkul\Customer\Repositories\WishlistRepository',
+        //     'resource'               => 'Webkul\PWA\Http\Resources\Customer\Wishlist',
+        //     'authorization_required' => true,
+        // ]);
 
-        Route::get('pwa-reviews', [ResourceController::class, 'index'])->defaults('_config', [
-            'repository'             => 'Webkul\Product\Repositories\ProductReviewRepository',
-            'resource'               => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
-            'authorization_required' => true,
-        ]);
+        // Route::get('pwa-reviews', [ResourceController::class, 'index'])->defaults('_config', [
+        //     'repository'             => 'Webkul\Product\Repositories\ProductReviewRepository',
+        //     'resource'               => 'Webkul\PWA\Http\Resources\Catalog\ProductReview',
+        //     'authorization_required' => true,
+        // ]);
 
-        Route::get('pwa-layout', [ResourceController::class, 'index'])->defaults('_config', [
-            'repository'    => 'Webkul\PWA\Repositories\PWALayoutRepository',
-            'resource'      => 'Webkul\PWA\Http\Resources\PWA\LayoutResource',
-        ]);
+        // Route::get('pwa-layout', [ResourceController::class, 'index'])->defaults('_config', [
+        //     'repository'    => 'Webkul\PWA\Repositories\PWALayoutRepository',
+        //     'resource'      => 'Webkul\PWA\Http\Resources\PWA\LayoutResource',
+        // ]);
 
-        Route::group(['prefix' => 'pwa'], function ($router) {
-            Route::get('orders', [ResourceController::class, 'index'])->defaults('_config', [
-                'repository'             => 'Webkul\Sales\Repositories\OrderRepository',
-                'resource'               => 'Webkul\PWA\Http\Resources\Sales\Order',
-                'authorization_required' => true,
-            ]);
+        // Route::group(['prefix' => 'pwa'], function ($router) {
+        //     Route::get('orders', [ResourceController::class, 'index'])->defaults('_config', [
+        //         'repository'             => 'Webkul\Sales\Repositories\OrderRepository',
+        //         'resource'               => 'Webkul\PWA\Http\Resources\Sales\Order',
+        //         'authorization_required' => true,
+        //     ]);
 
-            Route::get('orders/{id}', [ResourceController::class, 'get'])->defaults('_config', [
-                'repository'             => 'Webkul\Sales\Repositories\OrderRepository',
-                'resource'               => 'Webkul\PWA\Http\Resources\Sales\Order',
-                'authorization_required' => true,
-            ]);
+        //     Route::get('orders/{id}', [ResourceController::class, 'get'])->defaults('_config', [
+        //         'repository'             => 'Webkul\Sales\Repositories\OrderRepository',
+        //         'resource'               => 'Webkul\PWA\Http\Resources\Sales\Order',
+        //         'authorization_required' => true,
+        //     ]);
 
-            // Slider routes
+        //     // Slider routes
+        // });
+
+
+        Route::controller(CustomerController::class)->group(function () {
+            Route::get('test-token', 'getToken')->name('api.pwa.customer.login');
         });
     });
 });

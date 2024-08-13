@@ -40,7 +40,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/addresses', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/v1/addresses', { params: { customer_id: this.customer.id } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

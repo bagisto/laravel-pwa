@@ -51,21 +51,6 @@ class APIController extends Controller
     public function fetchAdvertisementImages()
     {
         $advertisementImages = null;
-        $locale = request()->get('locale');
-
-        // $velocityMetaData = $this->velocityHelper->getVelocityMetaData();
-
-        // if ($velocityMetaData) {
-        //     $advertisementImages = json_decode($velocityMetaData->advertisement, true);
-        // }
-
-        // if ($advertisementImages) {
-        //     foreach ($advertisementImages as $sectionIndex => $advertisementSection) {
-        //         foreach ($advertisementSection as $imageIndex => $imagePath) {
-        //             $advertisementImages[$sectionIndex][$imageIndex] = \Storage::url($advertisementImages[$sectionIndex][$imageIndex]);
-        //         }
-        //     }
-        // }
 
         return response()->json([
             'data'      => $advertisementImages ?? [],

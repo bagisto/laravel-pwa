@@ -38,7 +38,7 @@
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/wishlist/add/' + this.product.id)
+                this.$http.get('/api/v1/wishlist/add/' + this.product.id)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

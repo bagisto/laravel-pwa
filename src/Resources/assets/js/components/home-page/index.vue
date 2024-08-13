@@ -263,11 +263,11 @@
             getHomePageContent () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa-layout")
+                this.$http.get("/api/pwa/layout")
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
-                        let homePageContent = response.data.data[0].home_page_content;
+                        let homePageContent = response.data.data.home_page_content;
                         let homePageContentArray = homePageContent.replace(/<\/?[^>]+(>|$)/g, "").split(",");
 
                         homePageContentArray.forEach(content => {
@@ -277,6 +277,7 @@
 
                             if (this.categories) {
                                 this.categories.filter(category => {
+
                                     if (category.slug.toLowerCase() == base_content) {
 
                                         this.homePageContent[base_content] = {

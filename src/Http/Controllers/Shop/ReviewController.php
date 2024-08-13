@@ -3,7 +3,7 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Illuminate\Http\Request;
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Product\Repositories\ProductReviewRepository;
 use Webkul\PWA\Http\Resources\Catalog\ProductReview as ProductReviewResource;
 

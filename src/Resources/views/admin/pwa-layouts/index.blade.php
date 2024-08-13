@@ -51,23 +51,20 @@
                     </p>
 
                     <!-- Description -->
-                    <v-description v-slot="{ isDescriptionRequired }">
                         <x-admin::form.control-group>
 
                             <x-admin::form.control-group.control
                                 type="textarea"
                                 id="description"
-                                class="description"
+                                {{-- class="description" --}}
                                 name="home_page_content"
-                                ::rules="{ 'required' : isDescriptionRequired}"
-                                :value="$layout->home_page_content"
+                                :value="isset($layout->home_page_content) ? $layout->home_page_content : ''"
                                 :label="trans('pwa::app.admin.push-notification.description')"
-                                :tinymce="true"
+                                {{-- :tinymce="true" --}}
                             />
 
                             <x-admin::form.control-group.error control-name="description" />
                         </x-admin::form.control-group>
-                    </v-description>
                 </div>
 
                 {!! view_render_event('bagisto.admin.pwa.notification.create.card.general.after') !!}

@@ -38,7 +38,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.delete('/leagcy-api/reviews/' + this.review.id)
+                this.$http.delete('/api/v1/reviews/' + this.review.id)
                     .then(function(response) {
                         this_this.$toasted.show('Success: Customer review removed successfully.', { type: 'success' })
 

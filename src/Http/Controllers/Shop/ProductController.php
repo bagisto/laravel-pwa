@@ -2,7 +2,7 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\PWA\Http\Resources\Catalog\Product as ProductResource;
@@ -57,7 +57,6 @@ class ProductController extends Controller
                     ->where('product_flat.locale', $locale)
                     ->orderBy('product_id', 'desc');
             })->paginate($data['count'] ?? '4');
-
         } elseif (isset($data['featured'])) {
             $result = app(ProductFlatRepository::class)->scopeQuery(function ($query) {
                 $channel = request()->get('channel') ?: (core()->getCurrentChannelCode() ?: core()->getDefaultChannelCode());
@@ -73,7 +72,6 @@ class ProductController extends Controller
                     ->where('product_flat.locale', $locale)
                     ->orderBy('product_id', 'desc');
             })->paginate($data['count'] ?? '4');
-
         } else {
             $result = $this->productRepository->getAll(request()->input('category_id'));
         }

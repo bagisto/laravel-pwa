@@ -63,7 +63,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/shipments/' + shipmentId)
+                this.$http.get('/api/v1/shipments/' + shipmentId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

@@ -4,15 +4,39 @@
 
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
-                <div class="control-group" :class="[errors.has('address1[]') ? 'has-error' : '']">
-                    <input type="text" name="address1[]" class="control" v-model="address.address1[0]" v-validate="'required'" :placeholder="$t('Street Address 1')" :data-vv-as="$t('Street Address 1')"/>
-                    <label>{{ $t('Street Address 1') }}</label>
-                    <span class="control-error" v-if="errors.has('address1[]')">{{ errors.first('address1[]') }}</span>
+                <div class="control-group" :class="[errors.has('company_name') ? 'has-error' : '']">
+                    <input type="text" name="company_name" class="control" v-model="address.company_name" v-validate="'required'" :placeholder="$t('Company Name')" :data-vv-as="$t('Company Name')"/>
+                    <label>{{ $t('Company Name') }}</label>
+                    <span class="control-error" v-if="errors.has('company_name')">{{ errors.first('company_name') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('first_name') ? 'has-error' : '']">
+                    <input type="text" name="first_name" class="control" v-model="address.first_name" v-validate="'required'" :placeholder="$t('First Name')" :data-vv-as="$t('First Name')"/>
+                    <label>{{ $t('First Name') }}</label>
+                    <span class="control-error" v-if="errors.has('first_name')">{{ errors.first('first_name') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('last_name') ? 'has-error' : '']">
+                    <input type="text" name="last_name" class="control" v-model="address.last_name" v-validate="'required'" :placeholder="$t('Last Name')" :data-vv-as="$t('Last Name')"/>
+                    <label>{{ $t('Last Name') }}</label>
+                    <span class="control-error" v-if="errors.has('last_name')">{{ errors.first('last_name') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
+                    <input type="text" name="email" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
+                    <label>{{ $t('Email') }}</label>
+                    <span class="control-error" v-if="errors.has('email')">{{ errors.first('email') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('vat_id') ? 'has-error' : '']">
+                    <input type="text" name="vat_id" class="control" v-model="address.vat_id" v-validate="'required'" :placeholder="$t('vat id')" :data-vv-as="$t('vat id')"/>
+                    <label>{{ $t('vat id') }}</label>
+                    <span class="control-error" v-if="errors.has('vat_id')">{{ errors.first('vat_id') }}</span>
                 </div>
 
                 <div class="control-group" v-if="streetLines && streetLines > 0" v-for="n in parseInt(streetLines)" style="margin-top: -15px;">
-                    <input type="text" name="address1[]" class="control" v-model="address.address1[n]" :placeholder="$t('Street Address number', {number: n + 1})">
-                    <label>{{ $t('Street Address number', {number: n + 1}) }}</label>
+                    <input type="text" name="address1[]" class="control" v-model="address.address[n-1]" :placeholder="$t('Street Address number', {number: n })">
+                    <label>{{ $t('Street Address number', {number: n }) }}</label>
                 </div>
 
                 <country-state :address="address"></country-state>
@@ -56,7 +80,7 @@
             return {
                 loading: false,
 
-                streetLines: 0,
+                streetLines: 1,
 
                 address: null
             }
@@ -65,7 +89,7 @@
         components: { CustomHeader, CountryState },
 
         mounted () {
-            this.getAddress(this.$route.params.id)
+            this.getAddress(this.$route.params.id.trim())
 
             this.getConfigData()
         },
@@ -75,8 +99,9 @@
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
+                console.log('addressId', addressId);
 
-                this.$http.get('/leagcy-api/addresses/' + addressId)
+                this.$http.get('/api/v1/customer/addresses/' + addressId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -90,7 +115,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                let street_lines = 'customer.settings.address.street_lines';
+                let street_lines = 'customer.address.information.street_lines';
 
                 const configKeys = [
                     street_lines,
@@ -103,10 +128,10 @@
                  }).then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
-                        if (response.data.data[street_lines]) {
-                            this_this.streetLines = response.data.data[street_lines];
+                            console.log('stress address', response);
+                        if (response.data.data[street_lines] && response.data.data[street_lines] > 0) {
 
-                            this_this.streetLines = this_this.streetLines - 1;
+                            this_this.streetLines = response.data.data[street_lines];
                         }
                     })
                     .catch(function (error) {});
@@ -116,6 +141,8 @@
                 this.loading = true;
 
                 this.$validator.validateAll().then((result) => {
+                    console.log(result, this.address);
+
                     if (result) {
                         this.updateAddress()
                     } else {
@@ -129,9 +156,14 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put('/leagcy-api/addresses/' + this.address.id, this.address)
+                this.$http.put('/api/v1/customer/addresses/' + this.address.id,
+                    {
+                        ...this.address
+                    }
+                )
                     .then(function(response) {
                         this_this.loading = false;
+                        console.log('update address', response);
 
                         this_this.$toasted.show(response.data.message, {type: 'success'})
 

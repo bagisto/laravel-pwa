@@ -130,7 +130,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/checkout/cart/move-to-wishlist/' + item.id)
+                this.$http.get('/api/v1/checkout/cart/move-to-wishlist/' + item.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -150,7 +150,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/checkout/cart/remove-item/' + item.id)
+                this.$http.get('/api/v1/checkout/cart/remove-item/' + item.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -168,7 +168,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/checkout/cart/empty')
+                this.$http.get('/api/v1/checkout/cart/empty')
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -186,7 +186,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put('/leagcy-api/checkout/cart/update', { 'qty': this.quantities })
+                this.$http.put('/api/v1/checkout/cart/update', { 'qty': this.quantities })
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 

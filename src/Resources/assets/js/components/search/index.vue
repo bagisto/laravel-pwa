@@ -91,7 +91,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/leagcy-api/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
+                this.$http.get("/api/v1/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -142,7 +142,7 @@
 
                                 formData.append('image', imageInput.files[0]);
 
-                                axios.post("/leagcy-api/pwa/image-search-upload", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                                axios.post("/api/v1/pwa/image-search-upload", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                                     .then(function(response) {
                                         self.uploaded_image_url = response.data;
 

@@ -3,7 +3,7 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use PDF;
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Sales\Repositories\InvoiceRepository;
 
 /**
@@ -63,7 +63,7 @@ class InvoiceController extends Controller
 
             auth()->setDefaultDriver($this->guard);
 
-            $this->middleware('auth:'.$this->guard);
+            $this->middleware('auth:' . $this->guard);
         }
 
         $this->repository = app($this->_config['repository']);

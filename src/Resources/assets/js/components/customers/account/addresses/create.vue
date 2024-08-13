@@ -4,15 +4,40 @@
 
         <form action="POST" @submit.prevent="validateBeforeSubmit">
             <div class="form-container">
-                <div class="control-group" :class="[errors.has('address1[]') ? 'has-error' : '']">
-                    <input type="text" name="address1[]" class="control" v-model="address.address1[0]" v-validate="'required'" :placeholder="$t('Street Address 1')" :data-vv-as="$t('Street Address 1')"/>
-                    <label>{{ $t('Street Address 1') }}</label>
-                    <span class="control-error" v-if="errors.has('address1[]')">{{ errors.first('address1[]') }}</span>
+
+            <div class="control-group" :class="[errors.has('company_name') ? 'has-error' : '']">
+                    <input type="text" name="company_name" class="control" v-model="address.company_name" v-validate="'required'" :placeholder="$t('Company Name')" :data-vv-as="$t('Company Name')"/>
+                    <label>{{ $t('Company Name') }}</label>
+                    <span class="control-error" v-if="errors.has('company_name')">{{ errors.first('company_name') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('first_name') ? 'has-error' : '']">
+                    <input type="text" name="first_name" class="control" v-model="address.first_name" v-validate="'required'" :placeholder="$t('First Name')" :data-vv-as="$t('First Name')"/>
+                    <label>{{ $t('First Name') }}</label>
+                    <span class="control-error" v-if="errors.has('first_name')">{{ errors.first('first_name') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('last_name') ? 'has-error' : '']">
+                    <input type="text" name="last_name" class="control" v-model="address.last_name" v-validate="'required'" :placeholder="$t('Last Name')" :data-vv-as="$t('Last Name')"/>
+                    <label>{{ $t('Last Name') }}</label>
+                    <span class="control-error" v-if="errors.has('last_name')">{{ errors.first('last_name') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
+                    <input type="text" name="email" class="control" v-model="address.email" v-validate="'required'" :placeholder="$t('Email')" :data-vv-as="$t('Email')"/>
+                    <label>{{ $t('Email') }}</label>
+                    <span class="control-error" v-if="errors.has('email')">{{ errors.first('email') }}</span>
+                </div>
+
+                <div class="control-group" :class="[errors.has('vat_id') ? 'has-error' : '']">
+                    <input type="text" name="vat_id" class="control" v-model="address.vat_id" v-validate="'required'" :placeholder="$t('vat id')" :data-vv-as="$t('vat id')"/>
+                    <label>{{ $t('vat id') }}</label>
+                    <span class="control-error" v-if="errors.has('vat_id')">{{ errors.first('vat_id') }}</span>
                 </div>
 
                 <div class="control-group" v-if="streetLines && streetLines > 0" v-for="n in parseInt(streetLines)" style="margin-top: -15px;">
-                    <input type="text" name="address1[]" class="control" v-model="address.address1[n]" :placeholder="$t('Street Address number', {number: n + 1})">
-                    <label>{{ $t('Street Address number', {number: n + 1}) }}</label>
+                    <input type="text" name="address1[]" class="control" v-model="address.address[n-1]" :placeholder="$t('Street Address number', {number: n })">
+                    <label>{{ $t('Street Address number', {number: n }) }}</label>
                 </div>
 
                 <country-state :address="address"></country-state>
@@ -24,15 +49,15 @@
                 </div>
 
                 <div class="control-group" :class="[errors.has('postcode') ? 'has-error' : '']">
-                    <input type="text" name="postcode" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('City')"/>
+                    <input type="text" name="postcode" class="control" v-model="address.postcode" v-validate="'required'" :placeholder="$t('Postal Code')" :data-vv-as="$t('Postal Code')"/>
                     <label>{{ $t('Postal Code') }}</label>
-                    <span class="control-error" v-if="errors.has('postcode')">Postal code is required.</span>
+                    <span class="control-error" v-if="errors.has('postcode')">{{ errors.first('postcode') }}</span>
                 </div>
 
                 <div class="control-group" :class="[errors.has('phone') ? 'has-error' : '']">
-                    <input type="number" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('City')"/>
+                    <input type="text" name="phone" class="control" v-model="address.phone" v-validate="'required'" :placeholder="$t('Phone')" :data-vv-as="$t('Phone')"/>
                     <label>{{ $t('Phone') }}</label>
-                    <span class="control-error" v-if="errors.has('phone')">Phone number is required.</span>
+                    <span class="control-error" v-if="errors.has('phone')">{{ errors.first('phone') }}</span>
                 </div>
 
                 <div class="button-group">
@@ -59,7 +84,17 @@
                 streetLines: 0,
 
                 address: {
-                    address1: []
+                    company_name: null,
+                    first_name: null,
+                    last_name: null,
+                    address: [],
+                    country: null,
+                    state:null,
+                    city: null,
+                    postcode:null,
+                    phone: null,
+                    email: null,
+                    vat_id:null,
                 }
             }
         },
@@ -76,7 +111,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                let street_lines = 'customer.settings.address.street_lines';
+                let street_lines = 'customer.address.information.street_lines';
 
                 const configKeys = [
                     street_lines,
@@ -116,7 +151,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post('/leagcy-api/save-address', this.address)
+                this.$http.post('/api/v1/customer/addresses', this.address)
                     .then(function(response) {
                         this_this.loading = false;
 

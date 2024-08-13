@@ -209,7 +209,8 @@
             var this_this = this;
 
             EventBus.$on('user-logged-in', function(user) {
-                this_this.currentUser = user;
+
+                this_this.currentUser = user.data;
             });
 
             EventBus.$on('user-logged-out', function() {
@@ -296,6 +297,7 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         localStorage.removeItem('currentUser');
+                        localStorage.removeItem('token');
 
                         EventBus.$emit('user-logged-out');
                     });

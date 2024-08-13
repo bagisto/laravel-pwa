@@ -71,7 +71,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/leagcy-api/pwa/products", { params: searchTerm })
+                this.$http.get("/api/v1/pwa/products", { params: searchTerm })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
                         response.data.data.forEach(function(product) {

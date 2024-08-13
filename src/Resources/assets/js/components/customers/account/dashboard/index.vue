@@ -24,6 +24,7 @@
                 <tab :name="$t('Recent Orders')" :selected="true">
                     <div v-if="orders.length">
                         <div :class="['order-list', haveMoreOrders ? 'have-more-orders' : '']">
+                            <order-filter :orders="orders"></order-filter>
                             <order-card v-for="order in orders" :key='order.uid' :order="order"></order-card>
                         </div>
 
@@ -51,7 +52,7 @@
 
                 <tab :name="$t('Address')">
                     <div class="address-list" v-if="addresses.length">
-                        <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
+                        <address-card v-for="address in addresses" :key='address.id' :address="address" @onRemove="removeAddress(address)"></address-card>
                     </div>
 
                     <empty-address-list v-else></empty-address-list>
@@ -86,6 +87,7 @@
     import EmptyOrderList           from '../sales/orders/empty-order-list';
     import EmptyAddressList         from '../addresses/empty-address-list';
     import DownloadableProducts     from '../sales/orders/downloadable-products';
+    import OrderFilter              from '../sales/orders/order-filter';
 
     export default {
         name: 'dashboard',
@@ -93,6 +95,7 @@
         components: {
             CustomHeader,
             Tabs,
+            OrderFilter,
             Tab,
             OrderCard,
             AddressCard,
@@ -116,21 +119,29 @@
                 reviews: [],
 
                 haveMoreReviews: false,
+
+                token: null,
             }
         },
 
         props: ['customer'],
 
         mounted () {
-            this.customer = JSON.parse(localStorage.getItem('currentUser'));
+            const token = JSON.parse(localStorage.getItem("token"));
 
-            this.getOrders();
+            if (token) {
+                this.token = token;
+            }
+            setTimeout(()=> {
 
-            this.getDownloadableProducts();
+                this.getOrders();
 
-            this.getAddresses();
+                // this.getDownloadableProducts();
 
-            this.getReviews();
+                this.getAddresses();
+
+                // this.getReviews();
+            },500);
         },
 
         methods: {
@@ -138,18 +149,22 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/customer/orders', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/v1/customer/orders', { params: { token: this.token } })
                     .then(response => {
 
+                        EventBus.$emit('hide-ajax-loader');
                         this.orders = response.data.data;
 
                         if (response.data.meta.current_page < response.data.meta.last_page) {
                             this.haveMoreOrders = true;
                         }
 
-                        EventBus.$emit('hide-ajax-loader');
+
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                        console.error(error);
+
+                    });
             },
 
             getAddresses () {
@@ -157,13 +172,16 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/customer/addresses')
+                this.$http.get('/api/v1/customer/addresses', { params: { customer_id: this.customer.id, pagination: 0, token: true } })
                     .then(function(response) {
+                        console.log('addresses', response);
+
                         this_this.addresses = response.data.data;
 
-                        EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
+
+                EventBus.$emit('hide-ajax-loader');
             },
 
             removeAddress (address) {
@@ -177,7 +195,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
+                this.$http.get('/api/v1/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
                     .then(function(response) {
                         this_this.reviews = response.data.data;
 
@@ -199,7 +217,7 @@
             getDownloadableProducts() {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/downloadable-products', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/v1/downloadable-products', { params: { customer_id: this.customer.id } })
                     .then(response => {
                         this.downloadable_products = response.data.data;
 

@@ -86,7 +86,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/product-configurable-config/' + productId)
+                this.$http.get('/api/v1/product-configurable-config/' + productId)
                     .then(function(response) {
                         this_this.config = response.data.data;
 

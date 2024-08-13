@@ -207,7 +207,7 @@
             getFilerableAttributes () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/attributes', { params: {
+                this.$http.get('/api/v1/attributes', { params: {
                         pagination: 0,
                         is_filterable: 1,
                         category_id: this.categoryId,

@@ -80,7 +80,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/products/' + productId)
+                this.$http.get('/api/v1/pwa/products/' + productId)
                     .then(function(response) {
                         this_this.product = response.data.data;
 
@@ -108,7 +108,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post('/leagcy-api/reviews/' + this.$route.params.id + '/create', this.review)
+                this.$http.post('/api/v1/reviews/' + this.$route.params.id + '/create', this.review)
                     .then(function(response) {
                         this_this.loading = false;
 

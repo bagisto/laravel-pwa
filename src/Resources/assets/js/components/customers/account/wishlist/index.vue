@@ -50,7 +50,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa-wishlist', { params: { customer_id: this.customer.id, pagination: 0 } })
+                this.$http.get('/api/v1/pwa-wishlist', { params: { customer_id: this.customer.id, pagination: 0 } })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -64,7 +64,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.delete('/leagcy-api/wishlist/' + item.id)
+                this.$http.delete('/api/v1/wishlist/' + item.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -80,7 +80,7 @@
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/leagcy-api/pwa/move-to-cart/' + item.id)
+                this.$http.get('/api/v1/pwa/move-to-cart/' + item.id)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

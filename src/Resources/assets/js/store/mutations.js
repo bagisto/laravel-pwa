@@ -7,6 +7,12 @@ var setCustomer = (state, customer) => {
     state.customer = customer;
     state.isCustomerFetched = true;
 
+    Vue.prototype.$http.defaults.headers.common[
+        "Authorization"
+    ] = `Bearer ${state.token}`;
+
+    console.log("customer set", state);
+
     if (router.app._route.name == "login-register") {
         router.app._router.push({ name: "dashboard" });
     }
@@ -14,11 +20,22 @@ var setCustomer = (state, customer) => {
 
 const GET_CUSTOMER = (state) => {
     EventBus.$emit("show-ajax-loader");
+    const token = JSON.parse(localStorage.getItem("token"));
 
+    if (!state.token && token) {
+        Vue.prototype.$http.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${token}`;
+        state.token = token;
+    }
     if (!state.isCustomerFetched) {
-        console.log("two");
         Vue.prototype.$http
-            .get("/api/v1/customer/get", { params: { token: state.token } })
+            .get("/api/v1/customer/get", {
+                params: { token: state.token },
+                headers: {
+                    Authorization: `Bearer ${state.token}`,
+                },
+            })
             .then((response) => {
                 setCustomer(state, response.data.data);
             })
@@ -36,11 +53,18 @@ const GET_CUSTOMER = (state) => {
 
 const GET_CART = (state) => {
     EventBus.$emit("show-ajax-loader");
-
     Vue.prototype.$http
-        .get("/api/v1/customer/cart")
+        .get("/api/v1/customer/cart", {
+            params: {
+                token: state.token,
+            },
+            headers: {
+                Authorization: `Bearer ${state.token}`,
+            },
+        })
         .then((response) => {
             EventBus.$emit("hide-ajax-loader");
+            console.log("cart data", response);
 
             state.cart = response.data.data;
             state.pagination = response.data.meta;
@@ -49,6 +73,6 @@ const GET_CART = (state) => {
 };
 
 export default {
-    GET_CART,
     GET_CUSTOMER,
+    GET_CART,
 };
