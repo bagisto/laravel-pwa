@@ -2,10 +2,12 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Velocity\Helpers\Helper;
-use Webkul\Velocity\Repositories\VelocityCustomerCompareProductRepository;
+use Webkul\Customer\Repositories\CompareItemRepository;
+use Webkul\Shop\Http\Resources\CompareItemResource;
 
 /**
  * Comparison controller
@@ -29,79 +31,39 @@ class ComparisonController extends Controller
      * @return void
      */
     public function __construct(
-        protected Helper $velocityHelper,
-        protected VelocityCustomerCompareProductRepository $compareProductsRepository,
-        protected ProductRepository $productRepository
+        protected ProductRepository $productRepository,
+        protected CompareItemRepository $compareItemRepository,
     ) {
-        $this->guard = request()->has('token') ? 'api' : 'customer';
+        // $this->guard = request()->has('token') ? 'api' : 'customer';
 
-        $this->_config = request('_config');
-
-        if (isset($this->_config['authorization_required']) && $this->_config['authorization_required']) {
-
-            auth()->setDefaultDriver($this->guard);
-
-            $this->middleware('auth:' . $this->guard);
-        }
-
-        $this->middleware('validateAPIHeader');
+        // Log::info('Guard', $this->guard);
     }
 
-    /**
-     * Method for customers to get products in comparison.
-     *
-     * @return \Illuminate\Http\Response|\Illuminate\View\View
-     */
-    public function getComparisonList()
+    public function index()
     {
-        if (! core()->getConfigData('general.content.shop.compare_option')) {
-            abort(404);
-        } else {
-            if (request()->get('data')) {
-                $productCollection = [];
+        $productIds = request()->input('product_ids') ?? [];
+        $customerId = request()->input('customer_id') ?? null;
 
-                $comparableAttributes = [];
-
-                if (auth()->guard($this->guard)->user()) {
-
-                    $productCollection = $this->compareProductsRepository
-                        ->leftJoin(
-                            'products',
-                            'velocity_customer_compare_products.product_id',
-                            'products.id'
-                        )
-                        ->where('customer_id', auth()->guard($this->guard)->user()->id)
-                        ->get();
-
-                    $items = $productCollection->map(function ($product) {
-                        return $product->id;
-                    })->join('&');
-
-                    $productCollection = ! empty($items)
-                        ? $this->velocityHelper->fetchProductCollection($items)
-                        : [];
-                } else {
-                    /* for product details */
-                    if ($items = request()->get('items')) {
-                        $productCollection = $this->velocityHelper->fetchProductCollection($items);
-                    }
-                }
-
-                if ($productCollection) {
-                    $comparableAttributes = $this->getComparableAttributes();
-                }
-
-                $response = [
-                    'status'               => 'success',
-                    'products'             => $productCollection,
-                    'comparableAttributes' => $comparableAttributes,
-                ];
-            } else {
-                $response = view($this->_config['view']);
-            }
-
-            return $response;
+        /**
+         * This will handle for customers.
+         */
+        if ($customerId) {
+            $productIds = $this->compareItemRepository
+                ->findByField('customer_id', $customerId)
+                ->pluck('product_id')
+                ->toArray();
         }
+
+        $products = $this->productRepository
+            ->whereIn('id', $productIds)
+            ->get();
+
+
+        // return CompareItemResource::collection($products);
+        return response()->json([
+            'status'  => 'success',
+            'data' => CompareItemResource::collection($products),
+        ]);
     }
 
     /**
@@ -109,52 +71,36 @@ class ComparisonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function addCompareProduct()
+    public function store(Request $request)
     {
-        $productId = request()->get('productId');
+        $this->validate(request(), [
+            'product_id' => 'required|integer',
+            'customer_id' => 'required|integer',
+        ]);
+        $customerId = $request->input('customer_id');
+        $productId = $request->input('product_id');
 
-        $customerId = auth()->guard($this->guard)->user()->id;
+        $compareProduct = $this->compareItemRepository->findOneByField([
+            'customer_id'  => $customerId,
+            'product_id'   => $productId,
+        ]);
 
-        if ($product = $this->productRepository->findOrFail($productId)) {
-            if (! $product->visible_individually) {
-                abort(404);
-            }
-        }
-
-        // $compareProduct = $this->compareProductsRepository->findOneByField([
-        //     'customer_id' => $customerId,
-        //     'product_id'  => $productId,
-        // ]);
-
-
-        $compareProduct = null;
         if ($compareProduct) {
             return response()->json([
-                'status'  => 'warning',
-                'label'   => trans('velocity::app.shop.general.alert.warning'),
-                'message' => trans('velocity::app.customer.compare.already_added'),
+                'status'  => 'success',
+                'message' => trans('shop::app.compare.already-added'),
             ]);
         }
 
-        $product = $this->productRepository->find($productId);
-
-        if (! $product) {
-            return response()->json([
-                'status'  => 'warning',
-                'message' => trans('customer::app.product-removed'),
-                'label'   => trans('velocity::app.shop.general.alert.warning'),
-            ]);
-        }
-
-        // $this->compareProductsRepository->create([
-        //     'customer_id' => $customerId,
-        //     'product_id'  => $product->id,
-        // ]);
+        $this->compareItemRepository->create([
+            'customer_id'  => $customerId,
+            'product_id'   => $productId,
+        ]);
 
         return response()->json([
+            'action'  => 'added',
             'status'  => 'success',
-            'message' => trans('velocity::app.customer.compare.added'),
-            'label'   => trans('velocity::app.shop.general.alert.success'),
+            'message' => trans('shop::app.compare.item-add-success'),
         ]);
     }
 
@@ -163,60 +109,41 @@ class ComparisonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function deleteComparisonProduct()
+    public function destroy()
     {
-        // either delete all or individual
-        if (request()->get('productId') == 'all') {
-            // delete all
-            $customerId = auth()->guard('customer')->user()->id;
-            $this->compareProductsRepository->deleteWhere([
-                'customer_id' => auth()->guard('customer')->user()->id,
+        $this->validate(request(), [
+            'product_id' => 'required|integer',
+            'customer_id' => 'required|integer',
+        ]);
+
+        $productId = request()->input('product_id') ?? null;
+        $customerId = request()->input('customer_id') ?? null;
+
+        $success = $this->compareItemRepository->deleteWhere([
+            'product_id'  => $productId,
+            'customer_id' => $customerId,
+        ]);
+
+        if (! $success) {
+            return response()->json([
+                'message' => trans('shop::app.compare.remove-error'),
             ]);
-            $message = trans('velocity::app.customer.compare.removed-all');
-        } else {
-            // delete individual
-            $this->compareProductsRepository->deleteWhere([
-                'product_id'  => request()->get('productId'),
-                'customer_id' => auth()->guard($this->guard)->user()->id,
-            ]);
-            $message = trans('velocity::app.customer.compare.removed');
         }
 
-        return [
-            'status'  => 'success',
-            'message' => $message,
-            'label'   => trans('velocity::app.shop.general.alert.success'),
-        ];
-    }
-
-    /**
-     * This function will provide details of multiple product
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getDetailedProducts()
-    {
-        // for product details
-        if ($items = request()->get('items')) {
-            $comparableAttributes = [];
-
-            $moveToCart = request()->get('moveToCart');
-
-            $productCollection = $this->velocityHelper->fetchProductCollection($items, $moveToCart);
-
-            if ($productCollection) {
-                $comparableAttributes = $this->getComparableAttributes();
-            }
-
-            $response = [
-                'status'               => 'success',
-                'products'             => $productCollection,
-                'comparableAttributes' => $comparableAttributes,
-            ];
+        if ($customerId) {
+            $productIds = $this->compareItemRepository
+                ->findByField('customer_id', $customerId)
+                ->pluck('product_id')
+                ->toArray();
         }
 
-        return response()->json($response ?? [
-            'status' => false,
+        $products = $this->productRepository
+            ->whereIn('id', $productIds ?? [])
+            ->get();
+
+        return response()->json([
+            'data'    => CompareItemResource::collection($products),
+            'message' => trans('shop::app.compare.remove-success'),
         ]);
     }
 

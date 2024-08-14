@@ -14,7 +14,7 @@
                             :key='item.id'
                             :compareItem="item"
                             :attribute="attribute"
-                            :customer="customer"
+                            :customer="iscustomer"
                             @onRemove="removecompareItem(item)"
                             @onMoveToCart="moveToCart(item)"
                         >
@@ -40,7 +40,8 @@
 
         data () {
             return {
-                customer: false,
+                iscustomer: false,
+                customer:null,
                 compare: [],
                 comparableAttributes: []
             }
@@ -55,44 +56,36 @@
         methods: {
             getCustomer () {
                 if (JSON.parse(localStorage.getItem('currentUser'))) {
-                    this.customer = true;
-                } else {
-                    this.customer = false;
+                    this.customer = JSON.parse(localStorage.getItem('currentUser'));
+                    this.iscustomer = true;
                 }
             },
 
             getcompare () {
-
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
-                let items = '';
-                let url = '';
+                let url = '/api/pwa/comparison/get-products';
+                let items = JSON.parse(localStorage.getItem('compared_product'));
                 let data = {
-                    params: {'data': true}
-                }
-
-                url = '/api/compare-items';
-
-                if (! this_this.customer) {
-
-                    items = JSON.parse(localStorage.getItem('compared_product'));
-                    // items = items ? items.join('&') : '';
-
-                    data = {
                         params: {
-                           'product_ids': items
+                            'product_ids': items
                         }
                     };
 
+                if ( this_this.iscustomer) {
+                    data = {
+                        params: {
+                            'customer_id': this.customer.id,
+                        }
+                    };
                 }
 
-                if (this_this.customer || (! this_this.customer && items != "")) {
+                if (this_this.iscustomer || (! this_this.iscustomer && items != "")) {
                     this_this.$http.get(url, data)
                     // .then(response => response.json())
                     .then(response => {
-
                         EventBus.$emit('hide-ajax-loader');
 
                         if (response.data.data) {
@@ -136,18 +129,17 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                if (this_this.customer) {
-                    this.$http.post('/api/compare-items/', {productId: item.id} )
+                if (this_this.iscustomer) {
+                    this_this.$http.post('/api/pwa/comparison', {
+                        'customer_id': this.customer.id,
+                        'product_id': item.id,
+                    })
                     .then(function(response) {
-
-                        EventBus.$emit('hide-ajax-loader');
-
                         var index = this_this.compare.indexOf(item);
 
                         this_this.compare.splice(index, 1);
 
                         this_this.$toasted.show(response.data.message, { type: 'success' })
-
                     })
                     .catch(function (error) {
                         this_this.$toasted.show('Something went wrong, Please try againg later', { type: 'error' })
@@ -170,6 +162,8 @@
 
                     this_this.$toasted.show('Item removed from compare list Succesfully', { type: 'success' })
                 }
+
+                EventBus.$emit('hide-ajax-loader');
             },
 
             moveToCart (item) {

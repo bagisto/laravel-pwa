@@ -2,22 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 // use Webkul\API\Http\Controllers\Shop\ResourceController;
-use Webkul\PWA\Http\Controllers\Shop\AddressController;
 use Webkul\PWA\Http\Controllers\Shop\API\APIController;
 use Webkul\PWA\Http\Controllers\Shop\CartController;
-use Webkul\PWA\Http\Controllers\Shop\CategoryController;
 use Webkul\PWA\Http\Controllers\Shop\CheckoutController;
 use Webkul\PWA\Http\Controllers\Shop\ComparisonController;
 use Webkul\PWA\Http\Controllers\Shop\ImageSearchController;
 use Webkul\PWA\Http\Controllers\Shop\InvoiceController;
-use Webkul\PWA\Http\Controllers\Shop\ProductController;
 use Webkul\PWA\Http\Controllers\Shop\ThemeController;
 use Webkul\PWA\Http\Controllers\Shop\ReviewController;
 use Webkul\PWA\Http\Controllers\Shop\SmartButtonController;
-use Webkul\PWA\Http\Controllers\Shop\WishlistController;
 use Webkul\PWA\Http\Controllers\SinglePageController;
 use Webkul\PWA\Http\Controllers\StandardController;
-use Webkul\PWA\Http\Controllers\Shop\SessionController;
 use Webkul\PWA\Http\Controllers\Shop\CustomerController;
 use Webkul\PWA\Http\Controllers\Shop\LayoutController;
 
@@ -34,7 +29,7 @@ Route::group(['prefix' => 'api'], function ($router) {
 
     Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($router) {
 
-        Route::get('product-configurable-config/{id}', [ProductController::class, 'configurableConfig']);
+        // Route::get('product-configurable-config/{id}', [ProductController::class, 'configurableConfig']);
 
         Route::get('invoices/{id}/download', [InvoiceController::class, 'print'])->defaults('_config', [
             'repository'             => 'Webkul\Sales\Repositories\InvoiceRepository',
@@ -42,14 +37,13 @@ Route::group(['prefix' => 'api'], function ($router) {
             'authorization_required' => true,
         ]);
 
-        Route::get('wishlist/add/{id}', [WishlistController::class, 'create']);
+        // Route::get('wishlist/add/{id}', [WishlistController::class, 'create']);
 
         Route::post('reviews/{id}/create', [ReviewController::class, 'store']);
 
         // removed
         Route::get('advertisements', [APIController::class, 'fetchAdvertisementImages']);
 
-        Route::post('save-address', [AddressController::class, 'store']);
 
         Route::post('pwa/image-search-upload', [ImageSearchController::class, 'upload']);
 
@@ -65,11 +59,11 @@ Route::group(['prefix' => 'api'], function ($router) {
                 Route::post('save-order', [CheckoutController::class, 'saveOrder']);
             });
 
-            Route::put('/comparison', [ComparisonController::class, 'addCompareProduct']);
+            Route::put('/comparison', [ComparisonController::class, 'store']);
 
-            Route::post('/comparison', [ComparisonController::class, 'deleteComparisonProduct']);
+            Route::post('/comparison', [ComparisonController::class, 'destroy']);
 
-            Route::get('/comparison/get-products', [ComparisonController::class, 'getComparisonList']);
+            Route::get('/comparison/get-products', [ComparisonController::class, 'index']);
 
             Route::get('/detailed-products', [ComparisonController::class, 'getDetailedProducts']);
 
@@ -85,7 +79,7 @@ Route::group(['prefix' => 'api'], function ($router) {
                 'authorization_required' => true,
             ]);
 
-            Route::get('move-to-cart/{id}', [WishlistController::class, 'moveToCart']);
+            // Route::get('move-to-cart/{id}', [WishlistController::class, 'moveToCart']);
 
             // no need
             // Route::get('categories', [CategoryController::class, 'index']);
@@ -95,7 +89,7 @@ Route::group(['prefix' => 'api'], function ($router) {
             // no need
             // Route::get('products', [ProductController::class, 'index'])->name('api.products');
 
-            Route::get('products/{id}', [ProductController::class, 'get']);
+            // Route::get('products/{id}', [ProductController::class, 'get']);
 
             Route::get('sliders', [ThemeController::class, 'sliders']);
 

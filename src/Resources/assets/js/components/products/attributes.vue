@@ -44,7 +44,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/product-additional-information/' + productId)
+                this.$http.get('/api/v1/products/'+productId+'/additional-information')
                     .then(function(response) {
                         this_this.viewableAttributes = response.data.data;
 

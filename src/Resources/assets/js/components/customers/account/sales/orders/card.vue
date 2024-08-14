@@ -1,7 +1,7 @@
 <template>
     <div class="order-card">
         <div class="order-details">
-            <div class="order-id">{{ order.increment_id }}</div>
+            <div class="order-id">#{{ order.increment_id }}</div>
             <div class="order-status">
                 <label :class="order.status">{{ order.status_label }}</label>
             </div>
@@ -33,16 +33,15 @@
             <div slot="content">
                 <div class="product-list">
 
-                    <router-link class="product-item" v-for="orderItem in order.items" :key="order.uid" :to="'/reviews/' + orderItem.product.id + '/create'">
+                    <router-link class="product-item" v-for="orderItem in order.items" :key="orderItem.product_id" :to="'/reviews/' + orderItem.product_id + '/create'">
                         <div class="product-image">
-                            <img alt="product-base-small-image" :src="orderItem.product.base_image.small_image_url"/>
+                            <!-- <img alt="product-base-small-image" :src="orderItem.product.base_image.small_image_url"/> -->
                         </div>
 
                         <div class="product-name">
-                            {{ orderItem.product.name }}
+                            {{ orderItem.name }}
                         </div>
                     </router-link>
-
                 </div>
             </div>
         </bottom-sheet>

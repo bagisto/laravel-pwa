@@ -24,8 +24,8 @@
                 <tab :name="$t('Recent Orders')" :selected="true">
                     <div v-if="orders.length">
                         <div :class="['order-list', haveMoreOrders ? 'have-more-orders' : '']">
-                            <order-filter :orders="orders"></order-filter>
-                            <order-card v-for="order in orders" :key='order.uid' :order="order"></order-card>
+                            <!-- <order-filter :orders="orders"></order-filter> -->
+                            <order-card v-for="order in orders" :key='order.id' :order="order"></order-card>
                         </div>
 
                         <div class="load-more" v-if="haveMoreOrders">
@@ -87,7 +87,7 @@
     import EmptyOrderList           from '../sales/orders/empty-order-list';
     import EmptyAddressList         from '../addresses/empty-address-list';
     import DownloadableProducts     from '../sales/orders/downloadable-products';
-    import OrderFilter              from '../sales/orders/order-filter';
+    // import OrderFilter              from '../sales/orders/order-filter';
 
     export default {
         name: 'dashboard',
@@ -95,7 +95,7 @@
         components: {
             CustomHeader,
             Tabs,
-            OrderFilter,
+            // OrderFilter,
             Tab,
             OrderCard,
             AddressCard,
@@ -148,22 +148,26 @@
             getOrders () {
 
                 EventBus.$emit('show-ajax-loader');
-
-                this.$http.get('/api/v1/customer/orders', { params: { token: this.token } })
-                    .then(response => {
+                this.$http.get('/api/v1/customer/orders', { params:
+                    {
+                        sort:'id',
+                        order:'desc',
+                        page:1,
+                        limit:10,
+                    }
+                })
+                .then(response => {
+                        console.log('orers', response);
 
                         EventBus.$emit('hide-ajax-loader');
                         this.orders = response.data.data;
 
-                        if (response.data.meta.current_page < response.data.meta.last_page) {
-                            this.haveMoreOrders = true;
-                        }
-
-
+                        // if (response.data.meta.current_page < response.data.meta.last_page) {
+                        //     this.haveMoreOrders = true;
+                        // }
                     })
                     .catch(function (error) {
                         console.error(error);
-
                     });
             },
 
@@ -174,10 +178,7 @@
 
                 this.$http.get('/api/v1/customer/addresses', { params: { customer_id: this.customer.id, pagination: 0, token: true } })
                     .then(function(response) {
-                        console.log('addresses', response);
-
                         this_this.addresses = response.data.data;
-
                     })
                     .catch(function (error) {});
 

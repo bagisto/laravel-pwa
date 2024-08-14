@@ -50,7 +50,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/pwa-wishlist', { params: { customer_id: this.customer.id, pagination: 0 } })
+                this.$http.get('/api/v1/customer/wishlist')
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -61,10 +61,11 @@
 
             removeWishlistItem (item) {
                 var this_this = this;
+                console.log(item);
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.delete('/api/v1/wishlist/' + item.id)
+                this.$http.post('/api/v1/customer/wishlist/' + item.product.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -80,7 +81,7 @@
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/pwa/move-to-cart/' + item.id)
+                this.$http.post('/api/v1/customer/wishlist/'+ item.product.id +'/move-to-cart')
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

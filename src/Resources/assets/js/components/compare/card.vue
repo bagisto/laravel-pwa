@@ -8,7 +8,9 @@
 
     <td v-else-if="attribute['code'] == 'product_image'" class="attribute-value">
         <div class="product-image">
-            <img alt="product-base-medium-image" :src="compareItem.base_image.small_image_url" />
+            <router-link :to="'/products/' + compareItem.id">
+                <img alt="product-base-medium-image" :src="compareItem.base_image.small_image_url" />
+            </router-link>
         </div>
     </td>
 
@@ -44,7 +46,7 @@
     export default {
         name: 'compare-item',
 
-        props: ['compareItem', 'customer', 'attribute'],
+        props: ['compareItem', 'iscustomer', 'attribute'],
 
         methods: {
             removeItem () {

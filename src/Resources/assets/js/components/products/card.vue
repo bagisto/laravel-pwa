@@ -29,17 +29,36 @@
 </template>
 
 <script>
+
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
+
     export default {
         name: 'product-card',
 
         props: ['product', 'isCustomer'],
 
+        computed: mapState({
+            customer: state => state.customer,
+        }),
+
+        mounted () {
+            this.getCustomer();
+        },
+
         methods: {
+            ...mapActions([
+                'getCustomer',
+            ]),
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/wishlist/add/' + this.product.id)
+                this.$http.post('/api/v1/customer/wishlist/' + this.product.id)
                     .then(response => {
+                        console.log('wishlist', response);
+
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         this.product.is_saved = response.data.data ? true : false;
@@ -55,10 +74,19 @@
                 EventBus.$emit('show-ajax-loader');
 
                 if (this.isCustomer) {
-                    this.$http.put('/api/compare-items/store/', {params: { product_id: this.product.id }})
-                    .then(response => {
+                    this.$http.put('/api/pwa/comparison/',
+                    {
+                        product_id: this.product.id,
+                        customer_id:this.customer.id,
+                    }
+                    ).then(response => {
+                        let actionType = 'info';
 
-                        this.$toasted.show(response.data.message, { type: 'success' })
+                        if (response.data.action && response.data.action == 'added') {
+                            actionType = "success";
+                        }
+
+                        this.$toasted.show(response.data.message, { type: actionType })
 
                         EventBus.$emit('hide-ajax-loader');
                     })

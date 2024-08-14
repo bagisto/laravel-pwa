@@ -60,7 +60,7 @@ var GET_CART = function GET_CART(state) {
 };
 
 var _default = {
-    GET_CART: GET_CART,
     GET_CUSTOMER: GET_CUSTOMER,
+    GET_CART: GET_CART,
 };
 exports["default"] = _default;
