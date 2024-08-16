@@ -136,11 +136,11 @@
 
                 this.getOrders();
 
-                // this.getDownloadableProducts();
+                this.getDownloadableProducts();
 
                 this.getAddresses();
 
-                // this.getReviews();
+                this.getReviews();
             },500);
         },
 
@@ -157,7 +157,6 @@
                     }
                 })
                 .then(response => {
-                        console.log('orers', response);
 
                         EventBus.$emit('hide-ajax-loader');
                         this.orders = response.data.data;
@@ -196,11 +195,14 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
-                    .then(function(response) {
-                        this_this.reviews = response.data.data;
+               this.$http.get('/api/pwa/customer/reviews', {
+                    params: {
+                        customer_id: this.customer.id
+                    }
+                }).then(function(response) {
+                        this_this.reviews = response.data.data.data;
 
-                        if (response.data.meta.current_page < response.data.meta.last_page) {
+                        if (response.data.data.current_page < response.data.data.last_page) {
                             this_this.haveMoreReviews = true;
                         }
 
@@ -218,13 +220,19 @@
             getDownloadableProducts() {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/downloadable-products', { params: { customer_id: this.customer.id } })
+                this.$http.get('/api/pwa/product/downloadable-products', {
+                    params: {
+                        customer_id: this.customer.id
+                    }
+                })
                     .then(response => {
-                        this.downloadable_products = response.data.data;
 
-                        if (response.data.meta.current_page < response.data.meta.last_page) {
+                        this.downloadable_products = response.data.data.data;
+
+                        if (response.data.data.current_page < response.data.data.last_page) {
                             this.haveMoreOrders = true;
                         }
+                            console.log('downloadable-products',this.downloadable_products);
 
                         EventBus.$emit('hide-ajax-loader');
                     })

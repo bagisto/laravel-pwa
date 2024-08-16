@@ -1,13 +1,13 @@
 <template>
     <div class="product-price">
-        <div v-html="product.formated_price"></div>
+        <div v-html="product.formatted_price"></div>
     </div>
 </template>
 
 <script>
     export default {
         name: 'price',
-        
+
         props: ['product']
     }
 </script>

@@ -133,8 +133,9 @@
             getReviews (productId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/reviews', { params: { product_id: productId, limit: 5, status: 'approved' } })
+                this.$http.get('/api/product/'+productId+'/reviews')
                     .then(response => {
+
                         this.reviews = response.data.data;
 
                         this.pagination = response.data.meta;

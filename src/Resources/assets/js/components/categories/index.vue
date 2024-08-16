@@ -84,7 +84,7 @@
 
 				params: {
                     'category_id': this.$route.params.id,
-                    'limit': 8
+                    'limit': 1
                 },
 			}
 		},
@@ -149,6 +149,9 @@
 
                 EventBus.$emit('show-ajax-loader');
 
+                console.log(this.params);
+
+
                 this.$http.get("/api/v1/products", { params: this.params })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
@@ -164,25 +167,13 @@
 
             filterProducts (filters) {
                 this.products = [];
+                console.log('filters', filters);
 
                 delete this.params['page'];
 
                 for(var key in filters) {
                     if (key == 'sort')  {
-                        if (filters[key].length) {
-                            var sort = '';
-
-                            if (Array.isArray(filters[key])) {
-                                sort = filters[key][0];
-                            } else {
-                                sort = filters[key];
-                            }
-
-                            if (sort) {
-                                this.params['sort'] = sort.substring(0, sort.lastIndexOf("_") + 0);
-                                this.params['order'] = sort.substring(sort.lastIndexOf("_") + 1, sort.length);
-                            }
-                        }
+                        this.params['sort'] = filters.sort;
                     } else {
                         if (filters[key].length) {
                             if (key == 'price') {

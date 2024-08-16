@@ -6,7 +6,7 @@
                 <label :class="downloadableProduct.status">{{ downloadableProduct.status }}</label>
             </div>
             <div class="order-date">{{ new Date(downloadableProduct.created_at) | moment("D MMMM YYYY") }}</div>
-            <div class="order-title" v-html="downloadableProduct.title">
+            <div class="order-title" v-html="downloadableProduct.name">
             </div>
 
             <div>
@@ -15,7 +15,7 @@
                     {{ downloadableProduct.remaining_downloads }}
                 </label>
             </div>
-            
+
             <i class="icon sharp-arrow-right-icon"></i>
         </div>
     </div>

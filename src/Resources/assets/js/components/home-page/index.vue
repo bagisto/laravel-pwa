@@ -304,10 +304,6 @@
                         this.categories = response.data.data;
 
                         this.categories.forEach(category => {
-                            if (category.show_products) {
-                                // push data here to keep category according to order
-                                // this.getProducts(category, { 'category_id': category.id });
-                            }
 
                             if (this.homePageContent[category.slug]) {
                                 this.homePageContent[category.slug] = {

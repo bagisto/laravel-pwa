@@ -13,7 +13,7 @@
 
             <div class="product-price">
                 <!--if there is no special price of an item-->
-                <span v-html="product.formated_price"></span>
+                <span v-html="product.formatted_price"></span>
                 <!--end-->
                 <i class="icon compare-icon"  @click="moveToCompare"></i>
                 <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
@@ -57,7 +57,6 @@
 
                 this.$http.post('/api/v1/customer/wishlist/' + this.product.id)
                     .then(response => {
-                        console.log('wishlist', response);
 
                         this.$toasted.show(response.data.message, { type: 'success' })
 

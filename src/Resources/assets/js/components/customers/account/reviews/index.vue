@@ -3,7 +3,7 @@
         <custom-header :title="$t('Reviews')"></custom-header>
 
         <div class="review-list" v-if="reviews.length">
-            <review-card v-for="review in reviews" :key='review.uid' :review="review" @onRemove="removeReview(review)"></review-card>
+            <review-card v-for="review in reviews" :key='review.id' :review="review" @onRemove="removeReview(review)"></review-card>
         </div>
 
         <empty-review-list v-else></empty-review-list>
@@ -38,11 +38,16 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved' } })
-                    .then(function(response) {
+                this.$http.get('/api/pwa/customer/reviews', { params:
+                    {
+                        customer_id: this.customer.id
+                    }
+                }).then(function(response) {
+                    console.log('reviews', response);
+
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.reviews = response.data.data;
+                        this_this.reviews = response.data.data.data;
                     })
                     .catch(function (error) {});
             },

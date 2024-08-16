@@ -80,8 +80,10 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/pwa/products/' + productId)
+                this.$http.get('/api/v1/products/' + productId)
                     .then(function(response) {
+                        console.log(response);
+
                         this_this.product = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');
@@ -108,8 +110,12 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.post('/api/v1/reviews/' + this.$route.params.id + '/create', this.review)
-                    .then(function(response) {
+                this.$http.post('/api/v1/products/'+this.$route.params.id+'/reviews', {
+                    title: this.review.title,
+                    comment: this.review.comment,
+                    rating: this.review.rating,
+                }).then(function(response) {
+
                         this_this.loading = false;
 
                         this_this.$toasted.show(response.data.message, { type: 'success' })

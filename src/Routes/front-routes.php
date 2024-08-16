@@ -15,6 +15,7 @@ use Webkul\PWA\Http\Controllers\SinglePageController;
 use Webkul\PWA\Http\Controllers\StandardController;
 use Webkul\PWA\Http\Controllers\Shop\CustomerController;
 use Webkul\PWA\Http\Controllers\Shop\LayoutController;
+use Webkul\PWA\Http\Controllers\Shop\ProductController;
 
 Route::group(['middleware' => ['web']], function () {
 
@@ -31,60 +32,73 @@ Route::group(['prefix' => 'api'], function ($router) {
 
         // Route::get('product-configurable-config/{id}', [ProductController::class, 'configurableConfig']);
 
-        Route::get('invoices/{id}/download', [InvoiceController::class, 'print'])->defaults('_config', [
-            'repository'             => 'Webkul\Sales\Repositories\InvoiceRepository',
-            'resource'               => 'Webkul\API\Http\Resources\Sales\Invoice',
-            'authorization_required' => true,
-        ]);
+        // Route::get('invoices/{id}/download', [InvoiceController::class, 'print'])->defaults('_config', [
+        //     'repository'             => 'Webkul\Sales\Repositories\InvoiceRepository',
+        //     'resource'               => 'Webkul\API\Http\Resources\Sales\Invoice',
+        //     'authorization_required' => true,
+        // ]);
 
         // Route::get('wishlist/add/{id}', [WishlistController::class, 'create']);
 
-        Route::post('reviews/{id}/create', [ReviewController::class, 'store']);
 
         // removed
-        Route::get('advertisements', [APIController::class, 'fetchAdvertisementImages']);
+        // Route::get('advertisements', [APIController::class, 'fetchAdvertisementImages']);
 
 
-        Route::post('pwa/image-search-upload', [ImageSearchController::class, 'upload']);
+        // Route::post('pwa/image-search-upload', [ImageSearchController::class, 'upload']);
 
         // Checkout routes
         Route::group(['prefix' => 'pwa'], function ($router) {
-            Route::group(['prefix' => 'checkout'], function ($router) {
-                Route::get('cart', [CartController::class, 'get']);
+            // Route::group(['prefix' => 'checkout'], function ($router) {
+            //     Route::get('cart', [CartController::class, 'get']);
 
-                Route::post('save-address', [CheckoutController::class, 'saveAddress']);
+            //     Route::post('save-address', [CheckoutController::class, 'saveAddress']);
 
-                Route::post('cart/add/{id}', [CartController::class, 'store']);
+            //     Route::post('cart/add/{id}', [CartController::class, 'store']);
 
-                Route::post('save-order', [CheckoutController::class, 'saveOrder']);
-            });
+            //     Route::post('save-order', [CheckoutController::class, 'saveOrder']);
+            // });
 
+
+            // Comparison
             Route::put('/comparison', [ComparisonController::class, 'store']);
 
             Route::post('/comparison', [ComparisonController::class, 'destroy']);
 
             Route::get('/comparison/get-products', [ComparisonController::class, 'index']);
 
+            // Review routes
+            Route::get('customer/review/{id}', [ReviewController::class, 'get']);
+            Route::get('customer/reviews', [ReviewController::class, 'getAll']);
+
+            // Downloadable products.
+            Route::group(['prefix' => 'product'], function () {
+
+                Route::get('downloadable-products', [ProductController::class, 'getCustomerDownloadAbleProducts']);
+            });
+
+
+
             Route::get('/detailed-products', [ComparisonController::class, 'getDetailedProducts']);
 
-            Route::get('invoices', [InvoiceController::class, 'index'])->defaults('_config', [
-                'repository'             => 'Webkul\Sales\Repositories\InvoiceRepository',
-                'resource'               => 'Webkul\API\Http\Resources\Sales\Invoice',
-                'authorization_required' => true,
-            ]);
+            // Route::get('invoices', [InvoiceController::class, 'index'])->defaults('_config', [
+            //     'repository'             => 'Webkul\Sales\Repositories\InvoiceRepository',
+            //     'resource'               => 'Webkul\API\Http\Resources\Sales\Invoice',
+            //     'authorization_required' => true,
+            // ]);
 
-            Route::get('invoices/{id}', [InvoiceController::class, 'get'])->defaults('_config', [
-                'repository'             => 'Webkul\Sales\Repositories\InvoiceRepository',
-                'resource'               => 'Webkul\API\Http\Resources\Sales\Invoice',
-                'authorization_required' => true,
-            ]);
+            // Route::get('invoices/{id}', [InvoiceController::class, 'get'])->defaults('_config', [
+            //     'repository'             => 'Webkul\Sales\Repositories\InvoiceRepository',
+            //     'resource'               => 'Webkul\API\Http\Resources\Sales\Invoice',
+            //     'authorization_required' => true,
+            // ]);
 
             // Route::get('move-to-cart/{id}', [WishlistController::class, 'moveToCart']);
 
             // no need
             // Route::get('categories', [CategoryController::class, 'index']);
 
-            Route::get('attributes', [APIController::class, 'fetchAttributes']);
+            // Route::get('attributes', [APIController::class, 'fetchAttributes']);
 
             // no need
             // Route::get('products', [ProductController::class, 'index'])->name('api.products');
@@ -98,23 +112,23 @@ Route::group(['prefix' => 'api'], function ($router) {
 
         Route::group(['prefix' => 'checkout'], function ($router) {
 
-            Route::get('cart/empty', [CartController::class, 'destroy']);
+            // Route::get('cart/empty', [CartController::class, 'destroy']);
 
-            Route::get('guest-checkout', [CheckoutController::class, 'isGuestCheckout']);
+            // Route::get('guest-checkout', [CheckoutController::class, 'isGuestCheckout']);
 
-            Route::put('cart/update', [CartController::class, 'update']);
+            // Route::put('cart/update', [CartController::class, 'update']);
 
-            Route::get('cart/remove-item/{id}', [CartController::class, 'destroyItem']);
+            // Route::get('cart/remove-item/{id}', [CartController::class, 'destroyItem']);
 
-            Route::get('cart/move-to-wishlist/{id}', [CartController::class, 'moveToWishlist']);
+            // Route::get('cart/move-to-wishlist/{id}', [CartController::class, 'moveToWishlist']);
 
-            Route::post('save-shipping', [CheckoutController::class, 'saveShipping']);
+            // Route::post('save-shipping', [CheckoutController::class, 'saveShipping']);
 
-            Route::post('save-payment', [CheckoutController::class, 'savePayment']);
+            // Route::post('save-payment', [CheckoutController::class, 'savePayment']);
 
-            Route::post('cart/apply-coupon', [CartController::class, 'applyCoupon']);
+            // Route::post('cart/apply-coupon', [CartController::class, 'applyCoupon']);
 
-            Route::post('cart/remove-coupon', [CartController::class, 'removeCoupon']);
+            // Route::post('cart/remove-coupon', [CartController::class, 'removeCoupon']);
         });
 
         // Route::get('pwa-reviews/{id}', [ResourceController::class, 'get'])->defaults('_config', [
@@ -167,11 +181,6 @@ Route::group(['prefix' => 'api'], function ($router) {
 
         //     // Slider routes
         // });
-
-
-        Route::controller(CustomerController::class)->group(function () {
-            Route::get('test-token', 'getToken')->name('api.pwa.customer.login');
-        });
     });
 });
 
@@ -182,7 +191,7 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function ($route
 });
 
 Route::prefix('paypal/standard')->group(function () {
-    Route::get('/pwa/success', [StandardController::class, 'success'])->name('pwa.paypal.standard.success');
+    // Route::get('/pwa/success', [StandardController::class, 'success'])->name('pwa.paypal.standard.success');
 
-    Route::get('/pwa/cancel', [StandardController::class, 'cancel'])->name('pwa.paypal.standard.cancel');
+    // Route::get('/pwa/cancel', [StandardController::class, 'cancel'])->name('pwa.paypal.standard.cancel');
 });

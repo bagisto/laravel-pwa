@@ -1,5 +1,5 @@
 <template>
-    <div class="product-reviews" v-if="reviews.length">
+    <div class="product-reviews" v-if="product">
         <div class="product-details">
             <div class="product-image">
                 <img alt="product-small-image" :src="product.base_image.small_image_url"/>
@@ -92,7 +92,7 @@
 
         data () {
 			return {
-                product: [],
+                product: {},
 
                 reviews: [],
 
@@ -126,8 +126,9 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/pwa/products/' + productId)
+                this.$http.get('/api/v1/products/'+productId)
                     .then(function(response) {
+
                         this_this.product = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');
@@ -142,7 +143,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/reviews', { params: { product_id: productId, page: this.page, status: 'approved' } })
+                this.$http.get('/api/product/'+productId+'/reviews')
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

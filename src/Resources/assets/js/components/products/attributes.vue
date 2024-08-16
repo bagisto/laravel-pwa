@@ -46,6 +46,7 @@
 
                 this.$http.get('/api/v1/products/'+productId+'/additional-information')
                     .then(function(response) {
+
                         this_this.viewableAttributes = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');
@@ -72,7 +73,6 @@
                         border-right: 1px solid rgba(0, 0, 0, 0.12);
                         font-weight: 600;
                         color: rgba(0, 0, 0, 0.54);
-                        text-align: right;
                     }
 
                     &:last-child {

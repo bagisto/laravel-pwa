@@ -1,5 +1,6 @@
 <template>
     <div class="product-review">
+
         <span v-if="product.reviews.total">
             <span class="rating">
                 {{ product.reviews.average_rating }}
@@ -89,6 +90,7 @@
             font-weight: 600;
             margin-right: 8px;
             display: inline-block;
+            margin-bottom: 10px;
 
             .icon {
                 vertical-align: middle;

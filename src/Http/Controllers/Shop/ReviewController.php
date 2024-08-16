@@ -2,10 +2,8 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Illuminate\Http\Request;
 use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Product\Repositories\ProductReviewRepository;
-use Webkul\PWA\Http\Resources\Catalog\ProductReview as ProductReviewResource;
 
 /**
  * Review controller
@@ -15,61 +13,64 @@ use Webkul\PWA\Http\Resources\Catalog\ProductReview as ProductReviewResource;
  */
 class ReviewController extends Controller
 {
-    /**
-     * Contains current guard
-     *
-     * @var array
-     */
-    protected $guard;
-
-    /**
-     * ProductReviewRepository object
-     *
-     * @var array
-     */
-    protected $reviewRepository;
 
     /**
      * Controller instance
      *
      * @param  Webkul\Product\Repositories\ProductReviewRepository  $reviewRepository
      */
-    public function __construct(ProductReviewRepository $reviewRepository)
-    {
-        $this->guard = request()->has('token') ? 'api' : 'customer';
-
-        auth()->setDefaultDriver($this->guard);
-
-        $this->reviewRepository = $reviewRepository;
-    }
+    public function __construct(
+        protected ProductReviewRepository $reviewRepository
+    ) {}
 
     /**
      * Store a newly created resource in storage.
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function getAll()
     {
-        $customer = auth($this->guard)->user();
+        $customerId = request()->input('customer_id') ?? null;
 
         $this->validate(request(), [
-            'comment' => 'required',
-            'rating'  => 'required|numeric|min:1|max:5',
-            'title'   => 'required',
+            'customer_id'   => 'required',
         ]);
 
-        $data = array_merge(request()->all(), [
-            'customer_id' => $customer ? $customer->id : null,
-            'name'        => $customer ? $customer->name : request()->input('name'),
-            'status'      => 'pending',
-            'product_id'  => $id,
-        ]);
+        $reviews = $this->reviewRepository
+            ->where(['customer_id' => $customerId])
+            ->with('product', 'images')
+            ->paginate(5);
 
-        $productReview = $this->reviewRepository->create($data);
+        foreach ($reviews as $review) {
+            $review->product->image = $review->product->base_image_url;
+        }
 
         return response()->json([
-            'message' => 'Your review submitted successfully.',
-            'data'    => new ProductReviewResource($this->reviewRepository->find($productReview->id)),
+            'data'    => $reviews,
+        ]);
+    }
+
+    /**
+     * Get product single review by review id.
+     */
+    public function get()
+    {
+        $customerId = request()->input('customer_id') ?? null;
+
+        $this->validate(request(), [
+            'customer_id'   => 'required',
+        ]);
+
+        $review = $this->reviewRepository
+            ->where(['id' => request()->id, 'customer_id' => $customerId])
+            ->with('product', 'images')
+            ->first();
+
+        $review->product->image = $review->product->base_image_url;
+        $review->product->reviews = $review->product->reviews;
+
+        return response()->json([
+            'data'    => $review,
         ]);
     }
 }
