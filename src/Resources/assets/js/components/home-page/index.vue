@@ -43,49 +43,23 @@
         </div>
 
         <div :key="index" class="products panel" v-for="(content, index) in homePageContent">
-            <advertisement
-                :first-image-url="homePageContent['advertisement-two'][0]"
-                :second-image-url="homePageContent['advertisement-two'][1]"
-                v-if="index == 'advertisement-two'"
-                >
-            </advertisement>
+            <template v-if="content.products && content.products.length">
+                <div class="category-title">
+                    <span class="panel-heading">
+                        {{ content.category_details.name }}
+                    </span>
 
-            <advertisement
-                :first-image-url="homePageContent['advertisement-four'][0]"
-                :second-image-url="homePageContent['advertisement-four'][1]"
-                :third-image-url="homePageContent['advertisement-four'][2]"
-                :fourth-image-url="homePageContent['advertisement-four'][3]"
-                v-else-if="index == 'advertisement-four'"
-                >
-            </advertisement>
+                    <router-link :to="'/categories/' + content.category_details.id" class="panel-heading view-all-btn">
+                        {{ $t('View All Products') }}
+                    </router-link>
+                </div>
 
-            <advertisement
-                :first-image-url="homePageContent['advertisement-three'][0]"
-                :second-image-url="homePageContent['advertisement-three'][1]"
-                :third-image-url="homePageContent['advertisement-three'][2]"
-                v-else-if="index == 'advertisement-three'"
-                >
-            </advertisement>
+                <div class="panel-content product-list product-grid-2">
 
-            <div class="products panel" v-else>
-                <template v-if="content.products && content.products.length">
-                    <div class="category-title">
-                        <span class="panel-heading">
-                            {{ content.category_details.name }}
-                        </span>
+                    <product-card :is-customer="customer ? true : false" v-for="product in content.products" :key='product.uid' :product="product"></product-card>
 
-                        <router-link :to="'/categories/' + content.category_details.id" class="panel-heading view-all-btn">
-                            {{ $t('View All Products') }}
-                        </router-link>
-                    </div>
-
-                    <div class="panel-content product-list product-grid-2">
-
-                        <product-card :is-customer="customer ? true : false" v-for="product in content.products" :key='product.uid' :product="product"></product-card>
-
-                    </div>
-                </template>
-            </div>
+                </div>
+            </template>
         </div>
 
         <template v-if="product.categories.length">

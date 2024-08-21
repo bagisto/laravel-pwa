@@ -102,10 +102,6 @@
                     })
                     .catch(function (error) {});
             },
-
-            firstNameValidation() {
-
-            }
         }
     };
 </script>

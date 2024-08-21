@@ -80,7 +80,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/country-states')
+                this.$http.get('/api/v1/countries/states/groups')
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 

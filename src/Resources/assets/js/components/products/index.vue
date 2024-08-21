@@ -268,7 +268,13 @@
                     delete(formData.booking.slot);
                 }
 
-                this.$http.post("/api/v1/pwa/checkout/cart/add/" + this.$route.params.id, formData)
+                // const token = JSON.parse(localStorage.getItem("token"));
+                // if (token) {
+                //     formData.token = token;
+                // }
+
+
+                this.$http.post("/api/v1/customer/cart/add/" + this.$route.params.id, formData)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 

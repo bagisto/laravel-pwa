@@ -47,22 +47,22 @@
                             <tbody>
                                 <tr>
                                     <td>{{ $t('Subtotal') }}</td>
-                                    <td>{{ cart.formated_sub_total }}</td>
+                                    <td>{{ cart.formatted_sub_total }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Tax') }}</td>
-                                    <td>{{ cart.formated_tax_total }}</td>
+                                    <td>{{ cart.formatted_tax_total }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Discount') }}</td>
-                                    <td> - {{ cart.formated_discount }}</td>
+                                    <td> - {{ cart.formatted_discount }}</td>
                                 </tr>
 
                                 <tr class="last">
                                     <td>{{ $t('Order Total') }}</td>
-                                    <td>{{ cart.formated_grand_total }}</td>
+                                    <td>{{ cart.formatted_grand_total }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -74,7 +74,7 @@
             <div class="checkout-action">
                 <span class="total-info">
                     <p>{{ $t('Amount to be paid') }}</p>
-                    <h3>{{ cart.formated_grand_total }}</h3>
+                    <h3>{{ cart.formatted_grand_total }}</h3>
                 </span>
 
                 <router-link class="btn btn-black" :to="'onepage'">{{ $t('Proceed') }}</router-link>
@@ -120,6 +120,9 @@
 
                         this_this.cart = response.data.data;
 
+                        console.log(this_this.cart);
+
+
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
@@ -130,7 +133,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/checkout/cart/move-to-wishlist/' + item.id)
+                this.$http.post('/api/v1/customer/cart/move-to-wishlist/' + item.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -150,8 +153,9 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/checkout/cart/remove-item/' + item.id)
+                this.$http.delete('/api/v1/customer/cart/remove/' + item.id)
                     .then(function(response) {
+
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
@@ -168,8 +172,10 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/checkout/cart/empty')
+                this.$http.get('/api/v1/customer/cart/empty')
                     .then(function(response) {
+                        console.log('response', response);
+
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
@@ -186,7 +192,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put('/api/v1/checkout/cart/update', { 'qty': this.quantities })
+                this.$http.put('/api/v1/customer/cart/update', { 'qty': this.quantities })
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 

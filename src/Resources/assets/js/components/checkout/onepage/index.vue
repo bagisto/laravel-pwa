@@ -32,7 +32,6 @@
 
                                         <div class="address_details">
                                             {{ addressTemp.first_name + ' ' + addressTemp.last_name }}<br/>
-                                            {{ addressTemp.address1.join(' ') }}<br/>
                                             {{ addressTemp.city }}<br/>
                                             {{ addressTemp.state }}<br/>
                                             {{ addressTemp.country_name ? addressTemp.country_name : addressTemp.country  + ' ' + addressTemp.postcode }}<br/>
@@ -112,7 +111,6 @@
 
                                             <div class="address_details">
                                                 {{ addressTemp.first_name + ' ' + addressTemp.last_name }}<br/>
-                                                {{ addressTemp.address1.join(' ') }}<br/>
                                                 {{ addressTemp.city }}<br/>
                                                 {{ addressTemp.state }}<br/>
                                                 {{ addressTemp.country_name + ' ' + addressTemp.postcode }}<br/>
@@ -178,7 +176,7 @@
                                         <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
                                         <label class="radio-view" :for="rate.method"></label>
 
-                                        {{ rate.formated_price }}
+                                        {{ rate.formatted_price }}
                                         <b> {{ rate.method_title + ' - ' }} </b>
                                         {{ rate.method_description }}
                                     </label>
@@ -223,7 +221,6 @@
                         <div class="billing-address" v-if="cart.billing_address">
                             <h2>{{ $t('Billing Address') }}</h2>
                             <div class="address-details">
-                                {{ cart.billing_address.address1.join(' ') }}<br/>
                                 {{ cart.billing_address.city }}<br/>
                                 {{ cart.billing_address.state }}<br/>
                                 {{ cart.billing_address.country_name ? cart.billing_address.country_name : cart.billing_address.country  + ' ' + cart.billing_address.postcode }}<br/>
@@ -247,7 +244,6 @@
                         <div class="shipping-address" v-if="cart.shipping_address">
                             <h2>{{ $t('Shipping Address') }}</h2>
                             <div class="address-details">
-                                {{ cart.shipping_address.address1.join(' ') }}<br/>
                                 {{ cart.shipping_address.city }}<br/>
                                 {{ cart.shipping_address.state }}<br/>
                                 {{ cart.shipping_address.country_name ? cart.shipping_address.country_name : cart.shipping_address.country  + ' ' + cart.shipping_address.postcode }}<br/>
@@ -282,12 +278,12 @@
 
                                     <div class="cart-item-price">
                                         <label>{{ $t('Price :') }} </label>
-                                        <span>{{ cartItem.formated_price }}</span>
+                                        <span>{{ cartItem.formatted_price }}</span>
                                     </div>
 
                                     <div class="cart-item-subtotal">
                                         <label>{{ $t('Subtotal :') }} </label>
-                                        <span>{{ cartItem.formated_total }}</span>
+                                        <span>{{ cartItem.formatted_total }}</span>
                                     </div>
                                 </div>
                             </diV>
@@ -306,22 +302,22 @@
 
                                 <tr v-if="cart.selected_shipping_rate">
                                     <td>{{ $t('Shipping') }}</td>
-                                    <td>{{ cart.selected_shipping_rate.formated_price }}</td>
+                                    <td>{{ cart.selected_shipping_rate.formatted_price }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Tax') }}</td>
-                                    <td>{{ cart.formated_tax_total }}</td>
+                                    <td>{{ cart.formatted_tax_total }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Discount') }}</td>
-                                    <td> - {{ cart.formated_discount }}</td>
+                                    <td> - {{ cart.formatted_discount }}</td>
                                 </tr>
 
                                 <tr class="last">
                                     <td>{{ $t('Order Total') }}</td>
-                                    <td>{{ cart.formated_grand_total }}</td>
+                                    <td>{{ cart.formatted_grand_total }}</td>
                                 </tr>
 
                             </tbody>
@@ -453,7 +449,7 @@
 
             this.getCart();
 
-            this.paypalSmartBtn();
+            // this.paypalSmartBtn();
         },
 
         methods: {
@@ -539,14 +535,11 @@
 
             getGuestCheckoutStatus () {
                 var this_this = this;
+                const token    = JSON.parse(localStorage.getItem("token"));
 
-                this.$http.get('/api/v1/checkout/guest-checkout')
-                    .then(function(response) {
-                        if(! response.data.data.status) {
-                            this_this.$router.push({ name: 'login-register' });
-                        }
-                    })
-                    .catch(function (error) {});
+                if (!token) {
+                    this_this.$router.push({ name: 'login-register' });
+                }
             },
 
             getAuthCustomer () {
@@ -561,7 +554,7 @@
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.getCustomerAddresses(this_this.customer.id)
+                        this_this.getCustomerAddresses()
                     })
                     .catch(function (error) {
                         if (
@@ -579,12 +572,12 @@
                     });
             },
 
-            getCustomerAddresses (customerId) {
+            getCustomerAddresses () {
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/addresses', { params: { customer_id: customerId, pagination: 0 } })
+                this.$http.get('/api/v1/customer/addresses')
                     .then(function(response) {
                         this_this.$set(this_this.addresses, 'billing', response.data.data.slice(0))
 
@@ -601,6 +594,7 @@
                 this.$http.get('/api/v1/customer/cart')
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
+                        console.log('cart', response);
 
                         this.cart = response.data.data;
 
@@ -634,6 +628,8 @@
 
             validateForm: function (type = '') {
                 this.$validator.validateAll(this.formScopes[this.step]).then((result) => {
+                    console.log('step', this.step);
+
                     if (result) {
                         if (this.formScopes[this.step] == 'address-form') {
                             if (type != '') {
@@ -676,6 +672,7 @@
             saveAddress () {
                 var self = this;
                 var save_as_address = self.address.billing.save_as_address;
+                var checkout_address = {};
 
                 if (! Number.isInteger(self.address.billing.address_id)) {
                     var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
@@ -691,9 +688,21 @@
                     Object.assign(self.address.shipping, newAddress[0]);
                 }
 
+                checkout_address.billing = self.addresses.shipping.find(item => item.id === self.address.billing.address_id);
+
+                if (self.address.shipping.address_id) {
+
+                    checkout_address.shipping = self.addresses.shipping.find(item => item.id === self.address.shipping.address_id);
+                } else {
+                    checkout_address.shipping = checkout_address.billing
+                }
+
                 self.disable_button = true;
-                this.$http.post('/api/v1/pwa/checkout/save-address', self.address)
+
+                this.$http.post('/api/v1/customer/checkout/save-address', checkout_address)
                     .then(function(response) {
+                        console.log('checkout/save-address', response);
+
                         if (response.data.data.nextStep == "payment") {
                             self.skipShipping = true;
                             self.disable_button = false;
@@ -747,8 +756,10 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/v1/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
+                this.$http.post('/api/v1/customer/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
                     .then(function(response) {
+                        console.log('saveShipping', response);
+
                         this_this.disable_button = false;
 
                         this_this.paymentMethods = response.data.data.methods;
@@ -775,8 +786,10 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/v1/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
+                this.$http.post('/api/v1/customer/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
                     .then(function(response) {
+                        console.log('savePayment', response);
+
                         this_this.disable_button = false;
 
                         this_this.cart = response.data.data.cart;
@@ -847,9 +860,9 @@
             placeOrder () {
                 this.disable_button = true;
 
-                this.$http.post('/api/v1/pwa/checkout/save-order')
+                this.$http.post('/api/v1/customer/checkout/save-order')
                     .then(response => {
-                        if (response.data.success) {
+                        if (response.data.order) {
                             if (response.data.redirect_url) {
                                 window.location.href = response.data.redirect_url;
                             } else {
