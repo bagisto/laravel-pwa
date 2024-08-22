@@ -18,7 +18,7 @@
             </div>
 
             <div class="shipment-list">
-                <shipment-card v-for="shipment in shipments" :key='shipment.uid' :shipment="shipment"></shipment-card>
+                <shipment-card v-for="shipment in shipments" :key='shipment.id' :shipment="shipment"></shipment-card>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
         mounted () {
             this.getOrder(this.$route.params.order_id)
 
-            this.getShipments(this.$route.params.order_id)
+            // this.getShipments(this.$route.params.order_id)
         },
 
         methods: {
@@ -57,11 +57,14 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/orders/' + orderId)
+                this.$http.get('/api/v1/customer/orders/' + orderId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.order = response.data.data;
+
+                        this_this.shipments = this_this.order.shipments;
+
                     })
                     .catch(function (error) {});
             },

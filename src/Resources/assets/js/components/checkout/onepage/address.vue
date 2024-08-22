@@ -20,15 +20,9 @@
             <span class="control-error" v-if="errors.has('address-form.' + type + '[email]')">{{ errors.first('address-form.' + type + '[email]') }}</span>
         </div>
 
-        <div class="control-group" :class="[errors.has('address-form.' + type + '[address1][]') ? 'has-error' : '']">
-            <input type="text" :name="type + '[address1][]'" class="control" v-model="address.address1[0]" v-validate="'required'" :placeholder="$t('Street Address 1')" :data-vv-as="$t('Street Address 1')"/>
-            <label>{{ $t('Street Address 1') }}</label>
-            <span class="control-error" v-if="errors.has('address-form.' + type + '[address1][]')">{{ errors.first('address-form.' + type + '[address1][]') }}</span>
-        </div>
-
         <div class="control-group" v-if="streetLines && streetLines > 0" v-for="n in parseInt(streetLines)" style="margin-top: -15px;">
-            <input type="text" name="address1[]" class="control" v-model="address.address1[n]" :placeholder="$t('Street Address number', {number:  + n + 1})">
-            <label>{{ $t('Street Address number', {number:  + n + 1}) }}</label>
+            <input type="text" name="address1[]" class="control" v-model="address.address[n-1]" :placeholder="$t('Street Address number', {number:  + n})">
+            <label>{{ $t('Street Address number', {number:  + n }) }}</label>
         </div>
 
         <checkout-country-state :address="address" :type="type"></checkout-country-state>

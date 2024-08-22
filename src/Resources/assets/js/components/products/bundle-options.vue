@@ -40,7 +40,7 @@
                 <label>{{ $t('bundle.total_amount') }}</label>
 
                 <div class="bundle-price">
-                    {{ formated_total_price | currency(currency_options) }}
+                    <!-- {{ formatted_total_price | currency(currency_options) }} -->
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
 
                 options: [],
 
-                currency_options: this.product.currency_options,
+                // currency_options: this.product.currency_options,
             }
         },
 

@@ -7,7 +7,7 @@
                 <select class="control" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="option.label + '&quot;'">
                     <option value="">{{ $t('bundle.choose_a_selection') }}</option>
                     <option v-for="(product, index2) in option.products" :value="product.id" :key="index2">
-                        {{ product.name + ' + ' + product.price.final_price.formated_price }}
+                        {{ product.name + ' + ' + product.price.final.formatted_price }}
                     </option>
                 </select>
             </div>
@@ -28,7 +28,7 @@
                         {{ product.name }}
 
                         <span class="price">
-                            + {{ product.price.final_price.formated_price }}
+                            + {{ product.price.final.formatted_price }}
                         </span>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                         <span>{{ product.name }}</span>
 
                         <span class="price">
-                            + {{ product.price.final_price.formated_price }}
+                            + {{ product.price.final.formatted_price }}
                         </span>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                 <select class="control" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="'&quot;' + option.label + '&quot;'" multiple>
                     <option value="0" v-if="! option.is_required">{{ __('shop::app.products.none') }}</option>
                     <option v-for="(product, index2) in option.products" :value="product.id" :key="index2">
-                        {{ product.name + ' + ' + product.price.final_price.formated_price }}
+                        {{ product.name + ' + ' + product.price.final.formatted_price }}
                     </option>
                 </select>
             </div>

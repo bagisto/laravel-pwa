@@ -40,10 +40,6 @@
         components: { Carousel, Slide },
 
         props: ['product'],
-
-        mounted () {
-            // console.log(this.product);
-        }
     }
 
 </script>

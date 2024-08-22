@@ -56,13 +56,7 @@
                     }
                 }).then(function(response) {
                     EventBus.$emit('hide-ajax-loader');
-                    console.log('response', response)
                     this_this.orders = response.data.data
-                    // response.data.data.forEach(function(order) {
-                    //     this_this.orders.push(order);
-                    // });
-
-                    // this_this.pagination = response.data.meta;
                 })
                 .catch(function (error) {});
             },

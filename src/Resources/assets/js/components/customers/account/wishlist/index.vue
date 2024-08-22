@@ -61,7 +61,6 @@
 
             removeWishlistItem (item) {
                 var this_this = this;
-                console.log(item);
 
                 EventBus.$emit('show-ajax-loader');
 

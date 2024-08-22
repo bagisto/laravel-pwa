@@ -2,28 +2,14 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use Webkul\PWA\Http\Controllers\Controller;
-use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Customer\Repositories\CompareItemRepository;
+use Webkul\Product\Repositories\ProductRepository;
+use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Shop\Http\Resources\CompareItemResource;
 
-/**
- * Comparison controller
- *
- * @author Webkul Software Pvt. Ltd. <support@webkul.com>
- * @copyright 2021 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ComparisonController extends Controller
 {
-    /**
-     * Contains current guard
-     *
-     * @var array
-     */
-    protected $guard;
-
     /**
      * Create a new controller instance.
      *
@@ -34,9 +20,6 @@ class ComparisonController extends Controller
         protected ProductRepository $productRepository,
         protected CompareItemRepository $compareItemRepository,
     ) {
-        // $this->guard = request()->has('token') ? 'api' : 'customer';
-
-        // Log::info('Guard', $this->guard);
     }
 
     public function index()
@@ -58,11 +41,10 @@ class ComparisonController extends Controller
             ->whereIn('id', $productIds)
             ->get();
 
-
         // return CompareItemResource::collection($products);
         return response()->json([
             'status'  => 'success',
-            'data' => CompareItemResource::collection($products),
+            'data'    => CompareItemResource::collection($products),
         ]);
     }
 
@@ -74,7 +56,7 @@ class ComparisonController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'product_id' => 'required|integer',
+            'product_id'  => 'required|integer',
             'customer_id' => 'required|integer',
         ]);
         $customerId = $request->input('customer_id');
@@ -112,7 +94,7 @@ class ComparisonController extends Controller
     public function destroy()
     {
         $this->validate(request(), [
-            'product_id' => 'required|integer',
+            'product_id'  => 'required|integer',
             'customer_id' => 'required|integer',
         ]);
 

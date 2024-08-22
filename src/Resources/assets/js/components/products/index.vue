@@ -164,6 +164,7 @@
                     .then(response => {
 
                         this.product = response.data.data;
+                        console.log('product', this.product);
 
                         if (this.product.type == "grouped") {
                             this.formData.qty = {};

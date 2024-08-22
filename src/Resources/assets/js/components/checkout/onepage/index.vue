@@ -254,7 +254,7 @@
                         <div class="shipping-method" v-if="cart.selected_shipping_rate">
                             <h2>{{ $t('Shipping Method') }}</h2>
                             <div class="method-title">
-                                {{ cart.selected_shipping_rate.method_title + ' - ' + cart.selected_shipping_rate.formated_price }}
+                                {{ cart.selected_shipping_rate.method_title + ' - ' + cart.selected_shipping_rate.formatted_price }}
                             </div>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                             <tbody>
                                 <tr>
                                     <td>{{ $t('Subtotal') }}</td>
-                                    <td>{{ cart.formated_sub_total }}</td>
+                                    <td>{{ cart.formatted_sub_total }}</td>
                                 </tr>
 
                                 <tr v-if="cart.selected_shipping_rate">
@@ -363,7 +363,7 @@
             <div class="checkout-action">
                 <span class="total-info">
                     <p>{{ $t('Amount to be paid') }}</p>
-                    <h3>{{ cart.formated_grand_total }}</h3>
+                    <h3>{{ cart.formatted_grand_total }}</h3>
                 </span>
 
                 <button type="button" class="btn btn-black" v-if="step != 4" @click="validateForm()" :disabled="disable_button">{{ $t('Proceed') }}</button>
@@ -424,7 +424,7 @@
 
                 address: {
                     billing: {
-                        address1: [''],
+                        address: [''],
 
                         use_for_shipping: true,
                         save_as_address: false,
@@ -598,7 +598,7 @@
 
                         this.cart = response.data.data;
 
-                        this.isShipping = response.data.isShipping;
+                        // this.isShipping = response.data.isShipping;
 
                         if (
                             response.data.redirectToCustomerLogin
@@ -654,6 +654,7 @@
             },
 
             addAddress (type) {
+
                 var addressId = 'address_' + (this.addresses[type].length + 1);
 
                 this.address[type]['id'] = addressId;
@@ -662,7 +663,7 @@
 
                 this.new_address[type] = false;
 
-                this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping, save_as_address: this.address.billing.save_as_address})
+                // this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping, save_as_address: this.address.billing.save_as_address})
 
                 if (this.addresses[type].length == 1) {
                     this.address.billing.address_id = this.addresses.billing[0].id;
@@ -672,9 +673,8 @@
             saveAddress () {
                 var self = this;
                 var save_as_address = self.address.billing.save_as_address;
-                var checkout_address = {};
 
-                if (! Number.isInteger(self.address.billing.address_id)) {
+                if (Number.isInteger(self.address.billing.address_id)) {
                     var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
 
                     Object.assign(self.address.billing, newAddress[0]);
@@ -682,34 +682,30 @@
                     self.address.billing.save_as_address = save_as_address;
                 }
 
-                if (! Number.isInteger(self.address.shipping.address_id)) {
+                if (Number.isInteger(self.address.shipping.address_id)) {
                     var newAddress = self.addresses.shipping.filter(address => address.id == self.address.shipping.address_id);
 
                     Object.assign(self.address.shipping, newAddress[0]);
                 }
 
-                checkout_address.billing = self.addresses.shipping.find(item => item.id === self.address.billing.address_id);
-
-                if (self.address.shipping.address_id) {
-
-                    checkout_address.shipping = self.addresses.shipping.find(item => item.id === self.address.shipping.address_id);
-                } else {
-                    checkout_address.shipping = checkout_address.billing
+                if (self.address.billing.use_for_shipping) {
+                    Object.assign(self.address.shipping, self.address.billing);
+                    delete self.address.shipping['use_for_shipping'];
                 }
 
                 self.disable_button = true;
 
-                this.$http.post('/api/v1/customer/checkout/save-address', checkout_address)
+                this.$http.post('/api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
                         console.log('checkout/save-address', response);
 
-                        if (response.data.data.nextStep == "payment") {
+                        if (response.data.nextStep == "payment") {
                             self.skipShipping = true;
                             self.disable_button = false;
 
-                            self.paymentMethods = response.data.data.methods;
+                            self.paymentMethods = response.data.methods.payment_methods;
 
-                            self.cart = response.data.data.cart;
+                            self.cart = response.data.cart;
 
                             self.step++;
                             self.step++;
@@ -747,6 +743,8 @@
                         }
                     })
                     .catch(function (error) {
+                        console.error(error);
+
                         self.disable_button = false;
                     })
             },
@@ -862,14 +860,13 @@
 
                 this.$http.post('/api/v1/customer/checkout/save-order')
                     .then(response => {
-                        if (response.data.order) {
-                            if (response.data.redirect_url) {
-                                window.location.href = response.data.redirect_url;
-                            } else {
-                                this.$router.push({ name: 'order-success', params: {id: response.data.order.id}})
+                        console.log('save order', response);
 
-                                EventBus.$emit('checkout.cart.changed', null);
-                            }
+                        if (response.data.redirect_url) {
+                            window.location.href = response.data.redirect_url;
+                        } else {
+                            EventBus.$emit('checkout.cart.changed', null);
+                            this.$router.push({ name: 'order-success', params: {id: response.data.data.order.id}})
                         }
                     })
                     .catch(function (error) {

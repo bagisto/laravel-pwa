@@ -99,7 +99,6 @@
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
-                console.log('addressId', addressId);
 
                 this.$http.get('/api/v1/customer/addresses/' + addressId)
                     .then(function(response) {
@@ -128,7 +127,6 @@
                  }).then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
-                            console.log('stress address', response);
                         if (response.data.data[street_lines] && response.data.data[street_lines] > 0) {
 
                             this_this.streetLines = response.data.data[street_lines];
@@ -141,7 +139,6 @@
                 this.loading = true;
 
                 this.$validator.validateAll().then((result) => {
-                    console.log(result, this.address);
 
                     if (result) {
                         this.updateAddress()
@@ -163,7 +160,6 @@
                 )
                     .then(function(response) {
                         this_this.loading = false;
-                        console.log('update address', response);
 
                         this_this.$toasted.show(response.data.message, {type: 'success'})
 

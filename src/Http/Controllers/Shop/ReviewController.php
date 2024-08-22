@@ -2,18 +2,11 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Product\Repositories\ProductReviewRepository;
+use Webkul\PWA\Http\Controllers\Controller;
 
-/**
- * Review controller
- *
- * @author Webkul Software Pvt. Ltd. <support@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ReviewController extends Controller
 {
-
     /**
      * Controller instance
      *
@@ -21,7 +14,8 @@ class ReviewController extends Controller
      */
     public function __construct(
         protected ProductReviewRepository $reviewRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Store a newly created resource in storage.

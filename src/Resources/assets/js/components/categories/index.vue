@@ -149,9 +149,6 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                console.log(this.params);
-
-
                 this.$http.get("/api/v1/products", { params: this.params })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
@@ -167,7 +164,6 @@
 
             filterProducts (filters) {
                 this.products = [];
-                console.log('filters', filters);
 
                 delete this.params['page'];
 

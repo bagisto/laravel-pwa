@@ -232,7 +232,6 @@
                         if (response.data.data.current_page < response.data.data.last_page) {
                             this.haveMoreOrders = true;
                         }
-                            console.log('downloadable-products',this.downloadable_products);
 
                         EventBus.$emit('hide-ajax-loader');
                     })

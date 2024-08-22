@@ -3,16 +3,9 @@
 namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\Product\Repositories\ProductReviewRepository;
+use Webkul\PWA\Http\Controllers\Controller;
 
-/**
- * Review controller
- *
- * @author Webkul Software Pvt. Ltd. <support@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ProductController extends Controller
 {
     /**
@@ -22,7 +15,8 @@ class ProductController extends Controller
      */
     public function __construct(
         protected ProductReviewRepository $reviewRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +32,7 @@ class ProductController extends Controller
             ->leftJoin('orders', 'downloadable_link_purchased.order_id', '=', 'orders.id')
             ->leftJoin('invoices', 'downloadable_link_purchased.order_id', '=', 'invoices.order_id')
             ->addSelect('downloadable_link_purchased.*', 'invoices.state as invoice_state', 'orders.increment_id')
-            ->addSelect(DB::raw('(' . DB::getTablePrefix() . 'downloadable_link_purchased.download_bought - ' . DB::getTablePrefix() . 'downloadable_link_purchased.download_canceled - ' . DB::getTablePrefix() . 'downloadable_link_purchased.download_used) as remaining_downloads'))
+            ->addSelect(DB::raw('('.DB::getTablePrefix().'downloadable_link_purchased.download_bought - '.DB::getTablePrefix().'downloadable_link_purchased.download_canceled - '.DB::getTablePrefix().'downloadable_link_purchased.download_used) as remaining_downloads'))
             ->where('downloadable_link_purchased.customer_id', $customerId)->paginate(10);
 
         return response()->json([

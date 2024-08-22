@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="order-item-review-link">
-                                <router-link class="btn btn-black btn-sm" :to="'/reviews/' + orderItem.id + '/create'">
+                                <router-link class="btn btn-black btn-sm" :to="'/reviews/' + orderItem.product_id + '/create'">
                                     <i class="icon white-post-review-icon"></i>
                                     {{ $t('Write a Review') }}
                                 </router-link>
@@ -197,7 +197,6 @@
         methods: {
             getOrder (orderId) {
                 var this_this = this;
-                console.log('order id', orderId);
 
                 EventBus.$emit('show-ajax-loader');
 
@@ -206,7 +205,6 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.order = response.data.data;
-                        this_this.getProduct();
                     })
                     .catch(function (error) {});
             },
@@ -214,24 +212,6 @@
             toggleHeader (value) {
                 this.isMenuExpanded = value;
             },
-
-            getProduct () {
-                var this_this = this;
-
-                this_this.order.items.forEach(item => {
-
-                    this.$http.get("/api/v1/products/"+item.id )
-                    .then(response => {
-
-                        if (response.data.data) {
-                            this_this.orderItems[item.id] = response.data.data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    });
-                });
-            }
         }
     }
 </script>

@@ -82,8 +82,6 @@
 
                 this.$http.get('/api/v1/products/' + productId)
                     .then(function(response) {
-                        console.log(response);
-
                         this_this.product = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');

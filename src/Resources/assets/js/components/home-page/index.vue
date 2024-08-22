@@ -31,8 +31,8 @@
                     :src="slider.image"
                 />
 
-                <div class="show-content" v-html="slider.title">
-                </div>
+                <!-- <div class="show-content" v-html="slider.title">
+                </div> -->
             </slide>
         </carousel>
 

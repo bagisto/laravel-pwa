@@ -155,12 +155,12 @@ class PushNotificationController extends Controller
                     'data' => [
                         'title'        => $pushNotification->title,
                         'body'         => $pushNotification->description,
-                        'icon'         => asset('/storage/' . $pushNotification->imageurl),
+                        'icon'         => asset('/storage/'.$pushNotification->imageurl),
                         'click_action' => $pushNotification->targeturl,
                     ],
                 ]);
 
-            if (!$response?->collect()->get('message_id')) {
+            if (! $response?->collect()->get('message_id')) {
                 session()->flash('error', trans('pwa::app.admin.push-to-firebase.invalid-credentials'));
             } else {
                 session()->flash('success', trans('pwa::app.admin.push-notification.success-notification'));

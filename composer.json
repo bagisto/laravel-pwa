@@ -6,13 +6,15 @@
         {
             "name": "viveksharma-webkul",
             "email": "viveksh047@webkul.com"
-        }, {
+        },
+        {
             "name": "Shubham Mehrotra",
             "email": "shubhammehrotra.symfony@webkul.com"
         }
     ],
     "require": {
-        "mobiledetect/mobiledetectlib": "^4.8"
+        "whichbrowser/parser": "^2.1",
+        "bagisto/rest-api": "^2.1"
     },
     "autoload": {
         "psr-4": {

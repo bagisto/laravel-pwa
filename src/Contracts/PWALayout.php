@@ -2,4 +2,6 @@
 
 namespace Webkul\PWA\Contracts;
 
-interface PWALayout {}
+interface PWALayout
+{
+}

@@ -6,7 +6,7 @@
                 <label :class="order.status">{{ order.status_label }}</label>
             </div>
             <div class="order-date">{{ new Date(order.created_at) | moment("D MMMM YYYY") }}</div>
-            <div class="order-price">{{ order.formated_grand_total }}</div>
+            <div class="order-price">{{ order.formatted_grand_total }}</div>
 
             <i class="icon sharp-arrow-right-icon"></i>
         </div>

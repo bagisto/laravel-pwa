@@ -92,7 +92,6 @@
                     }
                 })
                     .then(function(response) {
-                        // console.log(response);
 
                         EventBus.$emit('hide-ajax-loader');
 

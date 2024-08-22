@@ -103,17 +103,17 @@ class Cart extends BaseCart
 
         $cart = $this->getCart();
 
-        if (!$cart) {
+        if (! $cart) {
             $cart = $this->create($data);
         }
 
-        if (!$cart) {
+        if (! $cart) {
             return ['warning' => __('shop::app.checkout.cart.item.error-add')];
         }
 
         $product = $this->productRepository->find($productId);
 
-        if (!$product->status) {
+        if (! $product->status) {
             return ['info' => __('shop::app.checkout.cart.item.inactive-add')];
         }
 
@@ -137,7 +137,7 @@ class Cart extends BaseCart
                     $cartProduct['parent_id'] = $parentCartItem->id;
                 }
 
-                if (!$cartItem) {
+                if (! $cartItem) {
                     $cartItem = $this->cartItemRepository->create(array_merge($cartProduct, ['cart_id' => $cart->id]));
                 } else {
                     if (
@@ -152,7 +152,7 @@ class Cart extends BaseCart
                     }
                 }
 
-                if (!$parentCartItem) {
+                if (! $parentCartItem) {
                     $parentCartItem = $cartItem;
                 }
             }
@@ -201,7 +201,7 @@ class Cart extends BaseCart
 
         $cart = $this->cartRepository->create($cartData);
 
-        if (!$cart) {
+        if (! $cart) {
             session()->flash('error', __('shop::app.checkout.cart.create-error'));
 
             return;

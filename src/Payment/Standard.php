@@ -2,8 +2,8 @@
 
 namespace Webkul\PWA\Payment;
 
-use Detection\MobileDetect;
 use Webkul\Paypal\Payment\Paypal;
+use WhichBrowser\Parser;
 
 /**
  * Paypal Standard payment method class
@@ -50,10 +50,9 @@ class Standard extends Paypal
     public function getFormFields()
     {
         $cart = $this->getCart();
+        $agent = new Parser(request()->header('User-Agent'));
 
-        $agent = new MobileDetect;
-
-        if ($agent->isMobile()) {
+        if ($agent->isType('mobile', 'tablet')) {
             $success = route('pwa.paypal.standard.success');
             $cancel = route('pwa.paypal.standard.cancel');
         } else {

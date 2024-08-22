@@ -2,9 +2,9 @@
 
 namespace Webkul\PWA\DataGrids;
 
-use Webkul\DataGrid\DataGrid;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Webkul\DataGrid\DataGrid;
 
 /**
  * Push notification datagrid.
@@ -65,15 +65,15 @@ class PushNotificationDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index'      => 'imageurl',
-            'label'      => trans('pwa::app.admin.datagrid.icon'),
-            'type'       => 'string',
-            'searchable' => false,
-            'sortable'   => false,
-            'filterable' => false,
+            'index'         => 'imageurl',
+            'label'         => trans('pwa::app.admin.datagrid.icon'),
+            'type'          => 'string',
+            'searchable'    => false,
+            'sortable'      => false,
+            'filterable'    => false,
             'closure'       => function ($row) {
                 if ($row->imageurl) {
-                    return '<img src=' . Storage::url($row->imageurl) . ' class="img-thumbnail" width="100px" height="70px" />';
+                    return '<img src='.Storage::url($row->imageurl).' class="img-thumbnail" width="100px" height="70px" />';
                 }
             },
         ]);

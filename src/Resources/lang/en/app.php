@@ -91,7 +91,7 @@ return [
             'send'           => 'Send',
             'target-url'     => 'Target URL',
             'description'    => 'Description',
-            'icon'           => 'Icon'
+            'icon'           => 'Icon',
         ],
 
         'notification'      => [

@@ -120,9 +120,6 @@
 
                         this_this.cart = response.data.data;
 
-                        console.log(this_this.cart);
-
-
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
@@ -174,8 +171,6 @@
 
                 this.$http.get('/api/v1/customer/cart/empty')
                     .then(function(response) {
-                        console.log('response', response);
-
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');

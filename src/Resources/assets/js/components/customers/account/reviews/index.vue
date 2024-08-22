@@ -43,7 +43,6 @@
                         customer_id: this.customer.id
                     }
                 }).then(function(response) {
-                    console.log('reviews', response);
 
                         EventBus.$emit('hide-ajax-loader');
 

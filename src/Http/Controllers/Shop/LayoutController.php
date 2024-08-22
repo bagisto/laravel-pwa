@@ -4,7 +4,6 @@ namespace Webkul\PWA\Http\Controllers\Shop;
 
 use Illuminate\Http\Request;
 use Webkul\PWA\Http\Controllers\Controller;
-use Webkul\PWA\Repositories\PushNotificationRepository;
 use Webkul\PWA\Repositories\PWALayoutRepository;
 
 /**
@@ -13,21 +12,14 @@ use Webkul\PWA\Repositories\PWALayoutRepository;
 class LayoutController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    protected $_config;
-
-    /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct(
         protected PWALayoutRepository $pwaLayoutRepository,
-        protected PushNotificationRepository $pushNotificationRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

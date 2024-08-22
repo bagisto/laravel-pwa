@@ -16,14 +16,19 @@
     export default {
         name: 'order-success',
 
-        data () {
+        data: () => (
+            {
+                orderId: null,
+            }
+        ),
+
+        mounted () {
             if (! this.$route.params.id) {
                 this.$router.push({name: 'home'});
+            } else{
+                this.orderId = this.$route.params.id
             }
-			return {
-				orderId: this.$route.params.id
-            }
-        }
+        },
     };
 </script>
 
