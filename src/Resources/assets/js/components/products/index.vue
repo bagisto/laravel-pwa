@@ -162,7 +162,6 @@
 
                 this.$http.get('/api/v1/products/' + productId)
                     .then(response => {
-
                         this.product = response.data.data;
                         console.log('product', this.product);
 
@@ -259,21 +258,8 @@
                 EventBus.$emit('show-ajax-loader');
 
                 var formData = this.formData;
-
-                if (
-                    formData
-                    && formData.booking
-                    && formData.booking.renting_type == "daily"
-                ) {
-                    delete(formData.booking.date);
-                    delete(formData.booking.slot);
-                }
-
-                // const token = JSON.parse(localStorage.getItem("token"));
-                // if (token) {
-                //     formData.token = token;
-                // }
-
+                console.log('add to cart', formData);
+                return ;
 
                 this.$http.post("/api/v1/customer/cart/add/" + this.$route.params.id, formData)
                     .then(response => {

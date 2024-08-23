@@ -55,9 +55,17 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
         Route::get('customer/reviews', [ReviewController::class, 'getAll']);
 
         // Downloadable products.
-        Route::group(['prefix' => 'product'], function () {
+        Route::controller(ProductController::class)->prefix('product')->group(function () {
 
-            Route::get('downloadable-products', [ProductController::class, 'getCustomerDownloadAbleProducts']);
+            Route::group(['prefix' => 'downloadable-products'], function () {
+                Route::get('', 'getCustomerDownloadAbleProducts');
+
+                Route::group(['middleware' => ['auth:sanctum', 'sanctum.customer']], function () {
+                    Route::get('download/{id}', 'download');
+                });
+            });
+
+            Route::get('{id}/configurable-config', 'configurableConfig');
         });
 
         Route::get('sliders', [ThemeController::class, 'sliders']);

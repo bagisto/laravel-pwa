@@ -86,8 +86,9 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/product-configurable-config/' + productId)
+                this.$http.get('/api/pwa/product/'+ productId +'/configurable-config')
                     .then(function(response) {
+
                         this_this.config = response.data.data;
 
                         this_this.prepareData();
@@ -282,13 +283,13 @@
                 if (this.childAttributes.length == selectedOptionCount) {
                     priceLabelElement.style.display = 'none';
 
-                    priceElement.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.formated_price;
+                    priceElement.innerHTML = this.config.variant_prices[this.simpleProduct].final.formatted_price;
 
                     EventBus.$emit('configurable-variant-selected-event', this.simpleProduct)
                 } else {
                     priceLabelElement.style.display = 'inline-block';
 
-                    priceElement.innerHTML = this.config.regular_price.formated_price;
+                    priceElement.innerHTML = this.config.regular.formatted_price;
 
                     EventBus.$emit('configurable-variant-selected-event', 0)
                 }

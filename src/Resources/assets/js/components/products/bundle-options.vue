@@ -16,7 +16,7 @@
         <div class="bundle-summary">
             <h3>{{ $t('bundle.your_customization') }}</h3>
 
-            <div class="quantity-container">
+            <!-- <div class="quantity-container">
                 <label>{{ $t('Quantity') }}</label>
 
                 <div class="quantity">
@@ -34,19 +34,19 @@
                         <i class="icon plus-icon"></i>
                     </button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="control-group">
+            <div class="bundel-total">
                 <label>{{ $t('bundle.total_amount') }}</label>
 
-                <div class="bundle-price">
-                    <!-- {{ formatted_total_price | currency(currency_options) }} -->
-                </div>
+                <span class="bundle-price">
+                    {{ formatted_total_price }}
+                </span>
             </div>
 
             <ul class="bundle-items">
                 <li v-for="(option, index) in options" :key="index">
-                    {{ option.label }}
+                    <label class="option_label"> {{ option.label }} </label>
 
                     <div class="selected-products">
                         <div v-for="(product, index1) in option.products" :key="index1">
@@ -80,13 +80,11 @@
                 config: this.product.bundle_options,
 
                 options: [],
-
-                // currency_options: this.product.currency_options,
             }
         },
 
         computed: {
-            formated_total_price: function() {
+            formatted_total_price: function() {
                 var total = 0;
 
                 for (var key in this.options) {
@@ -94,11 +92,11 @@
                         if (! this.options[key].products[key1].is_default)
                             continue;
 
-                        total += this.options[key].products[key1].qty * this.options[key].products[key1].price.final_price.price;
+                        total += this.options[key].products[key1].qty * this.options[key].products[key1].price.final.price;
                     }
                 }
 
-                return total;
+                return window.config.currentCurrency.symbol + '' + total;
             }
         },
 

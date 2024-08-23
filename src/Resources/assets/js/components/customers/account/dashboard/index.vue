@@ -228,6 +228,8 @@
                     .then(response => {
 
                         this.downloadable_products = response.data.data.data;
+                        console.log('downloadable_products',this.downloadable_products);
+
 
                         if (response.data.data.current_page < response.data.data.last_page) {
                             this.haveMoreOrders = true;

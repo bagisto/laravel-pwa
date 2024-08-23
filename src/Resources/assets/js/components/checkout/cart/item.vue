@@ -22,7 +22,7 @@
 
                     <div class="cart-item-price">
                         <label>{{ $t('Price :') }} </label>
-                        <span v-html="cartItem.product.formatted_price"></span>
+                        <span v-html="cartItem.formatted_price"></span>
                     </div>
 
                     <div class="cart-item-subtotal">
