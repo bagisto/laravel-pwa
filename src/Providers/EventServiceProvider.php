@@ -14,9 +14,9 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Event::listen('bagisto.admin.layout.head', function ($viewRenderEventManager) {
-        //     $viewRenderEventManager->addTemplate('pwa::admin.layouts.style');
-        // });
+        Event::listen('bagisto.admin.layout.head', function ($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('pwa::admin.layouts.style');
+        });
 
         Event::listen('bagisto.shop.layout.head', 'Webkul\PWA\Listeners\PWAListeners@redirectToPWA');
 

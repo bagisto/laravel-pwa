@@ -101,13 +101,13 @@
                 .catch(function (error) {
                     console.error(error);
 
-                    // var errors = error.response.data;
-                    // for (name in errors) {
-                    //     if (errors.hasOwnProperty(name)) {
-                    //         this_this.errors.add(name, errors[name])
-                    //         this_this.$toasted.show(errors[name], { type: 'error' })
-                    //     }
-                    // }
+                    var errors = error.response.data;
+                    for (name in errors) {
+                        if (errors.hasOwnProperty(name)) {
+                            this_this.errors.add(name, errors[name])
+                            this_this.$toasted.show(errors[name], { type: 'error' })
+                        }
+                    }
 
                     this_this.loading = false;
                 })

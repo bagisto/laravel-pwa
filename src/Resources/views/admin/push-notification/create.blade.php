@@ -1,6 +1,5 @@
 <x-admin::layouts>
 
-        @bagistoVite(['src/Resources/assets/css/app.css'], 'pwa')
     <!-- Title of the page -->
     <x-slot:title>
         @lang('admin::app.catalog.categories.create.title')

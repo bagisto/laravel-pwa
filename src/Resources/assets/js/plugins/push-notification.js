@@ -72,7 +72,7 @@ if (!isSafari()) {
             webAPIKey = response.data[webAPIKeyKey];
 
             const firebaseConfig = {
-                apiKey: serverAPIKey,
+                apiKey: serverAPI,
                 authDomain: authDomain,
                 projectId: projectId,
                 storageBucket: databaseUrl,
@@ -85,6 +85,8 @@ if (!isSafari()) {
             const messaging = getMessaging(app);
 
             Notification.requestPermission().then((permission) => {
+                console.log("log in notificaiton", permission);
+
                 if (permission === "granted") {
                     console.log("Notification permission granted.");
                     // Retrieve an Instance ID token for use with FCM
@@ -123,7 +125,10 @@ if (!isSafari()) {
 function retriveCurrentToken(messaging) {
     // Get Instance ID token. Initially this makes a network call, once retrieved
     // subsequent calls to getToken will return from cache.
-    getToken(messaging, { vapidKey: "your-public-vapid-key" })
+
+    getToken(messaging, {
+        vapidKey: serverAPI,
+    })
         .then((currentToken) => {
             if (currentToken) {
                 sendTokenToServer(currentToken);
@@ -139,18 +144,6 @@ function retriveCurrentToken(messaging) {
             console.log("An error occurred while retrieving token. ", err);
             setTokenSentToServer(false);
         });
-
-    // onTokenRefresh(messaging, () => {
-    //     getToken(messaging)
-    //         .then((refreshedToken) => {
-    //             console.log("Token refreshed.");
-    //             sendTokenToServer(refreshedToken);
-    //         })
-    //         .catch((err) => {
-    //             console.log("Unable to retrieve refreshed token ", err);
-    //             setTokenSentToServer(false);
-    //         });
-    // });
 }
 
 // Send the Instance ID token to your application server

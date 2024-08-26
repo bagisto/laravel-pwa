@@ -20,19 +20,13 @@ Route::group(['middleware' => ['web']], function () {
 
                     Route::post('pushnotification/store', 'store')->name('admin.pwa.pushnotification.store');
 
-                    Route::get('pushnotification/edit/{id}', 'edit')->name('admin.pwa.pushnotification.edit')
-                        ->defaults('_config', [
-                            'view' => 'pwa::admin.push-notification.edit',
-                        ]);
+                    Route::get('pushnotification/edit/{id}', 'edit')->name('admin.pwa.pushnotification.edit');
 
                     Route::post('pushnotification/update/{id}', 'update')->name('admin.pwa.pushnotification.update');
 
                     Route::get('pushnotification/delete/{id}', 'destroy')->name('admin.pwa.pushnotification.delete');
 
-                    Route::get('pushnotification/push/{id}', 'pushtofirebase')->name('pwa.pushnotification.pushtofirebase')
-                        ->defaults('_config', [
-                            'redirect' => 'admin.pwa.pushnotification.index',
-                        ]);
+                    Route::get('pushnotification/push/{id}', 'pushtofirebase')->name('pwa.pushnotification.pushtofirebase');
                 });
 
                 Route::controller(LayoutController::class)->group(function () {

@@ -122,7 +122,7 @@
             },
 
             printInvoice (invoiceId) {
-                this.$http.get(`/api/v1/invoices/${invoiceId}/download`, { responseType: 'blob'})
+                this.$http.get(`/api/pwa/print/Invoice/${invoiceId}`, { responseType: 'blob'})
                     .then(response => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');

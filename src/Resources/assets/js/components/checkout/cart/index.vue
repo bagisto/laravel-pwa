@@ -119,7 +119,6 @@
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.cart = response.data.data;
-                        console.log(this_this.cart);
 
                         EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })

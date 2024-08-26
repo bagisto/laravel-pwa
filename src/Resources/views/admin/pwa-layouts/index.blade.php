@@ -9,9 +9,10 @@
     <!-- Category Create Form -->
     <x-admin::form
         enctype="multipart/form-data"
+        method="POST"
     >
         {!! view_render_event('bagisto.admin.pwa.notification.create.create_form_controls.before') !!}
-
+        @csrf
         <div class="flex gap-4 justify-between items-center max-sm:flex-wrap">
             <p class="text-xl text-gray-800 dark:text-white font-bold">
                 @lang('pwa::app.admin.layouts.title')

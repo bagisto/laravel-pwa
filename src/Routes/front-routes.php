@@ -8,6 +8,7 @@ use Webkul\PWA\Http\Controllers\Shop\ProductController;
 use Webkul\PWA\Http\Controllers\Shop\ReviewController;
 use Webkul\PWA\Http\Controllers\Shop\SmartButtonController;
 use Webkul\PWA\Http\Controllers\Shop\ThemeController;
+use Webkul\PWA\Http\Controllers\Shop\InvoiceController;
 use Webkul\PWA\Http\Controllers\SinglePageController;
 use Webkul\PWA\Http\Controllers\StandardController;
 
@@ -67,6 +68,8 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
 
             Route::get('{id}/configurable-config', 'configurableConfig');
         });
+
+        Route::get('print/Invoice/{id}', [InvoiceController::class, 'print']);
 
         Route::get('sliders', [ThemeController::class, 'sliders']);
 

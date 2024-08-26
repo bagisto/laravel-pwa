@@ -594,11 +594,8 @@
                 this.$http.get('/api/v1/customer/cart')
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
-                        console.log('cart', response);
 
                         this.cart = response.data.data;
-
-                        // this.isShipping = response.data.isShipping;
 
                         if (
                             response.data.redirectToCustomerLogin
@@ -628,7 +625,6 @@
 
             validateForm: function (type = '') {
                 this.$validator.validateAll(this.formScopes[this.step]).then((result) => {
-                    console.log('step', this.step);
 
                     if (result) {
                         if (this.formScopes[this.step] == 'address-form') {
@@ -697,7 +693,6 @@
 
                 this.$http.post('/api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
-                        console.log('checkout/save-address', response);
 
                         if (response.data.nextStep == "payment") {
                             self.skipShipping = true;
@@ -756,7 +751,6 @@
 
                 this.$http.post('/api/v1/customer/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
                     .then(function(response) {
-                        console.log('saveShipping', response);
 
                         this_this.disable_button = false;
 
@@ -786,8 +780,6 @@
 
                 this.$http.post('/api/v1/customer/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
                     .then(function(response) {
-                        console.log('savePayment', response);
-
                         this_this.disable_button = false;
 
                         this_this.cart = response.data.data.cart;
@@ -860,8 +852,6 @@
 
                 this.$http.post('/api/v1/customer/checkout/save-order')
                     .then(response => {
-                        console.log('save order', response);
-
                         if (response.data.redirect_url) {
                             window.location.href = response.data.redirect_url;
                         } else {

@@ -163,7 +163,6 @@
                 this.$http.get('/api/v1/products/' + productId)
                     .then(response => {
                         this.product = response.data.data;
-                        console.log('product', this.product);
 
                         if (this.product.type == "grouped") {
                             this.formData.qty = {};
@@ -258,8 +257,6 @@
                 EventBus.$emit('show-ajax-loader');
 
                 var formData = this.formData;
-                console.log('add to cart', formData);
-                return ;
 
                 this.$http.post("/api/v1/customer/cart/add/" + this.$route.params.id, formData)
                     .then(response => {

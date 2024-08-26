@@ -51,16 +51,11 @@ class ProductController extends Controller
 
     public function download($id)
     {
-        Log::info('id -> ' . $id);
-        Log::info('user -> ' . print_r(request()->input('customer_id'), true));
-
         $downloadableLinkPurchased = $this->downloadableLinkPurchasedRepository->findOneByField([
             'id'          => $id,
             'customer_id' => request()->input('customer_id'),
         ]);
 
-        // Log::info('data -> ' . print_r($downloadableLinkPurchased, true));
-        // return;
         if ($downloadableLinkPurchased->status == 'pending') {
             abort(403);
         }

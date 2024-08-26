@@ -73,7 +73,7 @@ class PushNotificationDataGrid extends DataGrid
             'filterable'    => false,
             'closure'       => function ($row) {
                 if ($row->imageurl) {
-                    return '<img src='.Storage::url($row->imageurl).' class="img-thumbnail" width="100px" height="70px" />';
+                    return '<img src=' . Storage::url($row->imageurl) . ' class="img-thumbnail" width="100px" height="70px" />';
                 }
             },
         ]);
@@ -115,7 +115,7 @@ class PushNotificationDataGrid extends DataGrid
 
         $this->addAction([
             'title'  => trans('pwa::app.admin.datagrid.send'),
-            'icon'   => 'icon-edit',
+            'icon'   => 'icon-notification',
             'method' => 'GET',
             'url'    => function ($row) {
                 return route('pwa.pushnotification.pushtofirebase', $row->id);

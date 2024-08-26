@@ -137,39 +137,46 @@ class PushNotificationController extends Controller
         return redirect()->back();
     }
 
-    public function pushtofirebase($id) // send push notification to multiple devices
+    public function pushtofirebase($id)
     {
         $topic = core()->getConfigData('pwa.settings.push-notification.topic');
-
         $serverKey = core()->getConfigData('pwa.settings.push-notification.api-key');
 
         if ($topic && $serverKey) {
             $pushNotification = $this->pushNotificationRepository->findOrFail($id);
 
-            $response = Http::withHeaders([
+            $fcmUrl = 'https://fcm.googleapis.com/v1/messages:send';
+            $headers = [
                 'Content-Type'  => 'application/json',
                 'Authorization' => "Bearer {$serverKey}",
-            ])
-                ->post('https://fcm.googleapis.com/fcm/send', [
-                    'to'   => "/topics/{$topic}",
+            ];
+
+            $data = [
+                'message' => [
+                    'notification' => [
+                        'title' => $pushNotification->title,
+                        'body' => $pushNotification->description,
+                        'icon' => asset('/storage/' . $pushNotification->imageurl),
+                    ],
                     'data' => [
-                        'title'        => $pushNotification->title,
-                        'body'         => $pushNotification->description,
-                        'icon'         => asset('/storage/'.$pushNotification->imageurl),
                         'click_action' => $pushNotification->targeturl,
                     ],
-                ]);
+                ],
+            ];
 
-            if (! $response?->collect()->get('message_id')) {
+            $response = Http::withHeaders($headers)
+                ->post($fcmUrl, json_encode($data));
+
+            if (!$response->successful()) {
                 session()->flash('error', trans('pwa::app.admin.push-to-firebase.invalid-credentials'));
             } else {
                 session()->flash('success', trans('pwa::app.admin.push-notification.success-notification'));
             }
 
+            // Handle overall success/failure based on individual responses (optional)
             return redirect()->back();
         } else {
             session()->flash('error', trans('admin::app.users.users.login-error'));
-
             return redirect()->back();
         }
     }
