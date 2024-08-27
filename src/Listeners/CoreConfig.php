@@ -4,6 +4,7 @@ namespace Webkul\PWA\Listeners;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Event;
 
 class CoreConfig
 {
@@ -64,10 +65,13 @@ class CoreConfig
                 'icons'            => $icons,
             ];
 
+
             $encodedFile = json_encode($manifest);
 
             File::put(public_path() . '/manifest.json', $encodedFile);
             File::put(public_path() . '/manifest.webmanifest', $encodedFile);
+
+            Event::dispatch('pwa.manifest.file.update.after', $manifest);
         }
     }
 }

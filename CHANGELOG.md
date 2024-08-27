@@ -1,3 +1,11 @@
+# CHANGELOG for v2.1.2
+
+#### This changelog consists the bug & security fixes and new features being included in the releases listed below.
+
+## **v1.3.2(10th of september, 2024)** - *Release*
+
+- [compatible] Bagisto Version v2.1.2.
+
 # CHANGELOG for v1.3.2
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
@@ -96,7 +104,7 @@
 
 * [Bug] Update Amt. to be paid to "Amount to be paid" everywhere.
 
-* [Bug] On clicking on Remove button of address page address doesn't get removed. 
+* [Bug] On clicking on Remove button of address page address doesn't get removed.
 
 * [Bug] Click on wishlist button for first time it will add product in wishlist, again click on button it will remove the product from wishlist. It should show a message product already present or added in your wishlist.
 
@@ -125,7 +133,7 @@
 * [Bug] Getting incorrect validation message at Phone number and Postal code field of address book.
 
 * [Bug] Instead of showing Message Unauthenticated while adding product in wishlist without login, update the message "Please login to add product in wishlist".
- 
+
 
 ## **v0.1.0(17th of May, 2019)** - *Release*
 

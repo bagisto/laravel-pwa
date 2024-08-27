@@ -36,6 +36,12 @@ It packs with lots of demanding features that allows your business to scale in n
 composer require bagisto/pwa:dev-master
 ```
 
+* Note: Make sure Bagisto Rest API installed and configured. If not then install and confiure using the following link.
+
+```
+https://github.com/bagisto/rest-api
+```
+
 * Run these commands below to complete the setup
 
 ```

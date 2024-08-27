@@ -24,23 +24,25 @@ const GET_CUSTOMER = (state) => {
         state.token = token;
     }
 
-    Vue.prototype.$http.defaults.headers.common[
-        "Authorization"
-    ] = `Bearer ${token}`;
+    if (token) {
+        Vue.prototype.$http.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${token}`;
 
-    if (!state.isCustomerFetched) {
-        Vue.prototype.$http
-            .get("/api/v1/customer/get")
-            .then((response) => {
-                setCustomer(state, response.data.data);
-            })
-            .catch((error) => {
-                state.isCustomerFetched = true;
-            });
-    }
+        if (!state.isCustomerFetched) {
+            Vue.prototype.$http
+                .get("/api/v1/customer/get")
+                .then((response) => {
+                    setCustomer(state, response.data.data);
+                })
+                .catch((error) => {
+                    state.isCustomerFetched = true;
+                });
+        }
 
-    if (state.customer) {
-        setCustomer(state, state.customer);
+        if (state.customer) {
+            setCustomer(state, state.customer);
+        }
     }
 
     EventBus.$emit("hide-ajax-loader");
@@ -54,19 +56,25 @@ const GET_CART = (state) => {
     if (!state.token) {
         state.token = token;
     }
+    console.log("token", token);
 
-    Vue.prototype.$http.defaults.headers.common[
-        "Authorization"
-    ] = `Bearer ${token}`;
+    if (token) {
+        Vue.prototype.$http.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${token}`;
 
-    Vue.prototype.$http
-        .get("/api/v1/customer/cart")
-        .then((response) => {
-            EventBus.$emit("hide-ajax-loader");
-            state.cart = response.data.data;
-            state.pagination = response.data.meta;
-        })
-        .catch((error) => {});
+        Vue.prototype.$http
+            .get("/api/v1/customer/cart")
+            .then((response) => {
+                console.log("cart", response);
+
+                state.cart = response.data.data;
+                state.pagination = response.data.meta;
+            })
+            .catch((error) => {});
+    }
+
+    EventBus.$emit("hide-ajax-loader");
 };
 
 export default {

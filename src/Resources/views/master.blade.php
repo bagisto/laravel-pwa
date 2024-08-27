@@ -51,19 +51,21 @@
             <app></app>
         </div>
         <script type="text/javascript">
+            var appBaseUrl = "{{ config('app.url') }}";
+            if (!appBaseUrl.endsWith("/")) {
+                appBaseUrl = appBaseUrl + '/';
+            }
+
             window.channel = @json(new \Webkul\PWA\Http\Resources\Core\Channel(core()->getCurrentChannel()));
             window.config = {
                 app_short_name: "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
-                app_base_url: "{{ config('app.url') }}",
+                app_base_url: appBaseUrl,
                 url_path: "{{ $urlPath }}",
                 prefix: "{{ $urlPath }}" + '/' + "{{ request()->route()->getName() == 'pwa.home' ? 'pwa' : 'mobile' }}",
                 currencies: @json(core()->getCurrentChannel()->currencies),
                 currentCurrency: @json(core()->getCurrentCurrency()),
                 locales: @json(core()->getCurrentChannel()->locales),
                 currentLocale: @json(core()->getCurrentLocale()),
-                topicKey:"{{ core()->getConfigData('pwa.settings.push-notification.topic') }}",
-                serverAPIKey:"{{ core()->getConfigData('pwa.settings.push-notification.api-key') }}",
-                messagingIdKey:"{{ core()->getConfigData('pwa.settings.push-notification.messaging-id') }}",
                 device:@json($device),
             };
         </script>

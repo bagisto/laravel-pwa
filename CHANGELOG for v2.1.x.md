@@ -1,3 +1,12 @@
+# CHANGELOG for v2.1.x
+
+#### This changelog consists the bug & security fixes and new features being included in the releases listed below.
+
+## **v2.1.2(10th of Sept, 2024)** - *Release*
+
+* [feature] Compatible With bagisto v2.1.2
+
+
 # CHANGELOG for v1.4.x
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
