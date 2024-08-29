@@ -11,7 +11,7 @@ class InvoiceController extends Controller
     /**
      * Controller instance
      *
-     * @param  Webkul\Product\Repositories\ProductReviewRepository  $reviewRepository
+     * @param  Webkul\Sales\Repositories\InvoiceRepository  $invoiceRepository
      */
     public function __construct(
         protected InvoiceRepository $invoiceRepository
@@ -20,8 +20,7 @@ class InvoiceController extends Controller
     /**
      * Print and download the for the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id invoice id.
      */
     public function print($id)
     {

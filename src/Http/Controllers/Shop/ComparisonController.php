@@ -22,6 +22,9 @@ class ComparisonController extends Controller
     ) {
     }
 
+    /**
+     * Get customer compare products.
+     */
     public function index()
     {
         $productIds = request()->input('product_ids') ?? [];

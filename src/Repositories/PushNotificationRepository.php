@@ -38,6 +38,11 @@ class PushNotificationRepository extends Repository
         $this->_config = request('_config');
     }
 
+    /**
+     * Save notification.
+     *
+     * @param array $data notification data.
+     */
     public function create(array $data)
     {
         $pushnotification = $this->model->create($data);
@@ -47,6 +52,12 @@ class PushNotificationRepository extends Repository
         return $pushnotification;
     }
 
+    /**
+     * Update Notification.
+     *
+     * @param array $data notification data.
+     * @param int   $id notification id.
+     */
     public function update(array $data, $id)
     {
         $pushnotification = $this->find($id);
@@ -58,6 +69,11 @@ class PushNotificationRepository extends Repository
         return $pushnotification;
     }
 
+    /**
+     * Delete notification.
+     *
+     * @param int $id notification id.
+     */
     public function delete($id)
     {
         parent::delete($id);

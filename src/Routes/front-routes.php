@@ -13,7 +13,9 @@ use Webkul\PWA\Http\Controllers\SinglePageController;
 use Webkul\PWA\Http\Controllers\StandardController;
 
 Route::group(['middleware' => ['web']], function () {
-
+    /**
+     * Paypal smart buttton routes.
+     */
     Route::prefix('pwa/paypal/smart-button')->group(function () {
         Route::get('/create-order', [SmartButtonController::class, 'createOrder'])->name('paypal.smart-button.create-order.pwa');
 
@@ -28,14 +30,14 @@ Route::prefix('paypal/standard')->group(function () {
 });
 
 Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
-
     Route::get('/mobile/{any?}', [SinglePageController::class, 'index'])->where('any', '.*')->name('mobile.home');
 
     Route::get('/pwa/{any?}', [SinglePageController::class, 'index'])->where('any', '.*')->name('pwa.home');
 
     Route::group(['prefix' => 'api/pwa'], function () {
-
-        // Checkout routes
+         /**
+         * Checkout routes.
+         */
         Route::group(['middleware' => ['auth:sanctum', 'sanctum.customer']], function () {
 
             Route::group(['prefix' => 'checkout'], function () {
@@ -44,20 +46,26 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
             });
         });
 
-        // Comparison
+         /**
+         * Comparison routes.
+         */
         Route::put('/comparison', [ComparisonController::class, 'store']);
 
         Route::post('/comparison', [ComparisonController::class, 'destroy']);
 
         Route::get('/comparison/get-products', [ComparisonController::class, 'index']);
 
-        // Review routes
+        /**
+         * Review routes.
+         */
         Route::get('customer/review/{id}', [ReviewController::class, 'get']);
+
         Route::get('customer/reviews', [ReviewController::class, 'getAll']);
 
-        // Downloadable products.
+        /**
+         * product routes.
+         */
         Route::controller(ProductController::class)->prefix('product')->group(function () {
-
             Route::group(['prefix' => 'downloadable-products'], function () {
                 Route::get('', 'getCustomerDownloadAbleProducts');
 

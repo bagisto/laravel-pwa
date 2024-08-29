@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 use Webkul\PWA\Http\Controllers\Controller;
 use Webkul\PWA\Repositories\PWALayoutRepository;
 
-/**
- * Push Notification controller
- */
 class LayoutController extends Controller
 {
     /**

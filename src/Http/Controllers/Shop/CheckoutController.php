@@ -43,7 +43,6 @@ class CheckoutController extends Controller
         Cart::collectTotals();
 
         if ($cart->haveStockableItems()) {
-
             return response()->json([
                 'data'    => [
                     'rates' => $rates,
@@ -55,9 +54,9 @@ class CheckoutController extends Controller
         }
 
         return response()->json([
-            'nextStep'  => "payment",
-            'cart'  => new CartResource(Cart::getCart()),
-            'methods'   => Payment::getSupportedPaymentMethods(),
+            'nextStep' => "payment",
+            'cart'     => new CartResource(Cart::getCart()),
+            'methods'  => Payment::getSupportedPaymentMethods(),
         ]);
     }
 }

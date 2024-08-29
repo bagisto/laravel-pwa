@@ -9,9 +9,7 @@ use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Product\Repositories\ProductReviewRepository;
 use Webkul\Product\Helpers\ConfigurableOption;
 use Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository;
-
 use Webkul\PWA\Http\Controllers\Controller;
-
 
 class ProductController extends Controller
 {
@@ -49,6 +47,11 @@ class ProductController extends Controller
         ]);
     }
 
+    /**
+     * Download prodduct
+     *
+     * @param int $id product id.
+     */
     public function download($id)
     {
         $downloadableLinkPurchased = $this->downloadableLinkPurchasedRepository->findOneByField([
@@ -75,7 +78,6 @@ class ProductController extends Controller
             $downloadableLinkPurchased->download_used == $totalInvoiceQty
             || $downloadableLinkPurchased->download_used > $totalInvoiceQty
         ) {
-
             return response()->json([
                 'warning' => trans('shop::app.customers.account.downloadable-products.download-error'),
             ]);
@@ -116,6 +118,9 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * Get product configuration config.
+     */
     public function configurableConfig()
     {
         $product = $this->productRepository->findOrFail(request()->id);

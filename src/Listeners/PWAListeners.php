@@ -9,6 +9,9 @@ use WhichBrowser\Parser;
  */
 class PWAListeners
 {
+    /**
+     * Check device type.
+     */
     public function redirectToPWA()
     {
         if (core()->getConfigData('pwa.settings.general.redirect_to_pwa_if_mobile')) {

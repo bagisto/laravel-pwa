@@ -8,12 +8,35 @@ use Webkul\PWA\Contracts\PushNotification as PushNotificationContract;
 
 class PushNotification extends Model implements PushNotificationContract
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'push_notifications';
 
+    /**
+     * The primary key associated with the table.
+     */
     public $primaryKey = 'id';
 
-    protected $fillable = ['title', 'description', 'targeturl', 'imageurl'];
+    /**
+     * Add fillable property to the model.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'description',
+        'targeturl',
+        'imageurl'
+    ];
 
+    /**
+     * Add the translateable attribute.
+     *
+     * @var array
+     */
     public $translatedAttributes = [
         'description',
     ];

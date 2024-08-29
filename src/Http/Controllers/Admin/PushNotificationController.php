@@ -17,21 +17,12 @@ use Webkul\PWA\Repositories\PushNotificationRepository as PushNotificationReposi
 class PushNotificationController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    protected $_config;
-
-    /**
      * Create a new controller instance.
      *
-     * @param  \Webkul\Core\Repositories\CoreConfigRepository  $coreConfig
      * @return void
      */
     public function __construct(protected PushNotificationRepository $pushNotificationRepository)
     {
-        $this->_config = request('_config');
     }
 
     /**
@@ -72,10 +63,8 @@ class PushNotificationController extends Controller
             'image.*'     => 'mimes:jpeg,jpg,bmp,png',
         ]);
 
-        // call the repository
         $this->pushNotificationRepository->create(request()->all());
 
-        // flash message
         session()->flash('success', trans('pwa::app.admin.push-notification.create-success'));
 
         return redirect()->route('admin.pwa.pushnotification.index');
@@ -137,7 +126,7 @@ class PushNotificationController extends Controller
         return redirect()->back();
     }
 
-    public function pushtofirebase($id)
+    public function pushToFirebase($id)
     {
         $topic = core()->getConfigData('pwa.settings.push-notification.topic');
         $serverKey = core()->getConfigData('pwa.settings.push-notification.api-key');
@@ -173,10 +162,10 @@ class PushNotificationController extends Controller
                 session()->flash('success', trans('pwa::app.admin.push-notification.success-notification'));
             }
 
-            // Handle overall success/failure based on individual responses (optional)
             return redirect()->back();
         } else {
             session()->flash('error', trans('admin::app.users.users.login-error'));
+
             return redirect()->back();
         }
     }

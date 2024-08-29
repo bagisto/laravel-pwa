@@ -7,7 +7,10 @@ use Webkul\PWA\Contracts\PWALayout as PWALayoutContract;
 
 class PWALayout extends Model implements PWALayoutContract
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'pwa_layout';
-
-    protected $guarded = [];
 }

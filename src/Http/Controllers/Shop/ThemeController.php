@@ -18,6 +18,9 @@ class ThemeController extends Controller
     ) {
     }
 
+    /**
+     * Get carousel images.
+     */
     public function sliders()
     {
         $sliders = $this->themeCustomizationRepository->orderBy('sort_order')->findOneWhere([
