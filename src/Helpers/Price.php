@@ -188,9 +188,7 @@ class Price
      */
     public function getCurrentCustomerGroupId()
     {
-        $guard = request()->has('token') ? 'api' : 'customer';
-
-        if (auth()->guard($guard)->check()) {
+        if (auth()->guard('customer')->check()) {
             $customerGroupId = auth()->guard($guard)->user()->customer_group_id;
         } else {
             $customerGroupId = $this->customerGroupRepository->findOneByField('code', 'guest')->id;
