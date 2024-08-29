@@ -1,5 +1,6 @@
 <template>
     <div class="product-review">
+
         <span v-if="product.reviews.total">
             <span class="rating">
                 {{ product.reviews.average_rating }}
@@ -16,7 +17,7 @@
                 {{ $t('Add Your Review') }}
             </router-link>
         </div>
-        
+
     </div>
 </template>
 
@@ -55,9 +56,13 @@
 
                 var guest_checkout_key = 'catalog.products.review.guest_review';
 
-                this.$http.get("/api/config", {
+                const configKeys = [
+                    guest_checkout_key,
+                ];
+
+                this.$http.get("/api/v1/core-configs", {
                     params: {
-                        _config: `${guest_checkout_key}`
+                        _config: configKeys
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');
@@ -85,6 +90,7 @@
             font-weight: 600;
             margin-right: 8px;
             display: inline-block;
+            margin-bottom: 10px;
 
             .icon {
                 vertical-align: middle;

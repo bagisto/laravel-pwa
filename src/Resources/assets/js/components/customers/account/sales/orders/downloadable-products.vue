@@ -6,16 +6,16 @@
                 <label :class="downloadableProduct.status">{{ downloadableProduct.status }}</label>
             </div>
             <div class="order-date">{{ new Date(downloadableProduct.created_at) | moment("D MMMM YYYY") }}</div>
-            <div class="order-title" v-html="downloadableProduct.title">
+            <div class="order-title" v-html="downloadableProduct.name" @click='download(downloadableProduct.id)'>
             </div>
 
             <div>
                 <label>
                     {{ $t('downloadable.remaining_downloads') }}:
-                    {{ downloadableProduct.remaining_downloads }}
+                    {{ remaining_downloads }}
                 </label>
             </div>
-            
+
             <i class="icon sharp-arrow-right-icon"></i>
         </div>
     </div>
@@ -25,7 +25,7 @@
     export default {
         name: 'downloadable-products',
 
-        props: ['downloadableProduct'],
+        props: ['downloadableProduct', 'customer'],
 
         data () {
 			return {
@@ -46,7 +46,48 @@
                     this.remaining_downloads--;
                 }
             });
-        }
+        },
+        methods: {
+            download(id){
+                let customer = JSON.parse(localStorage.getItem('currentUser'));
+
+                this.$http.get('api/pwa/product/downloadable-products/download/' + id, {
+                    params: {
+                        customer_id: customer.id
+                    },
+                    responseType: 'blob'
+                })
+                .then(response => {
+                    if (response.error) {
+                        this.$toasted.show(response.error, { type: 'error' });
+
+                        return;
+                    }
+
+                    this.remaining_downloads--;
+                    const blob = response.data;
+                    const url  = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href  = url;
+
+                    const contentDisposition = response.headers['content-disposition'];
+                    const fileName = contentDisposition
+                        ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                        : 'downloaded-file.png';
+
+                    link.setAttribute('download', fileName);
+
+                    document.body.appendChild(link);
+                    link.click();
+
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+
+                }).catch(error => {
+                    console.error('Error downloading the file:', error);
+                });
+            }
+        },
     }
 </script>
 
@@ -105,6 +146,9 @@
                     }
 
                     &.fraud {
+                        background: #FF4848;
+                    }
+                    &.expired {
                         background: #FF4848;
                     }
                 }

@@ -6,7 +6,7 @@
             <div class="panel-content">
                 <div class="wishlist-list product-list product-grid-2">
 
-                    <wishlist-card 
+                    <wishlist-card
                         v-for="item in wishlist"
                         :key='item.uid'
                         :wishlistItem="item"
@@ -50,7 +50,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa-wishlist', { params: { customer_id: this.customer.id, pagination: 0 ,token:true} })
+                this.$http.get('/api/v1/customer/wishlist')
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -63,8 +63,8 @@
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
-                
-                this.$http.delete('/api/wishlist/' + item.id, {params : {token : true}})
+
+                this.$http.post('/api/v1/customer/wishlist/' + item.product.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -79,8 +79,8 @@
 
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
-                
-                this.$http.get('/api/pwa/move-to-cart/' + item.id, {params : {token : true}})
+
+                this.$http.post('/api/v1/customer/wishlist/'+ item.product.id +'/move-to-cart')
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -89,7 +89,7 @@
                         var index = this.wishlist.indexOf(item);
 
                         this.wishlist.splice(index, 1);
-                        
+
                         EventBus.$emit('checkout.cart.changed', response.data.data);
                     })
                     .catch(error => {
@@ -98,7 +98,7 @@
                         } else if (error.response.data.message) {
                             this.$router.push({ path: '/products/' + item.product.id })
 
-                            // this.$toasted.show(error.response.data.message, { type: 'error' })
+                            this.$toasted.show(error.response.data.message, { type: 'error' })
                         }
                     });
             }

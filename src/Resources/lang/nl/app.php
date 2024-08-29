@@ -70,12 +70,12 @@ return [
         'notification'      => [
             'update-success' => 'Pushmelding succesvol bijgewerkt.',
             'delete-success' => 'Pushmelding succesvol verwijderd.',
-        ]
+        ],
     ],
 
     'shop'  => [
         'home'  => [
             'enable-pwa-status' => 'Waarschuwing: Schakel alstublieft de PWA-extensiestatus in vanuit de configuratie.',
-        ]
-    ]
+        ],
+    ],
 ];

@@ -1,6 +1,5 @@
 <template>
     <div class="content">
-
         <carousel
                 :per-page="1"
                 :loop="true"
@@ -13,11 +12,15 @@
                 :key='slider.id'
                 v-for="slider in sliders"
             >
-                <a :href="slider.slider_path" class="slider-image-container" v-if="slider.slider_path && slider.slider_path != ''">
+                <a
+                    :href="slider.link"
+                    class="slider-image-container"
+                    v-if="slider.link && slider.link != ''"
+                >
                     <img
                         class="slider-image"
                         alt="base-image-original"
-                        :src="slider.image_url"
+                        :src="slider.image"
                     />
                 </a>
 
@@ -25,68 +28,38 @@
                     v-else
                     class="slider-image"
                     alt="base-image-original"
-                    :src="slider.image_url"
+                    :src="slider.image"
                 />
 
-                <div class="show-content" v-html="slider.content">
-                </div>
+                <!-- <div class="show-content" v-html="slider.title">
+                </div> -->
             </slide>
         </carousel>
 
         <div class="category-container" v-if="showCategories">
-
             <ul class="category-list">
-
                 <category-card v-for="category in categories" :key='category.uid' :category="category"></category-card>
-
             </ul>
-
         </div>
 
         <div :key="index" class="products panel" v-for="(content, index) in homePageContent">
-            <advertisement
-                :first-image-url="homePageContent['advertisement-two'][0]"
-                :second-image-url="homePageContent['advertisement-two'][1]"
-                v-if="index == 'advertisement-two'"
-                >
-            </advertisement>
+            <template v-if="content.products && content.products.length">
+                <div class="category-title">
+                    <span class="panel-heading">
+                        {{ content.category_details.name }}
+                    </span>
 
-            <advertisement
-                :first-image-url="homePageContent['advertisement-four'][0]"
-                :second-image-url="homePageContent['advertisement-four'][1]"
-                :third-image-url="homePageContent['advertisement-four'][2]"
-                :fourth-image-url="homePageContent['advertisement-four'][3]"
-                v-else-if="index == 'advertisement-four'"
-                >
-            </advertisement>
+                    <router-link :to="'/categories/' + content.category_details.id" class="panel-heading view-all-btn">
+                        {{ $t('View All Products') }}
+                    </router-link>
+                </div>
 
-            <advertisement
-                :first-image-url="homePageContent['advertisement-three'][0]"
-                :second-image-url="homePageContent['advertisement-three'][1]"
-                :third-image-url="homePageContent['advertisement-three'][2]"
-                v-else-if="index == 'advertisement-three'"
-                >
-            </advertisement>
+                <div class="panel-content product-list product-grid-2">
 
-            <div class="products panel" v-else>
-                <template v-if="content.products && content.products.length">
-                    <div class="category-title">
-                        <span class="panel-heading">
-                            {{ content.category_details.name }}
-                        </span>
+                    <product-card :is-customer="customer ? true : false" v-for="product in content.products" :key='product.uid' :product="product"></product-card>
 
-                        <router-link :to="'/categories/' + content.category_details.id" class="panel-heading view-all-btn">
-                            {{ $t('View All Products') }}
-                        </router-link>
-                    </div>
-
-                    <div class="panel-content product-list product-grid-2">
-
-                        <product-card :is-customer="customer ? true : false" v-for="product in content.products" :key='product.uid' :product="product"></product-card>
-
-                    </div>
-                </template>
-            </div>
+                </div>
+            </template>
         </div>
 
         <template v-if="product.categories.length">
@@ -116,14 +89,9 @@
             </div>
 
             <div class="panel-content product-list product-grid-2">
-                <product-card 
-                    v-for="product in product.new" 
-                    :key='product.uid' 
-                    :product="product"
-                    :is-customer="customer ? true : false" 
-                    :isWishlisted="product.is_wishlisted"
-                    @updateWishlistStatus="updateWishlistStatus"
-                ></product-card>
+
+                <product-card :is-customer="customer ? true : false" v-for="product in product.new" :key='product.uid' :product="product"></product-card>
+
             </div>
 
         </div>
@@ -135,14 +103,9 @@
             </div>
 
             <div class="panel-content product-list product-grid-2">
-                <product-card 
-                    v-for="product in product.featured" 
-                    :key='product.uid' 
-                    :product="product"
-                    :is-customer="customer ? true : false"
-                    :isWishlisted="product.is_wishlisted"
-                    @updateWishlistStatus="updateWishlistStatus" 
-                ></product-card>
+
+                <product-card :is-customer="customer ? true : false" v-for="product in product.featured" :key='product.uid' :product="product"></product-card>
+
             </div>
 
         </div>
@@ -214,9 +177,16 @@
             ]),
 
             getSliders () {
-                this.$http.get("/api/pwa/sliders?sort=id&order=asc")
+                this.$http.get("/api/pwa/sliders")
                     .then(response => {
-                        this.sliders = response.data.data;
+
+                        this.sliders = response.data.images;
+
+                        this.sliders.forEach(item => {
+                            if (!item.image.startsWith(window.config.app_base_url)) {
+                                item.image = window.config.app_base_url + item.image;
+                            }
+                        });
                     })
                     .catch(function (error) {});
             },
@@ -228,30 +198,27 @@
                 var enable_slider_key = 'pwa.settings.general.enable_slider';
                 var enable_featured_key = 'pwa.settings.general.enable_featured';
                 var enable_categories_home_page_listing_key = 'pwa.settings.general.enable_categories_home_page_listing';
-                var new_product_count = 'catalog.products.homepage.no_of_new_product_homepage';
-                var featured_product_count = 'catalog.products.homepage.no_of_featured_product_homepage'; 
 
-                this.$http.get("/api/config", {
+                const configKeys = [
+                    enable_new_key,
+                    enable_slider_key,
+                    enable_featured_key,
+                    enable_categories_home_page_listing_key,
+                ];
+
+                this.$http.get("/api/v1/core-configs", {
                     params: {
-                        _config: `${enable_new_key},${enable_slider_key},${enable_featured_key},${enable_categories_home_page_listing_key},${new_product_count},${featured_product_count}`
+                        _config: configKeys
                     }
                 }).then(response => {
-                    EventBus.$emit('hide-ajax-loader');
 
+                    EventBus.$emit('hide-ajax-loader');
                     if (response.data.data[enable_new_key] == "1") {
-                        if (response.data.data[new_product_count]) {
-                            this.getProducts('new', { 'new': 1, limit: 4, count: response.data.data[new_product_count] });
-                        } else {
-                            this.getProducts('new', { 'new': 1, limit: 4 });
-                        }
+                        this.getProducts('new', { 'new': 1, limit: 4 });
                     }
 
                     if (response.data.data[enable_featured_key] == "1") {
-                        if (response.data.data[featured_product_count]) {
-                            this.getProducts('featured', { 'featured': 1, limit: 4, count: response.data.data[featured_product_count] });
-                        } else {
-                            this.getProducts('featured', { 'featured': 1, limit: 4 });
-                        }
+                        this.getProducts('featured', { 'featured': 1, limit: 4 });
                     }
 
                     if (response.data.data[enable_slider_key] == "1") {
@@ -262,55 +229,41 @@
                         this.showCategories = true;
                     }
                 })
-                .catch(function (error) {});
+                .catch(error =>  {
+                    console.error(error);
+                });
             },
 
             getHomePageContent () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa-layout")
+                this.$http.get("/api/pwa/layout")
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
-                        let homePageContent = response.data.data[0].home_page_content;
-                        let homePageContentArray = homePageContent.split(",");
+                        let homePageContent = response.data.data.home_page_content;
+                        let homePageContentArray = homePageContent.replace(/<\/?[^>]+(>|$)/g, "").split(",");
 
-                        this.$http.get("/api/advertisements?locale=en")
-                            .then(response => {
-                                homePageContentArray.forEach(content => {
-                                    switch (content) {
-                                        case 'velocity-advertisement-two':
-                                            this.homePageContent['advertisement-two'] = Object.values(response.data.data[2]);
-                                            break;
+                        homePageContentArray.forEach(content => {
 
-                                        case 'velocity-advertisement-three':
-                                            this.homePageContent['advertisement-three'] = Object.values(response.data.data[3]);
-                                            break;
+                            let base_content = content.toLowerCase().trim();
+                            this.homePageContent[base_content] = {};
 
-                                        case 'velocity-advertisement-four':
-                                            this.homePageContent['advertisement-four'] = Object.values(response.data.data[4]);
-                                            break;
+                            if (this.categories) {
+                                this.categories.filter(category => {
 
-                                        default:
-                                            this.homePageContent[content] = {};
+                                    if (category.slug.toLowerCase() == base_content) {
 
-                                            if (this.categories) {
-                                                this.categories.filter(category => {
-                                                    if (category.slug == content) {
-                                                        this.homePageContent[content] = {
-                                                            'products' : [],
-                                                            'category_details' : category,
-                                                        }
+                                        this.homePageContent[base_content] = {
+                                            'products' : [],
+                                            'category_details' : category,
+                                        }
 
-                                                        this.getProducts(content, { 'category_id': category.id });
-                                                    }
-                                                });
-                                            }
-                                            break;
+                                        this.getProducts(base_content, { 'category_id': category.id });
                                     }
                                 });
-                            })
-                            .catch(function (error) {});
+                            }
+                        });
                     })
                     .catch(function (error) {});
             },
@@ -318,17 +271,13 @@
             getCategories () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/categories", { params: { parent_id: window.channel.root_category_id } })
+                this.$http.get("/api/v1/descendant-categories", { params: { parent_id: window.channel.root_category_id } })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
                         this.categories = response.data.data;
 
                         this.categories.forEach(category => {
-                            if (category.show_products) {
-                                // push data here to keep category according to order
-                                // this.getProducts(category, { 'category_id': category.id });
-                            }
 
                             if (this.homePageContent[category.slug]) {
                                 this.homePageContent[category.slug] = {
@@ -344,9 +293,9 @@
 
             getProducts (details, params) {
                 EventBus.$emit('show-ajax-loader');
-
-                this.$http.get("/api/pwa/products", { params: params })
+                this.$http.get("/api/v1/products", { params: params })
                     .then(response => {
+
                         EventBus.$emit('hide-ajax-loader');
 
                         if (params.category_id) {
@@ -363,21 +312,6 @@
                         console.log(error)
                     });
             },
-
-            updateWishlistStatus (productId, isWishlisted) {
-                const newProductIndex = this.product.new.findIndex(item => item.id === productId);
-
-                if (newProductIndex > -1) {
-                    this.product.new[newProductIndex].is_wishlisted = isWishlisted;
-                }
-
-                // Find the product in the 'featured' section and update its wishlisted status
-                const featuredProductIndex = this.product.featured.findIndex(item => item.id === productId);
-                
-                if (featuredProductIndex > -1) {
-                    this.product.featured[featuredProductIndex].is_wishlisted = isWishlisted;
-                }
-            }
         }
     }
 </script>

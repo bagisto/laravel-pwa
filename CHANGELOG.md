@@ -1,12 +1,48 @@
-# CHANGELOG for v1.3.2
+# CHANGELOG for v2.1.x
+
+## **v2.1.2(30th of Aug, 2023)** - *Release*
+
+* [feature] Compatible With bagisto v2.1.2
+
+# CHANGELOG for v1.4.x
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
+## **v1.4.3(31th of Sept, 2022)** - *Release*
+
+* [feature] Compatible With bagisto v1.4.3
+
+# CHANGELOG for v1.3.2
+
+## **v1.3.3(31th of Nov, 2021)** - *Release*
+
+* [feature] Compatible With bagisto v1.3.3
+
 ## **v1.3.2(20th of september, 2021)** - *Release*
+
+#### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
 - [compatible] Bagisto Version v1.3.2.
 
 - [Bug] Dynamic Entries of firebase details.
+
+- [feature] functionality to edit home page layout from admin panel.
+
+- [feature] advertisement section added.
+
+- [feature] subcategories section added.
+
+- [feature] dynamic attributes list for category.
+
+- [feature] option to enable/disable the slider in PWA.
+
+- [feature] dynamic SEO in PWA.
+
+- [feature] admin can add products of any category in PWA.
+
+- [feature] option to remove new/featured products.
+
+- [feature] added home page button.
 
 ## **v0.1.5(17th of February, 2020)** - *Release*
 
@@ -96,7 +132,7 @@
 
 * [Bug] Update Amt. to be paid to "Amount to be paid" everywhere.
 
-* [Bug] On clicking on Remove button of address page address doesn't get removed. 
+* [Bug] On clicking on Remove button of address page address doesn't get removed.
 
 * [Bug] Click on wishlist button for first time it will add product in wishlist, again click on button it will remove the product from wishlist. It should show a message product already present or added in your wishlist.
 
@@ -125,7 +161,7 @@
 * [Bug] Getting incorrect validation message at Phone number and Postal code field of address book.
 
 * [Bug] Instead of showing Message Unauthenticated while adding product in wishlist without login, update the message "Please login to add product in wishlist".
- 
+
 
 ## **v0.1.0(17th of May, 2019)** - *Release*
 

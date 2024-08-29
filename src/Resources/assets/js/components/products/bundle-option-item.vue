@@ -7,12 +7,12 @@
                 <select class="control" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="option.label + '&quot;'">
                     <option value="">{{ $t('bundle.choose_a_selection') }}</option>
                     <option v-for="(product, index2) in option.products" :value="product.id" :key="index2">
-                        {{ product.name + ' + ' + product.price.final_price.formated_price }}
+                        {{ product.name + ' + ' + product.price.final.formatted_price }}
                     </option>
                 </select>
             </div>
 
-            <div class="bundle-product-option" v-if="option.type == 'radio'">
+            <div v-if="option.type == 'radio'">
                 <div class="radio" v-if="! option.is_required">
                     <input type="radio" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" value="0" :id="'bundle_options[' + option.id + '][]'">
                     <label class="radio-view" :for="'bundle_options[' + option.id + '][]'"></label>
@@ -28,7 +28,7 @@
                         {{ product.name }}
 
                         <span class="price">
-                            + {{ product.price.final_price.formated_price }}
+                            + {{ product.price.final.formatted_price }}
                         </span>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                         <span>{{ product.name }}</span>
 
                         <span class="price">
-                            + {{ product.price.final_price.formated_price }}
+                            + {{ product.price.final.formatted_price }}
                         </span>
                     </div>
                 </div>
@@ -55,12 +55,12 @@
                 <select class="control" :name="'bundle_options[' + option.id + '][]'" v-model="selected_product" v-validate="option.is_required ? 'required' : ''" :data-vv-as="'&quot;' + option.label + '&quot;'" multiple>
                     <option value="0" v-if="! option.is_required">{{ __('shop::app.products.none') }}</option>
                     <option v-for="(product, index2) in option.products" :value="product.id" :key="index2">
-                        {{ product.name + ' + ' + product.price.final_price.formated_price }}
+                        {{ product.name + ' + ' + product.price.final.formatted_price }}
                     </option>
                 </select>
             </div>
 
-            <span class="control-error bundle-error" v-if="errors.has('bundle_options[' + option.id + '][]')">
+            <span class="control-error bundel-error" v-if="errors.has('bundle_options[' + option.id + '][]')">
                 {{ errors.first('bundle_options[' + option.id + '][]') }}
             </span>
         </div>
@@ -141,14 +141,13 @@
             },
 
             changeQuantity: function (type, optionId) {
-
                 if (type == 'increase') {
                     this.$set(this.formData.bundle_option_qty, optionId, this.formData.qty_options[optionId][this.selected_product] + 1);
                     this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.qty_options[optionId][this.selected_product] + 1);
                 } else if (type == 'decrease') {
-                    if (this.formData.qty_options[optionId][this.selected_product] > 1) {
-                        this.$set(this.formData.bundle_option_qty, optionId, this.formData.qty_options[optionId][this.selected_product] - 1);
-                        this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.qty_options[optionId][this.selected_product] - 1);
+                    if (this.formData.bundle_option_qty[optionId][this.selected_product] > 1) {
+                        this.$set(this.formData.bundle_option_qty, optionId, this.formData.bundle_option_qty[optionId][this.selected_product] - 1);
+                        this.$set(this.formData.qty_options[optionId], this.selected_product, this.formData.bundle_option_qty[optionId][this.selected_product] - 1);
                     }
                 }
 

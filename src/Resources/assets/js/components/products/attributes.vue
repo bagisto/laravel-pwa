@@ -7,7 +7,7 @@
                     <tbody>
                         <tr v-for="attribute in viewableAttributes">
                             <td>{{ attribute.label }}</td>
-                            
+
                             <td>{{ attribute.value }}</td>
                         </tr>
                     </tbody>
@@ -23,7 +23,7 @@
 
     export default {
         name: 'attributes',
-        
+
         components: { Accordian },
 
         props: ['product'],
@@ -44,8 +44,9 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/product-additional-information/' + productId)
+                this.$http.get('/api/v1/products/'+productId+'/additional-information')
                     .then(function(response) {
+
                         this_this.viewableAttributes = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');
@@ -72,7 +73,6 @@
                         border-right: 1px solid rgba(0, 0, 0, 0.12);
                         font-weight: 600;
                         color: rgba(0, 0, 0, 0.54);
-                        text-align: right;
                     }
 
                     &:last-child {

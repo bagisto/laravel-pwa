@@ -14,6 +14,7 @@
                 </div>
             </div>
         </custom-header>
+
         <div class="checkout-container" v-if="cart">
             <div class="address-section" v-show="step == 1">
                 <form data-vv-scope="address-form">
@@ -31,7 +32,6 @@
 
                                         <div class="address_details">
                                             {{ addressTemp.first_name + ' ' + addressTemp.last_name }}<br/>
-                                            {{ addressTemp.address1.join(' ') }}<br/>
                                             {{ addressTemp.city }}<br/>
                                             {{ addressTemp.state }}<br/>
                                             {{ addressTemp.country_name ? addressTemp.country_name : addressTemp.country  + ' ' + addressTemp.postcode }}<br/>
@@ -111,7 +111,6 @@
 
                                             <div class="address_details">
                                                 {{ addressTemp.first_name + ' ' + addressTemp.last_name }}<br/>
-                                                {{ addressTemp.address1.join(' ') }}<br/>
                                                 {{ addressTemp.city }}<br/>
                                                 {{ addressTemp.state }}<br/>
                                                 {{ addressTemp.country_name + ' ' + addressTemp.postcode }}<br/>
@@ -169,20 +168,17 @@
 
                         <div class="panel-content">
                             <div class="form-container shipping-methods" :class="[errors.has('shipping-form.shipping_method') ? 'has-error' : '']">
-                               
+
                                 <div class="method" :key="index" v-for="(method, index) in shippingRates">
                                     <h2>{{ method['carrier_title'] }}</h2>
 
                                     <label class="radio" :key="index" v-for="(rate, index) in method['rates']" :for="rate.method">
-                                        
                                         <input type="radio" v-validate="'required'" :id="rate.method" name="shipping_method" :value="rate.method" v-model="selected_shipping_method">
                                         <label class="radio-view" :for="rate.method"></label>
-                                        
-                                            {{ rate.base_price }}
-                                            <div >
-                                                <b> {{ rate.method_title + ' - ' }} </b>
-                                                {{ rate.method_description }}
-                                            </div>
+
+                                        {{ rate.formatted_price }}
+                                        <b> {{ rate.method_title + ' - ' }} </b>
+                                        {{ rate.method_description }}
                                     </label>
                                 </div>
 
@@ -225,7 +221,6 @@
                         <div class="billing-address" v-if="cart.billing_address">
                             <h2>{{ $t('Billing Address') }}</h2>
                             <div class="address-details">
-                                {{ cart.billing_address.address1.join(' ') }}<br/>
                                 {{ cart.billing_address.city }}<br/>
                                 {{ cart.billing_address.state }}<br/>
                                 {{ cart.billing_address.country_name ? cart.billing_address.country_name : cart.billing_address.country  + ' ' + cart.billing_address.postcode }}<br/>
@@ -249,7 +244,6 @@
                         <div class="shipping-address" v-if="cart.shipping_address">
                             <h2>{{ $t('Shipping Address') }}</h2>
                             <div class="address-details">
-                                {{ cart.shipping_address.address1.join(' ') }}<br/>
                                 {{ cart.shipping_address.city }}<br/>
                                 {{ cart.shipping_address.state }}<br/>
                                 {{ cart.shipping_address.country_name ? cart.shipping_address.country_name : cart.shipping_address.country  + ' ' + cart.shipping_address.postcode }}<br/>
@@ -260,7 +254,7 @@
                         <div class="shipping-method" v-if="cart.selected_shipping_rate">
                             <h2>{{ $t('Shipping Method') }}</h2>
                             <div class="method-title">
-                                {{ cart.selected_shipping_rate.method_title + ' - ' + cart.selected_shipping_rate.formated_price }}
+                                {{ cart.selected_shipping_rate.method_title + ' - ' + cart.selected_shipping_rate.formatted_price }}
                             </div>
                         </div>
                     </div>
@@ -284,12 +278,12 @@
 
                                     <div class="cart-item-price">
                                         <label>{{ $t('Price :') }} </label>
-                                        <span>{{ cartItem.formated_price }}</span>
+                                        <span>{{ cartItem.formatted_price }}</span>
                                     </div>
 
                                     <div class="cart-item-subtotal">
                                         <label>{{ $t('Subtotal :') }} </label>
-                                        <span>{{ cartItem.formated_total }}</span>
+                                        <span>{{ cartItem.formatted_total }}</span>
                                     </div>
                                 </div>
                             </diV>
@@ -303,29 +297,29 @@
                             <tbody>
                                 <tr>
                                     <td>{{ $t('Subtotal') }}</td>
-                                    <td>{{ cart.formated_sub_total }}</td>
+                                    <td>{{ cart.formatted_sub_total }}</td>
                                 </tr>
 
                                 <tr v-if="cart.selected_shipping_rate">
                                     <td>{{ $t('Shipping') }}</td>
-                                    <td>{{ cart.selected_shipping_rate.formated_price }}</td>
+                                    <td>{{ cart.selected_shipping_rate.formatted_price }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Tax') }}</td>
-                                    <td>{{ cart.formated_tax_total }}</td>
+                                    <td>{{ cart.formatted_tax_total }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Discount') }}</td>
-                                    <td> - {{ cart.formated_discount }}</td>
+                                    <td> - {{ cart.formatted_discount }}</td>
                                 </tr>
 
                                 <tr class="last">
                                     <td>{{ $t('Order Total') }}</td>
-                                    <td>{{ cart.formated_grand_total }}</td>
+                                    <td>{{ cart.formatted_grand_total }}</td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -337,9 +331,9 @@
                     <div class="panel-content">
                         <div class="coupon-container">
                             <div class="discount-control" style="padding:10px;">
-                                <form data-vv-scope="coupon-form" @submit.prevent="validateForm">
+                                <form data-vv-scope="coupon-form">
                                     <div class="control-group" :class="[errors.has('coupon-form.code') ? 'has-error' : '']" >
-                                        <input type="text" class="control" v-validate="'required'" v-model="coupon_code" name="code" :placeholder="$t('Enter Coupon Code')" >
+                                        <input type="text" class="control" v-model="coupon_code" name="code" :placeholder="$t('Enter Coupon Code')" >
 
                                         <span class="control-error" v-if="errors.has('coupon-form.code')">{{ errors.first('coupon-form.code') }}</span>
                                     </div>
@@ -369,7 +363,7 @@
             <div class="checkout-action">
                 <span class="total-info">
                     <p>{{ $t('Amount to be paid') }}</p>
-                    <h3>{{ cart.formated_grand_total }}</h3>
+                    <h3>{{ cart.formatted_grand_total }}</h3>
                 </span>
 
                 <button type="button" class="btn btn-black" v-if="step != 4" @click="validateForm()" :disabled="disable_button">{{ $t('Proceed') }}</button>
@@ -383,23 +377,16 @@
 <script>
     import CustomHeader    from '../../layouts/custom-header';
     import CheckoutAddress from './address';
-    import {
-        mapState,
-        mapActions
-    } from 'vuex';
 
     export default {
         name: 'onepage',
 
         components: { CustomHeader, CheckoutAddress },
 
-        computed: mapState({
-            cart: state => state.cart,
-        }),
-
         data () {
             return {
                 step: 1,
+                cart: null,
                 customer: null,
                 coupon_code: '',
                 isShipping: true,
@@ -437,7 +424,7 @@
 
                 address: {
                     billing: {
-                        address1: [''],
+                        address: [''],
 
                         use_for_shipping: true,
                         save_as_address: false,
@@ -456,24 +443,20 @@
         },
 
         mounted () {
-            // this.getGuestCheckoutStatus();
-           
+            this.getGuestCheckoutStatus();
+
             this.getAuthCustomer();
 
             this.getCart();
 
-            this.paypalSmartBtn();
+            // this.paypalSmartBtn();
         },
 
         methods: {
-            ...mapActions([
-                'getCart',
-            ]),
-
             paypalSmartBtn () {
                 var self = this;
-                
-                    EventBus.$on('after-payment-method-selected', function(payment) {            
+
+                    EventBus.$on('after-payment-method-selected', function(payment) {
                         if (payment != 'paypal_smart_button') {
 
                             $('.paypal-buttons').remove();
@@ -516,27 +499,27 @@
                                 return self.$http.post('/pwa/paypal/smart-button/capture-order', { orderData: data })
                                             .then(function(response) {
                                                 if (response.data.success) {
-                                                    EventBus.$emit('hide-ajax-loader'); 
+                                                    EventBus.$emit('hide-ajax-loader');
 
                                                     if (response.data.redirect_url) {
                                                         window.location.href = response.data.redirect_url;
                                                     } else {
-                                                        self.$router.push({ name: 'order-success', params: {id: response.data.order_id}}); 
-                                                                                                                                                              
+                                                        self.$router.push({ name: 'order-success', params: {id: response.data.order_id}});
+
                                                         EventBus.$emit('checkout.cart.changed', null);
                                                     }
                                                 }
                                             })
                                             .catch(function (error) {
 
-                                                EventBus.$emit('hide-ajax-loader'); 
+                                                EventBus.$emit('hide-ajax-loader');
 
                                                 self.$router.push({ name: 'cart' });
                                             });
                             },
 
                             onCancel: function (data) {
-                                
+
                                 self.$toasted.show('Canceled payment...', { type: 'error' });
                             },
 
@@ -550,40 +533,28 @@
                     });
             },
 
-            getGuestCheckoutStatus () { 
+            getGuestCheckoutStatus () {
                 var this_this = this;
+                const token    = JSON.parse(localStorage.getItem("token"));
 
-                this.$http.get('/api/checkout/guest-checkout',{params : {token: true}})
-                    .then(function(response) {
-                        if(! response.data.data.status) {
-                            this_this.$router.push({ name: 'login-register' });
-                        }
-                    })
-                    .catch(function (error) {});
+                if (!token) {
+                    this_this.$router.push({ name: 'login-register' });
+                }
             },
 
-            getAuthCustomer () { 
+            getAuthCustomer () {
                 var this_this = this;
-
-                const token = JSON.parse(localStorage.getItem('token'));
-
-                if (! token) {
-                    this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
-
-                    this.$router.push({name: 'login-register'})
-
-                    return;
-                }
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/customer/get',{params : {token : JSON.parse(localStorage.getItem('token'))}})
+                this.$http.get('/api/v1/customer/get')
                     .then(function(response) {
+
                         this_this.customer = response.data.data;
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        this_this.getCustomerAddresses(this_this.customer.id)
+                        this_this.getCustomerAddresses()
                     })
                     .catch(function (error) {
                         if (
@@ -601,12 +572,12 @@
                     });
             },
 
-            getCustomerAddresses (customerId) {
+            getCustomerAddresses () {
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: customerId, pagination: 0,token: JSON.parse(localStorage.getItem('token'))} })
+                this.$http.get('/api/v1/customer/addresses')
                     .then(function(response) {
                         this_this.$set(this_this.addresses, 'billing', response.data.data.slice(0))
 
@@ -615,7 +586,33 @@
                         EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
-            }, 
+            },
+
+            getCart () {
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/v1/customer/cart')
+                    .then(response => {
+                        EventBus.$emit('hide-ajax-loader');
+
+                        this.cart = response.data.data;
+
+                        if (
+                            response.data.redirectToCustomerLogin
+                            && this.$route.name == "onepage"
+                        ) {
+                            this.$router.push({ name: 'login-register' });
+                        }
+
+                        this.checkMinimumPrice(this.cart.grand_total);
+
+                        EventBus.$emit('checkout.cart.changed', this.cart);
+
+                        if (! this.cart)
+                            this.$router.go(-2);
+                    })
+                    .catch(function (error) {});
+            },
 
             changeSaveAddress(event) {
                 var self = this;
@@ -628,6 +625,7 @@
 
             validateForm: function (type = '') {
                 this.$validator.validateAll(this.formScopes[this.step]).then((result) => {
+
                     if (result) {
                         if (this.formScopes[this.step] == 'address-form') {
                             if (type != '') {
@@ -652,6 +650,7 @@
             },
 
             addAddress (type) {
+
                 var addressId = 'address_' + (this.addresses[type].length + 1);
 
                 this.address[type]['id'] = addressId;
@@ -660,7 +659,7 @@
 
                 this.new_address[type] = false;
 
-                this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping, save_as_address: this.address.billing.save_as_address})
+                // this.$set(this.address, type, {address1: [''], use_for_shipping: this.address.billing.use_for_shipping, save_as_address: this.address.billing.save_as_address})
 
                 if (this.addresses[type].length == 1) {
                     this.address.billing.address_id = this.addresses.billing[0].id;
@@ -671,30 +670,37 @@
                 var self = this;
                 var save_as_address = self.address.billing.save_as_address;
 
-                if (! Number.isInteger(self.address.billing.address_id)) {
+                if (Number.isInteger(self.address.billing.address_id)) {
                     var newAddress = self.addresses.billing.filter(address => address.id == self.address.billing.address_id);
 
                     Object.assign(self.address.billing, newAddress[0]);
-                    
+
                     self.address.billing.save_as_address = save_as_address;
                 }
 
-                if (! Number.isInteger(self.address.shipping.address_id)) {
+                if (Number.isInteger(self.address.shipping.address_id)) {
                     var newAddress = self.addresses.shipping.filter(address => address.id == self.address.shipping.address_id);
 
                     Object.assign(self.address.shipping, newAddress[0]);
                 }
 
+                if (self.address.billing.use_for_shipping) {
+                    Object.assign(self.address.shipping, self.address.billing);
+                    delete self.address.shipping['use_for_shipping'];
+                }
+
                 self.disable_button = true;
-                this.$http.post('/api/pwa/checkout/save-address', self.address,{params: {token : JSON.parse(localStorage.getItem('token'))}})
+
+                this.$http.post('/api/pwa/checkout/save-address', self.address)
                     .then(function(response) {
-                        self.disable_button = false;
 
                         if (response.data.nextStep == "payment") {
                             self.skipShipping = true;
                             self.disable_button = false;
 
-                            self.paymentMethods = response.data.methods.paymentMethods;
+                            self.paymentMethods = response.data.methods.payment_methods;
+
+                            self.cart = response.data.cart;
 
                             self.step++;
                             self.step++;
@@ -710,21 +716,19 @@
                         } else {
                             self.disable_button = false;
 
-                            self.shippingRates = response.data.rates.shippingMethods;
+                            self.shippingRates = response.data.data.rates;
 
-                            
+                            self.cart = response.data.data.cart;
+
                             self.step++;
-                            
+
                             self.save_as_address = false;
                             self.address.billing.save_as_address = false;
 
                             if ( self.shippingRates ) {
                                 $.each(self.shippingRates, (key, method) => {
-
                                     if ( self.first_shipping_iteration ) {
                                         $.each(method['rates'], (key, rate) => {
-                                            console.log(key, rate,"edfgdg");
-
                                             self.selected_shipping_method = rate['method'];
                                             self.first_shipping_iteration = false;
                                         });
@@ -734,6 +738,8 @@
                         }
                     })
                     .catch(function (error) {
+                        console.error(error);
+
                         self.disable_button = false;
                     })
             },
@@ -743,13 +749,13 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method },{params : {token : JSON.parse(localStorage.getItem('token')) }})
+                this.$http.post('/api/v1/customer/checkout/save-shipping', { 'shipping_method': this.selected_shipping_method })
                     .then(function(response) {
+
                         this_this.disable_button = false;
 
                         this_this.paymentMethods = response.data.data.methods;
-                        console.log(this_this.paymentMethods);
-                        EventBus.$emit('checkout.cart.changed', response.data.data.cart);
+                        this_this.cart = response.data.data.cart;
 
                         this_this.step++;
 
@@ -772,11 +778,11 @@
 
                 this.disable_button = true;
 
-                this.$http.post('/api/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } },{params : {token : JSON.parse(localStorage.getItem('token')) }})
+                this.$http.post('/api/v1/customer/checkout/save-payment', { 'payment': { 'method': this.selected_payment_method } })
                     .then(function(response) {
                         this_this.disable_button = false;
 
-                        EventBus.$emit('checkout.cart.changed', response.data.data.cart);
+                        this_this.cart = response.data.data.cart;
 
                         if (this_this.step != 4) {
                             this_this.step++;
@@ -796,7 +802,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/coupon', { 'code': self.coupon_code },{params : {token : JSON.parse(localStorage.getItem('token')) }})
+                this.$http.post('/api/v1/checkout/cart/coupon', { 'code': self.coupon_code })
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -804,7 +810,7 @@
                             self.cart.coupon_code = self.coupon_code;
 
                             self.coupon_code = '';
-                            
+
                             self.savePayment();
                             self.$toasted.show(response.data.message, { type: 'success' });
                         } else {
@@ -822,7 +828,7 @@
 
                 self.disable_button = true;
 
-                this.$http.post('/api/checkout/cart/remove-coupon'),{params : {token : JSON.parse(localStorage.getItem('token')) }}
+                this.$http.post('/api/v1/checkout/cart/remove-coupon')
                     .then(function(response) {
                         self.disable_button = false;
 
@@ -841,30 +847,22 @@
                     });
             },
 
-            placeOrder() {
+            placeOrder () {
                 this.disable_button = true;
 
-                const token = JSON.parse(localStorage.getItem('token'));
-
-                this.$http.post('/api/pwa/checkout/save-order', null, {
-                    params: { token: token }
-                })
-                .then(response => {
-                    if (response.data.success) {
+                this.$http.post('/api/v1/customer/checkout/save-order')
+                    .then(response => {
                         if (response.data.redirect_url) {
                             window.location.href = response.data.redirect_url;
                         } else {
-                            this.$router.push({ name: 'order-success', params: { id: response.data.order.id } });
                             EventBus.$emit('checkout.cart.changed', null);
+                            this.$router.push({ name: 'order-success', params: {id: response.data.data.order.id}})
                         }
-                    }
-                })
-                .catch(error => {
-                    this.disable_button = false;
-                    console.error('Error placing order:', error);
-                });
+                    })
+                    .catch(function (error) {
+                        this.disable_button = true;
+                    })
             },
-
 
             handleBack () {
                 if (this.step == 1) {
@@ -892,9 +890,13 @@
             checkMinimumPrice (grandTotal) {
                 var minimumPriceKey = 'sales.orderSettings.minimum-order.minimum_order_amount';
 
-                this.$http.get("/api/config", {
-                    params: {
-                        _config: `${minimumPriceKey}`
+                const configKeys = [
+                    minimumPriceKey,
+                ];
+
+                this.$http.get("/api/v1/core-configs", {
+                   params: {
+                        _config: configKeys
                     }
                 }).then(response => {
                     EventBus.$emit('hide-ajax-loader');

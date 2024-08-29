@@ -2,28 +2,26 @@
 
 namespace Webkul\PWA\Listeners;
 
-use Jenssegers\Agent\Agent;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use WhichBrowser\Parser;
 
 /**
  * Core Config event handler
- *
  */
 class PWAListeners
 {
+    /**
+     * Check device type.
+     */
     public function redirectToPWA()
     {
-        $agent = new Agent();
-
-        if (core()->getConfigData('pwa.settings.general.redirect_to_pwa_if_mobile') == "1") {
+        if (core()->getConfigData('pwa.settings.general.redirect_to_pwa_if_mobile')) {
+            $result = new Parser(request()->header('User-Agent'));
             if (
-                $agent->isMobile()
+                $result->isType('mobile', 'tablet')
                 && request()->url() == route('shop.home.index')
             ) {
                 return redirect()->to('/mobile')->send();
             }
         }
-        
     }
 }

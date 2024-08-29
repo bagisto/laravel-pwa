@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="{{ bagisto_asset('vendor/webkul/pwa/assets/css/pwa-admin.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/pwa/default/build/assets/css/pwa-admin.css') }}">

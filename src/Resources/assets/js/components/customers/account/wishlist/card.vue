@@ -11,7 +11,7 @@
 
             <div class="product-information">
 
-                <div class="product-price" v-html="wishlistItem.product.formated_price">
+                <div class="product-price" v-html="wishlistItem.product.formatted_price">
                 </div>
 
                 <div class="product-name">
@@ -75,7 +75,6 @@
             padding: 8px;
             display: inline-block;
             width: 100%;
-            height: 85%;
         }
 
         .product-image {

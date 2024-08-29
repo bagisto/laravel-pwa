@@ -23,16 +23,16 @@
                 <div class="order-item-list sale-section-content">
                     <div class="order-item" v-for="(orderItem, index) in order.items" :key="index">
                         <div class="order-item-image">
-                            <img
+                            <!-- <img
                                 alt="product-base-small-image"
-                                :src="orderItem.product.base_image.small_image_url"
-                                onerror="this.src = '/vendor/webkul/pwa/assets/images/category-image.png'"
-                            />
+                                :src="orderItems[orderItem.id].base_image.small_image_url"
+                                onerror="this.src = '/themes/pwa/default/build/assets/images/category-image.png'"
+                            /> -->
                         </div>
 
                         <div class="order-item-info">
                             <div class="order-item-name">
-                                {{ orderItem.product.name }}
+                                {{ orderItem.name }}
                             </div>
 
                             <div class="order-item-options">
@@ -59,16 +59,16 @@
 
                             <div class="order-item-price">
                                 <label>{{ $t('Price -') }} </label>
-                                <span>{{ orderItem.formated_price }}</span>
+                                <span>{{ orderItem.formatted_base_price }}</span>
                             </div>
 
                             <div class="order-item-total">
                                 <label>{{ $t('Total -') }} </label>
-                                <span>{{ orderItem.formated_grant_total }}</span>
+                                <span>{{ orderItem.formatted_grant_total }}</span>
                             </div>
 
                             <div class="order-item-review-link">
-                                <router-link class="btn btn-black btn-sm" :to="'/reviews/' + orderItem.product.id + '/create'">
+                                <router-link class="btn btn-black btn-sm" :to="'/reviews/' + orderItem.product_id + '/create'">
                                     <i class="icon white-post-review-icon"></i>
                                     {{ $t('Write a Review') }}
                                 </router-link>
@@ -86,37 +86,37 @@
                         <tbody>
                             <tr>
                                 <td>{{ $t('Subtotal') }}</td>
-                                <td>{{ order.formated_sub_total }}</td>
+                                <td>{{ order.formatted_sub_total }}</td>
                             </tr>
 
                             <tr>
                                 <td>{{ $t('Shipping Handling') }}</td>
-                                <td>{{ order.formated_shipping_amount }}</td>
+                                <td>{{ order.formatted_shipping_amount }}</td>
                             </tr>
 
                             <tr class="border">
                                 <td>{{ $t('Tax') }}</td>
-                                <td>{{ order.formated_tax_amount }}</td>
+                                <td>{{ order.formatted_tax_amount }}</td>
                             </tr>
 
                             <tr class="border">
                                 <td>{{ $t('Discount') }}</td>
-                                <td>- {{ order.formated_discount_amount }}</td>
+                                <td>- {{ order.formatted_discount_amount }}</td>
                             </tr>
 
                             <tr class="bold">
                                 <td>{{ $t('Total Paid') }}</td>
-                                <td>{{ order.formated_grand_total_invoiced }}</td>
+                                <td>{{ order.formatted_grand_total_invoiced }}</td>
                             </tr>
 
                             <tr class="bold">
                                 <td>{{ $t('Total Refunded') }}</td>
-                                <td>{{ order.formated_grand_total_refunded }}</td>
+                                <td>{{ order.formatted_grand_total_refunded }}</td>
                             </tr>
 
                             <tr class="bold last">
                                 <td>{{ $t('Grand Total') }}</td>
-                                <td>{{ order.formated_grand_total }}</td>
+                                <td>{{ order.formatted_grand_total }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -146,8 +146,8 @@
                             {{ order.billing_address.address1.join(' ') }}<br/>
                             {{ order.billing_address.city }}<br/>
                             {{ order.billing_address.state }}<br/>
-                            {{ order.billing_address.country_name + ' ' + order.billing_address.postcode }}<br/>
-                            {{ order.billing_address.phone }}
+                            {{ order.billing_address.country_name + ' (' + order.billing_address.postcode+ ')' }}<br/>
+                            {{ $t('Phone') }}: {{ order.billing_address.phone }}
                         </div>
                     </div>
 
@@ -185,6 +185,8 @@
                 isMenuExpanded: false,
 
 				order: null,
+
+                orderItems: [],
             }
         },
 
@@ -198,7 +200,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/orders/' + orderId,{params : {token : true}})
+                this.$http.get('/api/v1/customer/orders/' + orderId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -209,7 +211,7 @@
 
             toggleHeader (value) {
                 this.isMenuExpanded = value;
-            }
+            },
         }
     }
 </script>

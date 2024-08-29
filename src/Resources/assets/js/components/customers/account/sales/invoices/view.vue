@@ -10,9 +10,9 @@
 
                 <div class="invoice-item-list sale-section-content">
                     <div class="invoice-item">
-                        
+
                         <div v-for="(invoiceItem, index) in invoice.items" :key="index">
-                            
+
                             <div class="invoice-item-info">
                                 <div class="invoice-item-name">
                                     {{ invoiceItem.name }}
@@ -35,12 +35,12 @@
 
                                 <div class="invoice-item-price">
                                     <label>{{ $t('Price -') }} </label>
-                                    <span>{{ invoiceItem.formated_price }}</span>
+                                    <span>{{ invoiceItem.formatted_price }}</span>
                                 </div>
 
                                 <div class="invoice-item-total">
                                     <label>{{ $t('Sub Total -') }} </label>
-                                    <span>{{ invoiceItem.formated_grand_total }}</span>
+                                    <span>{{ invoiceItem.formatted_grand_total }}</span>
                                 </div>
 
                             </div>
@@ -57,22 +57,22 @@
                         <tbody>
                             <tr>
                                 <td>{{ $t('Subtotal') }}</td>
-                                <td>{{ invoice.formated_sub_total }}</td>
+                                <td>{{ invoice.formatted_sub_total }}</td>
                             </tr>
 
                             <tr>
                                 <td>{{ $t('Shipping and Handling') }}</td>
-                                <td>{{ invoice.formated_shipping_amount }}</td>
+                                <td>{{ invoice.formatted_shipping_amount }}</td>
                             </tr>
 
                             <tr>
                                 <td>{{ $t('Tax') }}</td>
-                                <td>{{ invoice.formated_tax_amount }}</td>
+                                <td>{{ invoice.formatted_tax_amount }}</td>
                             </tr>
 
                             <tr class="bold last">
                                 <td>{{ $t('Grand Total') }}</td>
-                                <td>{{ invoice.formated_grand_total }}</td>
+                                <td>{{ invoice.formatted_grand_total }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -112,7 +112,7 @@
             getInvoice (invoiceId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get(`/api/pwa/invoices/${invoiceId}`)
+                this.$http.get(`/api/v1/customer/invoices/${invoiceId}`)
                     .then(response => {
                         this.invoice = response.data.data;
 
@@ -122,11 +122,11 @@
             },
 
             printInvoice (invoiceId) {
-                this.$http.get(`/api/invoices/${invoiceId}/download`, { responseType: 'blob'})
+                this.$http.get(`/api/pwa/print/Invoice/${invoiceId}`, { responseType: 'blob'})
                     .then(response => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');
-                        
+
                         link.href = url;
 
                         link.setAttribute('download', 'invoice.pdf'); //or any other extension
@@ -189,7 +189,7 @@
                         .invoice-item-info {
                             display: block;
                             overflow: hidden;
-                            margin-bottom: 10px;
+                            margin-bottom: 15px;
                             border-bottom: 1px dotted #CCC;
 
                             > div {
@@ -203,6 +203,10 @@
                                 label {
                                     color: rgba(0, 0, 0, 0.56);
                                 }
+                            }
+
+                            .invoice-item-name{
+                                font-weight:600;
                             }
 
                             .invoice-item-options {

@@ -99,7 +99,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put("/api/customer/profile", this.customer,{params: {token : true}})
+                this.$http.put("/api/v1/customer/profile", this.customer)
                     .then(function(response) {
                         this_this.loading = false;
 

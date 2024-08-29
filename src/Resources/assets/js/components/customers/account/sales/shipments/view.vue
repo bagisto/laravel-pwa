@@ -5,13 +5,24 @@
 
         <div class="shipment-details" v-if="shipment">
 
+            <div class="order-info-section sale-section">
+                <h2 class="sale-section-title"> {{ $t('Tracking Number') }}</h2>
+
+                <div class="order-content sale-section-content">
+
+                    <div class="date-status">
+                        <span class="date">{{ shipment.track_number }}</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="shipment-items-section sale-section">
                 <h2 class="sale-section-title">{{ $t('number Item(s)', {number: shipment.items.length}) }}</h2>
 
                 <div class="shipment-item-list sale-section-content">
                     <div class="shipment-item" v-for="shipmentItem in shipment.items">
                         <div class="shipment-item-info">
-                            <div class="shipment-item-name">
+                            <div class="shipment-item-name shipment-item-name-title">
                                 {{ shipmentItem.name }}
                             </div>
                             <div class="shipment-item-name">
@@ -63,7 +74,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/shipments/' + shipmentId)
+                this.$http.get('/api/v1/customer/shipments/' + shipmentId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -119,6 +130,10 @@
 
                         &:last-child {
                             border-bottom: 0;
+                        }
+
+                        .shipment-item-name-title {
+                            font-weight:600;
                         }
 
                         .shipment-item-info {

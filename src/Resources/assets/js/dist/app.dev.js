@@ -79,6 +79,7 @@ var app = new _vue["default"]({
   methods: {
     errorResponseHandler: function errorResponseHandler(error) {
       EventBus.$emit('destroy-ajax-loader');
+
       switch (error.response.status) {
         case 401:
           if (this.$route.fullPath.includes('/account/')) {

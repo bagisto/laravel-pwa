@@ -5,7 +5,7 @@
         <div class="review-details" v-if="review">
             <div class="product-details">
                 <div class="product-image">
-                    <img alt="review-base-small-image" :src="review.product.base_image.small_image_url"/>
+                    <img alt="review-base-small-image" :src="review.product.base_image_url"/>
                 </div>
 
                 <div class="product-info">
@@ -16,10 +16,10 @@
                     <div class="product-ratings">
                         <i
                             v-for="i in [1, 2, 3, 4, 5]"
-                            :class="['icon', review.product.reviews.average_rating >= i ? 'star-active-icon' : 'star-icon']"
+                            :class="['icon', product.averageRating >= i ? 'star-active-icon' : 'star-icon']"
                         ></i>
 
-                        <span>{{ $t('number Stars', {number: parseInt(review.product.reviews.average_rating)}) }}</span>
+                        <span>{{ $t('number Stars', {number: parseInt(product.averageRating)}) }}</span>
                     </div>
 
                     <router-link class="product-total-reviews" :to="'/reviews/' + review.product.id">
@@ -64,10 +64,13 @@
 
     export default {
         name: 'customer-review-detail',
-
+        props: ['customer'],
         data () {
 			return {
 				review: null,
+                product: {
+                    averageRating:null,
+                },
             }
         },
 
@@ -83,11 +86,19 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa-reviews/' + reviewId)
+                this.$http.get('/api/pwa/customer/review/' + reviewId,  { params:
+                    {
+                        customer_id: this.customer.id
+                    }
+                })
                     .then(function(response) {
+
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.review = response.data.data;
+
+                        const totalRatings = this_this.review.product.reviews.reduce((sum, item) => sum + item.rating, 0);
+                        this_this.product.averageRating = totalRatings / this_this.review.product.reviews.length;
                     })
                     .catch(function (error) {});
             }

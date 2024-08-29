@@ -37,6 +37,7 @@
 
         props: ['title', 'active', 'orderId'],
 
+
         components: { CustomHeader },
 
         data () {

@@ -1,25 +1,27 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true,
 });
 exports["default"] = void 0;
 var state = {
-  cart: null,
-  pagination: null,
-  customer: false,
-  isCustomerFetched: false
+    cart: null,
+    pagination: null,
+    customer: false,
+    isCustomerFetched: false,
+    token: null,
 };
 setTimeout(function () {
-  EventBus.$on('user-logged-in', function (user) {
-    state.customer = user;
-  });
-  EventBus.$on('user-logged-out', function () {
-    state.customer = null;
-  });
-  EventBus.$on('checkout.cart.changed', function (cart) {
-    state.cart = cart;
-  });
+    EventBus.$on("user-logged-in", function (user) {
+        state.customer = user.data;
+        state.token = user.token;
+    });
+    EventBus.$on("user-logged-out", function () {
+        state.customer = null;
+    });
+    EventBus.$on("checkout.cart.changed", function (cart) {
+        state.cart = cart;
+    });
 }, 0);
 var _default = state;
 exports["default"] = _default;

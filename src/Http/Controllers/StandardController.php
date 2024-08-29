@@ -5,30 +5,17 @@ namespace Webkul\PWA\Http\Controllers;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Sales\Repositories\OrderRepository;
 
-/**
- * Paypal Standard controller
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class StandardController extends Controller
 {
-    /**
-     * OrderRepository object
-     *
-     * @var array
-     */
-    protected $orderRepository;
-
     /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Attribute\Repositories\OrderRepository  $orderRepository
      * @return void
      */
-    public function __construct(OrderRepository $orderRepository)
-    {
-        $this->orderRepository = $orderRepository;
+    public function __construct(
+        protected OrderRepository $orderRepository
+    ) {
     }
 
     /**

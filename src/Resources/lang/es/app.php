@@ -70,12 +70,12 @@ return [
         'notification'      => [
             'update-success' => 'Notificación Push actualizada correctamente.',
             'delete-success' => 'Notificación Push eliminada correctamente.',
-        ]
+        ],
     ],
 
     'shop'  => [
         'home'  => [
             'enable-pwa-status' => 'Advertencia: Por favor, habilite el estado de la extensión PWA desde la configuración.',
-        ]
-    ]
+        ],
+    ],
 ];

@@ -4,7 +4,7 @@
             <div class="panel-content">
                 <div style="display: flow-root; margin-bottom: 10px;">
                     <h2>{{ $t('other-keyword') }}</h2>
-                    <div v-for="keyword in suggestedKeyword" :key="keyword.id"  style="border: 1px solid; padding:3px;width: fit-content; float: left; margin: 3px;">
+                    <div v-for="keyword in suggestedKeyword" style="border: 1px solid; padding:3px;width: fit-content; float: left; margin: 3px;">
                         <router-link :to="'/search/' + keyword">{{ keyword }}</router-link>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
 
         mounted () {
             this.getImageSearchQuery();
-            
+
         },
 
         methods: {
@@ -63,7 +63,7 @@
                 this.params.search = firstResult[0];
 
                 this.getProducts(this.params);
-            
+
             },
 
             getProducts (searchTerm) {
@@ -71,7 +71,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/products", { params: searchTerm })
+                this.$http.get("/api/v1/pwa/products", { params: searchTerm })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
                         response.data.data.forEach(function(product) {
@@ -93,5 +93,5 @@
 </script>
 
 <style scoped lang="scss">
-    
+
 </style>

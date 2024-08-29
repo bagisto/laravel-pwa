@@ -5,19 +5,20 @@
         <div class="panel" v-if="compare.length">
             <div class="panel-content">
                 <table class="row">
-                    <tr class="compare-products" v-for="attribute in comparableAttributes">
+                    <tr v-for="attribute in comparableAttributes" class="compare-products">
                         <td class="attribute-name">
                             <span class="fs16">{{ attribute['name'] ? attribute['name'] : attribute['admin_name'] }}</span>
                         </td>
-                        <compare-card 
+                        <compare-card
                             v-for="item in compare"
                             :key='item.id'
                             :compareItem="item"
                             :attribute="attribute"
-                            :customer="customer"
+                            :customer="iscustomer"
                             @onRemove="removecompareItem(item)"
                             @onMoveToCart="moveToCart(item)"
-                        ></compare-card>
+                        >
+                        </compare-card>
                     </tr>
                 </table>
             </div>
@@ -39,7 +40,8 @@
 
         data () {
             return {
-                customer: '',
+                iscustomer: false,
+                customer:null,
                 compare: [],
                 comparableAttributes: []
             }
@@ -54,9 +56,8 @@
         methods: {
             getCustomer () {
                 if (JSON.parse(localStorage.getItem('currentUser'))) {
-                    this.customer = true;
-                } else {
-                    this.customer = false;
+                    this.customer = JSON.parse(localStorage.getItem('currentUser'));
+                    this.iscustomer = true;
                 }
             },
 
@@ -65,41 +66,58 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                let items = '';
-                let url = '';
+                let url = '/api/pwa/comparison/get-products';
+                let items = JSON.parse(localStorage.getItem('compared_product'));
                 let data = {
-                    params: {'data': true,token:JSON.parse(localStorage.getItem('token'))}
-                }
-
-                if (! this_this.customer) {
-                    url = '/api/pwa/detailed-products';
-                    items = JSON.parse(localStorage.getItem('compared_product'));
-                    items = items ? items.join('&') : '';
-
-                    data = {
                         params: {
-                            items
+                            'product_ids': items
                         }
                     };
-                } else {
-                    url = '/api/pwa/comparison/get-products';
+
+                if ( this_this.iscustomer) {
+                    data = {
+                        params: {
+                            'customer_id': this.customer.id,
+                        }
+                    };
                 }
 
-                if (this_this.customer || (! this_this.customer && items != "")) {
+                if (this_this.iscustomer || (! this_this.iscustomer && items != "")) {
                     this_this.$http.get(url, data)
+                    // .then(response => response.json())
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 
-                        if (response.data.status === 'success') {
-                            console.log(response.data.products);
-                            this_this.compare = response.data.products;
-                            this_this.comparableAttributes = response.data.comparableAttributes;
+                        if (response.data.data) {
+                            this.compare = response.data.data;
+                            // this_this.comparableAttributes = response.data.comparableAttributes;
+                            this.comparableAttributes = [
+                                {
+                                    name:'Image',
+                                    code: 'product_image'
+                                },
+                                {
+                                    name: 'name',
+                                    code: 'name'
+                                },
+                                {
+                                    name: 'price',
+                                    code: 'price'
+                                },
+                                {
+                                    name: 'Description',
+                                    code: 'description'
+                                },
+                                {
+                                    name: '',
+                                    code: 'addToCartHtml'
+                                },
+                            ];
+
                         }
-                        
                     })
                     .catch(error => {
                         EventBus.$emit('hide-ajax-loader');
-                        console.log(this.__('error.something_went_wrong'));
                     });
                 } else {
                     EventBus.$emit('hide-ajax-loader');
@@ -111,18 +129,17 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                if (this_this.customer) {
-                    this_this.$http.post('/api/pwa/comparison', {productId: item.id},{params : { token : JSON.parse(localStorage.getItem('token'))}} )
+                if (this_this.iscustomer) {
+                    this_this.$http.post('/api/pwa/comparison', {
+                        'customer_id': this.customer.id,
+                        'product_id': item.id,
+                    })
                     .then(function(response) {
-
-                        EventBus.$emit('hide-ajax-loader');
-
                         var index = this_this.compare.indexOf(item);
-                        
+
                         this_this.compare.splice(index, 1);
 
                         this_this.$toasted.show(response.data.message, { type: 'success' })
-
                     })
                     .catch(function (error) {
                         this_this.$toasted.show('Something went wrong, Please try againg later', { type: 'error' })
@@ -139,20 +156,22 @@
 
                     this_this.compare.splice(index, 1);
 
-                    existingItems.splice(index_local_storage, 1);                 
+                    existingItems.splice(index_local_storage, 1);
 
-                    localStorage.setItem('compared_product', JSON.stringify(existingItems));    
+                    localStorage.setItem('compared_product', JSON.stringify(existingItems));
 
                     this_this.$toasted.show('Item removed from compare list Succesfully', { type: 'success' })
-                }    
+                }
+
+                EventBus.$emit('hide-ajax-loader');
             },
 
             moveToCart (item) {
                 EventBus.$emit('show-ajax-loader');
-                
-                this.$http.get('/api/pwa/comparison/move-to-cart/' + item.id)
+
+                this.$http.get('/api/v1/pwa/comparison/move-to-cart/' + item.id)
                     .then(response => {
-                    
+
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');

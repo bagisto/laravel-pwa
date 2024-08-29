@@ -32,7 +32,7 @@ return [
 
         'layouts'           => [
             'index'             => 'PWA Layout',
-            'push-notification' => 'Notificações Push'
+            'push-notification' => 'Notificações Push',
         ],
 
         'push-notification' => [
@@ -46,7 +46,7 @@ return [
             'edit-notification'     => 'Editar Notificação Push',
             'title'                 => 'Lista de notificações Push',
             'create-notification'   => 'Criar Notificação Push',
-            'success-notification'  => 'Sucesso: Notificação push enviada com sucesso.'
+            'success-notification'  => 'Sucesso: Notificação push enviada com sucesso.',
         ],
 
         'datagrid'          => [
@@ -59,6 +59,6 @@ return [
         'notification'      => [
             'update-success' => 'Notificação push atualizada com sucesso.',
             'delete-success' => 'Notificação push excluída com sucesso.',
-        ]
-    ]
+        ],
+    ],
 ];

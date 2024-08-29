@@ -2,9 +2,9 @@
 
 ### 1. Introduction:
 
-PWA or Progressive Web Application uses web browser capabilities and provides a mobile app experience to the users.  
-It develops from a browser tab and makes pages more immersive with a low friction user experience.  
-It is a web technology of making a website which acts and feels like an application.  
+PWA or Progressive Web Application uses web browser capabilities and provides a mobile app experience to the users.
+It develops from a browser tab and makes pages more immersive with a low friction user experience.
+It is a web technology of making a website which acts and feels like an application.
 A user can launch the Progressive Web Application same like a native application regardless of browser choice.
 
 It packs with lots of demanding features that allows your business to scale in no time:
@@ -27,13 +27,19 @@ It packs with lots of demanding features that allows your business to scale in n
 
 ### 2. Requirements:
 
-* **Bagisto**: v1.5.1
+* **Bagisto**: v2.1.2
 
 
 ### 3. Installation:
 * Install the PWA extension
 ```
 composer require bagisto/pwa:dev-master
+```
+
+* Note: Make sure Bagisto Rest API installed and configured. If not then install and confiure using the following link.
+
+```
+https://github.com/bagisto/rest-api
 ```
 
 * Run these commands below to complete the setup

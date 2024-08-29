@@ -1,12 +1,12 @@
 const getCustomer = ({ commit }) => {
-    commit('GET_CUSTOMER');
+    commit("GET_CUSTOMER");
 };
 
 const getCart = ({ commit }) => {
-    commit('GET_CART');
+    commit("GET_CART");
 };
 
 export default {
+    getCustomer,
     getCart,
-    getCustomer
 };

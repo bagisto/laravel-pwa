@@ -32,7 +32,7 @@ return [
 
         'layouts'           => [
             'index'             => 'PWA Düzeni',
-            'push-notification' => 'Bildirim almak'
+            'push-notification' => 'Bildirim almak',
         ],
 
         'push-notification' => [
@@ -46,7 +46,7 @@ return [
             'edit-notification'     => 'Anında Bildirimi Düzenle',
             'title'                 => 'Push Bildirim Listesi',
             'create-notification'   => 'Anında Bildirim Oluştur',
-            'success-notification'  => 'Başarılı: Push bildirimi başarıyla gönderildi.'
+            'success-notification'  => 'Başarılı: Push bildirimi başarıyla gönderildi.',
         ],
 
         'datagrid'          => [
@@ -59,6 +59,6 @@ return [
         'notification'      => [
             'update-success' => 'Anında bildirim başarıyla güncellendi.',
             'delete-success' => 'Anında bildirim başarıyla silindi.',
-        ]
-    ]
+        ],
+    ],
 ];

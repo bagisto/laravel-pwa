@@ -18,7 +18,7 @@
             </div>
 
             <div class="invoice-list">
-                <invoice-card v-for="invoice in invoices" :key='invoice.uid' :invoice="invoice"></invoice-card>
+                <invoice-card v-for="invoice in invoices" :key='invoice.id' :invoice="invoice"></invoice-card>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
         mounted () {
             this.getOrder(this.$route.params.order_id)
 
-            this.getInvoices(this.$route.params.order_id)
+            // this.getInvoices(this.$route.params.order_id)
         },
 
         methods: {
@@ -57,11 +57,14 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/orders/' + orderId)
+                this.$http.get('/api/v1/customer/orders/' + orderId)
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
                         this_this.order = response.data.data;
+
+
+                        this_this.invoices = this_this.order.invoices
                     })
                     .catch(function (error) {});
             },
@@ -69,7 +72,7 @@
             getInvoices (orderId) {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/invoices', { params: { order_id: orderId, pagination: 0 } })
+                this.$http.get('/api/v1/pwa/invoices', { params: { order_id: orderId, pagination: 0 } })
                     .then(response => {
                         EventBus.$emit('hide-ajax-loader');
 

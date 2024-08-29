@@ -2,108 +2,132 @@
 
 namespace Webkul\PWA\Http\Controllers\Shop;
 
-use Webkul\API\Http\Controllers\Shop\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Product\Repositories\ProductFlatRepository;
-use Webkul\PWA\Http\Resources\Catalog\Product as ProductResource;
+use Webkul\Product\Repositories\ProductReviewRepository;
+use Webkul\Product\Helpers\ConfigurableOption;
+use Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository;
+use Webkul\PWA\Http\Controllers\Controller;
 
-/**
- * Product controller
- *
- * @author Webkul Software Pvt. Ltd. <support@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ProductController extends Controller
 {
     /**
-     * ProductRepository object
+     * Controller instance
      *
-     * @var array
+     * @param  Webkul\Product\Repositories\ProductReviewRepository  $reviewRepository
      */
-    protected $productRepository;
+    public function __construct(
+        protected ProductReviewRepository $reviewRepository,
+        protected ProductRepository $productRepository,
+        protected ConfigurableOption $configurableOption,
+        protected DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository
+    ) {}
 
     /**
-     * Create a new controller instance.
-     *
-     * @param  Webkul\Product\Repositories\ProductRepository $productRepository
-     * @return void
-     */
-    public function __construct(ProductRepository $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }
-
-    /**
-     * Returns a listing of the resource.
+     * Store a newly created resource in storage.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getCustomerDownloadAbleProducts()
     {
-        $data = request()->all();
+        $customerId = request()->input('customer_id') ?? null;
 
-        if (isset ($data['new'])) {
-            $result = app(ProductFlatRepository::class)->scopeQuery(function($query) {
-                $channel = request()->get('channel') ?: (core()->getCurrentChannelCode() ?: core()->getDefaultChannelCode());
+        $result = DB::table('downloadable_link_purchased')
+            ->distinct()
+            ->leftJoin('orders', 'downloadable_link_purchased.order_id', '=', 'orders.id')
+            ->leftJoin('invoices', 'downloadable_link_purchased.order_id', '=', 'invoices.order_id')
+            ->addSelect('downloadable_link_purchased.*', 'invoices.state as invoice_state', 'orders.increment_id')
+            ->addSelect(DB::raw('(' . DB::getTablePrefix() . 'downloadable_link_purchased.download_bought - ' . DB::getTablePrefix() . 'downloadable_link_purchased.download_canceled - ' . DB::getTablePrefix() . 'downloadable_link_purchased.download_used) as remaining_downloads'))
+            ->where('downloadable_link_purchased.customer_id', $customerId)->paginate(10);
 
-                $locale = request()->get('locale') ?: app()->getLocale();
+        return response()->json([
+            'data'    => $result,
+        ]);
+    }
 
-                return $query->distinct()
-                             ->addSelect('product_flat.*')
-                             ->where('product_flat.status', 1)
-                             ->where('product_flat.visible_individually', 1)
-                             ->where('product_flat.new', 1)
-                             ->where('product_flat.channel', $channel)
-                             ->where('product_flat.locale', $locale)
-                             ->orderBy('product_id', 'desc');
-            })->paginate($data['count'] ?? '4');
+    /**
+     * Download prodduct
+     *
+     * @param int $id product id.
+     */
+    public function download($id)
+    {
+        $downloadableLinkPurchased = $this->downloadableLinkPurchasedRepository->findOneByField([
+            'id'          => $id,
+            'customer_id' => request()->input('customer_id'),
+        ]);
 
-            $result;
-        } else if (isset($data['featured'])) {
-            $result = app(ProductFlatRepository::class)->scopeQuery(function($query) {
-                $channel = request()->get('channel') ?: (core()->getCurrentChannelCode() ?: core()->getDefaultChannelCode());
-
-                $locale = request()->get('locale') ?: app()->getLocale();
-
-                return $query->distinct()
-                             ->addSelect('product_flat.*')
-                             ->where('product_flat.status', 1)
-                             ->where('product_flat.visible_individually', 1)
-                             ->where('product_flat.featured', 1)
-                             ->where('product_flat.channel', $channel)
-                             ->where('product_flat.locale', $locale)
-                             ->orderBy('product_id', 'desc');
-            })->paginate($data['count'] ?? '4');
-
-            $result;
-        } else {
-            $result = $this->productRepository->getAll(request()->input('category_id'));
+        if ($downloadableLinkPurchased->status == 'pending') {
+            abort(403);
         }
 
-        return ProductResource::collection($result);
-    }
+        $totalInvoiceQty = 0;
 
-    /**
-     * Returns a individual resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function get($id)
-    {
-        return new ProductResource(
-                $this->productRepository->findOrFail($id)
-            );
-    }
+        if (isset($downloadableLinkPurchased->order->invoices)) {
+            foreach ($downloadableLinkPurchased->order->invoices as $invoice) {
+                $totalInvoiceQty = $totalInvoiceQty + $invoice->total_qty;
+            }
+        }
 
-    /**
-     * Returns product's additional information.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function configurableConfig($id)
-    {
-        return response()->json([
-                'data' => app('Webkul\PWA\Helpers\PwaConfigurableOption')->getConfigurationConfig($this->productRepository->findOrFail($id))
+        $orderedQty = $downloadableLinkPurchased->order->total_qty_ordered;
+        $totalInvoiceQty = $totalInvoiceQty * ($downloadableLinkPurchased->download_bought / $orderedQty);
+
+        if (
+            $downloadableLinkPurchased->download_used == $totalInvoiceQty
+            || $downloadableLinkPurchased->download_used > $totalInvoiceQty
+        ) {
+            return response()->json([
+                'warning' => trans('shop::app.customers.account.downloadable-products.download-error'),
             ]);
+        }
+
+        if (
+            $downloadableLinkPurchased->download_bought
+            && ($downloadableLinkPurchased->download_bought - ($downloadableLinkPurchased->download_used + $downloadableLinkPurchased->download_canceled)) <= 0
+        ) {
+            return response()->json([
+                'warning' => trans('shop::app.customers.account.downloadable-products.download-error'),
+            ]);
+        }
+
+        $remainingDownloads = $downloadableLinkPurchased->download_bought - ($downloadableLinkPurchased->download_used + $downloadableLinkPurchased->download_canceled + 1);
+
+        if ($downloadableLinkPurchased->download_bought) {
+            $this->downloadableLinkPurchasedRepository->update([
+                'download_used' => $downloadableLinkPurchased->download_used + 1,
+                'status'        => $remainingDownloads <= 0 ? 'expired' : $downloadableLinkPurchased->status,
+            ], $downloadableLinkPurchased->id);
+        }
+
+        if ($downloadableLinkPurchased->type == 'file') {
+            $privateDisk = Storage::disk('private');
+
+            return $privateDisk->exists($downloadableLinkPurchased->file)
+                ? $privateDisk->download($downloadableLinkPurchased->file)
+                : abort(404);
+        } else {
+            $fileName = $name = substr($downloadableLinkPurchased->url, strrpos($downloadableLinkPurchased->url, '/') + 1);
+
+            $tempImage = tempnam(sys_get_temp_dir(), $fileName);
+
+            copy($downloadableLinkPurchased->url, $tempImage);
+
+            return response()->download($tempImage, $fileName);
+        }
+    }
+
+    /**
+     * Get product configuration config.
+     */
+    public function configurableConfig()
+    {
+        $product = $this->productRepository->findOrFail(request()->id);
+        $configurableOption = $this->configurableOption->getConfigurationConfig($product);
+
+        return response()->json([
+            'data'    => $configurableOption,
+        ]);
     }
 }

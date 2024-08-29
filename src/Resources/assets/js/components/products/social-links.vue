@@ -1,7 +1,7 @@
 <template>
     <div class="product-social-links">
         <div class="wishlist-link" @click="moveToWishlist">
-            <i class="icon wishlist-icon" :class="[product.is_wishlisted ? 'filled-wishlist-icon' : '']"></i>
+            <i class="icon wishlist-icon" :class="[isWishlisted ? 'filled-wishlist-icon' : '']"></i>
 
             <span>{{ $t('Wishlist') }}</span>
         </div>
@@ -20,17 +20,41 @@
 
         props: ['product'],
 
+        data () {
+			return {
+				isWishlisted: false,
+            }
+        },
+
+        mounted() {
+            this.getWithListLstatus();
+        },
+
         methods: {
+            getWithListLstatus(){
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/v1/customer/wishlist')
+                    .then(response => {
+                        const isExits = response.data.data.find(item => item.product.id == this.$route.params.id);
+                        if (isExits) {
+                            this.isWishlisted = true;
+                        }
+                    })
+                    .catch(error => {});
+
+                EventBus.$emit('hide-ajax-loader');
+            },
+
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
-              
-                this.$http.get('/api/wishlist/add/' + this.$route.params.id, {params : {token : true}})
+
+                this.$http.post('/api/v1/customer/wishlist/' + this.$route.params.id)
                     .then(response => {
+
                         this.$toasted.show(response.data.message, { type: 'success' })
 
-                        this.product.is_saved = response.data.data ? true : false;
-
-                        this.product.is_wishlisted = response.data.data ? true : false;
+                        this.isWishlisted = response.data.data ? true : false;
 
                         EventBus.$emit('hide-ajax-loader');
                     })

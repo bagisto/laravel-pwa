@@ -7,8 +7,8 @@
             >
         </layered-navigation>
 
-        <div class="category-banner" v-if="category.category_banner">
-            <img alt="category-image" :src="category.category_banner"/>
+        <div class="category-banner" v-if="category.image_url">
+            <img alt="category-image" :src="category.image_url"/>
         </div>
 
         <div
@@ -23,7 +23,7 @@
                 <div class="panel-content">
                     <div class="product-list product-grid-2">
 
-                        <product-card :is-customer="customer ? true : false" v-for="product in products" :key='product.uid' :product="product"></product-card>
+                        <product-card v-for="product in products" :key='product.uid' :product="product"></product-card>
 
                     </div>
 
@@ -66,10 +66,6 @@
     import ProductCard       from '../products/card';
     import Pagination        from '../shared/pagination';
     import NoProductFound    from './no-product-found';
-    import {
-            mapState,
-            mapActions
-        } from 'vuex';
 
     export default {
         name: 'category',
@@ -88,7 +84,7 @@
 
 				params: {
                     'category_id': this.$route.params.id,
-                    'limit': 8
+                    'limit': 1
                 },
 			}
 		},
@@ -101,31 +97,21 @@
             }
         },
 
-        computed: mapState({
-            customer: state => state.customer,
-        }),
-
         mounted () {
             this.getCategory(this.$route.params.id);
-
-            this.getCustomer();
         },
 
         methods: {
-
-            ...mapActions([
-                'getCustomer',
-            ]),
-
             getCategory (categoryId) {
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/categories/' + categoryId)
+                this.$http.get('/api/v1/categories/' + categoryId)
                     .then(function(response) {
+
                         this_this.category = response.data.data;
-                        console.log(this_this.category);
+
                         this_this.childCategories = [];
 
                         if (this_this.category.display_mode == 'description_only') {
@@ -146,7 +132,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/categories', { params: { parent_id: categoryId } })
+                this.$http.get('/api/v1/descendant-categories', { params: { parent_id: categoryId } })
                     .then(function(response) {
                         this_this.childCategories = response.data.data;
 
@@ -163,7 +149,7 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get("/api/pwa/products", { params: this.params })
+                this.$http.get("/api/v1/products", { params: this.params })
                     .then(function(response) {
                         EventBus.$emit('hide-ajax-loader');
 
@@ -183,20 +169,7 @@
 
                 for(var key in filters) {
                     if (key == 'sort')  {
-                        if (filters[key].length) {
-                            var sort = '';
-
-                            if (Array.isArray(filters[key])) {
-                                sort = filters[key][0];
-                            } else {
-                                sort = filters[key];
-                            }
-
-                            if (sort) {
-                                this.params['sort'] = sort.substring(0, sort.lastIndexOf("_") + 0);
-                                this.params['order'] = sort.substring(sort.lastIndexOf("_") + 1, sort.length);
-                            }
-                        }
+                        this.params['sort'] = filters.sort;
                     } else {
                         if (filters[key].length) {
                             if (key == 'price') {

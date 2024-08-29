@@ -7,7 +7,7 @@
             <router-link class="view-link" :to="'/customer/account/' + $route.params.order_id + '/invoices/' + invoice.id">
                 <i class="icon sharp-arrow-right-icon"></i>
             </router-link>
-            
+
         </div>
 
         <div class="invoice-actions">
@@ -34,11 +34,11 @@
 
         methods: {
             printInvoice (invoiceId) {
-                this.$http.get(`/api/invoices/${invoiceId}/download`, { responseType: 'blob'})
+                this.$http.get(`/api/pwa/print/Invoice/${invoiceId}`, { responseType: 'blob'})
                     .then(response => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');
-                        
+
                         link.href = url;
 
                         link.setAttribute('download', 'invoice.pdf'); //or any other extension

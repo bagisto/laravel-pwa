@@ -10,7 +10,7 @@
                 <li @click="bottomSheets.filter = true">
                     <i class="icon sharp-filter-icon"></i>
                     {{ $t('Filter') }}
-                </li> 
+                </li>
                 <!-- <li>
                     <i class="icon sharp-grid-icon"></i>
                     Grid
@@ -59,8 +59,8 @@
                             {{ attribute.name }}
                         </div>
 
-                        <div class="filter-content" :class="[attribute.swatch_type, attribute.type]">
-                            <ol v-if="attribute.type == 'select' && attribute.swatch_type != 'color'">
+                        <div class="filter-content" :class="[attribute.name, attribute.type]">
+                            <ol v-if="attribute.type == 'select' && attribute.code != 'color'">
                                 <li :key="index" v-for="(option, index) in attribute.options">
                                     <label :for="attribute.code + '_' + option.id"></label>
 
@@ -69,18 +69,18 @@
                                         v-bind:value="option.id"
                                         v-model="appliedFilters[attribute.code]"/>
 
-                                    {{ option.label }}
+                                    {{ option.name }}
 
                                     <i class="icon sharp-done-green"></i>
                                 </li>
                             </ol>
 
-                            <div class="swatch-container" v-if="attribute.type == 'select' && attribute.swatch_type == 'color'">
+                            <div class="swatch-container" v-if="attribute.type == 'select' && attribute.code == 'color'">
                                 <label
                                     class="swatch"
                                     :key="index" v-for="(option, index) in attribute.options"
                                     :for="attribute.code + '_' + option.id"
-                                    :style="{ background: option.swatch_value }">
+                                    :style="{ background: option.name }">
                                     <input type="checkbox"
                                         :id="attribute.code + '_' + option.id"
                                         v-bind:value="option.id"
@@ -104,7 +104,6 @@
                                     @callback="priceRangeUpdated(attribute.code, $event)"
                                     @onCallback="priceRangeUpdated(attribute.code, $event)"
                                 ></vue-slider>
-
                             </div>
                         </div>
 
@@ -128,7 +127,7 @@
 
     export default {
         name: 'layered-navigation',
-        
+
         props: ['categoryId'],
 
         components: { BottomSheet, VueSlider },
@@ -142,32 +141,32 @@
 
                 sortOptions: [
                     {
-                        'code': 'name_asc',
+                        'code': 'name-asc',
                         'label': this.$t('From A-Z'),
                         'sort': 'name',
                         'order': 'asc'
                     }, {
-                        'code': 'name_desc',
+                        'code': 'name-desc',
                         'label': this.$t('From Z-A'),
                         'sort': 'name',
                         'order': 'desc'
                     }, {
-                        'code': 'created_at_desc',
+                        'code': 'created_at-desc',
                         'label': this.$t('Newest First'),
                         'sort': 'created_at',
                         'order': 'desc'
                     }, {
-                        'code': 'created_at_asc',
+                        'code': 'created_at-asc',
                         'label': this.$t('Oldest First'),
                         'sort': 'created_at',
                         'order': 'asc'
                     }, {
-                        'code': 'price_asc',
+                        'code': 'price-asc',
                         'label': this.$t('Cheapest First'),
                         'sort': 'price',
                         'order': 'asc'
                     }, {
-                        'code': 'price_desc',
+                        'code': 'price-desc',
                         'label': this.$t('Expensive First'),
                         'sort': 'price',
                         'order': 'desc'
@@ -189,7 +188,9 @@
                     tooltipStyle: {
                         'display': 'none'
                     }
-                }
+                },
+
+                page: 1,
 			}
 		},
 
@@ -207,9 +208,7 @@
             getFilerableAttributes () {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa/attributes', { params: {
-                        pagination: 0,
-                        is_filterable: 1,
+                this.$http.get('/api/categories/attributes', { params: {
                         category_id: this.categoryId,
                     }
                 })
@@ -363,7 +362,7 @@
                             height: 100%;
                             top: 0;
                         }
-                        
+
                         input {
                             display: none;
                         }
@@ -375,7 +374,7 @@
                         .icon.sharp-done-green {
                             float: right;
                             display: none;
-                        } 
+                        }
 
                         input:checked + .icon.sharp-done-green {
                             display: inline-block;
@@ -397,7 +396,7 @@
 
                         .icon.sharp-done-white {
                             display: none;
-                        } 
+                        }
 
                         input:checked + .icon.sharp-done-white {
                             display: inline-block;

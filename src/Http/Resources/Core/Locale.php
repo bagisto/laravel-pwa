@@ -1,11 +1,10 @@
 <?php
 
-namespace Webkul\PWA\Http\Resources\Customer;
+namespace Webkul\PWA\Http\Resources\Core;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Webkul\PWA\Http\Resources\Catalog\Product as ProductResource;
 
-class Comparison extends JsonResource
+class Locale extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +15,9 @@ class Comparison extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'product' => new ProductResource($this->product),
+            'id'         => $this->id,
+            'code'       => $this->code,
+            'name'       => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

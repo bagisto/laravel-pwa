@@ -4,7 +4,7 @@
             <template v-if="product.isSaleable">
                 <div class="product-details">
                     <label>{{ product.name }}</label>
-                    <label class="product-price" v-html="product.formated_price"></label>
+                    <label class="product-price" v-html="product.formatted_price"></label>
                 </div>
 
                 <div class="quantity-container" v-if="product.show_quantity_changer">
@@ -40,7 +40,7 @@
         data: function () {
             return {
                 config: {},
-                
+
                 localFormData: this.formData,
 
                 groupedProducts: this.product.grouped_products,
@@ -58,8 +58,6 @@
         watch: {
             'localFormData.qty': {
                 handler: function (val) {
-                    console.log('updated');
-                    console.log(val);
                     this.initGraph(this.graphId)
                 },
 
@@ -79,7 +77,7 @@
 
                 document.getElementById(`qty-${productId}`).innerHTML = this.localFormData.qty[productId];
             }
-            
+
         }
     }
 </script>

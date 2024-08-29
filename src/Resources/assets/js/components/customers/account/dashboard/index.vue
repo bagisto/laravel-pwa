@@ -24,8 +24,8 @@
                 <tab :name="$t('Recent Orders')" :selected="true">
                     <div v-if="orders.length">
                         <div :class="['order-list', haveMoreOrders ? 'have-more-orders' : '']">
-                            <order-filter :orders="orders"></order-filter>
-                            <order-card v-for="order in orders" :key='order.uid' :order="order"></order-card>
+                            <!-- <order-filter :orders="orders"></order-filter> -->
+                            <order-card v-for="order in orders" :key='order.id' :order="order"></order-card>
                         </div>
 
                         <div class="load-more" v-if="haveMoreOrders">
@@ -52,7 +52,7 @@
 
                 <tab :name="$t('Address')">
                     <div class="address-list" v-if="addresses.length">
-                        <address-card v-for="address in addresses" :key='address.uid' :address="address" @onRemove="removeAddress(address)"></address-card>
+                        <address-card v-for="address in addresses" :key='address.id' :address="address" @onRemove="removeAddress(address)"></address-card>
                     </div>
 
                     <empty-address-list v-else></empty-address-list>
@@ -87,7 +87,7 @@
     import EmptyOrderList           from '../sales/orders/empty-order-list';
     import EmptyAddressList         from '../addresses/empty-address-list';
     import DownloadableProducts     from '../sales/orders/downloadable-products';
-    import OrderFilter              from '../sales/orders/order-filter';
+    // import OrderFilter              from '../sales/orders/order-filter';
 
     export default {
         name: 'dashboard',
@@ -95,7 +95,7 @@
         components: {
             CustomHeader,
             Tabs,
-            OrderFilter,
+            // OrderFilter,
             Tab,
             OrderCard,
             AddressCard,
@@ -111,7 +111,7 @@
                 orders: [],
 
                 downloadable_products: [],
-                
+
                 haveMoreOrders: false,
 
                 addresses: [],
@@ -119,13 +119,21 @@
                 reviews: [],
 
                 haveMoreReviews: false,
+
+                token: null,
             }
         },
 
         props: ['customer'],
 
         mounted () {
+            const token = JSON.parse(localStorage.getItem("token"));
+
+            if (token) {
+                this.token = token;
+            }
             setTimeout(()=> {
+
                 this.getOrders();
 
                 this.getDownloadableProducts();
@@ -138,18 +146,28 @@
 
         methods: {
             getOrders () {
-                EventBus.$emit('show-ajax-loader');
-                this.$http.get('/api/pwa/orders', { params: { customer_id: this.customer.id, token: true }})
-                    .then(response => {
-                        EventBus.$emit('hide-ajax-loader');
 
+                EventBus.$emit('show-ajax-loader');
+                this.$http.get('/api/v1/customer/orders', { params:
+                    {
+                        sort:'id',
+                        order:'desc',
+                        page:1,
+                        limit:10,
+                    }
+                })
+                .then(response => {
+
+                        EventBus.$emit('hide-ajax-loader');
                         this.orders = response.data.data;
 
-                        if (response.data.meta.current_page < response.data.meta.last_page) {
-                            this.haveMoreOrders = true;
-                        }
+                        // if (response.data.meta.current_page < response.data.meta.last_page) {
+                        //     this.haveMoreOrders = true;
+                        // }
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                        console.error(error);
+                    });
             },
 
             getAddresses () {
@@ -157,13 +175,13 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/addresses', { params: { customer_id: this.customer.id, pagination: 0, token: true } })
+                this.$http.get('/api/v1/customer/addresses', { params: { customer_id: this.customer.id, pagination: 0, token: true } })
                     .then(function(response) {
                         this_this.addresses = response.data.data;
-
-                        EventBus.$emit('hide-ajax-loader');
                     })
                     .catch(function (error) {});
+
+                EventBus.$emit('hide-ajax-loader');
             },
 
             removeAddress (address) {
@@ -177,11 +195,14 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/pwa-reviews', { params: { customer_id: this.customer.id, status: 'approved', token: true } })
-                    .then(function(response) {
-                        this_this.reviews = response.data.data;
+               this.$http.get('/api/pwa/customer/reviews', {
+                    params: {
+                        customer_id: this.customer.id
+                    }
+                }).then(function(response) {
+                        this_this.reviews = response.data.data.data;
 
-                        if (response.data.meta.current_page < response.data.meta.last_page) {
+                        if (response.data.data.current_page < response.data.data.last_page) {
                             this_this.haveMoreReviews = true;
                         }
 
@@ -199,11 +220,15 @@
             getDownloadableProducts() {
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/downloadable-products', { params: { customer_id: this.customer.id, token: true } })
+                this.$http.get('/api/pwa/product/downloadable-products', {
+                    params: {
+                        customer_id: this.customer.id
+                    }
+                })
                     .then(response => {
-                        this.downloadable_products = response.data.data;
+                        this.downloadable_products = response.data.data.data;
 
-                        if (response.data.meta.current_page < response.data.meta.last_page) {
+                        if (response.data.data.current_page < response.data.data.last_page) {
                             this.haveMoreOrders = true;
                         }
 

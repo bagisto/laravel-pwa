@@ -47,22 +47,22 @@
                             <tbody>
                                 <tr>
                                     <td>{{ $t('Subtotal') }}</td>
-                                    <td>{{ cart.formated_sub_total }}</td>
+                                    <td>{{ cart.formatted_sub_total }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Tax') }}</td>
-                                    <td>{{ cart.formated_tax_total }}</td>
+                                    <td>{{ cart.formatted_tax_total }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>{{ $t('Discount') }}</td>
-                                    <td> - {{ cart.formated_discount }}</td>
+                                    <td> - {{ cart.formatted_discount }}</td>
                                 </tr>
 
                                 <tr class="last">
                                     <td>{{ $t('Order Total') }}</td>
-                                    <td>{{ cart.formated_grand_total }}</td>
+                                    <td>{{ cart.formatted_grand_total }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -74,7 +74,7 @@
             <div class="checkout-action">
                 <span class="total-info">
                     <p>{{ $t('Amount to be paid') }}</p>
-                    <h3>{{ cart.formated_grand_total }}</h3>
+                    <h3>{{ cart.formatted_grand_total }}</h3>
                 </span>
 
                 <router-link class="btn btn-black" :to="'onepage'">{{ $t('Proceed') }}</router-link>
@@ -90,22 +90,15 @@
     import EmptyCart    from './empty-cart';
     import CartItem     from './item';
     import Accordian    from '../../shared/accordian';
-    import {
-        mapState,
-        mapActions
-    } from 'vuex';
 
     export default {
         name: 'cart',
 
         components: { CustomHeader, CartItem, Accordian, EmptyCart },
 
-        computed: mapState({
-            cart: state => state.cart,
-        }),
-
         data () {
             return {
+                cart: null,
                 quantities: {},
                 debounceTimer: 0,
             }
@@ -116,24 +109,40 @@
         },
 
         methods: {
-            ...mapActions([
-                'getCart',
-            ]),
+            getCart () {
+                var this_this = this;
+
+                EventBus.$emit('show-ajax-loader');
+
+                this.$http.get('/api/v1/customer/cart')
+                    .then(function(response) {
+                        EventBus.$emit('hide-ajax-loader');
+
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
+                    })
+                    .catch(function (error) {});
+            },
 
             moveToWishlist (item) {
                 var this_this = this;
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/checkout/cart/move-to-wishlist/' + item.id, {params : {token: true}})
+                this.$http.post('/api/v1/customer/cart/move-to-wishlist/' + item.id)
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        EventBus.$emit('checkout.cart.changed',  response.data.data);
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) {
+                        this_this.$toasted.show(error.response.data.message, { type: 'error' });
+                    });
             },
 
             removeItem (item) {
@@ -141,17 +150,16 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/checkout/cart/remove-item/' + item.id)
+                this.$http.delete('/api/v1/customer/cart/remove/' + item.id)
                     .then(function(response) {
+
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
-                        
-                        const index = this_this.cart.items.findIndex(cartItem => cartItem.id === item.id);
-                        
-                        if (index !== -1) {
-                            this_this.cart.items.splice(index, 1);
-                        }
+
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
             },
@@ -161,13 +169,15 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/checkout/cart/empty')
+                this.$http.get('/api/v1/customer/cart/empty')
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        EventBus.$emit('checkout.cart.changed', null);
+                        this_this.cart = null;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
             },
@@ -177,13 +187,15 @@
 
                 EventBus.$emit('show-ajax-loader');
 
-                this.$http.put('/api/checkout/cart/update', { 'qty': this.quantities })
+                this.$http.put('/api/v1/customer/cart/update', { 'qty': this.quantities })
                     .then(function(response) {
                         this_this.$toasted.show(response.data.message, { type: 'success' })
 
                         EventBus.$emit('hide-ajax-loader');
 
-                        EventBus.$emit('checkout.cart.changed', response.data.data);
+                        this_this.cart = response.data.data;
+
+                        EventBus.$emit('checkout.cart.changed', this_this.cart);
                     })
                     .catch(function (error) {});
             },
@@ -269,7 +281,6 @@
                 .panel-heading {
                     padding: 0;
                     border-bottom: 1px solid rgba(0, 0, 0 ,0.12);
-                    width: 100%;
 
                     .update-cart-link {
                         float: left;

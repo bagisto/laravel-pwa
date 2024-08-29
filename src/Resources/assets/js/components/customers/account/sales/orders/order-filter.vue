@@ -1,11 +1,11 @@
 <template>
 <div class="container">
-        <input type="text" 
+        <input type="text"
             id="searchorder"
             v-model="searchString"
             v-on:keyup="searchData"
-            placeholder="Search Order Id, Status, Order Date, or Grand Total." 
-            class="control">   
+            placeholder="Search Order Id, Status, Order Date, or Grand Total."
+            class="control">
 </div>
 </template>
 
@@ -21,13 +21,13 @@
         searchData () {
             if(this.searchString.length < 1)
             {
-               $('.order-card').show() 
+               $('.order-card').show()
             }
             else{
                 $('.order-card').hide()
                 $("div[class*="+this.searchString+"]").show();
             }
-        } 
+        }
         },
 
     }

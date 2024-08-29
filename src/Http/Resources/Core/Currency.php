@@ -4,7 +4,7 @@ namespace Webkul\PWA\Http\Resources\Core;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Slider extends JsonResource
+class Currency extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,11 @@ class Slider extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'            => $this->id,
-            'title'         => $this->title,
-            'content'       => $this->content,
-            'image_url'     => $this->image_url,
-            'slider_path'   => $this->slider_path,
+            'id'         => $this->id,
+            'code'       => $this->code,
+            'name'       => $this->name,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -1,5 +1,4 @@
 <template>
-
     <div class="product-card">
         <router-link :to="'/products/' + product.id">
             <div class="product-image">
@@ -14,11 +13,10 @@
 
             <div class="product-price">
                 <!--if there is no special price of an item-->
-                <span v-html="product.formated_price"></span>
+                <span v-html="product.formatted_price"></span>
                 <!--end-->
-                <i class="icon compare-icon" @click="moveToCompare"></i>
-
-                <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_wishlisted ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
+                <i class="icon compare-icon"  @click="moveToCompare"></i>
+                <i class="icon wishlist-icon" v-if="isCustomer == true" :class="[product.is_saved ? 'filled-wishlist-icon' : '']" @click="moveToWishlist"></i>
             </div>
 
             <router-link :to="'/products/' + product.id">
@@ -31,26 +29,40 @@
 </template>
 
 <script>
+
+    import {
+        mapState,
+        mapActions
+    } from 'vuex';
+
     export default {
         name: 'product-card',
 
         props: ['product', 'isCustomer'],
 
+        computed: mapState({
+            customer: state => state.customer,
+        }),
+
+        mounted () {
+            this.getCustomer();
+        },
+
         methods: {
+            ...mapActions([
+                'getCustomer',
+            ]),
             moveToWishlist () {
                 EventBus.$emit('show-ajax-loader');
-            
-                this.$http.get('/api/wishlist/add/' + this.product.id, {params : {token : true}})
+
+                this.$http.post('/api/v1/customer/wishlist/' + this.product.id)
                     .then(response => {
+
                         this.$toasted.show(response.data.message, { type: 'success' })
 
                         this.product.is_saved = response.data.data ? true : false;
 
-                        this.product.is_wishlisted = response.data.data ? true : false;
-
                         EventBus.$emit('hide-ajax-loader');
-
-                        this.$emit("updateWishlistStatus", this.product.id, this.product.is_wishlisted);
                     })
                     .catch(error => {
                         this.$toasted.show(error.response.data.error, { type: 'error' })
@@ -59,11 +71,21 @@
 
             moveToCompare () {
                 EventBus.$emit('show-ajax-loader');
-                console.log(this,"edf");
+
                 if (this.isCustomer) {
-                    this.$http.put('/api/pwa/comparison', {productId: this.product.id}, {params : {token :  JSON.parse(localStorage.getItem('token'))}})
-                    .then(response => {
-                        this.$toasted.show(response.data.message, { type: 'success' })
+                    this.$http.put('/api/pwa/comparison/',
+                    {
+                        product_id: this.product.id,
+                        customer_id:this.customer.id,
+                    }
+                    ).then(response => {
+                        let actionType = 'info';
+
+                        if (response.data.action && response.data.action == 'added') {
+                            actionType = "success";
+                        }
+
+                        this.$toasted.show(response.data.message, { type: actionType })
 
                         EventBus.$emit('hide-ajax-loader');
                     })
@@ -75,7 +97,6 @@
                     let existingItems = JSON.parse(localStorage.getItem('compared_product'));
 
                     if (existingItems) {
-                        debugger
                         if (existingItems.indexOf(this.product.id) == -1) {
                             updatedItems = existingItems.concat(updatedItems);
 
