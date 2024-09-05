@@ -66,7 +66,7 @@
                 currentCurrency: @json(core()->getCurrentCurrency()),
                 locales: @json(core()->getCurrentChannel()->locales),
                 currentLocale: @json(core()->getCurrentLocale()),
-                device:@json($device),
+                device: @json($device),
             };
         </script>
 

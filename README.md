@@ -42,6 +42,11 @@ composer require bagisto/pwa:dev-master
 https://github.com/bagisto/rest-api
 ```
 
+* Goto config/sanctum.php file and empty the guard variable.
+```
+'guard' => [],
+```
+
 * Run these commands below to complete the setup
 
 ```
