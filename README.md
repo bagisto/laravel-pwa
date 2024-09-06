@@ -31,8 +31,8 @@ It packs with lots of demanding features that allows your business to scale in n
 
 
 ### 3. Installation:
-```
 * Note: Make sure Bagisto Rest API v2.1 installed and configured. If not then install and confiure using the following link.
+
 ```
 https://github.com/bagisto/rest-api
 ```
