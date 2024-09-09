@@ -28,7 +28,7 @@ It packs with lots of demanding features that allows your business to scale in n
 ### 2. Requirements:
 
 * **Bagisto**: v2.1.2
-
+* **Bagisto Rest API**: v2.1
 
 ### 3. Installation:
 * Note: Make sure Bagisto Rest API v2.1 installed and configured. If not then install and confiure using the following link.
