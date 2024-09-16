@@ -32,18 +32,22 @@
 
         methods: {
             getWithListLstatus(){
-                EventBus.$emit('show-ajax-loader');
+                const token = JSON.parse(localStorage.getItem("token"));
+                if (token) {
+                    EventBus.$emit('show-ajax-loader');
 
-                this.$http.get('/api/v1/customer/wishlist')
-                    .then(response => {
-                        const isExits = response.data.data.find(item => item.product.id == this.$route.params.id);
-                        if (isExits) {
-                            this.isWishlisted = true;
-                        }
-                    })
-                    .catch(error => {});
+                    this.$http.get('/api/v1/customer/wishlist')
+                        .then(response => {
+                            const isExits = response.data.data.find(item => item.product.id == this.$route.params.id);
+                            if (isExits) {
+                                this.isWishlisted = true;
+                            }
+                        })
+                        .catch(error => {});
 
-                EventBus.$emit('hide-ajax-loader');
+                    EventBus.$emit('hide-ajax-loader');
+                }
+
             },
 
             moveToWishlist () {

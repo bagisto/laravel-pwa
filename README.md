@@ -28,18 +28,29 @@ It packs with lots of demanding features that allows your business to scale in n
 ### 2. Requirements:
 
 * **Bagisto**: v2.1.2
-
+* **Bagisto Rest API**: v2.1
 
 ### 3. Installation:
+* Note: Make sure Bagisto Rest API v2.1 installed and configured. If not then install and confiure using the following link.
+
+```
+https://github.com/bagisto/rest-api
+```
+
 * Install the PWA extension
+
 ```
 composer require bagisto/pwa:dev-master
 ```
 
-* Note: Make sure Bagisto Rest API installed and configured. If not then install and confiure using the following link.
+```
+composer require whichbrowser/parser
+```
+
+* Goto config/sanctum.php file and empty the guard variable.
 
 ```
-https://github.com/bagisto/rest-api
+'guard' => [],
 ```
 
 * Run these commands below to complete the setup
@@ -57,9 +68,7 @@ php artisan route:cache
 ```
 
 ```
-php artisan vendor:publish
-
--> Press 0 and then press enter to publish all assets and configurations.
+php artisan vendor:publish --provider="Webkul\PWA\Providers\PWAServiceProvider" --force
 ```
 
 > That's it, now go to https://yourdomain/pwa

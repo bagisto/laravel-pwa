@@ -254,11 +254,12 @@
             },
 
             addToCart (event) {
-                EventBus.$emit('show-ajax-loader');
+                const token = JSON.parse(localStorage.getItem("token"));
+                if (token) {
+                    EventBus.$emit('show-ajax-loader');
+                    var formData = this.formData;
 
-                var formData = this.formData;
-
-                this.$http.post("/api/v1/customer/cart/add/" + this.$route.params.id, formData)
+                    this.$http.post("/api/v1/customer/cart/add/" + this.$route.params.id, formData)
                     .then(response => {
                         this.$toasted.show(response.data.message, { type: 'success' })
 
@@ -272,6 +273,11 @@
                     })
                     .catch(error => {
                     })
+                }else{
+                    this.$toasted.show(this.$t('please_login_first'), { type: 'error' })
+
+                    this.$router.push({name: 'login-register'})
+                }
             },
 
             buyNow (event) {

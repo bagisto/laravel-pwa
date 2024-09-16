@@ -30,12 +30,10 @@ class PWAServiceProvider extends ServiceProvider
             __DIR__ . '/../../publishable/assets'   => public_path('themes/pwa/default/build/assets'),
         ], 'public');
 
-        if (core()->getCurrentChannel() && core()->getConfigData('pwa.settings.general.status')) {
-            $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/admin-menu.php',
-                'menu.admin'
-            );
-        }
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/Config/admin-menu.php',
+            'menu.admin'
+        );
     }
 
     /**
