@@ -9,6 +9,7 @@ return [
     ], [
         'key'   => 'pwa.settings',
         'name'  => 'pwa::app.admin.system.settings',
+        'info'  => '',
         'icon'  => 'settings/settings.svg',
         'sort'  => 1,
     ], [
@@ -98,6 +99,7 @@ return [
     ], [
         'key'    => 'pwa.settings.seo',
         'name'   => 'pwa::app.admin.system.seo.title',
+        'info'  => '',
         'sort'   => 1,
         'fields' => [
             [
@@ -129,6 +131,7 @@ return [
     ], [
         'key'    => 'pwa.settings.media',
         'name'   => 'pwa::app.admin.system.media',
+        'info'  => '',
         'sort'   => 1,
         'fields' => [
             [
@@ -164,6 +167,7 @@ return [
     ], [
         'key'    => 'pwa.settings.push-notification',
         'name'   => 'pwa::app.admin.system.push-notification',
+        'info'  => '',
         'sort'   => 1,
         'fields' => [
             [

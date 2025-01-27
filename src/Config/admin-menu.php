@@ -12,10 +12,12 @@ return [
         'route' => 'admin.pwa.pushnotification.index',
         'name'  => 'pwa::app.admin.layouts.push-notification',
         'sort'  => 1,
+        'icon'  => '',
     ], [
         'key'   => 'PWA.layout',
         'route' => 'admin.pwa.layout',
         'name'  => 'pwa::app.admin.layouts.title',
         'sort'  => 1,
+        'icon'  => '',
     ],
 ];
