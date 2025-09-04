@@ -2,9 +2,9 @@
 
 return [
     [
-        'key'   => 'ViewPushNotification',
-        'name'  => 'pwa::app.admin.system.pushnotification',
-        'route' => 'admin.pwa.pushnotification.index',
+        'key'   => 'viewPushNotification',
+        'name'  => 'pwa::app.admin.layouts.push-notification',
+        'route' => 'admin.pwa.push-notification.index',
         'sort'  => 3,
     ],
 ];

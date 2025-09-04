@@ -38,18 +38,19 @@ class CheckoutController extends Controller
                 'rates'         => CartShippingRateResource::collection(collect($shippingMethod['rates'])),
             ];
         }
+        
         $cart = Cart::getCart();
 
         Cart::collectTotals();
 
         if ($cart->haveStockableItems()) {
             return response()->json([
-                'data'    => [
+                'data' => [
                     'rates' => $rates,
                     'cart'  => new CartResource(Cart::getCart()),
                 ],
-                'nextStep'  => "shipping",
-                'message' => trans('rest-api::app.shop.checkout.billing-address-saved'),
+                'nextStep' => "shipping",
+                'message'  => trans('rest-api::app.shop.checkout.billing-address-saved'),
             ]);
         }
 

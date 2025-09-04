@@ -2,52 +2,19 @@
 
 namespace Webkul\PWA\Helpers;
 
-use Webkul\Attribute\Repositories\AttributeOptionRepository as AttributeOption;
 use Webkul\Product\Helpers\ConfigurableOption;
 use Webkul\Product\Models\Product;
-use Webkul\Product\Models\ProductImage;
 
 class PwaConfigurableOption extends ConfigurableOption
 {
     /**
-     * AttributeOptionRepository object
-     *
-     * @var array
-     */
-    protected $attributeOption;
-
-    /**
-     * ProductImage object
-     *
-     * @var array
-     */
-    protected $productImage;
-
-    /**
-     * Price object
-     *
-     * @var array
-     */
-    protected $price;
-
-    /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Attribute\Repositories\AttributeOptionRepository  $attributeOption
-     * @param  Webkul\Product\Models  $productImage
-     * @param  Webkul\Product\Helpers\Price  $price
      * @return void
      */
     public function __construct(
-        AttributeOption $attributeOption,
-        ProductImage $productImage,
-        Price $price
+        protected Price $price,
     ) {
-        $this->attributeOption = $attributeOption;
-
-        $this->productImage = $productImage;
-
-        $this->price = $price;
     }
 
     /**
@@ -58,7 +25,7 @@ class PwaConfigurableOption extends ConfigurableOption
      */
     public function getConfigurationConfig($product)
     {
-        $options = $this->getOptions($product, $this->getAllowedProducts($product));
+        $options = $this->getOptions($product, $this->getAllowedVariants($product));
 
         $config = [
             'attributes'    => $this->getAttributesData($product, $options),
@@ -85,7 +52,7 @@ class PwaConfigurableOption extends ConfigurableOption
     {
         $prices = [];
 
-        foreach ($this->getAllowedProducts($product) as $variant) {
+        foreach ($this->getAllowedVariants($product) as $variant) {
             if ($variant instanceof \Webkul\Product\Models\ProductFlat) {
                 $variantId = $variant->product_id;
             } else {

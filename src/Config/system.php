@@ -4,11 +4,12 @@ return [
     [
         'key'   => 'pwa',
         'name'  => 'pwa::app.admin.system.pwa',
-        'info'  => 'pwa::app.admin.system.sytem-info',
+        'info'  => 'pwa::app.admin.system.system-info',
         'sort'  => 1,
     ], [
         'key'   => 'pwa.settings',
         'name'  => 'pwa::app.admin.system.settings',
+        'info'  => 'pwa::app.admin.system.settings',
         'icon'  => 'settings/settings.svg',
         'sort'  => 1,
     ], [
@@ -23,7 +24,8 @@ return [
                 'type'  => '',
             ],
         ],
-    ], [
+    ], 
+    [
         'key'    => 'pwa.settings.general',
         'name'   => 'pwa::app.admin.system.general',
         'info'   => 'pwa::app.admin.system.pwa',
@@ -33,7 +35,9 @@ return [
                 'name'          => 'status',
                 'title'         => 'pwa::app.admin.system.status',
                 'type'          => 'boolean',
-            ],  [
+                'channel_based' => true,
+                'locale_based'  => false,
+            ], [
                 'name'          => 'name',
                 'title'         => 'pwa::app.admin.system.name',
                 'type'          => 'text',
@@ -98,6 +102,7 @@ return [
     ], [
         'key'    => 'pwa.settings.seo',
         'name'   => 'pwa::app.admin.system.seo.title',
+        'info'   => 'pwa::app.admin.system.seo.title',
         'sort'   => 1,
         'fields' => [
             [
@@ -129,6 +134,7 @@ return [
     ], [
         'key'    => 'pwa.settings.media',
         'name'   => 'pwa::app.admin.system.media',
+        'info'   => 'pwa::app.admin.system.media',
         'sort'   => 1,
         'fields' => [
             [
@@ -164,6 +170,7 @@ return [
     ], [
         'key'    => 'pwa.settings.push-notification',
         'name'   => 'pwa::app.admin.system.push-notification',
+        'info'   => 'pwa::app.admin.system.push-notification',
         'sort'   => 1,
         'fields' => [
             [

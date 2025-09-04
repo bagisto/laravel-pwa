@@ -7,26 +7,17 @@ use Webkul\Category\Repositories\CategoryRepository;
 class AdminHelper
 {
     /**
-     * CategoryRepository object
-     *
-     * @var \Webkul\Category\Repositories\CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
      * Create a new helper instance.
      *
      * @return void
      */
     public function __construct(
-        CategoryRepository $categoryRepository
+        protected CategoryRepository $categoryRepository,
     ) {
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
-     * @param  \Webkul\Category\Contracts\Category  $category
-     * @return \Webkul\Category\Contracts\Category
+     * Create a new helper instance
      */
     public function storePwaStatusInCategory($category)
     {

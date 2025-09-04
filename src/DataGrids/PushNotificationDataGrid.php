@@ -8,18 +8,9 @@ use Webkul\DataGrid\DataGrid;
 
 /**
  * Push notification datagrid.
- *
- * @author Webkul Software Pvt. Ltd. <support@webkul.com>
  */
 class PushNotificationDataGrid extends DataGrid
 {
-    /**
-     * Index.
-     *
-     * @var string
-     */
-    protected $primaryColumn = 'id';
-
     /**
      * Prepare query builder.
      *
@@ -27,13 +18,13 @@ class PushNotificationDataGrid extends DataGrid
      */
     public function prepareQueryBuilder()
     {
-        $queryBuilder = DB::table('push_notifications')
+        $queryBuilder = DB::table('pwa_push_notifications')
             ->select(
                 'id',
                 'title',
                 'description',
                 'targeturl',
-                'imageurl'
+                'imageurl',
             );
 
         return $queryBuilder;
@@ -49,7 +40,7 @@ class PushNotificationDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'id',
             'label'      => trans('pwa::app.admin.datagrid.id'),
-            'type'       => 'number',
+            'type'       => 'string',
             'searchable' => true,
             'sortable'   => true,
             'filterable' => true,
@@ -65,13 +56,13 @@ class PushNotificationDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index'         => 'imageurl',
-            'label'         => trans('pwa::app.admin.datagrid.icon'),
-            'type'          => 'string',
-            'searchable'    => false,
-            'sortable'      => false,
-            'filterable'    => false,
-            'closure'       => function ($row) {
+            'index'      => 'imageurl',
+            'label'      => trans('pwa::app.admin.datagrid.icon'),
+            'type'       => 'string',
+            'searchable' => false,
+            'sortable'   => false,
+            'filterable' => false,
+            'closure'    => function ($row) {
                 if ($row->imageurl) {
                     return '<img src=' . Storage::url($row->imageurl) . ' class="img-thumbnail" width="50px" height="70px" />';
                 }
@@ -100,7 +91,7 @@ class PushNotificationDataGrid extends DataGrid
             'icon'   => 'icon-edit',
             'method' => 'GET',
             'url'    => function ($row) {
-                return route('admin.pwa.pushnotification.edit', $row->id);
+                return route('admin.pwa.push-notification.edit', $row->id);
             },
         ]);
 
@@ -109,7 +100,7 @@ class PushNotificationDataGrid extends DataGrid
             'icon'   => 'icon-delete',
             'method' => 'GET',
             'url'    => function ($row) {
-                return route('admin.pwa.pushnotification.delete', $row->id);
+                return route('admin.pwa.push-notification.delete', $row->id);
             },
         ]);
 
@@ -118,7 +109,7 @@ class PushNotificationDataGrid extends DataGrid
             'icon'   => 'icon-notification',
             'method' => 'GET',
             'url'    => function ($row) {
-                return route('pwa.pushnotification.pushtofirebase', $row->id);
+                return route('pwa.push-notification.push-to-firebase', $row->id);
             },
         ]);
     }

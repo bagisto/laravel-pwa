@@ -13,7 +13,7 @@ class PushNotification extends Model implements PushNotificationContract
      *
      * @var string
      */
-    protected $table = 'push_notifications';
+    protected $table = 'pwa_push_notifications';
 
     /**
      * The primary key associated with the table.
@@ -29,7 +29,7 @@ class PushNotification extends Model implements PushNotificationContract
         'title',
         'description',
         'targeturl',
-        'imageurl'
+        'imageurl',
     ];
 
     /**

@@ -12,7 +12,7 @@
 
     <!-- Category Create Form -->
     <x-admin::form
-        :action="route('admin.pwa.pushnotification.update', $pushnotification->id)"
+        :action="route('admin.pwa.push-notification.update', $pushnotification->id)"
         enctype="multipart/form-data"
     >
         {!! view_render_event('bagisto.admin.pwa.notification.edit.create_form_controls.before', ['pushnotification' => $pushnotification]) !!}
@@ -25,7 +25,7 @@
             <div class="flex gap-x-2.5 items-center">
                 <!-- Cancel Button -->
                 <a
-                    href="{{ route('admin.pwa.pushnotification.index') }}"
+                    href="{{ route('admin.pwa.push-notification.index') }}"
                     class="transparent-button hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white"
                 >
                     @lang('pwa::app.admin.push-notification.back-btn')
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <!-- Full Pannel -->
+        <!-- Full Panel -->
         <div class="flex gap-2.5 mt-3.5 max-xl:flex-wrap">
 
             <!-- Left Section -->
@@ -196,5 +196,4 @@
             });
         </script>
     @endPushOnce
-
 </x-admin::layouts>

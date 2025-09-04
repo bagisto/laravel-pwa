@@ -11,11 +11,11 @@
         <meta name="description" content="{{ core()->getConfigData('pwa.settings.seo.seo_description') ?? 'This is a PWA app'  }}" > <!-- this line is to meet the requirment of lighthouse extension. -->
 
         @if (core()->getConfigData('pwa.settings.seo.seo_author'))
-        <meta name="author" content="{{ core()->getConfigData('pwa.settings.seo.seo_author')  }}" >
+            <meta name="author" content="{{ core()->getConfigData('pwa.settings.seo.seo_author')  }}" >
         @endif
 
         @if (core()->getConfigData('pwa.settings.seo.seo_keywords'))
-        <meta name="keywords" content="{{ core()->getConfigData('pwa.settings.seo.seo_keywords')  }}" >
+            <meta name="keywords" content="{{ core()->getConfigData('pwa.settings.seo.seo_keywords')  }}" >
         @endif
 
         <link rel="stylesheet" href="{{ asset('themes/pwa/default/build/assets/css/pwa.css?v=' . strtotime("now")) }}">
@@ -27,7 +27,7 @@
         <link rel="icon" sizes="144x144" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.large')) : asset('themes/pwa/default/build/assets/images/144x144.png')  }}">
         <link rel="icon" sizes="196x196" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.extra_large')) : asset('themes/pwa/default/build/assets/images/196x196.png')  }}">
 
-        {{-- icons for IOS devices --}}
+        <!-- icons for IOS devices -->
         <link rel="apple-touch-icon" sizes="48x48" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.small')) : asset('themes/pwa/default/build/assets/images/48x48.png')  }}">
         <link rel="apple-touch-icon" sizes="96x96" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.medium')) : asset('themes/pwa/default/build/assets/images/96x96.png')  }}">
         <link rel="apple-touch-icon" sizes="144x144" href="{{ core()->getConfigData('pwa.settings.media.small') ? Storage::url(core()->getConfigData('pwa.settings.media.large')) : asset('themes/pwa/default/build/assets/images/144x144.png')  }}">
@@ -38,6 +38,7 @@
         <samp data-depth="1" class="sf-dump-compact">
 
         {!! view_render_event('bagisto.pwa.layout.head') !!}
+
         <title>
             {{ core()->getConfigData('pwa.settings.seo.seo_title') ?? 'PWA'  }}
         </title>
@@ -50,13 +51,16 @@
         <div id="app">
             <app></app>
         </div>
+        
         <script type="text/javascript">
             var appBaseUrl = "{{ config('app.url') }}";
-            if (!appBaseUrl.endsWith("/")) {
+
+            if (! appBaseUrl.endsWith("/")) {
                 appBaseUrl = appBaseUrl + '/';
             }
 
             window.channel = @json(new \Webkul\PWA\Http\Resources\Core\Channel(core()->getCurrentChannel()));
+
             window.config = {
                 app_short_name: "{{ core()->getConfigData('pwa.settings.general.short_name') }}",
                 app_base_url: appBaseUrl,
@@ -75,7 +79,10 @@
             $acceptedCurrency = core()->getConfigData('sales.paymentmethods.paypal_smart_button.accepted_currencies');
         @endphp
 
-        @if ($clientId && $acceptedCurrency)
+        @if (
+            $clientId 
+            && $acceptedCurrency
+        )
             <script src="https://www.paypal.com/sdk/js?client-id={{ $clientId }}&currency={{ $acceptedCurrency }}" data-partner-attribution-id="Bagisto_Cart"></script>
         @endif
 
@@ -89,7 +96,6 @@
 
         <script>
             if ('serviceWorker' in navigator ) {
-
                 window.addEventListener('load', function() {
                     navigator.serviceWorker.register("{{ asset('service-worker.js') }}")
                         .then(function(registration) {
@@ -98,9 +104,7 @@
                             let deferredPrompt;
 
                             window.addEventListener('beforeinstallprompt', (e) => {
-                                // Stash the event so it can be triggered later.
                                 deferredPrompt = e;
-                                // Update UI to notify the user they can add to home screen
                             });
                         }, function(err) {
                             console.log('ServiceWorker registration failed: ', err);
@@ -109,5 +113,4 @@
             }
         </script>
     </body>
-
 </html>

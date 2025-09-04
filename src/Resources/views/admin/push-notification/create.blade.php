@@ -1,5 +1,4 @@
 <x-admin::layouts>
-
     <!-- Title of the page -->
     <x-slot:title>
         @lang('admin::app.catalog.categories.create.title')
@@ -9,7 +8,7 @@
 
     <!-- Category Create Form -->
     <x-admin::form
-        :action="route('admin.pwa.pushnotification.store')"
+        :action="route('admin.pwa.push-notification.store')"
         enctype="multipart/form-data"
     >
         {!! view_render_event('bagisto.admin.pwa.notification.create.create_form_controls.before') !!}
@@ -22,7 +21,7 @@
             <div class="flex gap-x-2.5 items-center">
                 <!-- Cancel Button -->
                 <a
-                    href="{{ route('admin.pwa.pushnotification.index') }}"
+                    href="{{ route('admin.pwa.push-notification.index') }}"
                     class="transparent-button hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white"
                 >
                     @lang('pwa::app.admin.push-notification.back-btn')
@@ -38,9 +37,8 @@
             </div>
         </div>
 
-        <!-- Full Pannel -->
+        <!-- Full Panel -->
         <div class="flex gap-2.5 mt-3.5 max-xl:flex-wrap">
-
             <!-- Left Section -->
             <div class="flex flex-col gap-2 flex-1 max-xl:flex-auto">
 
@@ -191,5 +189,4 @@
             });
         </script>
     @endPushOnce
-
 </x-admin::layouts>

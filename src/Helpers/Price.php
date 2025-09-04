@@ -12,33 +12,15 @@ use Webkul\Product\Models\ProductFlat;
 class Price
 {
     /**
-     * CustomerGroupRepository object
-     */
-    protected $customerGroupRepository;
-
-    /**
-     * CatalogRuleProductPrice object
-     */
-    protected $catalogRuleProductPriceHelper;
-
-    /**
      * Create a new helper instance.
      *
-     * @param  Webkul\Customer\Repositories\CustomerGroupRepository  $customerGroupRepository
-     * @param  Webkul\CatalogRule\Repositories\CatalogRuleProductPriceRepository  $catalogRuleProductPriceRepository
-     * @param  Webkul\CatalogRule\Repositories\CatalogRuleProductPrice  $catalogRuleProductPriceHelper
      * @return void
      */
     public function __construct(
-        CustomerGroupRepository $customerGroupRepository,
-        CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository,
-        CatalogRuleProductPrice $catalogRuleProductPriceHelper
+        protected CatalogRuleProductPrice $catalogRuleProductPriceHelper,
+        protected CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository,
+        protected CustomerGroupRepository $customerGroupRepository,
     ) {
-        $this->customerGroupRepository = $customerGroupRepository;
-
-        $this->catalogRuleProductPriceRepository = $catalogRuleProductPriceRepository;
-
-        $this->catalogRuleProductPriceHelper = $catalogRuleProductPriceHelper;
     }
 
     /**

@@ -2,20 +2,22 @@
 
 return [
     [
-        'key'   => 'PWA',
+        'key'   => 'pwa',
         'name'  => 'pwa::app.admin.system.pwa_full_name',
-        'route' => 'admin.pwa.pushnotification.index',
+        'route' => 'admin.pwa.push-notification.index',
         'sort'  => 8,
         'icon'  => 'pwa-icon',
     ], [
-        'key'   => 'PWA.index',
-        'route' => 'admin.pwa.pushnotification.index',
+        'key'   => 'pwa.index',
         'name'  => 'pwa::app.admin.layouts.push-notification',
+        'route' => 'admin.pwa.push-notification.index',
+        'icon'  => '',
         'sort'  => 1,
     ], [
-        'key'   => 'PWA.layout',
-        'route' => 'admin.pwa.layout',
+        'key'   => 'pwa.layout',
         'name'  => 'pwa::app.admin.layouts.title',
-        'sort'  => 1,
+        'route' => 'admin.pwa.layout',
+        'icon'  => '',
+        'sort'  => 2,
     ],
 ];

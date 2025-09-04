@@ -12,55 +12,63 @@ use Webkul\PWA\Http\Controllers\Shop\InvoiceController;
 use Webkul\PWA\Http\Controllers\SinglePageController;
 use Webkul\PWA\Http\Controllers\StandardController;
 
+/**
+ * Paypal smart button routes.
+ */
 Route::group(['middleware' => ['web']], function () {
-    /**
-     * Paypal smart buttton routes.
-     */
-    Route::prefix('pwa/paypal/smart-button')->group(function () {
-        Route::get('/create-order', [SmartButtonController::class, 'createOrder'])->name('paypal.smart-button.create-order.pwa');
+    Route::controller(SmartButtonController::class)->prefix('pwa/paypal/smart-button')->group(function () {
+        Route::get('create-order', 'createOrder')->name('paypal.smart-button.create-order.pwa');
 
-        Route::post('/capture-order', [SmartButtonController::class, 'captureOrder'])->name('paypal.smart-button.capture-order.pwa');
+        Route::post('capture-order', 'captureOrder')->name('paypal.smart-button.capture-order.pwa');
     });
 });
 
-Route::prefix('paypal/standard')->group(function () {
-    Route::get('/pwa/success', [StandardController::class, 'success'])->name('pwa.paypal.standard.success');
+/**
+ * Paypal Standard routes.
+ */
+Route::controller(StandardController::class)->prefix('paypal/standard/pwa')->group(function () {
+    Route::get('success', 'success')->name('pwa.paypal.standard.success');
 
-    Route::get('/pwa/cancel', [StandardController::class, 'cancel'])->name('pwa.paypal.standard.cancel');
+    Route::get('cancel', 'cancel')->name('pwa.paypal.standard.cancel');
 });
 
 Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
-    Route::get('/mobile/{any?}', [SinglePageController::class, 'index'])->where('any', '.*')->name('mobile.home');
+    Route::controller(SinglePageController::class)->group(function () {
+        Route::get('/mobile/{any?}', 'index')->where('any', '.*')->name('mobile.home');
 
-    Route::get('/pwa/{any?}', [SinglePageController::class, 'index'])->where('any', '.*')->name('pwa.home');
+        Route::get('/pwa/{any?}', 'index')->where('any', '.*')->name('pwa.home');
+    });
 
     Route::group(['prefix' => 'api/pwa'], function () {
-         /**
+
+        /**
          * Checkout routes.
          */
         Route::group(['middleware' => ['auth:sanctum', 'sanctum.customer']], function () {
-
             Route::group(['prefix' => 'checkout'], function () {
-
                 Route::post('save-address', [CheckoutController::class, 'saveAddress']);
             });
         });
 
-         /**
+        /**
          * Comparison routes.
          */
-        Route::put('/comparison', [ComparisonController::class, 'store']);
+        Route::controller(ComparisonController::class)->prefix('comparison')->group(function () {
+            Route::put('', 'store');
 
-        Route::post('/comparison', [ComparisonController::class, 'destroy']);
+            Route::post('destroy','destroy');
 
-        Route::get('/comparison/get-products', [ComparisonController::class, 'index']);
+            Route::get('get-products', 'index');
+        });
 
         /**
          * Review routes.
          */
-        Route::get('customer/review/{id}', [ReviewController::class, 'get']);
+        Route::controller(ReviewController::class)->prefix('comparison/customer/review/')->group(function () {
+            Route::get('', 'getAll');
 
-        Route::get('customer/reviews', [ReviewController::class, 'getAll']);
+            Route::get('{id}', 'get');
+        });
 
         /**
          * product routes.

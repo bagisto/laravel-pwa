@@ -13,7 +13,7 @@ class CreatePushNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('push_notifications', function (Blueprint $table) {
+        Schema::create('pwa_push_notifications', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->nullable();
             $table->string('description')->nullable();
@@ -30,6 +30,6 @@ class CreatePushNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('push_notifications');
+        Schema::dropIfExists('pwa_push_notifications');
     }
 }

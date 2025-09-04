@@ -10,11 +10,10 @@ class ThemeController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Theme\Repositories\ThemeCustomizationRepository  $themeCustomizationRepository
      * @return void
      */
     public function __construct(
-        protected ThemeCustomizationRepository $themeCustomizationRepository
+        protected ThemeCustomizationRepository $themeCustomizationRepository,
     ) {
     }
 

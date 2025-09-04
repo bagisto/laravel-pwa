@@ -38,10 +38,6 @@ class LayoutController extends Controller
      */
     public function store()
     {
-        // $this->validate(request(), [
-        //     'home_page_content' => 'required',
-        // ]);
-
         $existing = $this->pwaLayoutRepository->first();
 
         if ($existing) {

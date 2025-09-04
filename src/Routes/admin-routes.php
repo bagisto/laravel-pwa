@@ -8,28 +8,28 @@ Route::group(['middleware' => ['web', 'admin'], 'prefix' => 'admin/pwa'], functi
     /**
      * Notification routes.
      */
-    Route::controller(PushNotificationController::class)->group(function () {
-        Route::get('pushnotification', 'index')->name('admin.pwa.pushnotification.index');
+    Route::controller(PushNotificationController::class)->prefix('push-notification')->group(function () {
+        Route::get('', 'index')->name('admin.pwa.push-notification.index');
 
-        Route::get('pushnotification/create', 'create')->name('admin.pwa.pushnotification.create');
+        Route::get('create', 'create')->name('admin.pwa.push-notification.create');
 
-        Route::post('pushnotification/store', 'store')->name('admin.pwa.pushnotification.store');
+        Route::post('store', 'store')->name('admin.pwa.push-notification.store');
 
-        Route::get('pushnotification/edit/{id}', 'edit')->name('admin.pwa.pushnotification.edit');
+        Route::get('edit/{id}', 'edit')->name('admin.pwa.push-notification.edit');
 
-        Route::post('pushnotification/update/{id}', 'update')->name('admin.pwa.pushnotification.update');
+        Route::post('update/{id}', 'update')->name('admin.pwa.push-notification.update');
 
-        Route::get('pushnotification/delete/{id}', 'destroy')->name('admin.pwa.pushnotification.delete');
+        Route::get('delete/{id}', 'destroy')->name('admin.pwa.push-notification.delete');
 
-        Route::get('pushnotification/push/{id}', 'pushToFirebase')->name('pwa.pushnotification.pushtofirebase');
+        Route::get('push/{id}', 'pushToFirebase')->name('pwa.push-notification.push-to-firebase');
     });
 
     /**
      * Pwa Layout routes.
      */
-    Route::controller(LayoutController::class)->group(function () {
-        Route::get('layout', 'index')->name('admin.pwa.layout');
+    Route::controller(LayoutController::class)->prefix('layout')->group(function () {
+        Route::get('', 'index')->name('admin.pwa.layout');
 
-        Route::post('layout', 'store')->name('admin.pwa.layout.store');
+        Route::post('', 'store')->name('admin.pwa.layout.store');
     });
 });

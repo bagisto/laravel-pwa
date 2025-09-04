@@ -10,11 +10,9 @@ class InvoiceController extends Controller
 {
     /**
      * Controller instance
-     *
-     * @param  Webkul\Sales\Repositories\InvoiceRepository  $invoiceRepository
      */
     public function __construct(
-        protected InvoiceRepository $invoiceRepository
+        protected InvoiceRepository $invoiceRepository,
     ) {}
 
     /**
@@ -26,7 +24,7 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepository->findOrFail($id);
 
-        $pdf =  PDF::loadHTML($this->adjustArabicAndPersianContent(view('shop::customers.account.orders.pdf', compact('invoice'))->render()))
+        $pdf = PDF::loadHTML($this->adjustArabicAndPersianContent(view('shop::customers.account.orders.pdf', compact('invoice'))->render()))
             ->setPaper('a4');
 
         return $pdf->output();

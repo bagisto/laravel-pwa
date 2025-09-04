@@ -7,7 +7,7 @@ import App               from './components/app';
 import VueCurrencyFilter from 'vue-currency-filter';
 import './plugins/push-notification';
 // import './../../../../../../../public/firebase-messaging-sw';     // (File from the public folder)
-// import './../../../../publishable/pwa/firebase-messaging-sw';    //  (File from the pwa foder where main service-worker is kept)
+// import './../../../../publishable/pwa/firebase-messaging-sw';    //  (File from the pwa folder where main service-worker is kept)
 
 window.axios = require('axios');
 window.jQuery = window.$ = require('jquery');

@@ -26,8 +26,8 @@ class PWAServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'pwa');
 
         $this->publishes([
-            __DIR__ . '/../../publishable/pwa'      => public_path(),
-            __DIR__ . '/../../publishable/assets'   => public_path('themes/pwa/default/build/assets'),
+            __DIR__ . '/../../publishable/pwa'    => public_path(),
+            __DIR__ . '/../../publishable/assets' => public_path('themes/pwa/default/build/assets'),
         ], 'public');
 
         $this->mergeConfigFrom(

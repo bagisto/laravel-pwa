@@ -14,19 +14,20 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Event::listen('bagisto.admin.layout.head', function ($viewRenderEventManager) {
-            $viewRenderEventManager->addTemplate('pwa::admin.layouts.style');
-        });
-
-        Event::listen('bagisto.shop.layout.head', 'Webkul\PWA\Listeners\PWAListeners@redirectToPWA');
+        Event::listen('bagisto.shop.layout.head.before', 'Webkul\PWA\Listeners\PWAListeners@redirectToPWA');
 
         Event::listen('core.configuration.save.after', 'Webkul\PWA\Listeners\CoreConfig@generateManifestFile');
 
-        // Event::listen('bagisto.shop.layout.head', function ($viewRenderEventManager) {
-        //     $viewRenderEventManager->addTemplate('pwa::shop.desktop.head.index');
-        // });
+        /**
+         * Add css to the admin end using listener.
+         */
+        Event::listen('bagisto.admin.layout.head.before', function ($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('pwa::admin.layouts.style');
+        });
 
-        // Add new field in category create and update form.
+        /**
+         * Add new field in category create and update form.
+         */
         Event::listen(
             [
                 'bagisto.admin.catalog.categories.create.card.accordion.settings.after',
@@ -34,12 +35,14 @@ class EventServiceProvider extends ServiceProvider
             ],
             function ($viewRenderEventManager) {
                 $viewRenderEventManager->addTemplate(
-                    'pwa::admin.catelog.categories.pwa'
+                    'pwa::admin.catalog.categories.pwa'
                 );
             }
         );
 
-        // Add new filed in array when save category.
+        /**
+         * Add new filed in array when save category.
+         */
         Event::listen([
             'catalog.category.create.after',
             'catalog.category.update.after',

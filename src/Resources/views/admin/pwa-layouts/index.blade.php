@@ -11,8 +11,10 @@
         enctype="multipart/form-data"
         method="POST"
     >
-        {!! view_render_event('bagisto.admin.pwa.notification.create.create_form_controls.before') !!}
         @csrf
+
+        {!! view_render_event('bagisto.admin.pwa.notification.create.create_form_controls.before') !!}
+        
         <div class="flex gap-4 justify-between items-center max-sm:flex-wrap">
             <p class="text-xl text-gray-800 dark:text-white font-bold">
                 @lang('pwa::app.admin.layouts.title')
@@ -21,7 +23,7 @@
             <div class="flex gap-x-2.5 items-center">
                 <!-- Cancel Button -->
                 <a
-                    href="{{ route('admin.pwa.pushnotification.index') }}"
+                    href="{{ route('admin.pwa.push-notification.index') }}"
                     class="transparent-button hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white"
                 >
                     @lang('pwa::app.admin.push-notification.back-btn')
@@ -37,9 +39,8 @@
             </div>
         </div>
 
-        <!-- Full Pannel -->
+        <!-- Full Panel -->
         <div class="flex gap-2.5 mt-3.5 max-xl:flex-wrap">
-
             <!-- Left Section -->
             <div class="flex flex-col gap-2 flex-1 max-xl:flex-auto">
 
@@ -52,20 +53,17 @@
                     </p>
 
                     <!-- Description -->
-                        <x-admin::form.control-group>
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.control
+                            type="textarea"
+                            id="description"
+                            name="home_page_content"
+                            :value="isset($layout->home_page_content) ? $layout->home_page_content : ''"
+                            :label="trans('pwa::app.admin.push-notification.description')"
+                        />
 
-                            <x-admin::form.control-group.control
-                                type="textarea"
-                                id="description"
-                                {{-- class="description" --}}
-                                name="home_page_content"
-                                :value="isset($layout->home_page_content) ? $layout->home_page_content : ''"
-                                :label="trans('pwa::app.admin.push-notification.description')"
-                                {{-- :tinymce="true" --}}
-                            />
-
-                            <x-admin::form.control-group.error control-name="description" />
-                        </x-admin::form.control-group>
+                        <x-admin::form.control-group.error control-name="description" />
+                    </x-admin::form.control-group>
                 </div>
 
                 {!! view_render_event('bagisto.admin.pwa.notification.create.card.general.after') !!}
@@ -109,5 +107,4 @@
             });
         </script>
     @endPushOnce
-
 </x-admin::layouts>

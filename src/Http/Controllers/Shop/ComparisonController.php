@@ -12,13 +12,12 @@ class ComparisonController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @param  Webkul\Product\Repositories\ProductRepository  $productRepository
+     * 
      * @return void
      */
     public function __construct(
-        protected ProductRepository $productRepository,
         protected CompareItemRepository $compareItemRepository,
+        protected ProductRepository $productRepository,
     ) {
     }
 
@@ -28,6 +27,7 @@ class ComparisonController extends Controller
     public function index()
     {
         $productIds = request()->input('product_ids') ?? [];
+
         $customerId = request()->input('customer_id') ?? null;
 
         /**
@@ -62,12 +62,14 @@ class ComparisonController extends Controller
             'product_id'  => 'required|integer',
             'customer_id' => 'required|integer',
         ]);
+
         $customerId = $request->input('customer_id');
+
         $productId = $request->input('product_id');
 
         $compareProduct = $this->compareItemRepository->findOneByField([
-            'customer_id'  => $customerId,
-            'product_id'   => $productId,
+            'customer_id' => $customerId,
+            'product_id'  => $productId,
         ]);
 
         if ($compareProduct) {
@@ -78,8 +80,8 @@ class ComparisonController extends Controller
         }
 
         $this->compareItemRepository->create([
-            'customer_id'  => $customerId,
-            'product_id'   => $productId,
+            'customer_id' => $customerId,
+            'product_id'  => $productId,
         ]);
 
         return response()->json([
@@ -102,6 +104,7 @@ class ComparisonController extends Controller
         ]);
 
         $productId = request()->input('product_id') ?? null;
+
         $customerId = request()->input('customer_id') ?? null;
 
         $success = $this->compareItemRepository->deleteWhere([
@@ -140,6 +143,7 @@ class ComparisonController extends Controller
     public function getComparableAttributes()
     {
         $attributeRepository = app('\Webkul\Attribute\Repositories\AttributeFamilyRepository');
+        
         $comparableAttributes = $attributeRepository->getComparableAttributesBelongsToFamily();
 
         $locale = request()->get('locale') ?: app()->getLocale();

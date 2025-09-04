@@ -37,10 +37,6 @@ class LayoutController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate(request(), [
-        //     'home_page_content' => 'required',
-        // ]);
-
         $existing = $this->pwaLayoutRepository->first();
 
         if ($existing) {
@@ -53,7 +49,6 @@ class LayoutController extends Controller
             ]);
         }
 
-        // flash message
         session()->flash('success', trans('pwa::app.admin.layouts.update-success'));
 
         return redirect()->route('admin.pwa.layout');

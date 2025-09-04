@@ -19,10 +19,10 @@ class ProductController extends Controller
      * @param  Webkul\Product\Repositories\ProductReviewRepository  $reviewRepository
      */
     public function __construct(
-        protected ProductReviewRepository $reviewRepository,
-        protected ProductRepository $productRepository,
         protected ConfigurableOption $configurableOption,
-        protected DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository
+        protected DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository,
+        protected ProductRepository $productRepository,
+        protected ProductReviewRepository $reviewRepository,
     ) {}
 
     /**
@@ -43,7 +43,7 @@ class ProductController extends Controller
             ->where('downloadable_link_purchased.customer_id', $customerId)->paginate(10);
 
         return response()->json([
-            'data'    => $result,
+            'data' => $result,
         ]);
     }
 
@@ -72,6 +72,7 @@ class ProductController extends Controller
         }
 
         $orderedQty = $downloadableLinkPurchased->order->total_qty_ordered;
+
         $totalInvoiceQty = $totalInvoiceQty * ($downloadableLinkPurchased->download_bought / $orderedQty);
 
         if (
@@ -124,10 +125,11 @@ class ProductController extends Controller
     public function configurableConfig()
     {
         $product = $this->productRepository->findOrFail(request()->id);
+        
         $configurableOption = $this->configurableOption->getConfigurationConfig($product);
 
         return response()->json([
-            'data'    => $configurableOption,
+            'data' => $configurableOption,
         ]);
     }
 }

@@ -27,7 +27,7 @@ class ReviewController extends Controller
         $customerId = request()->input('customer_id') ?? null;
 
         $this->validate(request(), [
-            'customer_id'   => 'required',
+            'customer_id' => 'required',
         ]);
 
         $reviews = $this->reviewRepository
@@ -40,7 +40,7 @@ class ReviewController extends Controller
         }
 
         return response()->json([
-            'data'    => $reviews,
+            'data' => $reviews,
         ]);
     }
 
@@ -52,7 +52,7 @@ class ReviewController extends Controller
         $customerId = request()->input('customer_id') ?? null;
 
         $this->validate(request(), [
-            'customer_id'   => 'required',
+            'customer_id' => 'required',
         ]);
 
         $review = $this->reviewRepository
@@ -64,7 +64,7 @@ class ReviewController extends Controller
         $review->product->reviews = $review->product->reviews;
 
         return response()->json([
-            'data'    => $review,
+            'data' => $review,
         ]);
     }
 }

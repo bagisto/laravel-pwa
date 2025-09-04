@@ -14,6 +14,11 @@ class PWALayout extends Model implements PWALayoutContract
      */
     protected $table = 'pwa_layout';
 
+    /**
+     * Add fillable property to the model.
+     *
+     * @var array
+     */
     protected $fillable = [
         'home_page_content',
     ];

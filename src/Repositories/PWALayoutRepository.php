@@ -3,10 +3,8 @@
 namespace Webkul\PWA\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
+use Webkul\PWA\Contracts\PWALayout;
 
-/**
- * PWALayoutRepository Reposotory
- */
 class PWALayoutRepository extends Repository
 {
     /**
@@ -16,6 +14,6 @@ class PWALayoutRepository extends Repository
      */
     public function model()
     {
-        return 'Webkul\PWA\Contracts\PWALayout';
+        return PWALayout::class;
     }
 }

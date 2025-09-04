@@ -5,6 +5,7 @@ namespace Webkul\PWA\Repositories;
 use Illuminate\Container\Container as App;
 use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Eloquent\Repository;
+use Webkul\PWA\Contracts\PushNotification;
 
 /**
  * PushNotificationRepository Reposotory
@@ -12,20 +13,13 @@ use Webkul\Core\Eloquent\Repository;
 class PushNotificationRepository extends Repository
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    protected $_config;
-
-    /**
      * Specify Model class name
      *
      * @return mixed
      */
     public function model()
     {
-        return 'Webkul\PWA\Contracts\PushNotification';
+        return PushNotification::class;
     }
 
     /**
@@ -35,7 +29,6 @@ class PushNotificationRepository extends Repository
     public function __construct(App $app)
     {
         parent::__construct($app);
-        $this->_config = request('_config');
     }
 
     /**

@@ -8,8 +8,6 @@ use WhichBrowser\Parser;
 /**
  * Paypal Standard payment method class
  *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class Standard extends Paypal
 {
@@ -54,9 +52,11 @@ class Standard extends Paypal
 
         if ($agent->isType('mobile', 'tablet')) {
             $success = route('pwa.paypal.standard.success');
+
             $cancel = route('pwa.paypal.standard.cancel');
         } else {
             $success = route('paypal.standard.success');
+            
             $cancel = route('paypal.standard.cancel');
         }
 
